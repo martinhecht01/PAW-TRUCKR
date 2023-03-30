@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.services;
+package ar.edu.itba.paw.interfacesServices;
 
 import ar.edu.itba.paw.models.User;
 import org.springframework.stereotype.Service;
