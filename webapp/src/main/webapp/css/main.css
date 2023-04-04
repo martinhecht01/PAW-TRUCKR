@@ -1,3 +1,9 @@
 h2{
     color: red;
 }
+
+.browseCards{
+    display: flex;
+    margin: auto;
+    max-width: 50%;
+}
