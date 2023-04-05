@@ -11,7 +11,9 @@ public class Trip {
     private final String origin;
     private final String destination;
 
-    public Trip(String licensePlate, Number availableWeight, Number availableVolume, Date departureDate, Date arrivalDate, String origin, String destination) {
+    private final String type;
+
+    public Trip(String licensePlate, Number availableWeight, Number availableVolume, Date departureDate, Date arrivalDate, String origin, String destination, String type) {
         this.licensePlate = licensePlate;
         this.availableWeight = availableWeight;
         this.availableVolume = availableVolume;
@@ -19,6 +21,11 @@ public class Trip {
         this.arrivalDate = arrivalDate;
         this.origin = origin;
         this.destination = destination;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getLicensePlate() {

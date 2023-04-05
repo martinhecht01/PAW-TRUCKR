@@ -7,3 +7,9 @@ h2{
     margin: auto;
     max-width: 50%;
 }
+
+.formCard{
+    display: flex;
+    margin: auto;
+    max-width: 40%;
+}

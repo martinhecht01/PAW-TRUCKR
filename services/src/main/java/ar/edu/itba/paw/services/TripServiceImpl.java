@@ -8,7 +8,7 @@ import java.util.Date;
 public class TripServiceImpl implements TripService {
 
     @Override
-    public Trip createTrip(String licensePlate, Number availableWeight, Number availableVolume, Date departureDate, Date arrivalDate, String origin, String destination) {
-        return new Trip(licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination);
+    public Trip createTrip(String licensePlate, Number availableWeight, Number availableVolume, Date departureDate, Date arrivalDate, String origin, String destination, String type) {
+        return new Trip(licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
     }
 }
