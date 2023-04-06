@@ -13,3 +13,27 @@ h2{
     margin: auto;
     max-width: 40%;
 }
+
+.bodyContent{
+    background-color: #e3dcc3;
+}
+
+.inlineFormInputContainer{
+    display: flex;
+    justify-content: space-between
+}
+
+.inlineFormInput{
+    display: inline-block;
+    width: 48%
+}
+
+.formButton{
+    display: block;
+    margin: 0 auto;
+}
+
+.inputSpan{
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
