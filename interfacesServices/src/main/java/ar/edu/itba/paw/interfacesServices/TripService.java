@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfacesServices;
 import ar.edu.itba.paw.models.Trip;
 
 import java.util.Date;
+import java.util.List;
 
 public interface TripService {
     Trip createTrip(
@@ -15,4 +16,6 @@ public interface TripService {
                     String origin,
                     String destination,
                     String type);
+
+    List<Trip> getAllTrips();
 }

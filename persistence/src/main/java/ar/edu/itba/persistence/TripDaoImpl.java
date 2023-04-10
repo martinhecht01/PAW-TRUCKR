@@ -14,6 +14,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TripDaoImpl implements TripDao {
@@ -91,6 +93,9 @@ public class TripDaoImpl implements TripDao {
         return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
     }
 
-
+    @Override
+    public List<Trip> getAllTrips(){
+        return jdbcTemplate.query("SELECT * FROM trips", ROW_MAPPER);
+    }
 
 }

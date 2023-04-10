@@ -43,10 +43,7 @@ public class TripController {
     @RequestMapping("/browseTrips")
     public ModelAndView browseTrips() {
         final ModelAndView view = new ModelAndView("landing/browseTrips");
-        List<Trip> trips = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            trips.add(new Trip(1,111, "ABC123", 4000,5, new Date("12/1/2023"), new Date("02/12/2023"), "Bsas", "Cor", "Refrigerado"));
-        }
+        List<Trip> trips = ts.getAllTrips();
         view.addObject("offers", trips);
         return  view;
     }
