@@ -4,6 +4,9 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 public class UserForm {
+
+    @Size(min = 6, max = 100)
+    private String email;
     @Size(min = 6, max = 100)
     @Pattern(regexp = "[a-zA-Z0-9]+")
     private String username;
@@ -11,6 +14,11 @@ public class UserForm {
     private String password;
     @Size(min = 6, max = 100)
     private String repeatPassword;
+
+    public String getEmail() {
+        return email;
+    }
+
     public String getUsername() {
         return username;
     }

@@ -23,6 +23,11 @@
         </div>
 
         <div class="mb-3">
+            <label for="name" class="form-label">Cuit/Cuil</label>
+            <input type="text" class="form-control" id="id" placeholder="00-00000000-0">
+        </div>
+
+        <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="text" class="form-control" id="email" placeholder="name@gmail.com">
         </div>

@@ -2,19 +2,24 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <body>
-<h2>REgister</h2>
+<h2>Register</h2>
 <%--Creo variable postPath--%>
 <c:url value="/create" var="postPath"/>
 
 <%--Formulario--%>
 <form:form modelAttribute="registerForm" action="${postPath}" method="post">
     <div>
-        <form:label path="username">Username: </form:label>
+        <form:label path="username">Email: </form:label>
+        <form:input type="text" path="email"/>
+        <form:errors path="email" cssClass="formError" element="p"/>
+    </div>
+    <div>
+        <form:label path="username">Name: </form:label>
         <form:input type="text" path="username"/>
         <form:errors path="username" cssClass="formError" element="p"/>
     </div>
     <div>
-        <form:label path="password">Password: </form:label>
+        <form:label path="password">Cuit: </form:label>
         <form:input type="password" path="password" />
         <form:errors path="password" cssClass="formError" element="p"/>
     </div>

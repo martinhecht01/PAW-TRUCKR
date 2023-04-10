@@ -1,18 +1,25 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+    private final UserDao userDao;
     String email;
+
+    @Autowired
+    public UserServiceImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public User createUser(String email, String name, String id){
         this.email = email;
-        return new User(email, name, id);
+        return userDao.create(email,name,id);
     }
 
     @Override
