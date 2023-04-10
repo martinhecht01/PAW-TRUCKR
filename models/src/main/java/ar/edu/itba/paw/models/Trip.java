@@ -3,6 +3,7 @@ package ar.edu.itba.paw.models;
 import java.util.Date;
 
 public class Trip {
+    private final String userId; //Linked to User.userId
     private final String licensePlate; //Linked to Truck.licensePlate
     private final Number availableWeight;
     private final Number availableVolume;
@@ -13,7 +14,18 @@ public class Trip {
 
     private final String type;
 
-    public Trip(String licensePlate, Number availableWeight, Number availableVolume, Date departureDate, Date arrivalDate, String origin, String destination, String type) {
+    public Trip(int tripId,
+                String userId,
+                String licensePlate,
+                int availableWeight,
+                int availableVolume,
+                Date departureDate,
+                Date arrivalDate,
+                String origin,
+                String destination,
+                String type) {
+
+        this.userId = userId;
         this.licensePlate = licensePlate;
         this.availableWeight = availableWeight;
         this.availableVolume = availableVolume;
@@ -22,6 +34,10 @@ public class Trip {
         this.origin = origin;
         this.destination = destination;
         this.type = type;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public String getType() {

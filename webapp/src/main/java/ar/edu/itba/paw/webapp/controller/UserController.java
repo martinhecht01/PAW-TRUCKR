@@ -22,7 +22,6 @@ public class UserController {
     @Autowired
     public UserController(final UserService us){
         this.us = us;
-        System.out.println(us);
     }
 
     @RequestMapping("/")
@@ -37,6 +36,7 @@ public class UserController {
         return new ModelAndView("landing/register");
     }
 
+
 //    @RequestMapping(value = "/create", method = { RequestMethod.POST })
 //    public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
 //        if (errors.hasErrors()) {
@@ -45,5 +45,6 @@ public class UserController {
 //        final User u = us.createUser( "mdithurbide@itba.edu.ar", "Manuel Dithurbide", "20-43988795-9");
 //        return new ModelAndView("redirect:/browseTrips");
 //    }
+
 
 }
