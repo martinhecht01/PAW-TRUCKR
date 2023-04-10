@@ -23,7 +23,7 @@ public class TripDaoImpl implements TripDao {
         public Trip mapRow(ResultSet rs, int rowNum) throws SQLException {
             return new Trip(
                     rs.getInt("tripid"),
-                    rs.getString("userid"),
+                    rs.getInt("userid"),
                     rs.getString("licenseplate"),
                     rs.getInt("availableweight"),
                     rs.getInt("availablevolume"),
@@ -41,10 +41,16 @@ public class TripDaoImpl implements TripDao {
     @Autowired
     public TripDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users (\n" +
+                "  userid SERIAL PRIMARY KEY,\n" +
+                "  cuit VARCHAR(255) UNIQUE,\n" +
+                "  email VARCHAR(255),\n" +
+                "  name VARCHAR(255)\n" +
+                ");");
         jdbcTemplate.execute(
                 "CREATE TABLE IF NOT EXISTS trips (\n" +
                 "  tripid SERIAL PRIMARY KEY,\n" +
-                "  userid VARCHAR(255) REFERENCES users(userid),\n" +
+                "  userid INT REFERENCES users(userid),\n" +
                 "  licenseplate VARCHAR(255),\n" +
                 "  availableweight INT,\n" +
                 "  availablevolume INT,\n" +
@@ -58,7 +64,7 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public Trip create(final String userid,
+    public Trip create(final int userid,
                        final String licensePlate,
                        final int availableWeight,
                        final int availableVolume,
@@ -82,7 +88,7 @@ public class TripDaoImpl implements TripDao {
         data.put("type", type);
 
         int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId,userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
+        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
     }
 
 

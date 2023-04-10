@@ -6,7 +6,7 @@ import java.util.Date;
 
 public interface TripService {
     Trip createTrip(
-                    String userId,
+                    int userId,
                     String licensePlate,
                     int availableWeight,
                     int availableVolume,

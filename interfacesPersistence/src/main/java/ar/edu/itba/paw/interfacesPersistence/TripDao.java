@@ -5,7 +5,7 @@ import ar.edu.itba.paw.models.Trip;
 import java.util.Date;
 
 public interface TripDao {
-    public Trip create(String userid,
+    public Trip create(int userid,
                        String licensePlate,
                        int availableWeight,
                        int availableVolume,

@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getString("email"), rs.getString("username"),  rs.getString("userid"));
+            return new User(rs.getInt("userid"), rs.getString("email"), rs.getString("username"),  rs.getString("cuit"));
         }
     };
 
@@ -32,11 +32,12 @@ public class UserDaoImpl implements UserDao {
     public UserDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users (\n" +
-                "  userId VARCHAR(255) PRIMARY KEY,\n" +
+                "  userid SERIAL PRIMARY KEY,\n" +
+                "  cuit VARCHAR(255) UNIQUE,\n" +
                 "  email VARCHAR(255),\n" +
                 "  name VARCHAR(255)\n" +
                 ");");
-        this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("users");
+        this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("users").usingGeneratedKeyColumns("userid");
     }
 
     @Override
@@ -50,15 +51,12 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public User create(final String email, final String name, final String userId) {
-        System.out.println(email);
-        System.out.println(name);
-        System.out.println(userId);
+    public User create(final String email, final String name, final String cuit) {
         HashMap<String, String> data = new HashMap<>();
         data.put("email", email);
         data.put("name", name);
-        data.put("userid", userId);
-        jdbcInsert.execute(data);
-        return new User(email, name, userId);
+        data.put("cuit", cuit);
+        int userId = jdbcInsert.execute(data);
+        return new User( userId, email, name, cuit);
     }
 }

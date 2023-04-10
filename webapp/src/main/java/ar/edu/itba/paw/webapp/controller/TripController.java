@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.datetime.joda.LocalDateParser;
@@ -44,7 +45,7 @@ public class TripController {
         final ModelAndView view = new ModelAndView("landing/browseTrips");
         List<Trip> trips = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            trips.add(new Trip(1,"111", "ABC123", 4000,5, new Date("12/1/2023"), new Date("02/12/2023"), "Bsas", "Cor", "Refrigerado"));
+            trips.add(new Trip(1,111, "ABC123", 4000,5, new Date("12/1/2023"), new Date("02/12/2023"), "Bsas", "Cor", "Refrigerado"));
         }
         view.addObject("offers", trips);
         return  view;
@@ -68,11 +69,11 @@ public class TripController {
 
         //1 crear usuario
         System.out.println(form);
-        us.createUser(form.getEmail(), form.getName(), form.getId());
+        User user = us.createUser(form.getEmail(), form.getName(), form.getId());
         Date departure = java.sql.Date.valueOf(form.getDepartureDate());
         Date arrival = java.sql.Date.valueOf(form.getArrivalDate());
         //2 crear viaje
-        ts.createTrip(form.getId(), form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
+        ts.createTrip(user.getUserId(), form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
         //que pasa si un usuario arma 2 trips
         //get User -> si no existe creo | get userId
             //Error duplicate key.
