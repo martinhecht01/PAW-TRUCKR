@@ -5,7 +5,7 @@ import ar.edu.itba.paw.models.Trip;
 import java.util.Date;
 
 public interface TripService {
-    Trip createTrip(int tripId,
+    Trip createTrip(
                     String userId,
                     String licensePlate,
                     int availableWeight,
