@@ -6,92 +6,95 @@
 <link href="/css/main.css" rel="stylesheet"/>
 
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 
 </head>
 <body class="bodyContent">
+<c:url value="/create" var="postPath"/>
 
 <components:navBar/>
+<form:form modelAttribute="tripForm" method="post" action="postPath">
+    <div class="card w-75 mb-3 mt-5 formCard">
+        <div class="card-body">
+            <h5 class="card-title mb-3"><b>Crear Viaje</b></h5>
 
-<div class="card w-75 mb-3 mt-5 formCard">
-    <div class="card-body">
-        <h5 class="card-title mb-3"><b>Crear Viaje</b></h5>
-<%--        <p class="card-text">Ingrese los detalles del viaje:</p>--%>
-
-        <div class="mb-3">
-            <label for="name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="name" placeholder="Pedro Gonzales">
-        </div>
-
-        <div class="mb-3">
-            <label for="name" class="form-label">Cuit/Cuil</label>
-            <input type="text" class="form-control" id="id" placeholder="00-00000000-0">
-        </div>
-
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" id="email" placeholder="name@gmail.com">
-        </div>
-
-        <div class="inlineFormInputContainer">
-            <div class="mb-3 inlineFormInput">
-                <label for="departureDate" class="form-label">Fecha de salida</label>
-                <input type="date" class="form-control" id="departureDate" placeholder="DD/MM/AAAA">
+            <div class="mb-3">
+                <form:label for="name" class="form-label" path="name">Nombre</form:label>
+                <form:input type="text" class="form-control" placeholder="Pedro Gonzales" path="name"/>
             </div>
 
-            <div class="mb-3 inlineFormInput">
-                <label for="arrivalDate" class="form-label">Fecha de llegada</label>
-                <input type="date" class="form-control" id="arrivalDate" placeholder="DD/MM/AAAA">
-            </div>
-        </div>
-
-        <div class="inlineFormInputContainer">
-            <div class="mb-3 inlineFormInput">
-                <label for="origin" class="form-label">Origen</label>
-                <input type="text" class="form-control" id="origin" placeholder="Buenos Aires (CABA)">
+            <div class="mb-3">
+                <form:label for="id" class="form-label" path="id">Cuit/Cuil</form:label>
+                <form:input type="text" class="form-control" path="id" placeholder="00-00000000-0"/>
             </div>
 
-
-            <div class="mb-3 inlineFormInput">
-                <label for="destination" class="form-label">Destino</label>
-                <input type="text" class="form-control" id="destination" placeholder="Cordoba (CBA)">
+            <div class="mb-3">
+                <form:label for="email" class="form-label" path="email">Email</form:label>
+                <form:input type="text" class="form-control" path="email" placeholder="name@gmail.com"/>
             </div>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label" for="autoSizingSelect">Tipo de carga</label>
-            <select class="form-select" id="autoSizingSelect">
-                <option selected>Elegi una opcion...</option>
-                <option value="1">Refrigerada</option>
-                <option value="2">Peligrosa</option>
-                <option value="3">Normal</option>
-            </select>
-        </div>
+            <div class="inlineFormInputContainer">
+                <div class="mb-3 inlineFormInput">
+                    <form:label for="departureDate" path="departureDate" class="form-label">Fecha de salida</form:label>
+                    <form:input type="date" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
+                </div>
 
-        <div class="inlineFormInputContainer">
-            <div class="mb-3 inlineFormInput">
-                <label for="origin" class="form-label">Volumen Disponible</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="availableVolume" placeholder="0">
-                    <div class="input-group-append">
-                        <span class="input-group-text inputSpan">kg</span>
+                <div class="mb-3 inlineFormInput">
+                    <form:label for="arrivalDate" path="arrivalDate" class="form-label">Fecha de llegada</form:label>
+                    <form:input type="date" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
+                </div>
+            </div>
+
+            <div class="inlineFormInputContainer">
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="origin" for="origin" class="form-label">Origen</form:label>
+                    <form:input type="text" class="form-control" path="origin" placeholder="Buenos Aires (CABA)"/>
+                </div>
+
+
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="destination" for="destination" class="form-label">Destino</form:label>
+                    <form:input type="text" class="form-control" path="destination" placeholder="Cordoba (CBA)"/>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <form:label path="cargoType" class="form-label">Tipo de carga</form:label>
+                <form:select class="form-select" path="cargoType">
+                    <option selected>Elegi una opcion...</option>
+                    <option value="1">Refrigerada</option>
+                    <option value="2">Peligrosa</option>
+                    <option value="3">Normal</option>
+                </form:select>
+            </div>
+
+            <div class="inlineFormInputContainer">
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="availableVolume"  class="form-label">Volumen Disponible</form:label>
+                    <div class="input-group">
+                        <form:input type="text" class="form-control" path="availableVolume" placeholder="0"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text inputSpan">m3</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="availableWeight" for="origin" class="form-label">Peso disponible</form:label>
+                    <div class="input-group">
+                        <form:input type="text" class="form-control" path="availableWeight" placeholder="0"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text inputSpan">kg</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mb-3 inlineFormInput">
-                <label for="origin" class="form-label">Peso disponible</label>
-                <div class="input-group">
-                    <input type="text" class="form-control" id="availableWeight" placeholder="0">
-                    <div class="input-group-append">
-                        <span class="input-group-text inputSpan">kg</span>
-                    </div>
-                </div>
-            </div>
+            <a type="submit" class="btn btn-primary formButton">Crear</a>
         </div>
-
-        <a href="#" class="btn btn-primary formButton">Crear</a>
     </div>
-</div>
+</form:form>
 
 </body>
 </html>

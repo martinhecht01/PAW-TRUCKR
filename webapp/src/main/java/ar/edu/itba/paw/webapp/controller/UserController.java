@@ -27,7 +27,6 @@ public class UserController {
     @RequestMapping("/")
     public ModelAndView landing() {
         final ModelAndView mav = new ModelAndView("landing/index");
-        mav.addObject("user", us.createUser("mdithurbide@itba.edu.ar", "Manuel Dithurbide", "20-43988795-9"));
         return mav;
     }
 
