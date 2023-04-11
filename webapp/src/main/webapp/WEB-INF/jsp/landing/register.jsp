@@ -4,7 +4,7 @@
 <body>
 <h2>Register</h2>
 <%--Creo variable postPath--%>
-<c:url value="/create" var="postPath"/>
+<c:url value="/send" var="postPath"/>
 
 <%--Formulario--%>
 <form:form modelAttribute="registerForm" action="${postPath}" method="post">
