@@ -32,5 +32,6 @@
         <input type="submit" value="Register!"/>
     </div>
 </form:form>
+
 </body>
 </html>
