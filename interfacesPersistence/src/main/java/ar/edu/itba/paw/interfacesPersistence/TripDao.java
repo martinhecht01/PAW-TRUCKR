@@ -3,9 +3,10 @@ package ar.edu.itba.paw.interfacesPersistence;
 import ar.edu.itba.paw.models.Trip;
 
 import java.util.Date;
+import java.util.List;
 
 public interface TripDao {
-    public Trip create(String userid,
+    Trip create(int userid,
                        String licensePlate,
                        int availableWeight,
                        int availableVolume,
@@ -14,5 +15,6 @@ public interface TripDao {
                        String origin,
                        String destination,
                        String type);
+    List<Trip> getAllTrips();
 
 }

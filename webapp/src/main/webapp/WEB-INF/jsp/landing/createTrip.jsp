@@ -14,64 +14,83 @@
 <c:url value="/create" var="postPath"/>
 
 <components:navBar/>
-<form:form modelAttribute="tripForm" method="post" action="postPath">
+<%--Formulario--%>
+<form:form modelAttribute="tripForm" action="${postPath}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-body">
             <h5 class="card-title mb-3"><b>Crear Viaje</b></h5>
 
             <div class="mb-3">
                 <form:label for="name" class="form-label" path="name">Nombre</form:label>
+                <form:errors path="name" cssClass="formError" element="p"/>
                 <form:input type="text" class="form-control" placeholder="Pedro Gonzales" path="name"/>
             </div>
 
             <div class="mb-3">
                 <form:label for="id" class="form-label" path="id">Cuit/Cuil</form:label>
+                <form:errors path="id" cssClass="formError" element="p"/>
                 <form:input type="text" class="form-control" path="id" placeholder="00-00000000-0"/>
             </div>
 
             <div class="mb-3">
                 <form:label for="email" class="form-label" path="email">Email</form:label>
+                <form:errors path="email" cssClass="formError" element="p"/>
                 <form:input type="text" class="form-control" path="email" placeholder="name@gmail.com"/>
             </div>
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
-                    <form:label for="departureDate" path="departureDate" class="form-label">Fecha de salida</form:label>
-                    <form:input type="date" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
+                    <form:label path="licensePlate" class="form-label">Patente:</form:label>
+                    <form:errors path="licensePlate" cssClass="formError" element="p"/>
+                    <form:input type="text" class="form-control" path="licensePlate" placeholder="AAA123"/>
                 </div>
 
                 <div class="mb-3 inlineFormInput">
-                    <form:label for="arrivalDate" path="arrivalDate" class="form-label">Fecha de llegada</form:label>
-                    <form:input type="date" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
+                    <form:label path="cargoType" class="form-label">Tipo de carga</form:label>
+                    <form:errors path="cargoType" cssClass="formError" element="p"/>
+                    <form:select class="form-select" path="cargoType">
+<%--                        --%>
+                        <option selected>Elegi una opcion...</option>
+                        <option value="Refrigerada">Refrigerada</option>
+                        <option value="Peligrosa">Peligrosa</option>
+                        <option value="Normal">Normal</option>
+                    </form:select>
                 </div>
             </div>
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="origin" for="origin" class="form-label">Origen</form:label>
+                    <form:errors path="origin" cssClass="formError" element="p"/>
                     <form:input type="text" class="form-control" path="origin" placeholder="Buenos Aires (CABA)"/>
                 </div>
 
 
                 <div class="mb-3 inlineFormInput">
                     <form:label path="destination" for="destination" class="form-label">Destino</form:label>
+                    <form:errors path="destination" cssClass="formError" element="p"/>
                     <form:input type="text" class="form-control" path="destination" placeholder="Cordoba (CBA)"/>
                 </div>
             </div>
 
-            <div class="mb-3">
-                <form:label path="cargoType" class="form-label">Tipo de carga</form:label>
-                <form:select class="form-select" path="cargoType">
-                    <option selected>Elegi una opcion...</option>
-                    <option value="1">Refrigerada</option>
-                    <option value="2">Peligrosa</option>
-                    <option value="3">Normal</option>
-                </form:select>
+            <div class="inlineFormInputContainer">
+                <div class="mb-3 inlineFormInput">
+                    <form:label for="departureDate" path="departureDate" class="form-label">Fecha de salida</form:label>
+                    <form:errors path="departureDate" cssClass="formError" element="p"/>
+                    <form:input type="date" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
+                </div>
+
+                <div class="mb-3 inlineFormInput">
+                    <form:label for="arrivalDate" path="arrivalDate" class="form-label">Fecha de llegada</form:label>
+                    <form:errors path="arrivalDate" cssClass="formError" element="p"/>
+                    <form:input type="date" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
+                </div>
             </div>
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="availableVolume"  class="form-label">Volumen Disponible</form:label>
+                    <form:errors path="availableVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="text" class="form-control" path="availableVolume" placeholder="0"/>
                         <div class="input-group-append">
@@ -82,6 +101,7 @@
 
                 <div class="mb-3 inlineFormInput">
                     <form:label path="availableWeight" for="origin" class="form-label">Peso disponible</form:label>
+                    <form:errors path="availableWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="text" class="form-control" path="availableWeight" placeholder="0"/>
                         <div class="input-group-append">
@@ -90,8 +110,7 @@
                     </div>
                 </div>
             </div>
-
-            <a type="submit" class="btn btn-primary formButton">Crear</a>
+            <input type="submit" class="btn btn-primary formButton"/>
         </div>
     </div>
 </form:form>

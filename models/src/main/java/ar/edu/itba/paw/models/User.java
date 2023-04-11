@@ -4,12 +4,15 @@ public class User {
 
     private final String email;
     private final String name;
-    private final String userId; //Cuit / cuil
+    private final String cuit; //Cuit / cuil
 
-    public User(final String email, final String name, final String userId){
+    private final int userId;
+
+    public User(final int userId, final String email, final String name, final String cuit){
+        this.userId = userId;
         this.email = email;
         this.name = name;
-        this.userId = userId;
+        this.cuit = cuit;
     }
 
     public String getEmail() {
@@ -20,7 +23,11 @@ public class User {
         return name;
     }
 
-    public String getUserId() {
+    public String getCuit() {
+        return cuit;
+    }
+
+    public int getUserId() {
         return userId;
     }
 }
