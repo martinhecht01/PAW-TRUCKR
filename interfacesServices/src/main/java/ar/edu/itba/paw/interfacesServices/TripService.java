@@ -7,7 +7,9 @@ import java.util.List;
 
 public interface TripService {
     Trip createTrip(
-                    int userId,
+                    String email,
+                    String name,
+                    String id,
                     String licensePlate,
                     int availableWeight,
                     int availableVolume,

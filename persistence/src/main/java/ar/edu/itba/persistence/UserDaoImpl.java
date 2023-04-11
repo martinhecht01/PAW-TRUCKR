@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getInt("userid"), rs.getString("email"), rs.getString("username"),  rs.getString("cuit"));
+            return new User(rs.getInt("userid"), rs.getString("email"), rs.getString("name"),  rs.getString("cuit"));
         }
     };
 
@@ -58,5 +58,14 @@ public class UserDaoImpl implements UserDao {
         data.put("cuit", cuit);
         int userId = jdbcInsert.execute(data);
         return new User( userId, email, name, cuit);
+    }
+
+    @Override
+    public User getUserByCuit(String userCuit) {
+        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE cuit = ?", ROW_MAPPER, userCuit);
+        if(users.isEmpty()){
+            return null;
+        }
+        return users.get(0);
     }
 }

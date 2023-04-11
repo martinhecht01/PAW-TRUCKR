@@ -64,17 +64,12 @@ public class TripController {
             return createTrip(form);
         }
 
-        //1 crear usuario
-        System.out.println(form);
-        User user = us.createUser(form.getEmail(), form.getName(), form.getId());
+        //TODO: MODIFICAR ESTO NO USAR JAVA.SQL
         Date departure = java.sql.Date.valueOf(form.getDepartureDate());
         Date arrival = java.sql.Date.valueOf(form.getArrivalDate());
-        //2 crear viaje
-        ts.createTrip(user.getUserId(), form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
-        //que pasa si un usuario arma 2 trips
-        //get User -> si no existe creo | get userId
-            //Error duplicate key.
-        //final Trip trip = ts.createTrip( "mdithurbide@itba.edu.ar", "Manuel Dithurbide", "20-43988795-9");
+
+        ts.createTrip(form.getEmail(), form.getName(), form.getId(),form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
+
         return new ModelAndView("redirect:/browseTrips");
     }
 
