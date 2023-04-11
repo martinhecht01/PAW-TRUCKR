@@ -40,19 +40,13 @@ public class UserController {
         return new ModelAndView("landing/register");
     }
 
-//    @RequestMapping(value = "/sendmail", method = { RequestMethod.POST })
-//    public ModelAndView sendMail() throws MessagingException, IOException {
-//        System.out.println("HOLALJLKADFHLKDJFH");
-//
-//        return new ModelAndView("redirect:/browseTrips");
-//    }
 
     @RequestMapping(value = "/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors){
         if (errors.hasErrors()) {
             return register(form);
         }
-        ms.sendEmail( "tgaybare@itba.edu.ar");
+        ms.sendEmail( "mhecht@itba.edu.ar");
         final User u = us.createUser( "mdithurbide@itba.edu.ar", "Manuel Dithurbide", "20-43988795-9");
         return new ModelAndView("redirect:/browseTrips");
     }
