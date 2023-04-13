@@ -19,6 +19,9 @@ dist/
 # Package files
 *.jar
 
+#properties
+*.properties
+
 # Maven
 target/
 dist/
