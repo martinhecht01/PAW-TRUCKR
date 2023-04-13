@@ -8,10 +8,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/browseTrips">Explorar</a>
+                    <a class="nav-link active" aria-current="page" href="./browseTrips">Explorar</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/createTrip">Crear Viaje</a>
+                    <a class="nav-link" href="./createTrip">Crear Viaje</a>
                 </li>
             </ul>
         </div>

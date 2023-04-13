@@ -14,6 +14,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import javax.sql.DataSource;
+import java.io.InputStream;
 import java.util.Properties;
 
 
@@ -35,12 +36,25 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public DataSource dataSource() {
+
+        Properties props = new Properties();
+        try (InputStream input = getClass().getResourceAsStream("/application.properties")) {
+            props.load(input);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String uri = props.getProperty("URI");
+        String user = props.getProperty("USER");
+        String pass = props.getProperty("PASS");
+
+
+
         final SimpleDriverDataSource ds = new SimpleDriverDataSource();
         //TODO configurar el url segun donde dejemos la base de datos
         ds.setDriverClass(org.postgresql.Driver.class);
-        ds.setUrl("jdbc:postgresql://localhost:5432/paw");
-        ds.setUsername("postgres");
-        ds.setPassword("password");
+        ds.setUrl("jdbc:postgresql://"+uri);
+        ds.setUsername(user);
+        ds.setPassword(pass);
         return ds;
     }
 
