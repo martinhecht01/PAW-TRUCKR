@@ -77,13 +77,13 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label for="departureDate" path="departureDate" class="form-label">Fecha de salida</form:label>
                     <form:errors path="departureDate" cssClass="formError" element="p"/>
-                    <form:input type="date" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
                 </div>
 
                 <div class="mb-3 inlineFormInput">
                     <form:label for="arrivalDate" path="arrivalDate" class="form-label">Fecha de llegada</form:label>
                     <form:errors path="arrivalDate" cssClass="formError" element="p"/>
-                    <form:input type="date" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
                 </div>
             </div>
 

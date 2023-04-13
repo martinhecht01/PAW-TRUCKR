@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.models;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Trip {
@@ -9,8 +10,8 @@ public class Trip {
     private final String licensePlate; //Linked to Truck.licensePlate
     private final Number availableWeight;
     private final Number availableVolume;
-    private final Date departureDate;
-    private final Date arrivalDate;
+    private final LocalDateTime departureDate;
+    private final LocalDateTime arrivalDate;
     private final String origin;
     private final String destination;
 
@@ -21,8 +22,8 @@ public class Trip {
                 String licensePlate,
                 int availableWeight,
                 int availableVolume,
-                Date departureDate,
-                Date arrivalDate,
+                LocalDateTime departureDate,
+                LocalDateTime arrivalDate,
                 String origin,
                 String destination,
                 String type) {
@@ -59,11 +60,11 @@ public class Trip {
         return availableVolume;
     }
 
-    public Date getDepartureDate() {
+    public LocalDateTime getDepartureDate() {
         return departureDate;
     }
 
-    public Date getArrivalDate() {
+    public LocalDateTime getArrivalDate() {
         return arrivalDate;
     }
 

@@ -21,7 +21,7 @@
         <div class="col-md-6">
           <div class="card-body">
             <h5 class="card-title"></h5>
-            <p class="card-text"><b>Salida: </b> ${offer.departureDate.toLocaleString()}</p>
+            <p class="card-text"><b>Salida: </b> ${offer.departureDate.toLocalDate().toString() }</p>
             <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
             <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
             <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>

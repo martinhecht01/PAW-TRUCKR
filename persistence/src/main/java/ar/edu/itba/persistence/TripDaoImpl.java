@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -12,6 +13,11 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,14 +29,16 @@ public class TripDaoImpl implements TripDao {
     private final static RowMapper<Trip> ROW_MAPPER = new RowMapper<Trip>() {
         @Override
         public Trip mapRow(ResultSet rs, int rowNum) throws SQLException {
+            LocalDateTime departure = rs.getTimestamp("departuredate").toLocalDateTime();
+            LocalDateTime arrival = rs.getTimestamp("arrivaldate").toLocalDateTime();
             return new Trip(
                     rs.getInt("tripid"),
                     rs.getInt("userid"),
                     rs.getString("licenseplate"),
                     rs.getInt("availableweight"),
                     rs.getInt("availablevolume"),
-                    rs.getDate("departuredate"),
-                    rs.getDate("arrivaldate"),
+                    departure,
+                    arrival,
                     rs.getString("origin"),
                     rs.getString("destination"),
                     rs.getString("type"));
@@ -56,8 +64,8 @@ public class TripDaoImpl implements TripDao {
                 "  licenseplate VARCHAR(255),\n" +
                 "  availableweight INT,\n" +
                 "  availablevolume INT,\n" +
-                "  departuredate DATE,\n" +
-                "  arrivaldate DATE,\n" +
+                "  departuredate TIMESTAMP,\n" +
+                "  arrivaldate TIMESTAMP,\n" +
                 "  origin VARCHAR(255),\n" +
                 "  destination VARCHAR(255),\n" +
                 "  type VARCHAR(255)\n" +
@@ -70,8 +78,8 @@ public class TripDaoImpl implements TripDao {
                        final String licensePlate,
                        final int availableWeight,
                        final int availableVolume,
-                       final Date departureDate,
-                       final Date arrivalDate,
+                       final LocalDateTime departureDate,
+                       final LocalDateTime arrivalDate,
                        final String origin,
                        final String destination,
                        final String type) {
@@ -83,8 +91,8 @@ public class TripDaoImpl implements TripDao {
         data.put("licensePlate", licensePlate);
         data.put("availableWeight", availableWeight);
         data.put("availableVolume", availableVolume);
-        data.put("departureDate", departureDate);
-        data.put("arrivalDate", arrivalDate);
+        data.put("departureDate", Timestamp.valueOf(departureDate));
+        data.put("arrivalDate", Timestamp.valueOf(arrivalDate));
         data.put("origin", origin);
         data.put("destination", destination);
         data.put("type", type);

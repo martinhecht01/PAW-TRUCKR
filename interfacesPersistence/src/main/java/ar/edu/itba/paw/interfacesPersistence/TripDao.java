@@ -2,6 +2,7 @@ package ar.edu.itba.paw.interfacesPersistence;
 
 import ar.edu.itba.paw.models.Trip;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -10,8 +11,8 @@ public interface TripDao {
                        String licensePlate,
                        int availableWeight,
                        int availableVolume,
-                       Date departureDate,
-                       Date arrivalDate,
+                       LocalDateTime departureDate,
+                       LocalDateTime arrivalDate,
                        String origin,
                        String destination,
                        String type);

@@ -9,6 +9,7 @@ import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip createTrip(String email, String name, String cuit, String licensePlate, int availableWeight, int availableVolume, Date departureDate, Date arrivalDate, String origin, String destination, String type) {
+    public Trip createTrip(String email, String name, String cuit, String licensePlate, int availableWeight, int availableVolume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type) {
         User user = userDao.getUserByCuit(cuit);
         if(user == null)
             user = userDao.create(email,name,cuit);

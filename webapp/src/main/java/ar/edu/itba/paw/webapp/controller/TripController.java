@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -65,8 +66,11 @@ public class TripController {
         }
 
         //TODO: MODIFICAR ESTO NO USAR JAVA.SQL
-        Date departure = java.sql.Date.valueOf(form.getDepartureDate());
-        Date arrival = java.sql.Date.valueOf(form.getArrivalDate());
+//        Date departure = java.sql.Date.valueOf(form.getDepartureDate());
+//        Date arrival = java.sql.Date.valueOf(form.getArrivalDate());
+
+        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
+        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
 
         ts.createTrip(form.getEmail(), form.getName(), form.getId(),form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
 
