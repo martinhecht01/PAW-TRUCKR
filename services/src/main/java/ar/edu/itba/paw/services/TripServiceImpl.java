@@ -34,12 +34,25 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<Trip> getAllTrips(){
-        return tripDao.getAllTrips();
+    public List<Trip> getAllActiveTrips(){
+        return tripDao.getAllActiveTrips();
     }
 
     @Override
     public Trip getTripById(int tripid){
         return tripDao.getTripById(tripid);
     }
+
+    @Override
+    public Trip acceptTrip(Trip trip, int acceptUserId){
+        Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
+        User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
+        User acceptUser = userDao.getUserById(acceptedTrip.getAcceptUserId());
+        //Aca agregar logica de mail.
+        //tripOwner.getEmail()
+        //acceptUser.getEmail()
+        return acceptedTrip;
+    }
+
+
 }

@@ -13,7 +13,7 @@
 
 <div class="mt-5">
   <c:forEach var="offer" items="${offers}">
-    <div class="card mb-3 browseCards" >
+    <div class="card mb-3 browseCards">
       <div class="row g-0">
         <div class="col-md-6">
           <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">

@@ -2,9 +2,7 @@ package ar.edu.itba.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -14,14 +12,9 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class TripDaoImpl implements TripDao {
@@ -41,7 +34,8 @@ public class TripDaoImpl implements TripDao {
                     arrival,
                     rs.getString("origin"),
                     rs.getString("destination"),
-                    rs.getString("type"));
+                    rs.getString("type"),
+                    rs.getInt("acceptuserid"));
         }
     };
 
@@ -59,17 +53,19 @@ public class TripDaoImpl implements TripDao {
                 ");");
         jdbcTemplate.execute(
                 "CREATE TABLE IF NOT EXISTS trips (\n" +
-                "  tripid SERIAL PRIMARY KEY,\n" +
-                "  userid INT NOT NULL REFERENCES users(userid),\n" +
-                "  licenseplate VARCHAR(255),\n" +
-                "  availableweight INT,\n" +
-                "  availablevolume INT,\n" +
-                "  departuredate TIMESTAMP,\n" +
-                "  arrivaldate TIMESTAMP,\n" +
-                "  origin VARCHAR(255),\n" +
-                "  destination VARCHAR(255),\n" +
-                "  type VARCHAR(255)\n" +
-                ");");
+                        "  tripid SERIAL PRIMARY KEY,\n" +
+                        "  userid INT NOT NULL REFERENCES users(userid),\n" +
+                        "  licenseplate VARCHAR(255),\n" +
+                        "  availableweight INT,\n" +
+                        "  availablevolume INT,\n" +
+                        "  departuredate TIMESTAMP,\n" +
+                        "  arrivaldate TIMESTAMP,\n" +
+                        "  origin VARCHAR(255),\n" +
+                        "  destination VARCHAR(255),\n" +
+                        "  type VARCHAR(255),\n" +
+                        "  acceptuserid INT REFERENCES users(userid)\n" +
+                        ");"
+        );
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("trips").usingGeneratedKeyColumns("tripid");
     }
 
@@ -98,12 +94,12 @@ public class TripDaoImpl implements TripDao {
         data.put("type", type);
 
         int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
+        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, -1);
     }
 
     @Override
-    public List<Trip> getAllTrips(){
-        return jdbcTemplate.query("SELECT * FROM trips", ROW_MAPPER);
+    public List<Trip> getAllActiveTrips(){
+        return jdbcTemplate.query("SELECT * FROM trips WHERE acceptuserid IS NULL", ROW_MAPPER);
     }
 
     @Override
@@ -113,6 +109,17 @@ public class TripDaoImpl implements TripDao {
             return null;
         }
         return trips.get(0);
+    }
+
+    @Override
+    public Trip acceptTrip(Trip trip, int acceptUserId){
+        int rowsAffected = jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE tripid = ?", acceptUserId, trip.getTripId());
+        if(rowsAffected > 0){
+            trip.setAcceptUserId(acceptUserId);
+            return trip;
+        } else {
+            return null;
+        }
     }
 
 }

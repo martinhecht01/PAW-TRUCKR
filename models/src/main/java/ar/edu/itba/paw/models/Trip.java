@@ -7,6 +7,7 @@ public class Trip {
     private final int tripId;
 
     private final int userId; //Linked to User.userId
+    private int acceptUserId; //Linked to User.userId
     private final String licensePlate; //Linked to Truck.licensePlate
     private final Number availableWeight;
     private final Number availableVolume;
@@ -26,7 +27,8 @@ public class Trip {
                 LocalDateTime arrivalDate,
                 String origin,
                 String destination,
-                String type) {
+                String type,
+                int acceptUserId) {
 
         this.userId = userId;
         this.licensePlate = licensePlate;
@@ -38,6 +40,16 @@ public class Trip {
         this.destination = destination;
         this.type = type;
         this.tripId = tripId;
+        this.acceptUserId = acceptUserId;
+    }
+
+
+    public void setAcceptUserId(int acceptUserId) {
+        this.acceptUserId = acceptUserId;
+    }
+
+    public int getTripId() {
+        return tripId;
     }
 
     public int getUserId() {
@@ -74,5 +86,9 @@ public class Trip {
 
     public String getDestination() {
         return destination;
+    }
+
+    public int getAcceptUserId() {
+        return acceptUserId;
     }
 }

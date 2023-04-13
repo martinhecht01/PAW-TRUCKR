@@ -34,7 +34,7 @@ public class TripController {
     @RequestMapping("/browseTrips")
     public ModelAndView browseTrips() {
         final ModelAndView view = new ModelAndView("landing/browseTrips");
-        List<Trip> trips = ts.getAllTrips();
+        List<Trip> trips = ts.getAllActiveTrips();
         view.addObject("offers", trips);
         return  view;
     }
@@ -54,10 +54,6 @@ public class TripController {
             System.out.println(form.getDepartureDate());
             return createTrip(form);
         }
-
-        //TODO: MODIFICAR ESTO NO USAR JAVA.SQL
-//        Date departure = java.sql.Date.valueOf(form.getDepartureDate());
-//        Date arrival = java.sql.Date.valueOf(form.getArrivalDate());
 
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
