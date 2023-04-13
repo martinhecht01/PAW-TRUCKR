@@ -110,7 +110,7 @@
                     </div>
                 </div>
             </div>
-            <input type="submit" class="btn btn-primary formButton"/>
+            <input type="submit" value="Crear Viaje" class="btn btn-primary formButton"/>
         </div>
     </div>
 </form:form>

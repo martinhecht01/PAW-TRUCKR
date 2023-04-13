@@ -23,6 +23,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByCuit(String cuit){
+        return userDao.getUserByCuit(cuit);
+    }
+
+    @Override
+    public User getUserById(int id){
+        return userDao.getUserById(id);
+    }
+
+    @Override
     public String toString(){
         return this.email;
     }

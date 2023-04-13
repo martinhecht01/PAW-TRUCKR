@@ -3,25 +3,15 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.LocalDateParser;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 
 import javax.validation.Valid;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -38,7 +28,7 @@ public class TripController {
 
     @RequestMapping("/trip")
     public ModelAndView register() {
-        return new ModelAndView("landing/truckDetails");
+        return new ModelAndView("tripDetails");
     }
 
     @RequestMapping("/browseTrips")
@@ -75,6 +65,16 @@ public class TripController {
         ts.createTrip(form.getEmail(), form.getName(), form.getId(),form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
 
         return new ModelAndView("redirect:/browseTrips");
+    }
+
+    @RequestMapping("/tripdetail") // Antes aceptaba negativos, ahora no!
+    public ModelAndView profile(@RequestParam("id") int id) {
+        System.out.println(id);
+        final ModelAndView mav = new ModelAndView("landing/tripDetails");
+        Trip trip = ts.getTripById(id);
+        mav.addObject("trip", trip);
+        mav.addObject("user", us.getUserById(trip.getUserId()));
+        return mav;
     }
 
 

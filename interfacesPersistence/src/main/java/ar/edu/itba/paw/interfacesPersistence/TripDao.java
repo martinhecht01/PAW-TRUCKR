@@ -17,5 +17,5 @@ public interface TripDao {
                        String destination,
                        String type);
     List<Trip> getAllTrips();
-
+    Trip getTripById(int tripid);
 }

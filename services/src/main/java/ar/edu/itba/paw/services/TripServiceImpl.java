@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,5 +36,10 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<Trip> getAllTrips(){
         return tripDao.getAllTrips();
+    }
+
+    @Override
+    public Trip getTripById(int tripid){
+        return tripDao.getTripById(tripid);
     }
 }

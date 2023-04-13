@@ -21,4 +21,6 @@ public interface TripService {
                     String type);
 
     List<Trip> getAllTrips();
+
+    Trip getTripById(int tripid);
 }

@@ -53,14 +53,14 @@ public class TripDaoImpl implements TripDao {
         jdbcTemplate = new JdbcTemplate(ds);
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users (\n" +
                 "  userid SERIAL PRIMARY KEY,\n" +
-                "  cuit VARCHAR(255) UNIQUE,\n" +
-                "  email VARCHAR(255),\n" +
-                "  name VARCHAR(255)\n" +
+                "  cuit VARCHAR(255) UNIQUE NOT NULL,\n" +
+                "  email VARCHAR(255) NOT NULL,\n" +
+                "  name VARCHAR(255) NOT NULL\n" +
                 ");");
         jdbcTemplate.execute(
                 "CREATE TABLE IF NOT EXISTS trips (\n" +
                 "  tripid SERIAL PRIMARY KEY,\n" +
-                "  userid INT REFERENCES users(userid),\n" +
+                "  userid INT NOT NULL REFERENCES users(userid),\n" +
                 "  licenseplate VARCHAR(255),\n" +
                 "  availableweight INT,\n" +
                 "  availablevolume INT,\n" +
@@ -104,6 +104,15 @@ public class TripDaoImpl implements TripDao {
     @Override
     public List<Trip> getAllTrips(){
         return jdbcTemplate.query("SELECT * FROM trips", ROW_MAPPER);
+    }
+
+    @Override
+    public Trip getTripById(int tripid){
+        List<Trip> trips= jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ?", ROW_MAPPER, tripid);
+        if(trips.isEmpty()){
+            return null;
+        }
+        return trips.get(0);
     }
 
 }
