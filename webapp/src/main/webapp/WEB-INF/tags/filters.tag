@@ -11,19 +11,19 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="origin">Origin:</label>
-                <select class="form-control" name="origin" id="origin">
-                    <option>New York</option>
-                    <option>Los Angeles</option>
-                    <option>Chicago</option>
-                </select>
+                <input class="form-control" name="origin" id="origin">
             </div>
             <div class="form-group">
                 <label for="destination">Destination:</label>
-                <select class="form-control" name="destination" id="destination">
-                    <option>London</option>
-                    <option>Paris</option>
-                    <option>Tokyo</option>
-                </select>
+                <input class="form-control" name="destination" id="destination">
+            </div>
+            <div class="form-group">
+                <label for="minPrice">Min Price:</label>
+                <input class="form-control" type="number" name="minPrice" id="minPrice">
+            </div>
+            <div class="form-group">
+                <label for="maxPrice">Max Price:</label>
+                <input class="form-control" type="number" name="maxPrice" id="maxPrice">
             </div>
             <div class="form-group">
                 <label for="minAvailableVolume">Min Volume:</label>
@@ -32,6 +32,18 @@
             <div class="form-group">
                 <label for="minAvailableWeight">Min Weight:</label>
                 <input type="number" class="form-control" name="minAvailableWeight" id="minAvailableWeight" placeholder="Enter min weight">
+            </div>
+            <div class="form-group">
+                <label for="sortOrder">Sort by:</label>
+                <select class="form-control" name="sortOrder" id="sortOrder">
+                    <option value="" disabled selected>Select</option>
+                    <option value="departureDate ASC">Departure Date (asc)</option>
+                    <option value="departureDate DESC">Departure Date (desc)</option>
+                    <option value="arrivalDate ASC">Arrival Date (asc)</option>
+                    <option value="arrivalDate DESC">Arrival Date (desc)</option>
+                    <option value="price ASC">Price (asc)</option>
+                    <option value="price DESC">Price (desc)</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Apply Filters</button>
         </div>

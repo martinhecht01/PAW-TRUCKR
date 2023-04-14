@@ -25,7 +25,16 @@ public class FilterForm {
     @Size(min = 1, max = 100000)
     private String destination;
 
+    @Size(min = 1, max = 100000)
+    private String sortOrder;
 
+    public String getSortOrder() {
+        return sortOrder;
+    }
+
+    public void setSortOrder(String sortOrder) {
+        this.sortOrder = sortOrder;
+    }
 
     public void setAvailableWeight(int availableWeight) {
         this.minAvailableWeight = availableWeight;

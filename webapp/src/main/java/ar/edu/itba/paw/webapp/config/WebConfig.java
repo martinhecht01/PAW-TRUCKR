@@ -39,8 +39,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         //TODO configurar el url segun donde dejemos la base de datos
         ds.setDriverClass(org.postgresql.Driver.class);
         ds.setUrl("jdbc:postgresql://localhost:5433/paw");
-        ds.setUsername("root");
-        ds.setPassword("root");
+        ds.setUsername("postgres");
+        ds.setPassword("password");
         return ds;
     }
 
