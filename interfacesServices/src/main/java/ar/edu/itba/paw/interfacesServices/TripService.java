@@ -24,5 +24,5 @@ public interface TripService {
 
     Trip getTripById(int tripid);
 
-    Trip acceptTrip(Trip trip, int acceptUserId);
+    Trip acceptTrip(int tripId,String email, String name, String cuit );
 }

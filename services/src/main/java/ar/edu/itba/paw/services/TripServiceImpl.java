@@ -2,6 +2,7 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
+import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
@@ -17,11 +18,13 @@ public class TripServiceImpl implements TripService {
 
     private final TripDao tripDao;
     private final UserDao userDao;
+    private final MailService ms;
 
     @Autowired
-    public TripServiceImpl(TripDao tripDao, UserDao userDao) {
+    public TripServiceImpl(TripDao tripDao, UserDao userDao, MailService ms) {
         this.tripDao = tripDao;
         this.userDao = userDao;
+        this.ms = ms;
     }
 
     @Override
@@ -44,13 +47,17 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip acceptTrip(Trip trip, int acceptUserId){
+    public Trip acceptTrip(int tripId,String email, String name, String cuit ){
+        User user = userDao.getUserByCuit(cuit);
+        if(user == null)
+            user = userDao.create(email,name,cuit);
+        int acceptUserId = user.getUserId();
+
+        Trip trip = tripDao.getTripById(tripId);
         Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
         User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
         User acceptUser = userDao.getUserById(acceptedTrip.getAcceptUserId());
-        //Aca agregar logica de mail.
-        //tripOwner.getEmail()
-        //acceptUser.getEmail()
+        ms.sendEmailTrip(tripOwner, acceptUser, acceptedTrip);
         return acceptedTrip;
     }
 

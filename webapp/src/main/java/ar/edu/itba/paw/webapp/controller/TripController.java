@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,13 +66,26 @@ public class TripController {
     }
 
     @RequestMapping("/tripdetail") // Antes aceptaba negativos, ahora no!
-    public ModelAndView profile(@RequestParam("id") int id) {
+    public ModelAndView profile(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         System.out.println(id);
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
         Trip trip = ts.getTripById(id);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
         return mav;
+    }
+
+    @RequestMapping(value = "/accept", method = { RequestMethod.POST })
+    public ModelAndView accept(@Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
+        System.out.println("Apretaste bien");
+        System.out.println(errors.toString());
+        if (errors.hasErrors()) {
+            //despues veo
+        }
+
+        ts.acceptTrip(1, form.getEmail(),form.getName(),form.getId());
+
+        return new ModelAndView("redirect:/browseTrips");
     }
 
 
