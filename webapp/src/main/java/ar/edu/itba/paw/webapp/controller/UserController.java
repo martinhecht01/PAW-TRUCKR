@@ -46,8 +46,8 @@ public class UserController {
         if (errors.hasErrors()) {
             return register(form);
         }
-        ms.sendEmail( "mhecht@itba.edu.ar");
-        final User u = us.createUser( "mdithurbide@itba.edu.ar", "Manuel Dithurbide", "20-43988795-9");
+//        ms.sendEmail( "mhecht@itba.edu.ar");
+//        final User u = us.createUser( "mdithurbide@itba.edu.ar", "Manuel Dithurbide", "20-43988795-9");
         return new ModelAndView("redirect:/browseTrips");
     }
 
