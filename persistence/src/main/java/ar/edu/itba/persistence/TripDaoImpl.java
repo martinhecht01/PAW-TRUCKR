@@ -104,7 +104,7 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Trip getTripById(int tripid){
-        List<Trip> trips= jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ? AND destination LIKE ?", ROW_MAPPER, tripid);
+        List<Trip> trips= jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ?", ROW_MAPPER, tripid);
         if(trips.isEmpty()){
             return null;
         }
