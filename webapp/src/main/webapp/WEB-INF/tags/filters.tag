@@ -11,19 +11,12 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="origin">Origin:</label>
-                <select class="form-control" name="origin" id="origin">
-                    <option>New York</option>
-                    <option>Los Angeles</option>
-                    <option>Chicago</option>
-                </select>
+                <input type="text" class="form-control" name="origin" id="origin" placeholder="Enter origin...">
+
             </div>
             <div class="form-group">
                 <label for="destination">Destination:</label>
-                <select class="form-control" name="destination" id="destination">
-                    <option>London</option>
-                    <option>Paris</option>
-                    <option>Tokyo</option>
-                </select>
+                <input type="text" class="form-control" name="destination" id="destination" placeholder="Enter destination...">
             </div>
             <div class="form-group">
                 <label for="minAvailableVolume">Min Volume:</label>

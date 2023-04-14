@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -100,23 +101,33 @@ public class TripDaoImpl implements TripDao {
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice){
         String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
-        if (origin != null){
-            query = query + " AND origin = '" + origin + "'";
+        List<Object> params = new ArrayList<>();
+
+        System.out.println(origin);
+
+        if (origin != null && !origin.equals("")){
+            query = query + " AND origin = ?";
+            params.add(origin);
         }
-        if (destination != null){
-            query = query + " AND destination = '" + destination + "'";
+
+        if (destination != null && !destination.equals("")){
+            query = query + " AND destination = ?";
+            params.add(destination);
         }
 
         if (minAvailableVolume != null){
-            query = query + " AND availableVolume >= '" + minAvailableVolume + "'";
+            query = query + " AND availableVolume >= ?";
+            params.add(minAvailableVolume);
         }
 
         if (minAvailableWeight != null){
-            query = query + " AND availableWeight >= '" + minAvailableWeight + "'";
+            query = query + " AND availableWeight >= ?";
+            params.add(minAvailableWeight);
         }
 
         //Aun no hago query por precio porque no esta en la base de datos
-        return jdbcTemplate.query(query, ROW_MAPPER);
+        return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
+
     }
 
     @Override
