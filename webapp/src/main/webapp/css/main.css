@@ -2,6 +2,41 @@ h2{
     color: red;
 }
 
+html{
+    color: #385170;
+}
+
+.feature-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: .75rem;
+}
+
+.icon-square {
+    width: 3rem;
+    height: 3rem;
+    border-radius: .75rem;
+}
+
+svg.bi {
+    fill: white;
+}
+
+.card-cover {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.feature-icon-small {
+    width: 3rem;
+    height: 3rem;
+}
+
+body {
+    color: #142D4C;
+}
+
 .browseCards{
     display: flex;
     margin: auto;
@@ -15,7 +50,7 @@ h2{
 }
 
 .bodyContent{
-    background-color: #e3dcc3;
+    background-color: #ECECEC;
 }
 
 .inlineFormInputContainer{
