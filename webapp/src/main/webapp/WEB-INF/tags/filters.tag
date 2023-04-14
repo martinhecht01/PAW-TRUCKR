@@ -11,10 +11,12 @@
         <div class="card-body">
             <div class="form-group">
                 <label for="origin">Origin:</label>
-                <input class="form-control" name="origin" id="origin">
+                <input type="text" class="form-control" name="origin" id="origin" placeholder="Enter origin...">
+
             </div>
             <div class="form-group">
                 <label for="destination">Destination:</label>
+                <input type="text" class="form-control" name="destination" id="destination" placeholder="Enter destination...">
                 <input class="form-control" name="destination" id="destination">
             </div>
             <div class="form-group">

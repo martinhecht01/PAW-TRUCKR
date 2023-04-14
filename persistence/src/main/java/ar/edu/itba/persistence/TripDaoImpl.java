@@ -103,12 +103,14 @@ public class TripDaoImpl implements TripDao {
         String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
         List<Object> params = new ArrayList<>();
 
-        if (origin != null && !origin.isEmpty()){
+        System.out.println(origin);
+
+        if (origin != null && !origin.equals("")){
             query = query + " AND origin = ?";
             params.add(origin);
         }
 
-        if (destination != null && !destination.isEmpty()){
+        if (destination != null && !destination.equals("")){
             query = query + " AND destination = ?";
             params.add(destination);
         }
@@ -142,6 +144,7 @@ public class TripDaoImpl implements TripDao {
 
         //Aun no hago query por precio porque no esta en la base de datos
         return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
+
     }
 
     @Override
