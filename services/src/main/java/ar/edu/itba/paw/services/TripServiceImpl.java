@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TripServiceImpl implements TripService {
@@ -42,7 +43,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip getTripById(int tripid){
+    public Optional<Trip> getTripById(int tripid){
         return tripDao.getTripById(tripid);
     }
 
@@ -53,7 +54,7 @@ public class TripServiceImpl implements TripService {
             user = userDao.create(email,name,cuit);
         int acceptUserId = user.getUserId();
 
-        Trip trip = tripDao.getTripById(tripId);
+        Trip trip = tripDao.getTripById(tripId).get();
         Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
         User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
         User acceptUser = userDao.getUserById(acceptedTrip.getAcceptUserId());

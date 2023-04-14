@@ -4,9 +4,11 @@ import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,12 @@ public class TripController {
     public TripController(final TripService ts, final UserService us){
         this.ts = ts;
         this.us = us;
+    }
+
+    @ExceptionHandler(TripNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView noSuchUser() {
+        return new ModelAndView("404");
     }
 
     @RequestMapping("/trip")
@@ -69,7 +77,7 @@ public class TripController {
     public ModelAndView profile(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         System.out.println(id);
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
-        Trip trip = ts.getTripById(id);
+        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
         return mav;
