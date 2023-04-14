@@ -98,8 +98,25 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public List<Trip> getAllActiveTrips(){
-        return jdbcTemplate.query("SELECT * FROM trips WHERE acceptuserid IS NULL", ROW_MAPPER);
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice){
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
+        if (origin != null){
+            query = query + " AND origin = '" + origin + "'";
+        }
+        if (destination != null){
+            query = query + " AND destination = '" + destination + "'";
+        }
+
+        if (minAvailableVolume != null){
+            query = query + " AND availableVolume >= '" + minAvailableVolume + "'";
+        }
+
+        if (minAvailableWeight != null){
+            query = query + " AND availableWeight >= '" + minAvailableWeight + "'";
+        }
+
+        //Aun no hago query por precio porque no esta en la base de datos
+        return jdbcTemplate.query(query, ROW_MAPPER);
     }
 
     @Override

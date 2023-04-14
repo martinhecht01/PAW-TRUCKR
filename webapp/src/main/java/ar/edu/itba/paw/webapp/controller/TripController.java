@@ -32,11 +32,17 @@ public class TripController {
     }
 
     @RequestMapping("/browseTrips")
-    public ModelAndView browseTrips() {
+    public ModelAndView browseTrips(@RequestParam(required = false) String origin,
+                                    @RequestParam(required = false) String destination,
+                                    @RequestParam(required = false) Integer minAvailableVolume,
+                                    @RequestParam(required = false) Integer minAvailableWeight,
+                                    @RequestParam(required = false) Integer minPrice,
+                                    @RequestParam(required = false) Integer maxPrice
+                                    ) {
         final ModelAndView view = new ModelAndView("landing/browseTrips");
-        List<Trip> trips = ts.getAllActiveTrips();
+        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice);
         view.addObject("offers", trips);
-        return  view;
+        return view;
     }
 
     @RequestMapping("/createTrip")

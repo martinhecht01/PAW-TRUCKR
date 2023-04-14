@@ -11,27 +11,36 @@
 <body class="bodyContent">
 <components:navBar/>
 
-<div class="mt-5">
-  <c:forEach var="offer" items="${offers}">
-    <div class="card mb-3 browseCards">
-      <div class="row g-0">
-        <div class="col-md-6">
-          <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-6">
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"><b>Salida: </b> ${offer.departureDate.toString()}</p>
-            <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
-            <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
-            <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>
-              <%--                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>--%>
+
+<div class="mt-5 inlineBrowseContainer">
+  <div class="m-5" style="display: inline-block;width: 30%">
+    <components:filters/>
+  </div>
+
+  <div style="display: inline-block;width: 55%">
+    <c:forEach var="offer" items="${offers}">
+      <div class="card mb-3 browseCards">
+        <div class="row g-0">
+          <div class="col-md-6">
+            <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-6">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <p class="card-text"><b>Salida: </b> ${offer.departureDate.toString()}</p>
+              <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
+              <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
+              <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>
+                <%--                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>--%>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   </c:forEach>
-</div>
+  </div>
+
+  </div>
+
 
 
 </body>
