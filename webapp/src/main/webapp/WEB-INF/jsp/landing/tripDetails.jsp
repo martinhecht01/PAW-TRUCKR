@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
-
+<%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 
 
 <html>
@@ -14,6 +14,7 @@
 
 </head>
 <body class="bodyContent">
+
 <c:url value="/accept" var="postPath"/>
 
 <components:navBar/>

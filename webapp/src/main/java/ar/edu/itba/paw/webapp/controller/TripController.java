@@ -66,7 +66,7 @@ public class TripController {
     }
 
     @RequestMapping("/tripdetail") // Antes aceptaba negativos, ahora no!
-    public ModelAndView profile(@RequestParam("id") int id) {
+    public ModelAndView profile(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         System.out.println(id);
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
         Trip trip = ts.getTripById(id);
