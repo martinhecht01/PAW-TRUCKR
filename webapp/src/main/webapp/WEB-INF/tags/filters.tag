@@ -17,7 +17,6 @@
             <div class="form-group">
                 <label for="destination">Destination:</label>
                 <input type="text" class="form-control" name="destination" id="destination" placeholder="Enter destination...">
-                <input class="form-control" name="destination" id="destination">
             </div>
             <div class="form-group">
                 <label for="minPrice">Min Price:</label>
@@ -46,6 +45,14 @@
                     <option value="price ASC">Price (asc)</option>
                     <option value="price DESC">Price (desc)</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="departureDate">Departure date:</label>
+                <input type="date" class="form-control" id="departureDate" name="departureDate" placeholder="DD/MM/AAAA"/>
+            </div>
+            <div class="form-group">
+                <label for="arrivalDate">Arrival date:</label>
+                <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" placeholder="DD/MM/AAAA"/>
             </div>
             <button type="submit" class="btn btn-primary">Apply Filters</button>
         </div>

@@ -13,9 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class TripDaoImpl implements TripDao {
@@ -99,7 +97,7 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder){
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate){
         String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
         List<Object> params = new ArrayList<>();
 
@@ -125,6 +123,26 @@ public class TripDaoImpl implements TripDao {
             params.add(minAvailableWeight);
         }
 
+//        if (minPrice != null){
+//            query = query + " AND price >= ?";
+//            params.add(minPrice);
+//        }
+//
+//        if (maxPrice != null){
+//            query = query + " AND price <= ?";
+//            params.add(maxPrice);
+//        }
+
+        if (departureDate != null && !departureDate.equals("")){
+            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
+            params.add("'" + departureDate + "'");
+        }
+
+        if (arrivalDate != null && !arrivalDate.equals("")){
+            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
+            params.add("'" + arrivalDate + "'");
+        }
+
         if(sortOrder != null && !sortOrder.isEmpty()) {
             //sort order asc and desc
             if (sortOrder.equals("departureDate ASC")) {
@@ -141,6 +159,8 @@ public class TripDaoImpl implements TripDao {
 //                query = query + " ORDER BY price DESC";
             }
         }
+
+        System.out.println(Arrays.toString(params.toArray()));
 
         //Aun no hago query por precio porque no esta en la base de datos
         return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);

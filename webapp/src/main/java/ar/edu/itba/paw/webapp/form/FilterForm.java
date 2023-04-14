@@ -17,8 +17,8 @@ public class FilterForm {
     private  int minAvailableVolume;
 
 
-//    private  String departureDate;
-//    private  String arrivalDate;
+    private Date departureDate;
+    private Date arrivalDate;
 
     @Size(min = 1, max = 100000)
     private  String origin;
@@ -27,6 +27,51 @@ public class FilterForm {
 
     @Size(min = 1, max = 100000)
     private String sortOrder;
+
+    @Range(min=0)
+    private Integer minPrice;
+    @Range(min=0)
+    private Integer maxPrice;
+
+    public Integer getMinAvailableWeight() {
+        return minAvailableWeight;
+    }
+
+    public void setMinAvailableWeight(int minAvailableWeight) {
+        this.minAvailableWeight = minAvailableWeight;
+    }
+
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public Integer getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(Integer minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public Integer getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(Integer maxPrice) {
+        this.maxPrice = maxPrice;
+    }
 
     public String getSortOrder() {
         return sortOrder;
