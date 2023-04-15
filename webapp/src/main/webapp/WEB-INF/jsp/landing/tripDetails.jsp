@@ -19,14 +19,15 @@
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">Card Title</h5>
                     <p class="card-text"><strong>Conductor: </strong>${user.name.toUpperCase()}</p>
                     <p class="card-text"><strong>Origen: </strong>${trip.origin}</p>
                     <p class="card-text"><strong>Destino: </strong>${trip.destination}</p>
-                    <p class="card-text"><strong>Fecha partida: </strong>${trip.departureDate.toString()}</p>
-                    <p class="card-text"><strong>Fecha llegada: </strong>${trip.arrivalDate.toString()}</p>
-                    <p class="card-text"><strong>Volumen disponible: </strong>${trip.availableVolume}</p>
-                    <p class="card-text"><strong>Peso disponible: </strong>${trip.availableWeight}</p>
+                    <p class="card-text"><strong>Patente: </strong>${trip.licensePlate}</p>
+                    <p class="card-text"><strong>Fecha partida: </strong>${trip.departureDate.year}-${trip.departureDate.monthValue}-${trip.departureDate.dayOfMonth} ${trip.departureDate.hour}:${trip.departureDate.minute}</p>
+                    <p class="card-text"><strong>Fecha llegada: </strong>${trip.arrivalDate.year}-${trip.arrivalDate.monthValue}-${trip.arrivalDate.dayOfMonth} ${trip.arrivalDate.hour}:${trip.arrivalDate.minute}</p>
+                    <p class="card-text"><strong>Volumen disponible: </strong>${trip.availableVolume} m3</p>
+                    <p class="card-text"><strong>Peso disponible: </strong>${trip.availableWeight} kg</p>
+                    <p class="card-text"><strong>Precio: </strong>$${trip.price}</p>
                     <div class="form-group mb-3">
                         <label for="emailInput"><strong>Email:</strong></label>
                         <input type="email" class="form-control" id="emailInput" placeholder="Ingrese su email">

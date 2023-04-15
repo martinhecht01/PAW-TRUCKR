@@ -16,7 +16,7 @@ public class Trip {
     private final String origin;
     private final String destination;
     private final String type;
-    private final int price;
+    private final Number price;
 
     public Trip(int tripId,
                 int userId,
@@ -95,7 +95,5 @@ public class Trip {
         return acceptUserId;
     }
 
-    public int getPrice() {
-        return price;
-    }
+    public Number getPrice() {return price;}
 }

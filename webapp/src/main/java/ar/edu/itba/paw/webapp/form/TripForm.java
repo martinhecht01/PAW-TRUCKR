@@ -23,8 +23,7 @@ public class TripForm {
     //custom annotation para validar.
     private  int availableWeight;
     private  int availableVolume;
-
-    private int price;
+    private  int price;
 
     private  String departureDate;
     private  String arrivalDate;
@@ -79,13 +78,9 @@ public class TripForm {
         this.destination = destination;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
+    public void setPrice(int price) {this.price = price;}
 
-    public int getPrice() {
-        return price;
-    }
+    public int getPrice() {return price;}
 
     public String getName() {
         return name;
