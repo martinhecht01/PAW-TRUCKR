@@ -23,7 +23,7 @@
             <div class="mb-3">
                 <form:label for="name" class="form-label" path="name">Nombre</form:label>
                 <form:errors path="name" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" placeholder="Pedro Gonzales" path="name"/>
+                <form:input type="text" class="form-control" placeholder="Juan García" path="name"/>
             </div>
 
             <div class="mb-3">
@@ -50,7 +50,7 @@
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
                     <form:select class="form-select" path="cargoType">
 <%--                        --%>
-                        <option selected>Elegi una opcion...</option>
+                        <option disabled selected>Elegi una opcion...</option>
                         <option value="Refrigerada">Refrigerada</option>
                         <option value="Peligrosa">Peligrosa</option>
                         <option value="Normal">Normal</option>
@@ -109,7 +109,20 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="price" class="form-label">Precio</form:label>
+                    <form:errors path="price" cssClass="formError" element="p"/>
+                    <div class="input-group">
+                        <form:input type="text" class="form-control" path="price" placeholder="0"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text inputSpan">ARS</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+
             <input type="submit" value="Crear Viaje" class="btn btn-primary formButton"/>
         </div>
     </div>

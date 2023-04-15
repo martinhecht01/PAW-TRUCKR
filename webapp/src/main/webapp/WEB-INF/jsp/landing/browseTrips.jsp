@@ -21,10 +21,11 @@
         <div class="col-md-6">
           <div class="card-body">
             <h5 class="card-title"></h5>
-            <p class="card-text"><b>Salida: </b> ${offer.departureDate.toString()}</p>
+            <p class="card-text"><b>Salida: </b> ${offer.departureDate.year}-${offer.departureDate.monthValue}-${offer.departureDate.dayOfMonth}</p>
             <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
             <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
             <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>
+            <p class="card-text"><b>Precio: </b>$${offer.price}</p>
               <%--                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>--%>
           </div>
         </div>

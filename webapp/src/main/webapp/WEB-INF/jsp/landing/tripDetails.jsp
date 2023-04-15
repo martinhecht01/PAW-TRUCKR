@@ -32,10 +32,12 @@
                     <p class="card-text"><strong>Conductor: </strong>${user.name.toUpperCase()}</p>
                     <p class="card-text"><strong>Origen: </strong>${trip.origin}</p>
                     <p class="card-text"><strong>Destino: </strong>${trip.destination}</p>
-                    <p class="card-text"><strong>Fecha partida: </strong>${trip.departureDate.toString()}</p>
-                    <p class="card-text"><strong>Fecha llegada: </strong>${trip.arrivalDate.toString()}</p>
-                    <p class="card-text"><strong>Volumen disponible: </strong>${trip.availableVolume}</p>
-                    <p class="card-text"><strong>Peso disponible: </strong>${trip.availableWeight}</p>
+                    <p class="card-text"><strong>Patente: </strong>${trip.licensePlate}</p>
+                    <p class="card-text"><strong>Fecha partida: </strong>${trip.departureDate.year}-${trip.departureDate.monthValue}-${trip.departureDate.dayOfMonth} ${trip.departureDate.hour}:${trip.departureDate.minute}</p>
+                    <p class="card-text"><strong>Fecha llegada: </strong>${trip.arrivalDate.year}-${trip.arrivalDate.monthValue}-${trip.arrivalDate.dayOfMonth} ${trip.arrivalDate.hour}:${trip.arrivalDate.minute}</p>
+                    <p class="card-text"><strong>Volumen disponible: </strong>${trip.availableVolume} m3</p>
+                    <p class="card-text"><strong>Peso disponible: </strong>${trip.availableWeight} kg</p>
+                    <p class="card-text"><strong>Precio: </strong>$${trip.price}</p>
                         <div class="mb-3">
                             <form:label for="name" class="form-label" path="name">Nombre</form:label>
                             <form:errors path="name" cssClass="formError" element="p"/>

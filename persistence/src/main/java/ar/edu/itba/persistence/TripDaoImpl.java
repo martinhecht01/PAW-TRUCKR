@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class TripDaoImpl implements TripDao {
@@ -36,7 +37,9 @@ public class TripDaoImpl implements TripDao {
                     rs.getString("origin"),
                     rs.getString("destination"),
                     rs.getString("type"),
-                    rs.getInt("acceptuserid"));
+                    rs.getInt("price"),
+                    rs.getInt("acceptuserid")
+            );
         }
     };
 
@@ -64,6 +67,7 @@ public class TripDaoImpl implements TripDao {
                         "  origin VARCHAR(255),\n" +
                         "  destination VARCHAR(255),\n" +
                         "  type VARCHAR(255),\n" +
+                        "  price INT,\n" +
                         "  acceptuserid INT REFERENCES users(userid)\n" +
                         ");"
         );
@@ -79,7 +83,9 @@ public class TripDaoImpl implements TripDao {
                        final LocalDateTime arrivalDate,
                        final String origin,
                        final String destination,
-                       final String type) {
+                       final String type,
+                       final int price)
+    {
 
         HashMap<String, Object> data = new HashMap<>();
 
@@ -93,14 +99,81 @@ public class TripDaoImpl implements TripDao {
         data.put("origin", origin);
         data.put("destination", destination);
         data.put("type", type);
+        data.put("price", price);
 
         int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, -1);
+        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
     }
 
     @Override
-    public List<Trip> getAllActiveTrips(){
-        return jdbcTemplate.query("SELECT * FROM trips WHERE acceptuserid IS NULL", ROW_MAPPER);
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate){
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
+        List<Object> params = new ArrayList<>();
+
+        System.out.println(origin);
+
+        if (origin != null && !origin.equals("")){
+            query = query + " AND origin = ?";
+            params.add(origin);
+        }
+
+        if (destination != null && !destination.equals("")){
+            query = query + " AND destination = ?";
+            params.add(destination);
+        }
+
+        if (minAvailableVolume != null){
+            query = query + " AND availableVolume >= ?";
+            params.add(minAvailableVolume);
+        }
+
+        if (minAvailableWeight != null){
+            query = query + " AND availableWeight >= ?";
+            params.add(minAvailableWeight);
+        }
+
+        if (minPrice != null){
+            query = query + " AND price >= ?";
+            params.add(minPrice);
+        }
+
+        if (maxPrice != null){
+            query = query + " AND price <= ?";
+            params.add(maxPrice);
+        }
+
+        if (departureDate != null && !departureDate.equals("")){
+            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
+            params.add("'" + departureDate + "'");
+        }
+
+        if (arrivalDate != null && !arrivalDate.equals("")){
+            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
+            params.add("'" + arrivalDate + "'");
+        }
+
+        if(sortOrder != null && !sortOrder.isEmpty()) {
+            //sort order asc and desc
+            if (sortOrder.equals("departureDate ASC")) {
+                query = query + " ORDER BY departuredate ASC";
+            } else if (sortOrder.equals("departureDate DESC")) {
+                query = query + " ORDER BY departuredate DESC";
+            } else if(sortOrder.equals("arrivalDate ASC")) {
+                query = query + " ORDER BY arrivaldate ASC";
+            } else if(sortOrder.equals("arrivalDate DESC")) {
+                query = query + " ORDER BY arrivaldate DESC";
+            } else if(sortOrder.equals("price ASC")) {
+                query = query + " ORDER BY price ASC";
+            } else if(sortOrder.equals("price DESC")) {
+                query = query + " ORDER BY price DESC";
+            }
+        }
+
+        System.out.println(Arrays.toString(params.toArray()));
+
+        //Aun no hago query por precio porque no esta en la base de datos
+        return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
+
     }
 
     @Override

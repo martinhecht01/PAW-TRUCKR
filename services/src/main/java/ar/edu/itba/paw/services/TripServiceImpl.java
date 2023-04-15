@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,17 +30,29 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip createTrip(String email, String name, String cuit, String licensePlate, int availableWeight, int availableVolume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type) {
+    public Trip createTrip(String email,
+                           String name,
+                           String cuit,
+                           String licensePlate,
+                           int availableWeight,
+                           int availableVolume,
+                           LocalDateTime departureDate,
+                           LocalDateTime arrivalDate,
+                           String origin,
+                           String destination,
+                           String type,
+                           int price)
+    {
         User user = userDao.getUserByCuit(cuit);
         if(user == null)
             user = userDao.create(email,name,cuit);
         int userId = user.getUserId();
-        return tripDao.create(userId, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
+        return tripDao.create(userId, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price);
     }
 
     @Override
-    public List<Trip> getAllActiveTrips(){
-        return tripDao.getAllActiveTrips();
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate){
+        return tripDao.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
     }
 
     @Override
