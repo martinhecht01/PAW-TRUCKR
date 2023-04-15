@@ -34,8 +34,8 @@ public class TripDaoImpl implements TripDao {
                     rs.getString("origin"),
                     rs.getString("destination"),
                     rs.getString("type"),
-                    rs.getInt("acceptuserid"),
-                    rs.getInt("price")
+                    rs.getInt("price"),
+                    rs.getInt("acceptuserid")
             );
         }
     };
@@ -96,7 +96,7 @@ public class TripDaoImpl implements TripDao {
         data.put("origin", origin);
         data.put("destination", destination);
         data.put("type", type);
-        data.put("price",price);
+        data.put("price", price);
 
         int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
         return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
@@ -129,15 +129,15 @@ public class TripDaoImpl implements TripDao {
             params.add(minAvailableWeight);
         }
 
-//        if (minPrice != null){
-//            query = query + " AND price >= ?";
-//            params.add(minPrice);
-//        }
-//
-//        if (maxPrice != null){
-//            query = query + " AND price <= ?";
-//            params.add(maxPrice);
-//        }
+        if (minPrice != null){
+            query = query + " AND price >= ?";
+            params.add(minPrice);
+        }
+
+        if (maxPrice != null){
+            query = query + " AND price <= ?";
+            params.add(maxPrice);
+        }
 
         if (departureDate != null && !departureDate.equals("")){
             query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
