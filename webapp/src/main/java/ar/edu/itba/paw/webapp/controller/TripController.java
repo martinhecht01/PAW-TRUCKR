@@ -76,14 +76,15 @@ public class TripController {
     }
 
     @RequestMapping(value = "/accept", method = { RequestMethod.POST })
-    public ModelAndView accept(@Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
+    public ModelAndView accept(@RequestParam("id") int id,@Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
         System.out.println("Apretaste bien");
         System.out.println(errors.toString());
         if (errors.hasErrors()) {
-            //despues veo
+            //return profile(id, form);
         }
+        System.out.println(form.getEmail()+ "formresult");
 
-        ts.acceptTrip(1, form.getEmail(),form.getName(),form.getId());
+        ts.acceptTrip(id, form.getEmail(),form.getName(),form.getId());
 
         return new ModelAndView("redirect:/browseTrips");
     }

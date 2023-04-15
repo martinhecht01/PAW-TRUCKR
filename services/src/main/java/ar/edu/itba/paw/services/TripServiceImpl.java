@@ -52,12 +52,12 @@ public class TripServiceImpl implements TripService {
         if(user == null)
             user = userDao.create(email,name,cuit);
         int acceptUserId = user.getUserId();
+//        System.out.println(user.getEmail() + "serviceimpl");
 
         Trip trip = tripDao.getTripById(tripId);
         Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
         User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
-        User acceptUser = userDao.getUserById(acceptedTrip.getAcceptUserId());
-        ms.sendEmailTrip(tripOwner, acceptUser, acceptedTrip);
+        ms.sendEmailTrip(tripOwner, user, acceptedTrip);
         return acceptedTrip;
     }
 
