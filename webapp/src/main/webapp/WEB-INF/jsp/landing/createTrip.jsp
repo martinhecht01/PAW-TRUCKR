@@ -109,15 +109,16 @@
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div>
-                <form:label path="price" for="price" class="form-label">Precio</form:label>
-                <form:errors path="price" cssClass="formError" element="p"/>
-                <div class="input-group">
-                    <form:input type="text" class="form-control" path="price" placeholder="0"/>
-                    <div class="input-group-append">
-                        <span class="input-group-text inputSpan">$</span>
+
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="price" class="form-label">Precio</form:label>
+                    <form:errors path="price" cssClass="formError" element="p"/>
+                    <div class="input-group">
+                        <form:input type="text" class="form-control" path="price" placeholder="0"/>
+                        <div class="input-group-append">
+                            <span class="input-group-text inputSpan">ARS</span>
+                        </div>
                     </div>
                 </div>
             </div>

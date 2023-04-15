@@ -96,6 +96,7 @@ public class TripDaoImpl implements TripDao {
         data.put("origin", origin);
         data.put("destination", destination);
         data.put("type", type);
+        data.put("price",price);
 
         int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
         return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
