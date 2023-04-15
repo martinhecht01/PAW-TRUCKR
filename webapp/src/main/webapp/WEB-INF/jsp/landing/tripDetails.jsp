@@ -9,7 +9,6 @@
 <link href="/css/main.css" rel="stylesheet"/>
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 
 
 </head>
@@ -19,7 +18,7 @@
 
 <components:navBar/>
 
-<form:form modelAttribute="acceptForm" action="${postPath}" method="post">
+<form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card border-0 shadow-sm rounded-3">
 
