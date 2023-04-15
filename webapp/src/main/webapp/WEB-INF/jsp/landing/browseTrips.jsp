@@ -8,12 +8,12 @@
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 
 </head>
-<body class="bodyContent">
+<body>
 <components:navBar/>
 
-<div class="mt-5">
+<div class="pt-5 bodyContent" style="height: 100%">
   <c:forEach var="offer" items="${offers}">
-    <div class="card mb-3 browseCards">
+    <a class="card mb-3 browseCards" href="/tripdetail?id=${offer.tripId}" style="display: flex">
       <div class="row g-0">
         <div class="col-md-6">
           <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">
@@ -29,13 +29,8 @@
           </div>
         </div>
       </div>
-    </div>
+    </a>
   </c:forEach>
 </div>
-
-
 </body>
 </html>
-
-<script>
-</script>

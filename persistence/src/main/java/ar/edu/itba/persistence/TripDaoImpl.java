@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class TripDaoImpl implements TripDao {
@@ -103,12 +104,9 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public Trip getTripById(int tripid){
+    public Optional<Trip> getTripById(int tripid){
         List<Trip> trips= jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ?", ROW_MAPPER, tripid);
-        if(trips.isEmpty()){
-            return null;
-        }
-        return trips.get(0);
+        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
     }
 
     @Override

@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Trip;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface TripService {
     Trip createTrip(
@@ -22,7 +23,7 @@ public interface TripService {
 
     List<Trip> getAllActiveTrips();
 
-    Trip getTripById(int tripid);
+    Optional<Trip> getTripById(int tripid);
 
     Trip acceptTrip(int tripId,String email, String name, String cuit );
 }
