@@ -26,12 +26,24 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip createTrip(String email, String name, String cuit, String licensePlate, int availableWeight, int availableVolume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type) {
+    public Trip createTrip(String email,
+                           String name,
+                           String cuit,
+                           String licensePlate,
+                           int availableWeight,
+                           int availableVolume,
+                           LocalDateTime departureDate,
+                           LocalDateTime arrivalDate,
+                           String origin,
+                           String destination,
+                           String type,
+                           int price)
+    {
         User user = userDao.getUserByCuit(cuit);
         if(user == null)
             user = userDao.create(email,name,cuit);
         int userId = user.getUserId();
-        return tripDao.create(userId, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type);
+        return tripDao.create(userId, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price);
     }
 
     @Override

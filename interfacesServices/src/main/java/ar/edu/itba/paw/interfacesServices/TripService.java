@@ -18,7 +18,9 @@ public interface TripService {
                     LocalDateTime arrivalDate,
                     String origin,
                     String destination,
-                    String type);
+                    String type,
+                    int price
+    );
 
     List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 

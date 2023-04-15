@@ -15,8 +15,8 @@ public class Trip {
     private final LocalDateTime arrivalDate;
     private final String origin;
     private final String destination;
-
     private final String type;
+    private final int price;
 
     public Trip(int tripId,
                 int userId,
@@ -28,7 +28,9 @@ public class Trip {
                 String origin,
                 String destination,
                 String type,
-                int acceptUserId) {
+                int price,
+                int acceptUserId)
+    {
 
         this.userId = userId;
         this.licensePlate = licensePlate;
@@ -41,6 +43,7 @@ public class Trip {
         this.type = type;
         this.tripId = tripId;
         this.acceptUserId = acceptUserId;
+        this.price = price;
     }
 
 
@@ -90,5 +93,9 @@ public class Trip {
 
     public int getAcceptUserId() {
         return acceptUserId;
+    }
+
+    public int getPrice() {
+        return price;
     }
 }

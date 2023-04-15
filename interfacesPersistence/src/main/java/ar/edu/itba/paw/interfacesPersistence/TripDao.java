@@ -8,14 +8,15 @@ import java.util.List;
 
 public interface TripDao {
     Trip create(int userid,
-                       String licensePlate,
-                       int availableWeight,
-                       int availableVolume,
-                       LocalDateTime departureDate,
-                       LocalDateTime arrivalDate,
-                       String origin,
-                       String destination,
-                       String type);
+                String licensePlate,
+                int availableWeight,
+                int availableVolume,
+                LocalDateTime departureDate,
+                LocalDateTime arrivalDate,
+                String origin,
+                String destination,
+                String type,
+                int price);
     List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
     Trip getTripById(int tripid);
     Trip acceptTrip(Trip trip, int acceptUserId);

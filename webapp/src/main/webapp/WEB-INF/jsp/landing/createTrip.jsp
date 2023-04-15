@@ -110,6 +110,18 @@
                     </div>
                 </div>
             </div>
+
+            <div>
+                <form:label path="price" for="price" class="form-label">Precio</form:label>
+                <form:errors path="price" cssClass="formError" element="p"/>
+                <div class="input-group">
+                    <form:input type="text" class="form-control" path="price" placeholder="0"/>
+                    <div class="input-group-append">
+                        <span class="input-group-text inputSpan">$</span>
+                    </div>
+                </div>
+            </div>
+
             <input type="submit" value="Crear Viaje" class="btn btn-primary formButton"/>
         </div>
     </div>

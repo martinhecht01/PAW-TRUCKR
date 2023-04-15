@@ -34,7 +34,9 @@ public class TripDaoImpl implements TripDao {
                     rs.getString("origin"),
                     rs.getString("destination"),
                     rs.getString("type"),
-                    rs.getInt("acceptuserid"));
+                    rs.getInt("acceptuserid"),
+                    rs.getInt("price")
+            );
         }
     };
 
@@ -62,6 +64,7 @@ public class TripDaoImpl implements TripDao {
                         "  origin VARCHAR(255),\n" +
                         "  destination VARCHAR(255),\n" +
                         "  type VARCHAR(255),\n" +
+                        "  price INT,\n" +
                         "  acceptuserid INT REFERENCES users(userid)\n" +
                         ");"
         );
@@ -77,7 +80,9 @@ public class TripDaoImpl implements TripDao {
                        final LocalDateTime arrivalDate,
                        final String origin,
                        final String destination,
-                       final String type) {
+                       final String type,
+                       final int price)
+    {
 
         HashMap<String, Object> data = new HashMap<>();
 
@@ -93,7 +98,7 @@ public class TripDaoImpl implements TripDao {
         data.put("type", type);
 
         int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, -1);
+        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
     }
 
     @Override
@@ -153,10 +158,10 @@ public class TripDaoImpl implements TripDao {
                 query = query + " ORDER BY arrivaldate ASC";
             } else if(sortOrder.equals("arrivalDate DESC")) {
                 query = query + " ORDER BY arrivaldate DESC";
-//            } else if(sortOrder.equals("price ASC")) {
-//                query = query + " ORDER BY price ASC";
-//            } else if(sortOrder.equals("price DESC")) {
-//                query = query + " ORDER BY price DESC";
+            } else if(sortOrder.equals("price ASC")) {
+                query = query + " ORDER BY price ASC";
+            } else if(sortOrder.equals("price DESC")) {
+                query = query + " ORDER BY price DESC";
             }
         }
 

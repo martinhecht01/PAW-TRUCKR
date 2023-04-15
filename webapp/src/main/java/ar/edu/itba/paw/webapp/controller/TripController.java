@@ -68,7 +68,20 @@ public class TripController {
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
 
-        ts.createTrip(form.getEmail(), form.getName(), form.getId(),form.getLicensePlate(), form.getAvailableWeight(), form.getAvailableVolume(), departure, arrival, form.getOrigin(), form.getDestination(), form.getCargoType());
+        ts.createTrip(
+                form.getEmail(),
+                form.getName(),
+                form.getId(),
+                form.getLicensePlate(),
+                form.getAvailableWeight(),
+                form.getAvailableVolume(),
+                departure,
+                arrival,
+                form.getOrigin(),
+                form.getDestination(),
+                form.getCargoType(),
+                form.getPrice()
+        );
 
         return new ModelAndView("redirect:/browseTrips");
     }
