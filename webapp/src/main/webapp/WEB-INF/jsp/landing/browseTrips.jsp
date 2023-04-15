@@ -11,7 +11,13 @@
 <body>
 <components:navBar/>
 
+
+<div class="m-5" style="display: inline-block;width: 30%">
+  <components:filters/>
+</div>
+
 <div class="pt-5 bodyContent" style="height: 100%">
+
   <c:forEach var="offer" items="${offers}">
     <a class="card mb-3 browseCards" href="/tripdetail?id=${offer.tripId}" style="display: flex">
       <div class="row g-0">
