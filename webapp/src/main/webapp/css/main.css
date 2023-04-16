@@ -126,5 +126,8 @@ body {
 .tripCards{
     display: inline-block;
     width: 68%;
+}
 
+.card-title{
+    color: #142D4C;
 }

@@ -18,7 +18,7 @@
 <form:form modelAttribute="tripForm" action="${postPath}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
-            <h4 class="card-title" style="color: #142D4C"><b>Crear Viaje</b></h4>
+            <h4 class="card-title"><b>Crear Viaje</b></h4>
         </div>
         <div class="card-body">
             <div class="mb-3">

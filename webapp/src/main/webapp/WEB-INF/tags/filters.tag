@@ -6,10 +6,10 @@
 <form:form modelAttribute="filterForm" action="${getPath}" method="get">
     <div class="card">
         <div class="card-header">
-            Filtros
+            <h4 class="card-title"><b>Filtros</b></h4>
         </div>
         <div class="card-body">
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="origin">Origen:</label>
@@ -24,7 +24,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="minPrice">Precio Min.:</label>
@@ -38,17 +38,17 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="minAvailableVolume">Volumen Min.:</label>
                 <input type="number" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
                        placeholder="-">
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="minAvailableWeight">Peso Min.:</label>
                 <input type="number" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
                        placeholder="-">
             </div>
-            <div class="form-group row">
+            <div class="form-group row mb-3">
                 <div class="col-md-6">
                     <label for="departureDate">Fecha de Salida:</label>
                     <input type="date" class="form-control" id="departureDate" name="departureDate" placeholder="DD/MM/AAAA" />
@@ -58,7 +58,7 @@
                     <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" placeholder="DD/MM/AAAA" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-3">
                 <label for="sortOrder">Ordenar Por:</label>
                 <select class="form-control" name="sortOrder" id="sortOrder">
                     <option value="" disabled selected>Seleccionar</option>
@@ -70,7 +70,7 @@
                     <option value="price DESC">Precio (desc)</option>
                 </select>
             </div>
-            <button type="submit" class="btn btn-color mt-3">Aplicar Filtros</button>
+            <button type="submit" class="btn btn-color">Aplicar Filtros</button>
         </div>
     </div>
 </form:form>
