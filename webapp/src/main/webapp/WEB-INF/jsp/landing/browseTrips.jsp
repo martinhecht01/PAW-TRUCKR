@@ -15,26 +15,50 @@
     <components:filters/>
   </div>
   <div class="tripCards">
-    <c:forEach var="offer" items="${offers}">
-      <a class="card mb-3 browseCards" href="/tripDetail?id=${offer.tripId}" style="display: flex">
+    <c:forEach var="trip" items="${offers}">
+      <a class="card mb-3 browseCards" href="/tripDetail?id=${trip.tripId}" style="display: flex">
         <div class="row g-0">
           <div class="col-md-6">
-            <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">
+            <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid rounded-start" style="height:100%; width: 100%; object-fit: cover; object-position: left" alt="...">
           </div>
           <div class="col-md-6">
-            <div class="card-body">
-              <h5 class="card-title"></h5>
-              <p class="card-text"><b>Salida: </b> ${offer.departureDate.year}-${offer.departureDate.monthValue}-${offer.departureDate.dayOfMonth}</p>
-              <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
-              <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
-              <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>
-              <p class="card-text"><b>Precio: </b>$${offer.price}</p>
+            <div class="card-body align-content-center">
+              <table class="table table-striped">
+                <tr>
+                  <td><b>Origen-Destino</b></td>
+                  <td>${trip.origin}-${trip.destination}</td>
+                </tr>
+                <tr>
+                  <td><b>Patente</b></td>
+                  <td>${trip.licensePlate}</td>
+                </tr>
+                <tr>
+                  <td><b>Fecha partida - llegada</b></td>
+                  <td>${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}</td>
+                </tr>
+                <tr>
+                  <td><b>Volumen disponible:</b></td>
+                  <td>${trip.availableVolume} m3</td>
+                </tr>
+                <tr>
+                  <td><b>Peso disponible:</b></td>
+                  <td>${trip.availableWeight} kg</td>
+                </tr>
+                <tr>
+                  <td><b>Precio:</b></td>
+                  <td>$${trip.price}</td>
+                </tr>
+              </table>
             </div>
           </div>
         </div>
       </a>
     </c:forEach>
   </div>
+</div>
+<div style="margin-top: auto">
+  <components:waveDivider/>
+  <components:footer/>
 </div>
 </body>
 </html>

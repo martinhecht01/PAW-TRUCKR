@@ -130,6 +130,10 @@
         </div>
     </div>
 </form:form>
+<div style="margin-top: auto">
+    <components:waveDivider/>
+    <components:footer/>
+</div>
 
 </body>
 </html>
