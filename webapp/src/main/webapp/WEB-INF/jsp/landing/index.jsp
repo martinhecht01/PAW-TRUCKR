@@ -1,4 +1,3 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
@@ -54,22 +53,22 @@
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
                 <svg class="bi" width="1em" height="1em"><use xlink:href="#people"/></svg>
             </div>
-            <h3 class="fs-2">Transportistas confiables.</h3>
-            <p class="light">Trabajamos con una amplia seleccion de transportistas confiables para asegurarnos de que tu carga llegue a su destino final de manera segura y eficiente.</p>
+            <h3 class="fs-2"><spring:message code="TrustworthyTruckers"/></h3>
+            <p class="light"><spring:message code="TrustworthyTruckersMessage"/></p>
         </div>
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
                 <svg class="bi" width="1em" height="1em"><use xlink:href="#piggy-bank"/></svg>
             </div>
-            <h3 class="fs-2">Soluciones económicas.</h3>
-            <p class="light">Trabajamos con una gran variedad de ofertas de viajes para que puedas comparar precios y seleccionar la que mejor se adapta a tu negocio.</p>
+            <h3 class="fs-2"><spring:message code="EconomicSolutions"/></h3>
+            <p class="light"><spring:message code="EconomicSolutionsMessage"/></p>
         </div>
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
                 <svg class="bi" width="1em" height="1em"><use xlink:href="#truck"/></svg>
             </div>
-            <h3 class="fs-2">Capitalizá las vueltas!</h3>
-            <p class="light">Aprovechá el retorno de tus viajes ofreciendo el espacio vacío de tu camión. </p>
+            <h3 class="fs-2"><spring:message code="ExploitReturns"/></h3>
+            <p class="light"><spring:message code="ExploitReturnsMessage"/></p>
         </div>
     </div>
 </div>
