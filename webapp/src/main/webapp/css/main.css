@@ -53,7 +53,9 @@ body {
 
 .bodyContent{
     background-color: #ECECEC;
-    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .inlineFormInputContainer{
@@ -130,4 +132,9 @@ body {
 
 .card-title{
     color: #142D4C;
+}
+
+footer{
+    margin-top: auto;
+    background-color: white;
 }
