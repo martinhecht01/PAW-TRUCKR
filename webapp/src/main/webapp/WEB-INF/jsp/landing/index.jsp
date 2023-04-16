@@ -10,15 +10,15 @@
 
 <body>
 <components:navBar/>
-<div class="card-container bodyContent">
+<div class="card-container heroColor">
     <div class="container">
         <div class="row p-4 pt-5 pb-0 pe-lg-0 align-items-center rounded-3">
             <div class="col-lg-7 p-3 p-lg-5">
-                <h1 class="display-4 fw-bold lh-1">Border hero with cropped image and shadows</h1>
-                <p class="lead">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid system, extensive prebuilt components, and powerful JavaScript plugins.</p>
+                <h1 class="display-4 mb-2 fw-bold lh-1">Tu socio de confianza para la logistica de transporte de carga.</h1>
+                <p class="lead mt-3">Optimiza la gestion de tu cadena de suministro y la logistica de tus envios con nuestra plataforma en linea intuitiva y facil de usar, que te permite ver el perfil de los transportistas, coordinar envios y comunicarte con ellos.</p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Primary</button>
-                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+<%--                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Explorar viajes</button>--%>
+<%--                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>--%>
                 </div>
             </div>
             <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
@@ -84,14 +84,10 @@
     <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#speedometer"/></svg>
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#people-circle"/></svg>
             </div>
-            <h3 class="fs-2">Featured title</h3>
-            <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-            <a href="#" class="icon-link">
-                Call to action
-                <svg class="bi"><use xlink:href="#chevron-right"/></svg>
-            </a>
+            <h3 class="fs-2">Transportistas confiables.</h3>
+            <p>Trabajamos con una amplia seleccion de transportistas confiables para asegurarnos de que tu carga llegue a su destino final de manera segura y eficiente.</p>
         </div>
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">

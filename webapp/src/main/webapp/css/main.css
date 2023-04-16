@@ -36,7 +36,7 @@ body {
 .browseCards{
     display: flex;
     margin: auto;
-    max-width: 50%;
+    max-width: 80%;
     text-decoration: none;
 }
 
@@ -46,8 +46,13 @@ body {
     max-width: 40%;
 }
 
+.heroColor{
+   background-color:  #ECECEC;
+}
+
 .bodyContent{
     background-color: #ECECEC;
+    height: 100%;
 }
 
 .inlineFormInputContainer{
@@ -58,6 +63,11 @@ body {
 .inlineFormInput{
     display: inline-block;
     width: 48%
+}
+
+.inlineFormTripleInputInput{
+    display: inline-block;
+    width: 32%
 }
 
 .formButton{
@@ -77,7 +87,6 @@ body {
 }
 
 .formError{
-    font-size: 18px;
     color: red;
     margin: 0;
     padding-bottom: 5px;

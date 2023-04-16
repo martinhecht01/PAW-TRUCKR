@@ -26,12 +26,14 @@ public class TripForm {
     private  int availableWeight;
     @Min(1)
     private  int availableVolume;
+
+    @Min(1)
     private  int price;
 
     private  String departureDate;
     private  String arrivalDate;
 
-    @Size(min = 5)
+    @Size(min = 3)
     private String cargoType;
     @Size(min = 1, max = 100)
     private  String origin;

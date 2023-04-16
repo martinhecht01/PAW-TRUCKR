@@ -9,7 +9,7 @@
 <head>
     <title>Title</title>
 </head>
-<body>
+<body class="bodyContent">
     <components:navBar/>
     <div class="container" style="display: flex; justify-content: center; align-items: center; height: 80vh">
         <div class="px-4 py-5 my-5 text-center">
