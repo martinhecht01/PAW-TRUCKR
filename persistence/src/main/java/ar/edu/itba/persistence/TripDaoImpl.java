@@ -110,8 +110,6 @@ public class TripDaoImpl implements TripDao {
         String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
         List<Object> params = new ArrayList<>();
 
-        System.out.println(origin);
-
         if (origin != null && !origin.equals("")){
             query = query + " AND origin = ?";
             params.add(origin);
@@ -168,8 +166,6 @@ public class TripDaoImpl implements TripDao {
                 query = query + " ORDER BY price DESC";
             }
         }
-
-        System.out.println(Arrays.toString(params.toArray()));
 
         //Aun no hago query por precio porque no esta en la base de datos
         return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);

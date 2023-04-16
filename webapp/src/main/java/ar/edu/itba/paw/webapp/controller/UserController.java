@@ -26,7 +26,6 @@ public class UserController {
     public UserController(final UserService us, final MailService ms){
         this.us = us;
         this.ms = ms;
-        System.out.println(us);
     }
 
     @RequestMapping("/")
