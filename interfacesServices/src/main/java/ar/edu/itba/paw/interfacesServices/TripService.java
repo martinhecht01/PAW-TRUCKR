@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Trip;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface TripService {
     Trip createTrip(
@@ -18,11 +19,13 @@ public interface TripService {
                     LocalDateTime arrivalDate,
                     String origin,
                     String destination,
-                    String type);
+                    String type,
+                    int price
+    );
 
-    List<Trip> getAllActiveTrips();
+    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 
-    Trip getTripById(int tripid);
+    Optional<Trip> getTripById(int tripid);
 
-    Trip acceptTrip(Trip trip, int acceptUserId);
+    Trip acceptTrip(int tripId,String email, String name, String cuit );
 }

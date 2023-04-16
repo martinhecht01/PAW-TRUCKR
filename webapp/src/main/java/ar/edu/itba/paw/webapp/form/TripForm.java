@@ -26,7 +26,7 @@ public class TripForm {
     private  int availableWeight;
     @Min(1)
     private  int availableVolume;
-
+    private  int price;
 
     private  String departureDate;
     private  String arrivalDate;
@@ -81,6 +81,10 @@ public class TripForm {
     public void setDestination(String destination) {
         this.destination = destination;
     }
+
+    public void setPrice(int price) {this.price = price;}
+
+    public int getPrice() {return price;}
 
     public String getName() {
         return name;
