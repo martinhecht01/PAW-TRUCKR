@@ -96,3 +96,22 @@ body {
 .form-label{
     margin: 0 0 5px;
 }
+
+.btn-color{
+    color:#ECECEC;
+    background-color:#385170;
+    border: none;
+}
+.btn-color:hover{
+    color:#ECECEC;
+    background-color:#142D4C;
+}
+.filterCard{
+    display: inline-block;
+    width: 24%;
+}
+.tripCards{
+    display: inline-block;
+    width: 68%;
+
+}

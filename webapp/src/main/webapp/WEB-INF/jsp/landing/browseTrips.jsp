@@ -11,10 +11,10 @@
 <body class="bodyContent" style="height: 100%">
 <components:navBar/>
 <div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
-  <div style="display: inline-block;width: 20%">
+  <div class="filterCard">
     <components:filters/>
   </div>
-  <div style="display: inline-block; width: 68%">
+  <div class="tripCards">
     <c:forEach var="offer" items="${offers}">
       <a class="card mb-3 browseCards" href="/tripDetail?id=${offer.tripId}" style="display: flex">
         <div class="row g-0">

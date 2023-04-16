@@ -80,14 +80,14 @@ public class TripController {
                 form.getName(),
                 form.getId(),
                 form.getLicensePlate(),
-                form.getAvailableWeight(),
-                form.getAvailableVolume(),
+                Integer.parseInt(form.getAvailableWeight()),
+                Integer.parseInt(form.getAvailableVolume()),
                 departure,
                 arrival,
                 form.getOrigin(),
                 form.getDestination(),
                 form.getCargoType(),
-                form.getPrice()
+                Integer.parseInt(form.getPrice())
         );
 
         return new ModelAndView("redirect:/browseTrips");
