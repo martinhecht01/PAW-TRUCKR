@@ -72,3 +72,15 @@ body {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.formError{
+    font-size: 18px;
+    color: red;
+    margin: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.form-label{
+    margin: 0 0 5px;
+}

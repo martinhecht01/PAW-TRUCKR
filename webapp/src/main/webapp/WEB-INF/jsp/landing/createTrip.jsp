@@ -27,7 +27,7 @@
             </div>
 
             <div class="mb-3">
-                <form:label for="id" class="form-label" path="id">Cuit/Cuil</form:label>
+                <form:label class="form-label" path="id">Cuit/Cuil</form:label>
                 <form:errors path="id" cssClass="formError" element="p"/>
                 <form:input type="text" class="form-control" path="id" placeholder="00-00000000-0"/>
             </div>
@@ -50,7 +50,7 @@
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
                     <form:select class="form-select" path="cargoType">
 <%--                        --%>
-                        <option selected>Elegi una opcion...</option>
+                        <option selected>...</option>
                         <option value="Refrigerada">Refrigerada</option>
                         <option value="Peligrosa">Peligrosa</option>
                         <option value="Normal">Normal</option>
