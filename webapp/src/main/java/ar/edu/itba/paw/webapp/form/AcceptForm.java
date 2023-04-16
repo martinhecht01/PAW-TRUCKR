@@ -9,7 +9,7 @@ public class AcceptForm {
 
     @Size(min = 6, max = 100)
     @Pattern(regexp = "^\\d{2}-\\d{8}-\\d{1}$")
-    private  String id;
+    private  String cuit;
 
     @Size(min = 6, max = 100)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
@@ -19,8 +19,8 @@ public class AcceptForm {
         this.name = name;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCuit(String id) {
+        this.cuit = id;
     }
 
     public void setEmail(String email) {
@@ -31,8 +31,8 @@ public class AcceptForm {
         return name;
     }
 
-    public String getId() {
-        return id;
+    public String getCuit() {
+        return cuit;
     }
 
     public String getEmail() {

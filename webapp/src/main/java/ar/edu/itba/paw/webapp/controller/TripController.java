@@ -112,7 +112,7 @@ public class TripController {
         }
         System.out.println(form.getEmail()+ "formresult");
 
-        ts.acceptTrip(id, form.getEmail(),form.getName(),form.getId());
+        ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
 
         return new ModelAndView("redirect:/browseTrips");
     }

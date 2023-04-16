@@ -44,9 +44,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <form:label for="id" class="form-label" path="id">Cuit/Cuil</form:label>
-                            <form:errors path="id" cssClass="formError" element="p"/>
-                            <form:input type="text" class="form-control" path="id" placeholder="00-00000000-0"/>
+                            <form:label for="cuit" class="form-label" path="cuit">Cuit/Cuil</form:label>
+                            <form:errors path="cuit" cssClass="formError" element="p"/>
+                            <form:input type="text" class="form-control" path="cuit" placeholder="00-00000000-0"/>
                         </div>
 
                         <div class="mb-3">
