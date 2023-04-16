@@ -113,7 +113,7 @@ public class TripController {
         System.out.println("Apretaste bien");
         System.out.println(errors.toString());
         if (errors.hasErrors()) {
-            return profile(id, form);
+            return accept(id, form, errors);
         }
         System.out.println(form.getEmail()+ "formresult");
 
