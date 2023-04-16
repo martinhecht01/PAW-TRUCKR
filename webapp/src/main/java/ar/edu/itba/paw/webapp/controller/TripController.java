@@ -33,8 +33,10 @@ public class TripController {
 
     @ExceptionHandler(TripNotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ModelAndView noSuchUser() {
-        return new ModelAndView("404");
+    public ModelAndView noSuchTrip() {
+        final ModelAndView view = new ModelAndView("landing/404");
+        view.addObject("title", "Viaje");
+        return view;
     }
 
     @RequestMapping("/trip")
@@ -97,7 +99,7 @@ public class TripController {
     }
 
     @RequestMapping("/tripdetail") // Antes aceptaba negativos, ahora no!
-    public ModelAndView profile(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
+    public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         System.out.println(id);
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
