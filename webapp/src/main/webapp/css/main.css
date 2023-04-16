@@ -6,6 +6,7 @@ html{
     width: 4rem;
     height: 4rem;
     border-radius: .75rem;
+    background-color: #9FD3C7 !important;
 }
 
 .icon-square {
@@ -95,6 +96,18 @@ body {
 
 .form-label{
     margin: 0 0 5px;
+}
+
+.navbar{
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.05);
+}
+
+.nav-link{
+    color: #142D4C;
+}
+
+.light{
+    color: #385170;
 }
 
 .btn-color{
