@@ -184,6 +184,7 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Trip acceptTrip(Trip trip, int acceptUserId){
+        System.out.println(acceptUserId);
         int rowsAffected = jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE tripid = ?", acceptUserId, trip.getTripId());
         if(rowsAffected > 0){
             trip.setAcceptUserId(acceptUserId);

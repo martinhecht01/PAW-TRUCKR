@@ -56,7 +56,7 @@ public class UserDaoImpl implements UserDao {
         data.put("email", email);
         data.put("name", name);
         data.put("cuit", cuit);
-        int userId = jdbcInsert.execute(data);
+        int userId = jdbcInsert.executeAndReturnKey(data).intValue();
         return new User( userId, email, name, cuit);
     }
 

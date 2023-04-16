@@ -20,13 +20,13 @@
 <form:form modelAttribute="tripForm" action="${postPath}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
-            <h4 class="card-title" style="color: #142D4C"><b>Crear Viaje</b></h4>
+            <h4 class="card-title"><b>Crear Viaje</b></h4>
         </div>
         <div class="card-body">
             <div class="mb-3">
                 <form:label for="name" class="form-label" path="name">Nombre</form:label>
                 <form:errors path="name" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" placeholder="Juan García" path="name"/>
+                <form:input type="text" class="form-control" placeholder="Juan Romero" path="name"/>
             </div>
 
             <div class="mb-3">
@@ -38,7 +38,7 @@
             <div class="mb-3">
                 <form:label for="email" class="form-label" path="email">Email</form:label>
                 <form:errors path="email" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" path="email" placeholder="name@gmail.com"/>
+                <form:input type="text" class="form-control" path="email" placeholder="ejemplo@gmail.com"/>
             </div>
 
             <div class="inlineFormInputContainer">
@@ -126,7 +126,7 @@
                 </div>
             </div>
 
-            <input type="submit" value="Crear Viaje" class="btn btn-primary formButton"/>
+            <input type="submit" value="Crear Viaje" class="btn btn-color mt-3 formButton"/>
         </div>
     </div>
 </form:form>

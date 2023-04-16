@@ -17,26 +17,32 @@
 <c:url value="/accept" var="postPath"/>
 
 <components:navBar/>
-
-<form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="card border-0 shadow-sm rounded-3">
-        <div class="row no-gutters">
-            <div class="col-md-4">
-                <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start" alt="Your Image">
+<div class="formCard justify-content-center align-items-center vh-100">
+    <div class="inlineFormInputContainer">
+        <div class="card inlineFormInputContainer" style="width: 40rem;">
+            <div class="card-header">
+                <h4 class="card-title"><b>Detalles</b></h4>
             </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title">Card Title</h5>
-                    <p class="card-text"><strong>Conductor: </strong>${user.name.toUpperCase()}</p>
-                    <p class="card-text"><strong>Origen: </strong>${trip.origin}</p>
-                    <p class="card-text"><strong>Destino: </strong>${trip.destination}</p>
-                    <p class="card-text"><strong>Patente: </strong>${trip.licensePlate}</p>
-                    <p class="card-text"><strong>Fecha partida: </strong>${trip.departureDate.year}-${trip.departureDate.monthValue}-${trip.departureDate.dayOfMonth} ${trip.departureDate.hour}:${trip.departureDate.minute}</p>
-                    <p class="card-text"><strong>Fecha llegada: </strong>${trip.arrivalDate.year}-${trip.arrivalDate.monthValue}-${trip.arrivalDate.dayOfMonth} ${trip.arrivalDate.hour}:${trip.arrivalDate.minute}</p>
-                    <p class="card-text"><strong>Volumen disponible: </strong>${trip.availableVolume} m3</p>
-                    <p class="card-text"><strong>Peso disponible: </strong>${trip.availableWeight} kg</p>
-                    <p class="card-text"><strong>Precio: </strong>$${trip.price}</p>
+            <div class="card-body">
+                <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start p-3"  alt="TruckImg">
+                <p class="card-text"><strong>Conductor: </strong>${user.name.toUpperCase()}</p>
+                <p class="card-text"><strong>Origen: </strong>${trip.origin}</p>
+                <p class="card-text"><strong>Destino: </strong>${trip.destination}</p>
+                <p class="card-text"><strong>Patente: </strong>${trip.licensePlate}</p>
+                <p class="card-text"><strong>Fecha partida: </strong>${trip.departureDate.year}-${trip.departureDate.monthValue}-${trip.departureDate.dayOfMonth} ${trip.departureDate.hour}:${trip.departureDate.minute}</p>
+                <p class="card-text"><strong>Fecha llegada: </strong>${trip.arrivalDate.year}-${trip.arrivalDate.monthValue}-${trip.arrivalDate.dayOfMonth} ${trip.arrivalDate.hour}:${trip.arrivalDate.minute}</p>
+                <p class="card-text"><strong>Volumen disponible: </strong>${trip.availableVolume} m3</p>
+                <p class="card-text"><strong>Peso disponible: </strong>${trip.availableWeight} kg</p>
+                <p class="card-text"><strong>Precio: </strong>$${trip.price}</p>
+            </div>
+        </div>
+        <div class="inlineFormInputContainer justify-content-top align-items-top" >
+            <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
+                <div class="card browseCards" style="width: 20rem;">
+                    <div class="card-header">
+                        <h4 class="card-title" style="color: #142D4C"><b>Reservar viaje</b></h4>
+                    </div>
+                    <div class="card-body">
                         <div class="mb-3">
                             <form:label for="name" class="form-label" path="name">Nombre</form:label>
                             <form:errors path="name" cssClass="formError" element="p"/>
@@ -44,9 +50,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <form:label for="id" class="form-label" path="id">Cuit/Cuil</form:label>
-                            <form:errors path="id" cssClass="formError" element="p"/>
-                            <form:input type="text" class="form-control" path="id" placeholder="00-00000000-0"/>
+                            <form:label for="cuit" class="form-label" path="cuit">Cuit/Cuil</form:label>
+                            <form:errors path="cuit" cssClass="formError" element="p"/>
+                            <form:input type="text" class="form-control" path="cuit" placeholder="00-00000000-0"/>
                         </div>
 
                         <div class="mb-3">
@@ -55,16 +61,13 @@
                             <form:input type="text" class="form-control" path="email" placeholder="name@gmail.com"/>
                         </div>
                         <div>
-                            <input type="submit" value="Accept Trip"/>
+                            <input type="submit" class="btn btn-color" value="Reservar"/>
                         </div>
-
+                    </div>
                 </div>
-            </div>
+            </form:form>
         </div>
-
     </div>
 </div>
-</form:form>
-
 </body>
 </html>

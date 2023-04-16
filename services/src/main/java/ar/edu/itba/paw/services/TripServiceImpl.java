@@ -66,7 +66,6 @@ public class TripServiceImpl implements TripService {
         if(user == null)
             user = userDao.create(email,name,cuit);
         int acceptUserId = user.getUserId();
-//        System.out.println(user.getEmail() + "serviceimpl");
 
         Trip trip = tripDao.getTripById(tripId).get();
         Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
