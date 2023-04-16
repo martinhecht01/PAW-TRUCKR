@@ -21,7 +21,6 @@
 <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card border-0 shadow-sm rounded-3">
-
         <div class="row no-gutters">
             <div class="col-md-4">
                 <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start" alt="Your Image">

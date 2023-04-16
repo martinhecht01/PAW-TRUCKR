@@ -8,36 +8,33 @@
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 
 </head>
-<body>
+<body class="bodyContent" style="height: 100%">
 <components:navBar/>
-
-
-<div class="m-5" style="display: inline-block;width: 30%">
-  <components:filters/>
-</div>
-
-<div class="pt-5 bodyContent" style="height: 100%">
-
-  <c:forEach var="offer" items="${offers}">
-    <a class="card mb-3 browseCards" href="/tripdetail?id=${offer.tripId}" style="display: flex">
-      <div class="row g-0">
-        <div class="col-md-6">
-          <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">
-        </div>
-        <div class="col-md-6">
-          <div class="card-body">
-            <h5 class="card-title"></h5>
-            <p class="card-text"><b>Salida: </b> ${offer.departureDate.year}-${offer.departureDate.monthValue}-${offer.departureDate.dayOfMonth}</p>
-            <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
-            <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
-            <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>
-            <p class="card-text"><b>Precio: </b>$${offer.price}</p>
-              <%--                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>--%>
+<div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
+  <div style="display: inline-block;width: 20%">
+    <components:filters/>
+  </div>
+  <div style="display: inline-block; width: 68%">
+    <c:forEach var="offer" items="${offers}">
+      <a class="card mb-3 browseCards" href="/tripDetail?id=${offer.tripId}" style="display: flex">
+        <div class="row g-0">
+          <div class="col-md-6">
+            <img src="https://transportemundial.com.ar/wp-content/uploads/2018/09/scania-r450-6x2-highline-2.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-6">
+            <div class="card-body">
+              <h5 class="card-title"></h5>
+              <p class="card-text"><b>Salida: </b> ${offer.departureDate.year}-${offer.departureDate.monthValue}-${offer.departureDate.dayOfMonth}</p>
+              <p class="card-text"><b>Origen-Destino: </b>${offer.origin}-${offer.destination}</p>
+              <p class="card-text"><b>Peso disponible: </b>${offer.availableWeight}kg</p>
+              <p class="card-text"><b>Volumen disponible: </b>${offer.availableVolume}m3</p>
+              <p class="card-text"><b>Precio: </b>$${offer.price}</p>
+            </div>
           </div>
         </div>
-      </div>
-    </a>
-  </c:forEach>
+      </a>
+    </c:forEach>
+  </div>
 </div>
 </body>
 </html>

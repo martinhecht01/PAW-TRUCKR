@@ -3,7 +3,9 @@ package ar.edu.itba.paw.webapp.form;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class TripForm {
@@ -24,13 +26,14 @@ public class TripForm {
     private  int availableWeight;
     @Min(1)
     private  int availableVolume;
-    @Min(0)
-    private int price;
+
+    @Min(1)
+    private  int price;
 
     private  String departureDate;
     private  String arrivalDate;
 
-    @Size(min = 5)
+    @Size(min = 3)
     private String cargoType;
     @Size(min = 1, max = 100)
     private  String origin;

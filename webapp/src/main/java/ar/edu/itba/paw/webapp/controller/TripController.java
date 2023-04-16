@@ -39,11 +39,6 @@ public class TripController {
         return view;
     }
 
-    @RequestMapping("/trip")
-    public ModelAndView register() {
-        return new ModelAndView("tripDetails");
-    }
-
     @RequestMapping("/browseTrips")
     public ModelAndView browseTrips(@RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
@@ -98,7 +93,7 @@ public class TripController {
         return new ModelAndView("redirect:/browseTrips");
     }
 
-    @RequestMapping("/tripdetail") // Antes aceptaba negativos, ahora no!
+    @RequestMapping("/tripDetail")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         System.out.println(id);
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
@@ -113,7 +108,7 @@ public class TripController {
         System.out.println("Apretaste bien");
         System.out.println(errors.toString());
         if (errors.hasErrors()) {
-            return accept(id, form, errors);
+            return tripDetail(id, form);
         }
         System.out.println(form.getEmail()+ "formresult");
 

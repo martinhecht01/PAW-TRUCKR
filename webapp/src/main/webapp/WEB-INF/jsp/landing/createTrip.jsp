@@ -17,9 +17,10 @@
 <%--Formulario--%>
 <form:form modelAttribute="tripForm" action="${postPath}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
+        <div class="card-header">
+            <h4 class="card-title" style="color: #142D4C"><b>Crear Viaje</b></h4>
+        </div>
         <div class="card-body">
-            <h5 class="card-title mb-3"><b>Crear Viaje</b></h5>
-
             <div class="mb-3">
                 <form:label for="name" class="form-label" path="name">Nombre</form:label>
                 <form:errors path="name" cssClass="formError" element="p"/>
@@ -88,7 +89,7 @@
             </div>
 
             <div class="inlineFormInputContainer">
-                <div class="mb-3 inlineFormInput">
+                <div class="mb-3 mr-3 inlineFormTripleInput">
                     <form:label path="availableVolume"  class="form-label">Volumen Disponible</form:label>
                     <form:errors path="availableVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
@@ -99,7 +100,7 @@
                     </div>
                 </div>
 
-                <div class="mb-3 inlineFormInput">
+                <div class="mb-3 mx-3 inlineFormTripleInput">
                     <form:label path="availableWeight" for="origin" class="form-label">Peso disponible</form:label>
                     <form:errors path="availableWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
@@ -111,7 +112,7 @@
                 </div>
 
 
-                <div class="mb-3 inlineFormInput">
+                <div class="mb-3 ml-3 inlineFormTripleInput">
                     <form:label path="price" class="form-label">Precio</form:label>
                     <form:errors path="price" cssClass="formError" element="p"/>
                     <div class="input-group">
