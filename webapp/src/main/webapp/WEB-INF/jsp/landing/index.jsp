@@ -1,4 +1,8 @@
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+
 <html>
 <link>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -14,8 +18,8 @@
     <div class="container">
         <div class="row p-4 pt-5 pb-0 pe-lg-0 align-items-center rounded-3">
             <div class="col-lg-7 p-3 p-lg-5">
-                <h1 class="display-4 mb-2 fw-bold lh-1">Tu socio de confianza para el transporte de carga.</h1>
-                <p class="lead mt-3 light">Optimiza la logistica de tus envios con nuestra plataforma intuitiva y facil de usar, que te permite ver el perfil de los transportistas, coordinar envios y comunicarte con ellos.</p>
+                <h1 class="display-4 mb-2 fw-bold lh-1"><spring:message code="LandingMainMessage"/></h1>
+                <p class="lead mt-3 light"><spring:message code="LandingMainSubMessage"/></p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
 <%--                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Explorar viajes</button>--%>
 <%--                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>--%>
