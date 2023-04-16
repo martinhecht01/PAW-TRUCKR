@@ -7,6 +7,17 @@
 
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 
+<c:import url="../../tags/filters.tag">
+  <c:param name="origin" value="${origin}" />
+  <c:param name="destination" value="${destination}" />
+  <c:param name="minAvailableVolume" value="${minAvailableVolume}" />
+  <c:param name="minAvilableWeight" value="${origin}" />
+  <c:param name="minPrice" value="${minPrice}" />
+  <c:param name="maxPrice" value="${maxPrice}"/>
+  <c:param name="departureDate" value="${departureDate}"/>
+  <c:param name="arrivalDate" value="${arrivalDate}"/>
+</c:import>
+
 </head>
 <body class="bodyContent" style="height: 100%">
 <components:navBar/>

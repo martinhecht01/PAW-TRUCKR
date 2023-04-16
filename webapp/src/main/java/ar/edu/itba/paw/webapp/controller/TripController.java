@@ -51,6 +51,15 @@ public class TripController {
                                     @RequestParam(required = false) String arrivalDate)
     {
         final ModelAndView view = new ModelAndView("landing/browseTrips");
+        view.addObject("origin",origin);
+        view.addObject("destination",destination);
+        view.addObject("minAvailableVolume",minAvailableVolume);
+        view.addObject("minAvailableWeight",minAvailableWeight);
+        view.addObject("minPrice",minPrice);
+        view.addObject("maxPrice",maxPrice);
+        view.addObject("sortOrder",sortOrder);
+        view.addObject("departureDate",departureDate);
+        view.addObject("arrivalDate",arrivalDate);
         List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
         view.addObject("offers", trips);
         return view;
