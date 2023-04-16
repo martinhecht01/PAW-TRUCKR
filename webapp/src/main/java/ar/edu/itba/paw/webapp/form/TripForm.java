@@ -22,18 +22,19 @@ public class TripForm {
     private  String licensePlate;
 
     //custom annotation para validar.
-    @Min(50)
-    private  int availableWeight;
-    @Min(1)
-    private  int availableVolume;
 
-    @Min(1)
-    private  int price;
+    @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$")
+    private String availableWeight;
+    @Pattern(regexp="^[1-9][0-9]*$")
+    private String availableVolume;
+
+    @Pattern(regexp="^[1-9][0-9]*$")
+    private String price;
 
     private  String departureDate;
     private  String arrivalDate;
 
-    @Size(min = 3)
+    @Size(min = 4)
     private String cargoType;
     @Size(min = 1, max = 100)
     private  String origin;
@@ -56,11 +57,11 @@ public class TripForm {
         this.licensePlate = licensePlate;
     }
 
-    public void setAvailableWeight(int availableWeight) {
+    public void setAvailableWeight(String availableWeight) {
         this.availableWeight = availableWeight;
     }
 
-    public void setAvailableVolume(int availableVolume) {
+    public void setAvailableVolume(String availableVolume) {
         this.availableVolume = availableVolume;
     }
 
@@ -84,9 +85,9 @@ public class TripForm {
         this.destination = destination;
     }
 
-    public void setPrice(int price) {this.price = price;}
+    public void setPrice(String price) {this.price = price;}
 
-    public int getPrice() {return price;}
+    public String getPrice() {return price;}
 
     public String getName() {
         return name;
@@ -104,11 +105,11 @@ public class TripForm {
         return licensePlate;
     }
 
-    public int getAvailableWeight() {
+    public String getAvailableWeight() {
         return availableWeight;
     }
 
-    public int getAvailableVolume() {
+    public String getAvailableVolume() {
         return availableVolume;
     }
 
