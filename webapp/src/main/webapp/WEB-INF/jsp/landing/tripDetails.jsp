@@ -9,7 +9,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet">
 
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 </head>
 <body class="bodyContent">
@@ -21,37 +21,37 @@
     <div class="inlineFormInputContainer">
         <div class="card inlineFormInputContainer" style="width: 40rem;">
             <div class="card-header">
-                <h4 class="card-title"><b>Detalles</b></h4>
+                <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
             </div>
             <div class="card-body">
                 <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-striped">
                     <tr>
-                        <td><b>Conductor</b></td>
+                        <td><b><spring:message code="Driver"/></b></td>
                         <td>${user.name.toUpperCase()}</td>
                     </tr>
                     <tr>
-                        <td><b>Origen-Destino</b></td>
+                        <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
                         <td>${trip.origin}-${trip.destination}</td>
                     </tr>
                     <tr>
-                        <td><b>Patente</b></td>
+                        <td><b><spring:message code="LicensePlate"/></b></td>
                         <td>${trip.licensePlate}</td>
                     </tr>
                     <tr>
-                        <td><b>Fecha partida - llegada</b></td>
+                        <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
                         <td>${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}</td>
                     </tr>
                     <tr>
-                        <td><b>Volumen disponible:</b></td>
+                        <td><b><spring:message code="AvailableVolume"/></b></td>
                         <td>${trip.availableVolume} m3</td>
                     </tr>
                     <tr>
-                        <td><b>Peso disponible:</b></td>
+                        <td><b><spring:message code="AvailableWeight"/></b></td>
                         <td>${trip.availableWeight} kg</td>
                     </tr>
                     <tr>
-                        <td><b>Precio:</b></td>
+                        <td><b><spring:message code="Price"/></b></td>
                         <td>$${trip.price}</td>
                     </tr>
                 </table>
@@ -61,28 +61,31 @@
             <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
                 <div class="card browseCards" style="width: 20rem;">
                     <div class="card-header">
-                        <h4 class="card-title" style="color: #142D4C"><b>Reservar viaje</b></h4>
+                        <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <form:label for="name" class="form-label" path="name">Nombre</form:label>
+                            <form:label for="name" class="form-label" path="name"><spring:message code="Name"/></form:label>
                             <form:errors path="name" cssClass="formError" element="p"/>
-                            <form:input type="text" class="form-control" placeholder="Pedro Gonzales" path="name"/>
+                            <spring:message code="NamePlaceholder" var="namePlaceholder"/>
+                            <form:input type="text" class="form-control" placeholder="${namePlaceholder}" path="name"/>
                         </div>
 
                         <div class="mb-3">
-                            <form:label for="cuit" class="form-label" path="cuit">Cuit/Cuil</form:label>
+                            <form:label for="cuit" class="form-label" path="cuit"><spring:message code="Cuit"/></form:label>
                             <form:errors path="cuit" cssClass="formError" element="p"/>
                             <form:input type="text" class="form-control" path="cuit" placeholder="00-00000000-0"/>
                         </div>
 
                         <div class="mb-3">
-                            <form:label for="email" class="form-label" path="email">Email</form:label>
+                            <form:label for="email" class="form-label" path="email"><spring:message code="Email"/></form:label>
                             <form:errors path="email" cssClass="formError" element="p"/>
-                            <form:input type="text" class="form-control" path="email" placeholder="name@gmail.com"/>
+                            <spring:message code="EmailPlaceHolder" var="emailPlaceholder"/>
+                            <form:input type="text" class="form-control" path="email" placeholder="${emailPlaceholder}"/>
                         </div>
                         <div>
-                            <input type="submit" class="btn btn-color" value="Reservar"/>
+                            <spring:message code="Reserve" var="reserve"/>
+                            <input type="submit" class="btn btn-color" value="${reserve}"/>
                         </div>
                     </div>
                 </div>
