@@ -13,14 +13,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="origin">Origen:</label>
-                        <input type="text" class="form-control" name="origin" id="origin" <c:if test="${origin != null && origin != ''}">value="${origin}"</c:if> placeholder="Ingrese el origen:"/>
+                        <input type="text" class="form-control" name="origin" id="origin" <c:if test="${origin != null && origin != ''}">value="${origin}"</c:if> placeholder="CABA"/>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="destination">Destino:</label>
                         <input type="text" class="form-control" name="destination" id="destination"
-                               <c:if test="${destination != null && destination != ''}">value="${destination}"</c:if> placeholder="Ingrese el destino:"/>
+                               <c:if test="${destination != null && destination != ''}">value="${destination}"</c:if> placeholder="CBA"/>
                     </div>
                 </div>
             </div>
@@ -50,11 +50,11 @@
             </div>
             <div class="form-group row mb-3">
                 <div class="col-md-6">
-                    <label for="departureDate">Fecha de Salida:</label>
+                    <label for="departureDate">Partida:</label>
                     <input type="date" class="form-control" id="departureDate" name="departureDate" <c:if test="${departureDate != null || departureDate != ''}">value="${departureDate}"</c:if>/>
                 </div>
                 <div class="col-md-6">
-                    <label for="arrivalDate">Fecha de Llegada</label>
+                    <label for="arrivalDate">Llegada:</label>
                     <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" <c:if test="${arrivalDate != null || arrivalDate != ''}">value="${arrivalDate}"</c:if> />
                 </div>
             </div>
