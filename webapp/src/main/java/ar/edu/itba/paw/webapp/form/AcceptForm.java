@@ -7,11 +7,8 @@ public class AcceptForm {
     @Size(min = 6, max = 100)
     private  String name;
 
-    @Size(min = 6, max = 100)
     @Pattern(regexp = "^\\d{2}-\\d{8}-\\d{1}$")
     private  String cuit;
-
-    @Size(min = 6, max = 100)
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
     private  String email;
 
