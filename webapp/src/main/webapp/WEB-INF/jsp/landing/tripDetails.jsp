@@ -28,31 +28,31 @@
                 <table class="table table-striped">
                     <tr>
                         <td><b><spring:message code="Driver"/></b></td>
-                        <td>${user.name.toUpperCase()}</td>
+                        <td><c:out value="${user.name.toUpperCase()}"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
-                        <td>${trip.origin}-${trip.destination}</td>
+                        <td><c:out value="${trip.origin}-${trip.destination}"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="LicensePlate"/></b></td>
-                        <td>${trip.licensePlate}</td>
+                        <td><c:out value="${trip.licensePlate}"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                        <td>${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}</td>
+                        <td><c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableVolume"/></b></td>
-                        <td>${trip.availableVolume} m3</td>
+                        <td><c:out value="${trip.availableVolume}"/> m3</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableWeight"/></b></td>
-                        <td>${trip.availableWeight} kg</td>
+                        <td><c:out value="${trip.availableWeight}"/> kg</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Price"/></b></td>
-                        <td>$${trip.price}</td>
+                        <td>$<c:out value="${trip.price}"/></td>
                     </tr>
                 </table>
             </div>

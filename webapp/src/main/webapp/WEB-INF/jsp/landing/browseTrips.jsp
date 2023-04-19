@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
+
 <html>
 <link>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
@@ -6,17 +8,6 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet">
 
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
-
-<%--<c:import url="../../tags/filters.tag">--%>
-<%--  <c:param name="origin" value="${origin}" />--%>
-<%--  <c:param name="destination" value="${destination}" />--%>
-<%--  <c:param name="minAvailableVolume" value="${minAvailableVolume}" />--%>
-<%--  <c:param name="minAvilableWeight" value="${origin}" />--%>
-<%--  <c:param name="minPrice" value="${minPrice}" />--%>
-<%--  <c:param name="maxPrice" value="${maxPrice}"/>--%>
-<%--  <c:param name="departureDate" value="${departureDate}"/>--%>
-<%--  <c:param name="arrivalDate" value="${arrivalDate}"/>--%>
-<%--</c:import>--%>
 
 </head>
 <body class="bodyContent" style="height: 100%">
@@ -30,34 +21,34 @@
       <a class="card mb-3 browseCards" href="<c:url value="/tripDetail?id=${trip.tripId}"/>" style="display: flex">
         <div class="row g-0">
           <div class="col-md-6">
-            <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid rounded-start" style="height:100%; width: 100%; object-fit: cover; object-position: left" alt="...">
+            <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid rounded-start" style="width: 100%; object-fit: cover; object-position: left" alt="...">
           </div>
           <div class="col-md-6">
             <div class="card-body align-content-center">
               <table class="table table-striped">
                 <tr>
                   <td><b>Origen-Destino</b></td>
-                  <td>${trip.origin}-${trip.destination}</td>
+                  <td><c:out value="${trip.origin}-${trip.destination}"/></td>
                 </tr>
                 <tr>
                   <td><b>Patente</b></td>
-                  <td>${trip.licensePlate}</td>
+                  <td><c:out value="${trip.licensePlate}"/></td>
                 </tr>
                 <tr>
                   <td><b>Fecha partida - llegada</b></td>
-                  <td>${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}</td>
+                  <td><c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/></td>
                 </tr>
                 <tr>
                   <td><b>Volumen disponible:</b></td>
-                  <td>${trip.availableVolume} m3</td>
+                  <td><c:out value="${trip.availableVolume}"/> m3</td>
                 </tr>
                 <tr>
                   <td><b>Peso disponible:</b></td>
-                  <td>${trip.availableWeight} kg</td>
+                  <td><c:out value="${trip.availableWeight}"/> kg</td>
                 </tr>
                 <tr>
                   <td><b>Precio:</b></td>
-                  <td>$${trip.price}</td>
+                  <td>$<c:out value="${trip.price}"/></td>
                 </tr>
               </table>
             </div>
