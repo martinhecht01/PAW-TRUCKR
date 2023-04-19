@@ -39,6 +39,12 @@ public class TripController {
         return view;
     }
 
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView internalServerError(){
+        return new ModelAndView("landing/500");
+    }
+
     @RequestMapping("/browseTrips")
     public ModelAndView browseTrips(@RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
