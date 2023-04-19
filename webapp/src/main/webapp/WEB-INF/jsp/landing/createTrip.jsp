@@ -34,7 +34,7 @@
             <div class="mb-3">
                 <form:label class="form-label" path="id"><spring:message code="Cuit"/></form:label>
                 <form:errors path="id" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" path="id" placeholder="00-00000000-0"/>
+                <form:input type="text" class="form-control" path="id" id="telle" maxlength="13" placeholder="00-00000000-0"/>
             </div>
 
             <div class="mb-3">
@@ -141,4 +141,12 @@
 </html>
 
 <script>
+    const tele = document.querySelector('#telle');
+
+    tele.addEventListener('keyup', function(e){
+        if (e.key !== 'Backspace' && (tele.value.length === 2 || tele.value.length === 11)){
+            tele.value += '-';
+        }
+    });
+
 </script>
