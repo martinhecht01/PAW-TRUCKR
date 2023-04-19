@@ -4,7 +4,7 @@
 <body>
 <h2>Register</h2>
 <%--Creo variable postPath--%>
-<c:url value="/send" var="postPath"/>
+<c:url value="/createUser" var="postPath"/>
 
 <%--Formulario--%>
 <form:form modelAttribute="registerForm" action="${postPath}" method="post">
@@ -19,7 +19,12 @@
         <form:errors path="username" cssClass="formError" element="p"/>
     </div>
     <div>
-        <form:label path="password">Cuit: </form:label>
+        <form:label path="id">Cuit: </form:label>
+        <form:input type="text" path="id"/>
+        <form:errors path="id" cssClass="formError" element="p"/>
+    </div>
+    <div>
+        <form:label path="password">Password: </form:label>
         <form:input type="password" path="password" />
         <form:errors path="password" cssClass="formError" element="p"/>
     </div>

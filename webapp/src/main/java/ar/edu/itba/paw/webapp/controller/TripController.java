@@ -74,10 +74,7 @@ public class TripController {
 
     @RequestMapping(value = "/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
-        System.out.println("Apretaste bien");
-        System.out.println(errors.toString());
         if (errors.hasErrors()) {
-            System.out.println(form.getDepartureDate());
             return createTrip(form);
         }
 
@@ -104,7 +101,6 @@ public class TripController {
 
     @RequestMapping("/tripDetail")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        System.out.println(id);
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
@@ -113,13 +109,10 @@ public class TripController {
     }
 
     @RequestMapping(value = "/accept", method = { RequestMethod.POST })
-    public ModelAndView accept(@RequestParam("id") int id,@Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
-        System.out.println("Apretaste bien");
-        System.out.println(errors.toString());
+    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return tripDetail(id, form);
         }
-        System.out.println(form.getEmail()+ "formresult");
 
         ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
 
