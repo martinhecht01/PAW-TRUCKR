@@ -1,6 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
+<head>
+    <title><spring:message code="Register"/></title>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
+</head>
 <body>
 <h2>Register</h2>
 <%--Creo variable postPath--%>

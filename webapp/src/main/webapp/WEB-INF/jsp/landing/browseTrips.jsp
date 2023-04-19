@@ -1,5 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <html>
 <link>
@@ -7,8 +9,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet">
 
-<%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 
+<head>
+    <title><spring:message code="Explore"/></title>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent" style="height: 100%">
 <components:navBar/>
@@ -27,27 +31,27 @@
             <div class="card-body align-content-center">
               <table class="table table-striped">
                 <tr>
-                  <td><b>Origen-Destino</b></td>
+                  <td><b><spring:message code="OriginDestination"/></b></td>
                   <td><c:out value="${trip.origin}-${trip.destination}"/></td>
                 </tr>
                 <tr>
-                  <td><b>Patente</b></td>
+                  <td><b><spring:message code="LicensePlate"/></b></td>
                   <td><c:out value="${trip.licensePlate}"/></td>
                 </tr>
                 <tr>
-                  <td><b>Fecha partida - llegada</b></td>
+                  <td><b><spring:message code="Dates"/></b></td>
                   <td><c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/></td>
                 </tr>
                 <tr>
-                  <td><b>Volumen disponible:</b></td>
+                  <td><b><spring:message code="AvailableVolume"/>:</b></td>
                   <td><c:out value="${trip.availableVolume}"/> m3</td>
                 </tr>
                 <tr>
-                  <td><b>Peso disponible:</b></td>
+                  <td><b><spring:message code="AvailableWeight"/>:</b></td>
                   <td><c:out value="${trip.availableWeight}"/> kg</td>
                 </tr>
                 <tr>
-                  <td><b>Precio:</b></td>
+                  <td><b><spring:message code="Price"/>:</b></td>
                   <td>$<c:out value="${trip.price}"/></td>
                 </tr>
               </table>
