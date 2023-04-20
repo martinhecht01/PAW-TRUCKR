@@ -25,6 +25,7 @@
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
         </div>
         <div class="card-body">
+            <form:errors cssClass="formError"/>
             <div class="mb-3">
                 <form:label for="name" class="form-label" path="name"><spring:message code="Name"/></form:label>
                 <form:errors path="name" cssClass="formError" element="p"/>

@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.annotations.DateValidator;
+import ar.edu.itba.paw.webapp.annotations.PreventPast;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +10,8 @@ import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+
+@DateValidator
 public class TripForm {
     @Size(min = 6, max = 100)
     private  String name;
@@ -31,12 +35,11 @@ public class TripForm {
     private String price;
 
     //custom annotation para validar.
-    @FutureOrPresent
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @PreventPast
     private String departureDate;
 
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @PreventPast
     private  String arrivalDate;
 
     @Size(min = 4)
