@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -47,7 +48,7 @@ public class TripServiceImpl implements TripService {
         if(user == null)
             user = userDao.create(email,name,cuit);
         int userId = user.getUserId();
-        return tripDao.create(userId, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price);
+        return tripDao.create(userId, licensePlate.toUpperCase(), availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price);
     }
 
     @Override

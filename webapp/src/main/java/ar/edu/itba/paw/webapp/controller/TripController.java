@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
@@ -16,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -34,7 +32,7 @@ public class TripController {
     @ExceptionHandler(TripNotFoundException.class)
     @ResponseStatus(code = HttpStatus.NOT_FOUND)
     public ModelAndView noSuchTrip() {
-        final ModelAndView view = new ModelAndView("landing/404");
+        final ModelAndView view = new ModelAndView("landing/error404");
         view.addObject("title", "Viaje");
         return view;
     }

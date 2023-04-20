@@ -2,36 +2,41 @@ package ar.edu.itba.paw.webapp.form;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class TripForm {
     @Size(min = 6, max = 100)
     private  String name;
 
-    @Pattern(regexp = "^\\d{2}-\\d{8}-\\d{1}$")
+    @Pattern(regexp = "^\\d{2}-\\d{8}-\\d$")
     private  String id;
 
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+    @Pattern(regexp="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private  String email;
 
-    @Pattern(regexp = "^[A-Z]{2,3}\\d{3}$|^[A-Z]{2}\\d{3}[A-Z]{2}$\n")
+    @Pattern(regexp="^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
     private  String licensePlate;
-
-    //custom annotation para validar.
 
     @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$")
     private String availableWeight;
+
     @Pattern(regexp="^[1-9][0-9]*$")
     private String availableVolume;
 
     @Pattern(regexp="^[1-9][0-9]*$")
     private String price;
 
-    private  String departureDate;
+    //custom annotation para validar.
+    @FutureOrPresent
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    private String departureDate;
+
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private  String arrivalDate;
 
     @Size(min = 4)
@@ -65,13 +70,6 @@ public class TripForm {
         this.availableVolume = availableVolume;
     }
 
-    public void setDepartureDate(String departureDate) {
-        this.departureDate = departureDate;
-    }
-
-    public void setArrivalDate(String arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
 
     public void setCargoType(String cargoType) {
         this.cargoType = cargoType;
@@ -113,14 +111,6 @@ public class TripForm {
         return availableVolume;
     }
 
-    public String getDepartureDate() {
-        return departureDate;
-    }
-
-    public String getArrivalDate() {
-        return arrivalDate;
-    }
-
     public String getCargoType() {
         return cargoType;
     }
@@ -131,5 +121,21 @@ public class TripForm {
 
     public String getDestination() {
         return destination;
+    }
+
+    public String getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(String departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public String getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(String arrivalDate) {
+        this.arrivalDate = arrivalDate;
     }
 }
