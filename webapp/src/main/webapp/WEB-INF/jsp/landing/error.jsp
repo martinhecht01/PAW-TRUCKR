@@ -15,12 +15,12 @@
 <components:navBar/>
 <div class="container" style="display: flex; justify-content: center; align-items: center; height: 80vh">
     <div class="px-4 py-5 my-5 text-center">
-        <spring:message code="${errorMsgCode}" var="msg"></spring:message>
-        <h1 class="display-5 fw-bold text-body-emphasis"><c:out value="${errorCode} - ${msg}"></c:out> </h1>
+        <spring:message code="${errorMsgCode}" var="msg"/>
+        <h1 class="display-5 fw-bold text-body-emphasis"><c:out value="${errorCode} - ${msg}"/> </h1>
         <div class="col-lg-6 mx-auto">
             <p class="lead mb-4"><spring:message code="TryAgain"/></p>
             <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
-                <button onclick="goBack()" type="button" class="btn btn-primary btn-lg px-4 gap-3"><spring:message code="GoBack"/></button>
+                <button onclick="goBack()" type="button" class="btn btn-color btn-lg px-4 gap-3"><spring:message code="GoBack"/></button>
             </div>
         </div>
     </div>

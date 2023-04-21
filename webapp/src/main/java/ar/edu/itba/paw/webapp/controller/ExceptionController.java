@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,12 +34,12 @@ public class ExceptionController {
         return mv;
     }
 
-    @ExceptionHandler({RuntimeException.class, ServletException.class})
+    @ExceptionHandler({RuntimeException.class, ServletException.class, NullPointerException.class})
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView internalServerError(){
         ModelAndView mv = new ModelAndView();
         mv.addObject("errorCode", HttpStatus.INTERNAL_SERVER_ERROR);
-        mv.addObject("errorMsgCode", "500ErrorCode" );
+        mv.addObject("errorMsgCode", "500ErrorCode");
         mv.setViewName("landing/error");
         return new ModelAndView("landing/error");
     }

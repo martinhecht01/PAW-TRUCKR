@@ -2,6 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <link>
@@ -16,9 +17,78 @@
 </head>
 <body class="bodyContent" style="height: 100%">
 <components:navBar/>
+<form:form method="get">
 <div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
   <div class="filterCard">
-    <components:filters/>
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title"><b><spring:message code="Filters"/></b></h4>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="origin"><spring:message code="Origin"/>:</label>
+                <input type="text" class="form-control" name="origin" id="origin" <c:if test="${origin != null && origin != ''}">value="${origin}"</c:if> placeholder="CABA"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="destination"><spring:message code="Destination"/>:</label>
+                <input type="text" class="form-control" name="destination" id="destination"
+                       <c:if test="${destination != null && destination != ''}">value="${destination}"</c:if> placeholder="CBA"/>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="minPrice"><spring:message code="FiltersMinPrice"/>:</label>
+                <input class="form-control" type="number" name="minPrice" id="minPrice" <c:if test="${minPrice != null && minPrice != ''}">value="${minPrice}"</c:if> placeholder="-"/>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="maxPrice"><spring:message code="FiltersMaxPrice"/>:</label>
+                <input class="form-control" type="number" name="maxPrice" id="maxPrice" <c:if test="${maxPrice != null && maxPrice != ''}">value="${maxPrice}"</c:if> placeholder="-">
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="minAvailableVolume"><spring:message code="FiltersMinVolume"/>:</label>
+            <input type="number" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
+                   <c:if test="${minAvailableVolume != null || minAvailableVolume != ''}">value="${minAvailableVolume}"</c:if> placeholder="-">
+          </div>
+          <div class="form-group mb-3">
+            <label for="minAvailableWeight"><spring:message code="FiltersMinWeight"/>:</label>
+            <input type="number" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
+                   <c:if test="${minAvailableWeight != null || minAvailableWeight != ''}">value="${minAvailableWeight}"</c:if> placeholder="-">
+          </div>
+          <div class="form-group row mb-3">
+            <div class="col-md-6">
+              <label for="departureDate"><spring:message code="FiltersDeparture"/>:</label>
+              <input type="date" class="form-control" id="departureDate" name="departureDate" <c:if test="${departureDate != null || departureDate != ''}">value="${departureDate}"</c:if>/>
+            </div>
+            <div class="col-md-6">
+              <label for="arrivalDate"><spring:message code="FiltersArrival"/>:</label>
+              <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" <c:if test="${arrivalDate != null || arrivalDate != ''}">value="${arrivalDate}"</c:if> />
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <label for="sortOrder"><spring:message code="FiltersSortBy"/>:</label>
+            <select class="form-control" name="sortOrder" id="sortOrder">
+              <option value="" disabled <c:if test="${sortOrder == null || sortOrder == ''}">selected</c:if>>Seleccionar</option>
+              <option value="departureDate ASC" <c:if test="${sortOrder == 'departureDate ASC'}">selected</c:if>>Fecha de Salida (asc)</option>
+              <option value="departureDate DESC" <c:if test="${sortOrder == 'departureDate DESC'}">selected</c:if>>Fecha de Salida (desc)</option>
+              <option value="arrivalDate ASC" <c:if test="${sortOrder == 'arrivalDate ASC'}">selected</c:if>>Fecha de Llegada (asc)</option>
+              <option value="arrivalDate DESC" <c:if test="${sortOrder == 'arrivalDate DESC'}">selected</c:if>>Fecha de Llegada (desc)</option>
+              <option value="price ASC" <c:if test="${sortOrder == 'price ASC'}">selected</c:if>>Precio (asc)</option>
+              <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>>Precio (desc)</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-color"><spring:message code="FiltersApply"/></button>
+        </div>
+      </div>
   </div>
   <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="volume" viewBox="0 0 16 16">
@@ -32,16 +102,19 @@
     </symbol>
   </svg>
   <div class="tripCards">
+    <c:if test="${offers.size() == 0}">
+      <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
+    </c:if>
     <c:forEach var="trip" items="${offers}">
       <a class="card mb-3 browseCards" href="<c:url value="/tripDetail?id=${trip.tripId}"/>" style="display: flex; padding: 0">
         <div class="card-header">
           <div class="row g-0">
             <div style="display: flex; justify-content: space-between; border-right: 3px black">
-              <div class="py-2 px-3" style="width: 60%; justify-content: space-between; display: flex;">
+              <div class="py-1 px-3" style="width: 50%; justify-content: space-between; display: flex;">
                 <div style="display: flex; width: 100%; justify-content: space-between; text-align: center">
                   <div>
                     <div class="mx-2">
-                      <h4><c:out value="${trip.origin}"/></h4>
+                      <h5><c:out value="${trip.origin}"/></h5>
                       <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
                     </div>
                   </div>
@@ -52,14 +125,14 @@
                   </div>
                   <div>
                     <div class="mx-2">
-                      <h4><c:out value="${trip.destination}"/></h4>
+                      <h5><c:out value="${trip.destination}"/></h5>
                       <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
                     </div>
                   </div>
                 </div>
               </div>
-              <div  class="py-3" style="display: flex; flex-direction: row; width: 40%; justify-content: center; text-align: center; align-items: center">
-                <h4 class="px-3"><c:out value="${trip.type}"/></h4>
+              <div  class="py-3" style="display: flex; flex-direction: row; width: 50%; justify-content: center; text-align: center; align-items: center">
+                <h5 class="px-3"><c:out value="${trip.type}"/></h5>
                   <%--                <svg width="2em" height="3em"><use xlink:href="#cold"></use></svg>--%>
               </div>
             </div>
@@ -67,10 +140,10 @@
         </div>
         <div class="row g-0">
           <div style="display: flex; justify-content: space-between">
-            <div style="width: 60%; justify-content: center;">
+            <div style="width: 50%; justify-content: center;">
               <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid" style="border-bottom-left-radius: 5px; width: 100%; height: 100%; max-height: 20vh ; object-position: left" alt="...">
             </div>
-            <div  class="p-2" style="width: 40%; height: 100%; justify-content: center; align-items: center">
+            <div  class="p-2" style="width: 50%; height: 100%; justify-content: center; align-items: center">
               <div class="row g-0" style="height: 75%">
                 <div style="display: flex; margin-top: auto; justify-content: space-between">
                   <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
@@ -95,8 +168,24 @@
         </div>
       </a>
     </c:forEach>
+    <c:if test="${offers.size() != 0}">
+      <ul class="pagination justify-content-center pt-3">
+        <c:if test="${currentPage != 1}">
+          <li class="page-item">
+            <button type="submit" class="page-link" name="page" value="${currentPage-1}">Previous</button>
+          </li>
+          <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage-1}">${currentPage-1}</button></li>
+        </c:if>
+        <li class="page-item disabled"><button type="submit" class="page-link" name="page" value="${currentPage}">${currentPage}</button></li>
+        <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage+1}">${currentPage + 1}</button></li>
+        <li class="page-item">
+          <button type="submit" class="page-link" name="page" value="${currentPage+1}">Next</button>
+        </li>
+      </ul>
+    </c:if>
   </div>
 </div>
+</form:form>
 <div style="margin-top: auto">
   <components:waveDivider/>
   <components:footer/>

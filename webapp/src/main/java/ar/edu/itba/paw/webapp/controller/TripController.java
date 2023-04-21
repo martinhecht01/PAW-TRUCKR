@@ -29,7 +29,8 @@ public class TripController {
     }
 
     @RequestMapping("/browseTrips")
-    public ModelAndView browseTrips(@RequestParam(required = false) String origin,
+    public ModelAndView browseTrips(@RequestParam(defaultValue = "1") String page,
+                                    @RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
                                     @RequestParam(required = false) Integer minAvailableVolume,
                                     @RequestParam(required = false) Integer minAvailableWeight,
@@ -39,7 +40,13 @@ public class TripController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
+
+        if(Integer.parseInt(page) < 1){
+            page = "1";
+        }
+
         final ModelAndView view = new ModelAndView("landing/browseTrips");
+        view.addObject("currentPage", page);
         view.addObject("origin",origin);
         view.addObject("destination",destination);
         view.addObject("minAvailableVolume",minAvailableVolume);
@@ -49,7 +56,7 @@ public class TripController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate,0);
+        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
         view.addObject("offers", trips);
         return view;
     }
