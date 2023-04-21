@@ -72,26 +72,23 @@
         <artifactId>javax.mail-api</artifactId>
         <version>${javax.mail.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context-support</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
     </dependencies>
-
   </dependencyManagement>
             
 
   
   <modules>
-        
     <module>webapp</module>
-        
     <module>models</module>
-        
     <module>interfacesServices</module>
-        
     <module>persistence</module>
-        
     <module>services</module>
-        
     <module>interfacesPersistence</module>
-      
   </modules>
           
 

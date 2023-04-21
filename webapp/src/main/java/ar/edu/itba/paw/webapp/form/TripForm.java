@@ -16,7 +16,7 @@ public class TripForm {
     @Size(min = 6, max = 100)
     private  String name;
 
-    @Pattern(regexp = "^\\d{2}-\\d{8}-\\d$")
+    @Pattern(regexp = "^\\d{2}-\\d{7,8}-\\d$")
     private  String id;
 
     @Pattern(regexp="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
