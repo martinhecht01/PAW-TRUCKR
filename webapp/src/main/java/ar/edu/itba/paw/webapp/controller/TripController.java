@@ -7,12 +7,10 @@ import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,20 +25,6 @@ public class TripController {
     public TripController(final TripService ts, final UserService us){
         this.ts = ts;
         this.us = us;
-    }
-
-    @ExceptionHandler(TripNotFoundException.class)
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)
-    public ModelAndView noSuchTrip() {
-        final ModelAndView view = new ModelAndView("landing/error404");
-        view.addObject("title", "Viaje");
-        return view;
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-    public ModelAndView internalServerError(){
-        return new ModelAndView("landing/500");
     }
 
     @RequestMapping("/browseTrips")

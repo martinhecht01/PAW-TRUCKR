@@ -20,41 +20,76 @@
   <div class="filterCard">
     <components:filters/>
   </div>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="volume" viewBox="0 0 16 16">
+      <path d="M7.752.066a.5.5 0 0 1 .496 0l3.75 2.143a.5.5 0 0 1 .252.434v3.995l3.498 2A.5.5 0 0 1 16 9.07v4.286a.5.5 0 0 1-.252.434l-3.75 2.143a.5.5 0 0 1-.496 0l-3.502-2-3.502 2.001a.5.5 0 0 1-.496 0l-3.75-2.143A.5.5 0 0 1 0 13.357V9.071a.5.5 0 0 1 .252-.434L3.75 6.638V2.643a.5.5 0 0 1 .252-.434L7.752.066ZM4.25 7.504 1.508 9.071l2.742 1.567 2.742-1.567L4.25 7.504ZM7.5 9.933l-2.75 1.571v3.134l2.75-1.571V9.933Zm1 3.134 2.75 1.571v-3.134L8.5 9.933v3.134Zm.508-3.996 2.742 1.567 2.742-1.567-2.742-1.567-2.742 1.567Zm2.242-2.433V3.504L8.5 5.076V8.21l2.75-1.572ZM7.5 8.21V5.076L4.75 3.504v3.134L7.5 8.21ZM5.258 2.643 8 4.21l2.742-1.567L8 1.076 5.258 2.643ZM15 9.933l-2.75 1.571v3.134L15 13.067V9.933ZM3.75 14.638v-3.134L1 9.933v3.134l2.75 1.571Z"></path>
+    </symbol>
+    <symbol id="arrow" viewBox="0 0 16 16">
+      <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+    </symbol>
+    <symbol id="heavy" viewBox="0 0 16 16">
+      <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2zM5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0V5z"/>
+    </symbol>
+  </svg>
   <div class="tripCards">
     <c:forEach var="trip" items="${offers}">
-      <a class="card mb-3 browseCards" href="<c:url value="/tripDetail?id=${trip.tripId}"/>" style="display: flex">
-        <div class="row g-0">
-          <div class="col-md-6">
-            <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid rounded-start" style="width: 100%; object-fit: cover; object-position: left" alt="...">
+      <a class="card mb-3 browseCards" href="<c:url value="/tripDetail?id=${trip.tripId}"/>" style="display: flex; padding: 0">
+        <div class="card-header">
+          <div class="row g-0">
+            <div style="display: flex; justify-content: space-between; border-right: 3px black">
+              <div class="py-2 px-3" style="width: 60%; justify-content: space-between; display: flex;">
+                <div style="display: flex; width: 100%; justify-content: space-between; text-align: center">
+                  <div>
+                    <div class="mx-2">
+                      <h4><c:out value="${trip.origin}"/></h4>
+                      <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
+                    </div>
+                  </div>
+                  <div>
+                  <div>
+                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                  </div>
+                  </div>
+                  <div>
+                    <div class="mx-2">
+                      <h4><c:out value="${trip.destination}"/></h4>
+                      <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div  class="py-3" style="display: flex; flex-direction: row; width: 40%; justify-content: center; text-align: center; align-items: center">
+                <h4 class="px-3"><c:out value="${trip.type}"/></h4>
+                  <%--                <svg width="2em" height="3em"><use xlink:href="#cold"></use></svg>--%>
+              </div>
+            </div>
           </div>
-          <div class="col-md-6">
-            <div class="card-body align-content-center">
-              <table class="table table-striped">
-                <tr>
-                  <td><b><spring:message code="OriginDestination"/></b></td>
-                  <td><c:out value="${trip.origin}-${trip.destination}"/></td>
-                </tr>
-                <tr>
-                  <td><b><spring:message code="LicensePlate"/></b></td>
-                  <td><c:out value="${trip.licensePlate}"/></td>
-                </tr>
-                <tr>
-                  <td><b><spring:message code="Dates"/></b></td>
-                  <td><c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/></td>
-                </tr>
-                <tr>
-                  <td><b><spring:message code="AvailableVolume"/>:</b></td>
-                  <td><c:out value="${trip.availableVolume}"/> m3</td>
-                </tr>
-                <tr>
-                  <td><b><spring:message code="AvailableWeight"/>:</b></td>
-                  <td><c:out value="${trip.availableWeight}"/> kg</td>
-                </tr>
-                <tr>
-                  <td><b><spring:message code="Price"/>:</b></td>
-                  <td>$<c:out value="${trip.price}"/></td>
-                </tr>
-              </table>
+        </div>
+        <div class="row g-0">
+          <div style="display: flex; justify-content: space-between">
+            <div style="width: 60%; justify-content: center;">
+              <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid" style="border-bottom-left-radius: 5px; width: 100%; height: 100%; max-height: 20vh ; object-position: left" alt="...">
+            </div>
+            <div  class="p-2" style="width: 40%; height: 100%; justify-content: center; align-items: center">
+              <div class="row g-0" style="height: 75%">
+                <div style="display: flex; margin-top: auto; justify-content: space-between">
+                  <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
+                    <p class="pb-2"><spring:message code="AvailableWeight"/></p>
+                    <svg width="3em" height="3em"><use xlink:href="#heavy"></use></svg>
+                    <h4><c:out value="${trip.availableWeight}"/> KG </h4>
+                  </div>
+                  <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
+                    <p class="pb-2"><spring:message code="AvailableVolume"/></p>
+                    <svg width="3em" height="3em"><use xlink:href="#volume"></use></svg>
+                    <h4><c:out value="${trip.availableVolume}"/> M3 </h4>
+                  </div>
+                </div>
+              </div>
+              <div class="row g-0 pt-3" style="text-align: center; height: 25%">
+                <div>
+                  <h4>$<c:out value="${trip.price}"/></h4>
+                </div>
+              </div>
             </div>
           </div>
         </div>

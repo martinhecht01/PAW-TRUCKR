@@ -36,6 +36,12 @@ public class UserController {
         return new ModelAndView("landing/register");
     }
 
+    @RequestMapping("/login")
+    public ModelAndView login(){
+        final ModelAndView view = new ModelAndView("landing/login");
+        return view;
+    }
+
     @RequestMapping(value = "/createUser", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("registerForm") final UserForm form, final BindingResult errors) {
         if (errors.hasErrors()) {

@@ -53,21 +53,21 @@
     <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#people"/></svg>
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#people"></use></svg>
             </div>
             <h3 class="fs-2"><spring:message code="TrustworthyTruckers"/></h3>
             <p class="light"><spring:message code="TrustworthyTruckersMessage"/></p>
         </div>
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#piggy-bank"/></svg>
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#piggy-bank"></use></svg>
             </div>
             <h3 class="fs-2"><spring:message code="EconomicSolutions"/></h3>
             <p class="light"><spring:message code="EconomicSolutionsMessage"/></p>
         </div>
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#truck"/></svg>
+                <svg class="bi" width="1em" height="1em"><use xlink:href="#truck"></use></svg>
             </div>
             <h3 class="fs-2"><spring:message code="ExploitReturns"/></h3>
             <p class="light"><spring:message code="ExploitReturnsMessage"/></p>

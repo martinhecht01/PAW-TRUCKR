@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.config;
 
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.jca.context.SpringContextResourceAdapter;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -38,8 +40,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public ViewResolver viewResolver(){
         final InternalResourceViewResolver vr = new InternalResourceViewResolver();
-
         vr.setViewClass(JstlView.class);
+        vr.setExposeContextBeansAsAttributes(true);
         vr.setPrefix("/WEB-INF/jsp/");
         vr.setSuffix(".jsp");
 
