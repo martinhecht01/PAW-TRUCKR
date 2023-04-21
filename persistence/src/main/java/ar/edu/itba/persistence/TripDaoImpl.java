@@ -108,10 +108,9 @@ public class TripDaoImpl implements TripDao {
         if(pag < 1)
             pag = 1;
         Integer offset = (pag-1)*10;
-        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL LIMIT ? OFFSET ? ";
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL ";
         List<Object> params = new ArrayList<>();
-        params.add(ITEMS_PER_PAGE);
-        params.add(offset);
+
 
         if (origin != null && !origin.equals("")){
             query = query + " AND origin = ?";
@@ -169,6 +168,9 @@ public class TripDaoImpl implements TripDao {
                 query = query + " ORDER BY price DESC";
             }
         }
+        query = query + " LIMIT ? OFFSET ?";
+        params.add(ITEMS_PER_PAGE);
+        params.add(offset);
 
         //Aun no hago query por precio porque no esta en la base de datos
         return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
