@@ -106,9 +106,11 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate){
-        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL";
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
+        Integer offset = pag*10;
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL LIMIT 10 OFFSET ? ";
         List<Object> params = new ArrayList<>();
+        params.add(offset);
 
         if (origin != null && !origin.equals("")){
             query = query + " AND origin = ?";

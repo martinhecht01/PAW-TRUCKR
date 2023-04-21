@@ -49,7 +49,7 @@ public class TripController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate,0);
         view.addObject("offers", trips);
         return view;
     }
