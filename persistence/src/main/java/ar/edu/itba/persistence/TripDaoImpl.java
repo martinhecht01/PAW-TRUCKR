@@ -21,29 +21,27 @@ import java.util.*;
 @Repository
 public class TripDaoImpl implements TripDao {
 
-    private final static RowMapper<Trip> ROW_MAPPER = new RowMapper<Trip>() {
-        @Override
-        public Trip mapRow(ResultSet rs, int rowNum) throws SQLException {
-            LocalDateTime departure = rs.getTimestamp("departuredate").toLocalDateTime();
-            LocalDateTime arrival = rs.getTimestamp("arrivaldate").toLocalDateTime();
-            return new Trip(
-                    rs.getInt("tripid"),
-                    rs.getInt("userid"),
-                    rs.getString("licenseplate"),
-                    rs.getInt("availableweight"),
-                    rs.getInt("availablevolume"),
-                    departure,
-                    arrival,
-                    rs.getString("origin"),
-                    rs.getString("destination"),
-                    rs.getString("type"),
-                    rs.getInt("price"),
-                    rs.getInt("acceptuserid")
-            );
-        }
+    private final static RowMapper<Trip> ROW_MAPPER = (rs, rowNum) -> {
+        LocalDateTime departure = rs.getTimestamp("departuredate").toLocalDateTime();
+        LocalDateTime arrival = rs.getTimestamp("arrivaldate").toLocalDateTime();
+        return new Trip(
+                rs.getInt("tripid"),
+                rs.getInt("userid"),
+                rs.getString("licenseplate"),
+                rs.getInt("availableweight"),
+                rs.getInt("availablevolume"),
+                departure,
+                arrival,
+                rs.getString("origin"),
+                rs.getString("destination"),
+                rs.getString("type"),
+                rs.getInt("price"),
+                rs.getInt("acceptuserid")
+        );
     };
 
 
+    private static Integer ITEMS_PER_PAGE = 10;
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
     @Autowired
@@ -107,9 +105,12 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
+        if(pag < 1)
+            pag = 1;
         Integer offset = (pag-1)*10;
-        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL LIMIT 10 OFFSET ? ";
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL LIMIT ? OFFSET ? ";
         List<Object> params = new ArrayList<>();
+        params.add(ITEMS_PER_PAGE);
         params.add(offset);
 
         if (origin != null && !origin.equals("")){
@@ -175,7 +176,7 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public Integer getTotalTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
+    public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
         String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL ";
         List<Object> params = new ArrayList<>();
 
@@ -218,7 +219,7 @@ public class TripDaoImpl implements TripDao {
             query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
             params.add("'" + arrivalDate + "'");
         }
-        return jdbcTemplate.queryForObject(query, params.toArray(), Integer.class);
+        return (int) Math.ceil((double) jdbcTemplate.queryForObject(query, params.toArray(), Integer.class) /ITEMS_PER_PAGE);
     }
     @Override
     public Optional<Trip> getTripById(int tripid){

@@ -177,10 +177,13 @@
           <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage-1}">${currentPage-1}</button></li>
         </c:if>
         <li class="page-item disabled"><button type="submit" class="page-link" name="page" value="${currentPage}">${currentPage}</button></li>
-        <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage+1}">${currentPage + 1}</button></li>
-        <li class="page-item">
-          <button type="submit" class="page-link" name="page" value="${currentPage+1}">Next</button>
-        </li>
+        <c:if test="${currentPage < maxPage}">
+          <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage+1}">${currentPage + 1}</button></li>
+          <li class="page-item">
+            <button type="submit" class="page-link" name="page" value="${currentPage+1}">Next</button>
+          </li>
+        </c:if>
+
       </ul>
     </c:if>
   </div>

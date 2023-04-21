@@ -8,7 +8,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 <html>
 <head>
-    <title><spring:message code="500Error"/></title>
+    <title><c:out value="${errorCode}"></c:out></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">

@@ -40,12 +40,14 @@ public class TripController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-
-        if(Integer.parseInt(page) < 1){
+        Integer maxPages = ts.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Integer currPage = Integer.parseInt(page);
+        if(Integer.parseInt(page) < 1 || Integer.parseInt(page) > maxPages ){
             page = "1";
         }
 
         final ModelAndView view = new ModelAndView("landing/browseTrips");
+        view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
         view.addObject("origin",origin);
         view.addObject("destination",destination);

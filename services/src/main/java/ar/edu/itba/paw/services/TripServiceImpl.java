@@ -75,5 +75,10 @@ public class TripServiceImpl implements TripService {
         return acceptedTrip;
     }
 
+    @Override
+    public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
+        return tripDao.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+    }
+
 
 }

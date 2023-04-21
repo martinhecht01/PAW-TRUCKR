@@ -25,7 +25,6 @@ public class ExceptionController {
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ModelAndView handleResourceNotFoundException() {
-
         ModelAndView mv = new ModelAndView();
         mv.addObject("errorCode", HttpStatus.NOT_FOUND);
         mv.addObject("errorMsgCode", "PageNotFound");
@@ -34,13 +33,14 @@ public class ExceptionController {
         return mv;
     }
 
-    @ExceptionHandler({RuntimeException.class, ServletException.class, NullPointerException.class})
+    @ExceptionHandler({Exception.class, RuntimeException.class, NullPointerException.class})
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     public ModelAndView internalServerError(){
         ModelAndView mv = new ModelAndView();
         mv.addObject("errorCode", HttpStatus.INTERNAL_SERVER_ERROR);
         mv.addObject("errorMsgCode", "500ErrorCode");
         mv.setViewName("landing/error");
-        return new ModelAndView("landing/error");
+
+        return mv;
     }
 }
