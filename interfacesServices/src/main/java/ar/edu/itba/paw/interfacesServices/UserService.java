@@ -7,4 +7,6 @@ public interface UserService {
     User createUser(String email, String name, String id);
     User getUserByCuit(String cuit);
     User getUserById(int id);
+
+    User findByUsername(String username);
 }

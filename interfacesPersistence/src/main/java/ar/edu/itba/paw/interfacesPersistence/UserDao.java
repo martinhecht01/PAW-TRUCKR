@@ -11,4 +11,5 @@ public interface UserDao {
     public User getUserById(int id);
     Optional<User> findById(String id);
 
+    public User getUserByUsername(String username);
 }
