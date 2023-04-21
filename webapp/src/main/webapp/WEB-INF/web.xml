@@ -22,6 +22,10 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
       <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
     </init-param>
 
+    <init-param>
+      <param-name>throwExceptionIfNoHandlerFound</param-name>
+      <param-value>true</param-value>
+    </init-param>
     <load-on-startup>1</load-on-startup> <!-- Esto mismo es que se instancia al lanzar el proyecto-->
   </servlet>
   <servlet-mapping>
