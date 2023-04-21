@@ -175,6 +175,52 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
+    public Integer getTotalTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
+        String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL ";
+        List<Object> params = new ArrayList<>();
+
+        if (origin != null && !origin.equals("")){
+            query = query + " AND origin = ?";
+            params.add(origin);
+        }
+
+        if (destination != null && !destination.equals("")){
+            query = query + " AND destination = ?";
+            params.add(destination);
+        }
+
+        if (minAvailableVolume != null){
+            query = query + " AND availableVolume >= ?";
+            params.add(minAvailableVolume);
+        }
+
+        if (minAvailableWeight != null){
+            query = query + " AND availableWeight >= ?";
+            params.add(minAvailableWeight);
+        }
+
+        if (minPrice != null){
+            query = query + " AND price >= ?";
+            params.add(minPrice);
+        }
+
+        if (maxPrice != null){
+            query = query + " AND price <= ?";
+            params.add(maxPrice);
+        }
+
+        if (departureDate != null && !departureDate.equals("")){
+            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
+            params.add("'" + departureDate + "'");
+        }
+
+        if (arrivalDate != null && !arrivalDate.equals("")){
+            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
+            params.add("'" + arrivalDate + "'");
+        }
+        return jdbcTemplate.queryForObject(query, params.toArray(), Integer.class);
+    }
+    @Override
     public Optional<Trip> getTripById(int tripid){
         List<Trip> trips= jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ?", ROW_MAPPER, tripid);
         return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));

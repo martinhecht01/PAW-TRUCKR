@@ -20,6 +20,9 @@ public interface TripDao {
                 String type,
                 int price);
     List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
+
+    Integer getTotalTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
+
     Optional<Trip> getTripById(int tripid);
     Trip acceptTrip(Trip trip, int acceptUserId);
 }
