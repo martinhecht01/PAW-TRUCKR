@@ -55,11 +55,8 @@
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
                     <form:select class="form-select" path="cargoType">
-<%--                        --%>
-                        <option selected>...</option>
-                        <option value="<spring:message code="CreateTripCargoTypeRefrigerated"/>"><spring:message code="CreateTripCargoTypeRefrigerated"/></option>
-                        <option value="<spring:message code="CreateTripCargoTypeHazardous"/>"><spring:message code="CreateTripCargoTypeHazardous"/></option>
-                        <option value="<spring:message code="CreateTripCargoTypeNormal"/>"><spring:message code="CreateTripCargoTypeNormal"/></option>
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <form:options items="${cargoOptions}"/>
                     </form:select>
                 </div>
             </div>
@@ -70,8 +67,6 @@
                     <form:errors path="origin" cssClass="formError" element="p"/>
                     <form:input type="text" class="form-control" path="origin" placeholder="Buenos Aires (CABA)"/>
                 </div>
-
-
                 <div class="mb-3 inlineFormInput">
                     <form:label path="destination" for="destination" class="form-label"><spring:message code="Destination"/></form:label>
                     <form:errors path="destination" cssClass="formError" element="p"/>
@@ -85,7 +80,6 @@
                     <form:errors path="departureDate" cssClass="formError" element="p"/>
                     <form:input type="datetime-local" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
                 </div>
-
                 <div class="mb-3 inlineFormInput">
                     <form:label for="arrivalDate" path="arrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
                     <form:errors path="arrivalDate" cssClass="formError" element="p"/>

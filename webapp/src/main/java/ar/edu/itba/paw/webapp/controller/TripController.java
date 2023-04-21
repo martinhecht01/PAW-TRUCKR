@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -57,6 +58,11 @@ public class TripController {
     public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
         final ModelAndView view = new ModelAndView("landing/createTrip");
         return view;
+    }
+
+    @ModelAttribute("cargoOptions")
+    public List<String> getOptions() {
+        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
     }
 
 

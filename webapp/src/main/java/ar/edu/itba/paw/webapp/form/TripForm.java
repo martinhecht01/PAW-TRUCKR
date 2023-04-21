@@ -35,17 +35,21 @@ public class TripForm {
     private String price;
 
     //custom annotation para validar.
+    @NotNull
     @PreventPast
     private String departureDate;
 
-
+    @NotNull
     @PreventPast
     private  String arrivalDate;
 
+    @NotNull
     @Size(min = 4)
     private String cargoType;
+
     @Size(min = 1, max = 100)
     private  String origin;
+
     @Size(min = 1, max = 100)
     private String destination;
 

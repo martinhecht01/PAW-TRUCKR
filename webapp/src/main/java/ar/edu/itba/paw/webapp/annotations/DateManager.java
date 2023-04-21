@@ -18,9 +18,10 @@ public class DateManager implements ConstraintValidator<DateValidator, TripForm>
     //Checks if its future or present
     @Override
     public boolean isValid(TripForm form, ConstraintValidatorContext constraintValidatorContext) {
+        if(form.getDepartureDate() == null || form.getArrivalDate() == null || form.getDepartureDate().isEmpty() || form.getArrivalDate().isEmpty())
+            return false;
         String start = form.getDepartureDate();
         String end = form.getArrivalDate();
-
 
         LocalDateTime startDateTime = LocalDateTime.parse(start);
         LocalDateTime endDateTime = LocalDateTime.parse(end);

@@ -11,6 +11,10 @@ public class PastPreventer implements ConstraintValidator<PreventPast, String>{
 
     @Override
     public boolean isValid(String date, javax.validation.ConstraintValidatorContext constraintValidatorContext) {
+
+        if(date == null || date.isEmpty())
+            return false;
+
         LocalDateTime dateTime = LocalDateTime.parse(date);
         return !dateTime.isBefore(LocalDateTime.now());
     }
