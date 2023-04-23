@@ -84,7 +84,7 @@ public class TripController {
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
 
-        ts.createTrip(
+        Trip trip = ts.createTrip(
                 form.getEmail(),
                 form.getName(),
                 form.getId(),
@@ -99,7 +99,7 @@ public class TripController {
                 Integer.parseInt(form.getPrice())
         );
 
-        return new ModelAndView("redirect:/browseTrips");
+        return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
     }
 
     @RequestMapping("/tripDetail")
@@ -120,6 +120,14 @@ public class TripController {
         ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
 
         return new ModelAndView("redirect:/browseTrips");
+    }
+
+    @RequestMapping("/trips/success")
+    public ModelAndView tripDetail(@RequestParam("id") int id) {
+        final ModelAndView mav = new ModelAndView("landing/success");
+        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        mav.addObject("trip", trip);
+        return mav;
     }
 
 
