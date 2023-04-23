@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @Component
-public class UserDetailsServicesImpl implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private UserService us;
 
@@ -25,7 +25,7 @@ public class UserDetailsServicesImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
-        final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_U SER"), new SimpleGrantedAuthority("ROLE_A DMIN"));
+        final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_A DMIN"));
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
     }
 }

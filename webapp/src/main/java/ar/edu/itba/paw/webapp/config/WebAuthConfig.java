@@ -14,13 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.concurrent.TimeUnit;
 
+@Configuration
 @EnableWebSecurity
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
-@Configuration
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
-    private PawUserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,5 +28,37 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    protected void configure(final HttpSecurity http) throws Exception {
+        http.sessionManagement()
+                .invalidSessionUrl("/login")
+                .and().authorizeRequests()
+                .antMatchers("/login").anonymous()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/**").authenticated()
+                .and().formLogin()
+                .usernameParameter("j_username")
+                .passwordParameter("j_password")
+                .defaultSuccessUrl("/", false)
+                .loginPage("/login")
+                .and().rememberMe()
+                .rememberMeParameter("j_rememberme")
+                .userDetailsService(userDetailsService)
+                .key("mysupersecretketthatnobodyknowsabout") // no hacer esto, crear una aleatoria segura suficiente mente grande y colocarla bajo src/main/resources
+                                .tokenValiditySeconds((int) TimeUnit.DAYS.
+                                        toSeconds(30))
+                                .and().logout()
+                                .logoutUrl("/logout")
+                                .logoutSuccessUrl("/login")
+                                .and().exceptionHandling()
+                                .accessDeniedPage("/403")
+                                .and().csrf().disable();
+    }
+    @Override
+    public void configure(final WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/css/**", "/js/**", "/img/**", " /favicon.ico", "/403");
     }
 }

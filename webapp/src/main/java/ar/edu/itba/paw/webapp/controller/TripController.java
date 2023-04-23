@@ -54,6 +54,11 @@ public class TripController {
         return view;
     }
 
+    @RequestMapping("/login")
+    public ModelAndView login() {
+        return new ModelAndView("login");
+    }
+
     @RequestMapping("/createTrip")
     public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
         final ModelAndView view = new ModelAndView("landing/createTrip");
