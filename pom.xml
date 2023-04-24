@@ -9,6 +9,7 @@
   <name>paw-2023a-08</name>
     
   <properties>
+    <spring-security.version>4.0.4.RELEASE</spring-security.version>
     <spring.version>4.2.5.RELEASE</spring.version>
     <org.postgresql.version>42.2.5</org.postgresql.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,6 +26,21 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-web</artifactId>
+        <version>${spring-security.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-config</artifactId>
+        <version>${spring-security.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>

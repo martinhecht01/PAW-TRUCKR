@@ -45,8 +45,8 @@ public class TripServiceImpl implements TripService {
                            int price)
     {
         User user = userDao.getUserByCuit(cuit);
-        if(user == null)
-            user = userDao.create(email,name,cuit);
+//        if(user == null)
+//            user = userDao.create(email,name,cuit, password);  YA NO SE DEBE CREAR UN USER ACA
         int userId = user.getUserId();
         return tripDao.create(userId, licensePlate.toUpperCase(), availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price);
     }
@@ -65,7 +65,7 @@ public class TripServiceImpl implements TripService {
     public Trip acceptTrip(int tripId,String email, String name, String cuit ){
         User user = userDao.getUserByCuit(cuit);
         if(user == null)
-            user = userDao.create(email,name,cuit);
+            user = userDao.create(email,name,cuit, "New Accept User");
         int acceptUserId = user.getUserId();
 
         Trip trip = tripDao.getTripById(tripId).get();

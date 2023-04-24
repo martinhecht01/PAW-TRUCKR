@@ -7,38 +7,41 @@ public class UserForm {
 
     @Size(min = 6, max = 100)
     private String email;
+
     @Size(min = 6, max = 100)
     @Pattern(regexp = "[a-zA-Z0-9]+")
-    private String username;
+    private String name;
+
     @Size(min = 6, max = 100)
     private String password;
+
     @Size(min = 6, max = 100)
     private String repeatPassword;
 
     @Pattern(regexp = "20-[0-9]{8}-[0-9]")
-    private String id;
+    private String cuit;
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getId() {
-        return id;
+    public String getCuit() {
+        return cuit;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setCuit(String cuit) {
+        this.cuit = cuit;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
     public String getPassword() {
         return password;
