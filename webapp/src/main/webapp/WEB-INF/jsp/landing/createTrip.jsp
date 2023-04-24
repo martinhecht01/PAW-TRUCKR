@@ -6,7 +6,7 @@
 
 <html>
 <link>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"/>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 
@@ -26,24 +26,6 @@
         </div>
         <div class="card-body">
             <form:errors cssClass="formError"/>
-            <div class="mb-3">
-                <form:label for="name" class="form-label" path="name"><spring:message code="Name"/></form:label>
-                <form:errors path="name" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" placeholder="Juan Romero" path="name"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label class="form-label" path="id"><spring:message code="Cuit"/></form:label>
-                <form:errors path="id" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" path="id" id="telle" maxlength="13" placeholder="00-00000000-0"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label for="email" class="form-label" path="email"><spring:message code="Email"/></form:label>
-                <form:errors path="email" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" path="email" placeholder="ejemplo@gmail.com"/>
-            </div>
-
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="licensePlate" class="form-label"><spring:message code="CreateTripLicensePlate"/></form:label>
@@ -65,12 +47,18 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="origin" for="origin" class="form-label"><spring:message code="Origin"/></form:label>
                     <form:errors path="origin" cssClass="formError" element="p"/>
-                    <form:input type="text" class="form-control" path="origin" placeholder="Buenos Aires (CABA)"/>
+                    <form:select class="form-select" path="origin">
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <form:options items="${cities}"/>
+                    </form:select>
                 </div>
                 <div class="mb-3 inlineFormInput">
                     <form:label path="destination" for="destination" class="form-label"><spring:message code="Destination"/></form:label>
                     <form:errors path="destination" cssClass="formError" element="p"/>
-                    <form:input type="text" class="form-control" path="destination" placeholder="Cordoba (CBA)"/>
+                    <form:select class="form-select" path="destination">
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <form:options items="${cities}"/>
+                    </form:select>
                 </div>
             </div>
 

@@ -172,7 +172,6 @@ public class TripDaoImpl implements TripDao {
         params.add(ITEMS_PER_PAGE);
         params.add(offset);
 
-        //Aun no hago query por precio porque no esta en la base de datos
         return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
 
     }

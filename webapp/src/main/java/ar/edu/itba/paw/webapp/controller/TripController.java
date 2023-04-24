@@ -1,12 +1,17 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfacesServices.CityService;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
+import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -21,11 +26,13 @@ public class TripController {
 
     private final TripService ts;
     private final UserService us;
+    private final CityService cs;
 
     @Autowired
-    public TripController(final TripService ts, final UserService us){
+    public TripController(final TripService ts, final UserService us, final CityService cs){
         this.ts = ts;
         this.us = us;
+        this.cs = cs;
     }
 
     @RequestMapping("/browseTrips")
@@ -47,6 +54,7 @@ public class TripController {
         }
 
         final ModelAndView view = new ModelAndView("landing/browseTrips");
+
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
         view.addObject("origin",origin);
@@ -69,6 +77,11 @@ public class TripController {
         return view;
     }
 
+    @ModelAttribute("cities")
+    public List<String> getCities() {
+        return cs.getAllCities();
+    }
+
     @ModelAttribute("cargoOptions")
     public List<String> getOptions() {
         return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
@@ -84,10 +97,11 @@ public class TripController {
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
 
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
         Trip trip = ts.createTrip(
-                form.getEmail(),
-                form.getName(),
-                form.getId(),
+                user.getCuit(),
                 form.getLicensePlate(),
                 Integer.parseInt(form.getAvailableWeight()),
                 Integer.parseInt(form.getAvailableVolume()),
