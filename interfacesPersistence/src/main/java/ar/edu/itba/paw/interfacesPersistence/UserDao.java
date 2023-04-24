@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface UserDao {
     public User create(final String email, final String name, final String userId, final String password);
-    public User getUserByCuit(String userCuit);
+    public Optional<User> getUserByCuit(String userCuit);
     public User getUserById(int id);
     Optional<User> findById(String id);
 }

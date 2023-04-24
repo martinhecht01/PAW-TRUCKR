@@ -31,9 +31,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip createTrip(String email,
-                           String name,
-                           String cuit,
+    public Trip createTrip(String cuit,
                            String licensePlate,
                            int availableWeight,
                            int availableVolume,
@@ -44,9 +42,7 @@ public class TripServiceImpl implements TripService {
                            String type,
                            int price)
     {
-        User user = userDao.getUserByCuit(cuit);
-//        if(user == null)
-//            user = userDao.create(email,name,cuit, password);  YA NO SE DEBE CREAR UN USER ACA
+        User user = userDao.getUserByCuit(cuit).get();
         int userId = user.getUserId();
         return tripDao.create(userId, licensePlate.toUpperCase(), availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price);
     }
@@ -63,7 +59,7 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public Trip acceptTrip(int tripId,String email, String name, String cuit ){
-        User user = userDao.getUserByCuit(cuit);
+        User user = userDao.getUserByCuit(cuit).get();
         if(user == null)
             user = userDao.create(email,name,cuit, "New Accept User");
         int acceptUserId = user.getUserId();

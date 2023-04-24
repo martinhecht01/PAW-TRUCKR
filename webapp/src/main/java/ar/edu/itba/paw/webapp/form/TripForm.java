@@ -13,15 +13,6 @@ import java.util.Date;
 
 @DateValidator
 public class TripForm {
-    @Size(min = 6, max = 100)
-    private  String name;
-
-    @Pattern(regexp = "^\\d{2}-\\d{7,8}-\\d$")
-    private  String id;
-
-    @Pattern(regexp="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
-    private  String email;
-
     @Pattern(regexp="^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
     private  String licensePlate;
 
@@ -53,18 +44,6 @@ public class TripForm {
     @Size(min = 1, max = 100)
     private String destination;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
@@ -93,18 +72,6 @@ public class TripForm {
     public void setPrice(String price) {this.price = price;}
 
     public String getPrice() {return price;}
-
-    public String getName() {
-        return name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
 
     public String getLicensePlate() {
         return licensePlate;

@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TripService {
-    Trip createTrip(
-                    String email,
-                    String name,
-                    String id,
+    Trip createTrip(String cuit,
                     String licensePlate,
                     int availableWeight,
                     int availableVolume,

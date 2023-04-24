@@ -26,24 +26,6 @@
         </div>
         <div class="card-body">
             <form:errors cssClass="formError"/>
-            <div class="mb-3">
-                <form:label for="name" class="form-label" path="name"><spring:message code="Name"/></form:label>
-                <form:errors path="name" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" placeholder="Juan Romero" path="name"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label class="form-label" path="id"><spring:message code="Cuit"/></form:label>
-                <form:errors path="id" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" path="id" id="telle" maxlength="13" placeholder="00-00000000-0"/>
-            </div>
-
-            <div class="mb-3">
-                <form:label for="email" class="form-label" path="email"><spring:message code="Email"/></form:label>
-                <form:errors path="email" cssClass="formError" element="p"/>
-                <form:input type="text" class="form-control" path="email" placeholder="ejemplo@gmail.com"/>
-            </div>
-
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="licensePlate" class="form-label"><spring:message code="CreateTripLicensePlate"/></form:label>

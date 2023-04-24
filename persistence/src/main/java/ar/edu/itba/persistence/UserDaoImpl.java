@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import javax.swing.text.html.Option;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -63,12 +64,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserByCuit(String userCuit) {
+    public Optional<User> getUserByCuit(String userCuit) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE cuit = ?", ROW_MAPPER, userCuit);
         if(users.isEmpty()){
-            return null;
+            return Optional.empty();
         }
-        return users.get(0);
+        return Optional.of(users.get(0));
     }
 
     @Override

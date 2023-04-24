@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,10 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String cuit) throws UsernameNotFoundException {
-        final User user = us.getUserByCuit(cuit);
-        if (user == null) {
-            throw new UsernameNotFoundException("No user with the cuit " + cuit);
-        }
+        final User user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
 
         //TODO: implement logic to grant only required authorities
         final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
