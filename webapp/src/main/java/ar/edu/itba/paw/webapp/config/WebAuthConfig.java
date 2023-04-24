@@ -47,7 +47,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                     .defaultSuccessUrl("/", false)
                     .loginPage("/login")
                 .and().rememberMe()
-                    .rememberMeParameter("j_rememberme")
+                    .rememberMeParameter("rememberme")
                     .userDetailsService(userDetailsService)
                 .key("mysupersecretketthatnobodyknowsabout") // no hacer esto, crear una aleatoria segura suficientemente grande y colocarla bajo src/main/resources
                         .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
