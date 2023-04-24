@@ -77,13 +77,13 @@
           <div class="form-group mb-3">
             <label for="sortOrder"><spring:message code="FiltersSortBy"/>:</label>
             <select class="form-control" name="sortOrder" id="sortOrder">
-              <option value="" disabled <c:if test="${sortOrder == null || sortOrder == ''}">selected</c:if>>Seleccionar</option>
-              <option value="departureDate ASC" <c:if test="${sortOrder == 'departureDate ASC'}">selected</c:if>>Fecha de Salida (asc)</option>
-              <option value="departureDate DESC" <c:if test="${sortOrder == 'departureDate DESC'}">selected</c:if>>Fecha de Salida (desc)</option>
-              <option value="arrivalDate ASC" <c:if test="${sortOrder == 'arrivalDate ASC'}">selected</c:if>>Fecha de Llegada (asc)</option>
-              <option value="arrivalDate DESC" <c:if test="${sortOrder == 'arrivalDate DESC'}">selected</c:if>>Fecha de Llegada (desc)</option>
-              <option value="price ASC" <c:if test="${sortOrder == 'price ASC'}">selected</c:if>>Precio (asc)</option>
-              <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>>Precio (desc)</option>
+              <option value="" disabled <c:if test="${sortOrder == null || sortOrder == ''}">selected</c:if>><spring:message code="Select"/></option>
+              <option value="departureDate ASC" <c:if test="${sortOrder == 'departureDate ASC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateAsc"/></option>
+              <option value="departureDate DESC" <c:if test="${sortOrder == 'departureDate DESC'}">selected</c:if>><spring:message code="FiltersSortDepartureDateDesc"/></option>
+              <option value="arrivalDate ASC" <c:if test="${sortOrder == 'arrivalDate ASC'}">selected</c:if>><spring:message code="FiltersSortPriceAsc"/></option>
+              <option value="arrivalDate DESC" <c:if test="${sortOrder == 'arrivalDate DESC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateDesc"/></option>
+              <option value="price ASC" <c:if test="${sortOrder == 'price ASC'}">selected</c:if>><spring:message code="FiltersSortPriceAsc"/></option>
+              <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>><spring:message code="FiltersSortPriceDesc"/></option>
             </select>
           </div>
           <button type="submit" class="btn btn-color" ><spring:message code="FiltersApply"/></button>
