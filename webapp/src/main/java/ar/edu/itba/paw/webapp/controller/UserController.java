@@ -38,12 +38,9 @@ public class UserController {
 
     @RequestMapping("/")
     public ModelAndView landing() {
-        final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        final User user = us.getUserByCuit(userDetails.getUsername());
-        if(user==null){
-            throw new UserNotFoundException();
-        }
-        return new ModelAndView("redirect:/" + user.getUserId());
+        //final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //final User user = us.getUserByCuit(userDetails.getUsername());
+        return new ModelAndView("landing/index");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
