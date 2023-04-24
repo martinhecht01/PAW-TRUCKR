@@ -65,12 +65,18 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="origin" for="origin" class="form-label"><spring:message code="Origin"/></form:label>
                     <form:errors path="origin" cssClass="formError" element="p"/>
-                    <form:input type="text" class="form-control" path="origin" placeholder="Buenos Aires (CABA)"/>
+                    <form:select class="form-select" path="origin">
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <form:options items="${cities}"/>
+                    </form:select>
                 </div>
                 <div class="mb-3 inlineFormInput">
                     <form:label path="destination" for="destination" class="form-label"><spring:message code="Destination"/></form:label>
                     <form:errors path="destination" cssClass="formError" element="p"/>
-                    <form:input type="text" class="form-control" path="destination" placeholder="Cordoba (CBA)"/>
+                    <form:select class="form-select" path="destination">
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <form:options items="${cities}"/>
+                    </form:select>
                 </div>
             </div>
 
