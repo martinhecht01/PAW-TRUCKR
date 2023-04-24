@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfacesServices.CityService;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
@@ -21,11 +22,13 @@ public class TripController {
 
     private final TripService ts;
     private final UserService us;
+    private final CityService cs;
 
     @Autowired
-    public TripController(final TripService ts, final UserService us){
+    public TripController(final TripService ts, final UserService us, final CityService cs){
         this.ts = ts;
         this.us = us;
+        this.cs = cs;
     }
 
     @RequestMapping("/browseTrips")
@@ -67,6 +70,11 @@ public class TripController {
     public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
         final ModelAndView view = new ModelAndView("landing/createTrip");
         return view;
+    }
+
+    @ModelAttribute("cities")
+    public List<String> getCities() {
+        return cs.getAllCities();
     }
 
     @ModelAttribute("cargoOptions")
