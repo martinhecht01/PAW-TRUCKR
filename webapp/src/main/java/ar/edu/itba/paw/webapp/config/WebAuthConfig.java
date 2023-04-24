@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 @EnableWebSecurity
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -26,6 +27,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
@@ -36,9 +38,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
-                .antMatchers("/login").anonymous()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/**").authenticated()
+                    .antMatchers("/login", "/create").anonymous()
+                    .antMatchers("/admin/**").hasRole("ADMIN")
+                    .antMatchers("/**").authenticated()
                 .and().formLogin()
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
@@ -47,19 +49,19 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe()
                 .rememberMeParameter("j_rememberme")
                 .userDetailsService(userDetailsService)
-                .key("mysupersecretketthatnobodyknowsabout") // no hacer esto, crear una aleatoria segura suficiente mente grande y colocarla bajo src/main/resources
-                                .tokenValiditySeconds((int) TimeUnit.DAYS.
-                                        toSeconds(30))
-                                .and().logout()
-                                .logoutUrl("/logout")
-                                .logoutSuccessUrl("/login")
-                                .and().exceptionHandling()
-                                .accessDeniedPage("/403")
-                                .and().csrf().disable();
+                .key("mysupersecretketthatnobodyknowsabout") // no hacer esto, crear una aleatoria segura suficientemente grande y colocarla bajo src/main/resources
+                        .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+                    .and().logout()
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                    .and().exceptionHandling()
+                        .accessDeniedPage("/403")
+                    .and().csrf().disable();
     }
+
     @Override
     public void configure(final WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", " /favicon.ico", "/403");
+                .antMatchers("/css/**", "/js/**", "/img/**", " /favicon.ico", "/resources/**", "/403");
     }
 }

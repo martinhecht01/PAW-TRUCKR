@@ -13,11 +13,21 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    private final UserService us;
+
+    // lo habias puesto asi por alguna razon particular Gayba?
+   // @Autowired
+   // private UserService us;
+
     @Autowired
-    private UserService us;
+    public UserDetailsServiceImpl(final UserService us){
+        this.us = us;
+    }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
@@ -25,8 +35,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("No user by the name " + username);
         }
-        final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_A DMIN"));
-        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
+
+        //TODO: implement logic to grant only required authorities
+        final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
+
+        return new AuthUserDetailsImpl(username, user.getPassword(), authorities);
     }
 
 

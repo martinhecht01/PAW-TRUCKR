@@ -2,11 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,6 +53,15 @@ public class UserController {
         us.createUser(form.getEmail(), form.getUsername(), form.getId(), form.getPassword());
 
         return new ModelAndView("redirect:/browseTrips");
+    }
+
+    @RequestMapping("/{id:\\d+}")
+    public ModelAndView profile(@PathVariable("id") final long id) {
+        final ModelAndView mav = new ModelAndView("user/profile");
+
+       // mav.addObject("user", us.findById(userId).orElseThrow(UserNotFoundException::new));
+
+        return mav;
     }
 
 }
