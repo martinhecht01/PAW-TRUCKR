@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
