@@ -9,6 +9,7 @@ import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
+import ar.edu.itba.paw.webapp.form.RequestForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -114,6 +115,33 @@ public class TripController {
         );
 
         return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
+    }
+    @RequestMapping(value = "/request", method = { RequestMethod.POST })
+    public ModelAndView create(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
+        if (errors.hasErrors()) {
+            //return createTrip(form);
+        }
+
+        LocalDateTime departure = LocalDateTime.parse(form.getMinDepartureDate());
+        LocalDateTime arrival = LocalDateTime.parse(form.getMaxArrivalDate());
+
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+//        Trip trip = ts.createTrip(
+//                user.getCuit(),
+//                form.getLicensePlate(),
+//                Integer.parseInt(form.getAvailableWeight()),
+//                Integer.parseInt(form.getAvailableVolume()),
+//                departure,
+//                arrival,
+//                form.getOrigin(),
+//                form.getDestination(),
+//                form.getCargoType(),
+//                Integer.parseInt(form.getPrice())
+//        );
+
+        return new ModelAndView("redirect:/trips/success?id=0");
     }
 
     @RequestMapping("/tripDetail")
