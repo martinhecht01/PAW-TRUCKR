@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Email Template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add any additional CSS styles or references to external CSS files here -->
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${title}">Title</h1>
+    <p th:text="${message}">Message</p>
+</div>
+</body>
+</html>

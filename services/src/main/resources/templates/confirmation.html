@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Account Confirmation</title>
+  <style>
+    /* Define the Roboto font */
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    /* Apply the Roboto font to the body element */
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+<body>
+<h1>Account Confirmation</h1>
+<p>Dear <span th:text="${user.name}"></span>,</p>
+<p>Your account has been successfully created with the following details:</p>
+<ul>
+  <li><strong>Username:</strong> <span th:text="${user.name}"></span></li>
+  <li><strong>Email:</strong> <span th:text="${user.email}"></span></li>
+  <!-- Add any other relevant details here -->
+</ul>
+<p>Thank you for registering with us!</p>
+</body>
+</html>

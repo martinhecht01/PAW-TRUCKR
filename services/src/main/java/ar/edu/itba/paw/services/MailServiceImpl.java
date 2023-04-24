@@ -7,8 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.time.LocalDateTime;
 
 
@@ -17,6 +22,34 @@ public class MailServiceImpl implements MailService {
 
     @Autowired
     private JavaMailSender mailSender;
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    private String generateEmailContent() {
+        Context context = new Context();
+        context.setVariable("title", "My Email Title");
+        context.setVariable("message", "Hello, this is my email message.");
+        return templateEngine.process("emailTemplate.html", context);
+    }
+
+    private String generateEmailConfirmation(User confirmed) {
+        Context context = new Context();
+        context.setVariable("user", confirmed);
+        return templateEngine.process("confirmation.html", context);
+    }
+
+    public void sendConfirmationEmail(User user) throws MessagingException {
+        String htmlContent = generateEmailConfirmation(user);
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(user.getEmail());
+        helper.setSubject("Account Confirmation");
+        helper.setText(htmlContent, true);
+        // You can set additional properties, such as cc, bcc, attachments, etc. using the helper methods
+        mailSender.send(message);
+    }
+
+
 
     @Override
     public void sendEmail(String toEmailAddress){

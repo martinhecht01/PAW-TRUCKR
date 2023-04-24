@@ -86,7 +86,7 @@
               <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>>Precio (desc)</option>
             </select>
           </div>
-          <button type="submit" class="btn btn-color"><spring:message code="FiltersApply"/></button>
+          <button type="submit" class="btn btn-color" ><spring:message code="FiltersApply"/></button>
         </div>
       </div>
   </div>
@@ -188,6 +188,13 @@
     </c:if>
   </div>
 </div>
+<%--  <script>--%>
+<%--    function filterApply() {--%>
+<%--      currentPage = 1;--%>
+<%--      form.submit();--%>
+
+<%--    }--%>
+<%--  </script>--%>
 </form:form>
 <div style="margin-top: auto">
   <components:waveDivider/>
