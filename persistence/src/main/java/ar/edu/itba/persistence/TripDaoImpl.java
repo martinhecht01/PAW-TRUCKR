@@ -177,6 +177,12 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
+    public List<Trip> getAllActiveTripsByUserId(Integer userId) {
+        String query = "SELECT * FROM trips WHERE userid = ? AND acceptuserid IS NULL";
+        return jdbcTemplate.query(query, ROW_MAPPER, userId);
+    }
+
+    @Override
     public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
         String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL ";
         List<Object> params = new ArrayList<>();

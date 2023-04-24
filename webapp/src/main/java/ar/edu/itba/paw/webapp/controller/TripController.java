@@ -144,5 +144,14 @@ public class TripController {
         return mav;
     }
 
+    @RequestMapping("/trips/myTrips")
+    public ModelAndView myTrips(){
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        final ModelAndView mav = new ModelAndView("landing/myTrips");
+        mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
+        return mav;
+    }
+
 
 }
