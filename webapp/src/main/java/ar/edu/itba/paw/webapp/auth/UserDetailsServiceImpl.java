@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.services;
+package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.User;
@@ -28,5 +28,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_A DMIN"));
         return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
     }
+
+
+
 }
 

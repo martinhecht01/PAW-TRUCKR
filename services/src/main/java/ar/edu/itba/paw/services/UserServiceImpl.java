@@ -17,9 +17,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(String email, String name, String id){
+    public User createUser(String email, String name, String id, String password){
         this.email = email;
-        return userDao.create(email,name,id);
+        return userDao.create(email,name,id, password);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public User findByUsername(String username) {
         return userDao.getUserByUsername(username);
     }
 

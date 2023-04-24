@@ -21,7 +21,7 @@ public class UserDaoImpl implements UserDao {
     private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getInt("userid"), rs.getString("email"), rs.getString("name"),  rs.getString("cuit"));
+            return new User(rs.getInt("userid"), rs.getString("email"), rs.getString("name"),  rs.getString("cuit"), rs.getString("password"));
         }
     };
 
@@ -35,7 +35,8 @@ public class UserDaoImpl implements UserDao {
                 "  userid SERIAL PRIMARY KEY,\n" +
                 "  cuit VARCHAR(255) UNIQUE,\n" +
                 "  email VARCHAR(255),\n" +
-                "  name VARCHAR(255)\n" +
+                "  name VARCHAR(255),\n" +
+                "  password VARCHAR(255)\n" +
                 ");");
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("users").usingGeneratedKeyColumns("userid");
     }
@@ -60,13 +61,14 @@ public class UserDaoImpl implements UserDao {
 
 
     @Override
-    public User create(final String email, final String name, final String cuit) {
+    public User create(final String email, final String name, final String cuit, final String password) {
         HashMap<String, String> data = new HashMap<>();
         data.put("email", email);
         data.put("name", name);
         data.put("cuit", cuit);
+        data.put("password", password);
         int userId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new User( userId, email, name, cuit);
+        return new User( userId, email, name, cuit, password);
     }
 
     @Override

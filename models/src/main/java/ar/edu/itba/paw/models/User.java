@@ -6,13 +6,16 @@ public class User {
     private final String name;
     private final String cuit; //Cuit / cuil
 
+    private final String password;
+
     private final int userId;
 
-    public User(final int userId, final String email, final String name, final String cuit){
+    public User(final int userId, final String email, final String name, final String cuit, String password){
         this.userId = userId;
         this.email = email;
         this.name = name;
         this.cuit = cuit;
+        this.password = password;
     }
 
     public String getEmail() {
@@ -29,5 +32,9 @@ public class User {
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

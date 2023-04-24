@@ -48,7 +48,7 @@ public class UserController {
             return register(form);
         }
 
-        us.createUser(form.getEmail(), form.getUsername(), form.getId());
+        us.createUser(form.getEmail(), form.getUsername(), form.getId(), form.getPassword());
 
         return new ModelAndView("redirect:/browseTrips");
     }
