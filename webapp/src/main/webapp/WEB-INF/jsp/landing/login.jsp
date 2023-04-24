@@ -16,22 +16,23 @@
   <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent">
+<c:url var="loginUrl" value="/login"/>
 <components:navBar/>
 <div class="w-75 m-auto">
     <main class="form-signin m-auto">
         <div class="card py-2">
             <div class="card-body">
-                <form:form >
+                <form:form action="${loginUrl}" method="post">
                     <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
                     <h1 class="h3 mb-3 text-center">Log in</h1>
                     <p class="text-center">New to truckr? <a href="<c:url value="/register"/>">Sign up now</a></p>
                     <div class="form-floating">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Email address</label>
+                        <input type="text" class="form-control" id="cuit" name="cuit" placeholder="00-00000000-0">
+                        <label for="cuit">Cuit</label>
                     </div>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                        <label for="floatingPassword">Password</label>
+                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                        <label for="password">Password</label>
                     </div>
 
                     <div class="checkbox mb-3">
@@ -39,7 +40,7 @@
                             <input type="checkbox" value="remember-me"> Remember me
                         </label>
                     </div>
-                    <button class="w-100 btn btn-lg btn-color" type="submit">Sign in</button>
+                    <input class="w-100 btn btn-lg btn-color" type="submit" value="Log in"/>
                 </form:form>
             </div>
         </div>

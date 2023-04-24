@@ -8,5 +8,4 @@ public interface UserService {
     User getUserByCuit(String cuit);
     User getUserById(int id);
 
-    User findByUsername(String username);
 }

@@ -18,28 +18,27 @@ import java.util.HashSet;
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserService us;
-
-    // lo habias puesto asi por alguna razon particular Gayba?
-   // @Autowired
-   // private UserService us;
-
+//    private final UserService us;
+//
     @Autowired
-    public UserDetailsServiceImpl(final UserService us){
-        this.us = us;
-    }
+    private UserService us;
+//
+//    @Autowired
+//    public UserDetailsServiceImpl(final UserService us){
+//        this.us = us;
+//    }
 
     @Override
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        final User user = us.findByUsername(username);
+    public UserDetails loadUserByUsername(final String cuit) throws UsernameNotFoundException {
+        final User user = us.getUserByCuit(cuit);
         if (user == null) {
-            throw new UsernameNotFoundException("No user by the name " + username);
+            throw new UsernameNotFoundException("No user with the cuit " + cuit);
         }
 
         //TODO: implement logic to grant only required authorities
         final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
 
-        return new AuthUserDetailsImpl(username, user.getPassword(), authorities);
+        return new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), authorities);
     }
 
 

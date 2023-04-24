@@ -42,7 +42,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/**").authenticated()
                 .and().formLogin()
-                    .usernameParameter("email")
+                    .usernameParameter("cuit")
                     .passwordParameter("password")
                     .defaultSuccessUrl("/", false)
                     .loginPage("/login")

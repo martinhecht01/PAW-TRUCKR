@@ -50,15 +50,6 @@ public class UserDaoImpl implements UserDao {
         return Optional.of(list.get(0));
     }
 
-    @Override
-    public User getUserByUsername(String username) {
-        List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE name = ?", ROW_MAPPER, username);
-        if(users.isEmpty()){
-            return null;
-        }
-        return users.get(0);
-    }
-
 
     @Override
     public User create(final String email, final String name, final String cuit, final String password) {
