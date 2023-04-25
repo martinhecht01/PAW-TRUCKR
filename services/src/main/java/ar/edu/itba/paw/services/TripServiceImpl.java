@@ -57,19 +57,19 @@ public class TripServiceImpl implements TripService {
         return tripDao.getTripById(tripid);
     }
 
-    @Override
-    public Trip acceptTrip(int tripId,String email, String name, String cuit ){
-        User user = userDao.getUserByCuit(cuit).get();
-        if(user == null)
-            user = userDao.create(email,name,cuit, "New Accept User");
-        int acceptUserId = user.getUserId();
-
-        Trip trip = tripDao.getTripById(tripId).get();
-        Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
-        User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
-        ms.sendEmailTrip(tripOwner, user, acceptedTrip);
-        return acceptedTrip;
-    }
+//    @Override
+//    public Trip acceptTrip(int tripId,String email, String name, String cuit ){
+//        User user = userDao.getUserByCuit(cuit).get();
+//        if(user == null)
+//            user = userDao.create(email,name,cuit, "New Accept User");
+//        int acceptUserId = user.getUserId();
+//
+//        Trip trip = tripDao.getTripById(tripId).get();
+//        Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
+//        User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
+//        ms.sendEmailTrip(tripOwner, user, acceptedTrip);
+//        return acceptedTrip;
+//    }
 
     @Override
     public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {

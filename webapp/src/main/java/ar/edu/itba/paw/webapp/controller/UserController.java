@@ -38,8 +38,8 @@ public class UserController {
 
     @RequestMapping("/")
     public ModelAndView landing() {
-        //final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //final User user = us.getUserByCuit(userDetails.getUsername());
+      //  final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+      //  final User user = us.getUserByCuit(userDetails.getUsername());
         return new ModelAndView("landing/index");
     }
 
@@ -64,7 +64,7 @@ public class UserController {
         if (errors.hasErrors()) {
             return register(form);
         }
-        us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getPassword());
+        us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
         return new ModelAndView("redirect:/browseTrips");
     }
 

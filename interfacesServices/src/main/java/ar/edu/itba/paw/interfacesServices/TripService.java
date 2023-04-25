@@ -24,7 +24,7 @@ public interface TripService {
 
     Optional<Trip> getTripById(int tripid);
 
-    Trip acceptTrip(int tripId,String email, String name, String cuit );
+   // Trip acceptTrip(int tripId,String email, String name, String cuit );
 
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 }

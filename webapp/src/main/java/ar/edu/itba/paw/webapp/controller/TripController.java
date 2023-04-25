@@ -131,7 +131,7 @@ public class TripController {
             return tripDetail(id, form);
         }
 
-        ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
+        //ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
 
         return new ModelAndView("redirect:/browseTrips");
     }
