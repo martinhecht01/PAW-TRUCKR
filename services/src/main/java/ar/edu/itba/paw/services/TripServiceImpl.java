@@ -76,5 +76,10 @@ public class TripServiceImpl implements TripService {
         return tripDao.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
     }
 
+    @Override
+    public List<Trip> getAllActiveTripsByUserId(Integer userid){
+        return tripDao.getAllActiveTripsByUserId(userid);
+    }
+
 
 }

@@ -82,10 +82,10 @@ public class TripController {
         return cs.getAllCities();
     }
 
-    @ModelAttribute("cargoOptions")
-    public List<String> getOptions() {
-        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-    }
+//    @ModelAttribute("cargoOptions")
+//    public List<String> getOptions() {
+//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
+//    }
 
 
     @RequestMapping(value = "/create", method = { RequestMethod.POST })
@@ -141,6 +141,15 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("landing/success");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
+        return mav;
+    }
+
+    @RequestMapping("/trips/myTrips")
+    public ModelAndView myTrips(){
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        final ModelAndView mav = new ModelAndView("landing/myTrips");
+        mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
         return mav;
     }
 
