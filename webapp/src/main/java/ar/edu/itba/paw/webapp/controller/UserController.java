@@ -7,6 +7,7 @@ import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -35,6 +39,18 @@ public class UserController {
 //        final ModelAndView mav = new ModelAndView("landing/index");
 //        return mav;
 //    }
+
+    @ModelAttribute("currentRole")
+    public String getCurrentRole() {
+        Collection<? extends GrantedAuthority> c = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        Iterator<? extends GrantedAuthority> cIterator = c.iterator();
+        for (int i = 0; i < c.size(); i++) {
+            if (cIterator.next().getAuthority().equals("PROVIDER")){
+                return "PROVIDER";
+            }
+        }
+        return "TRUCKER";
+    }
 
     @RequestMapping("/")
     public ModelAndView landing() {

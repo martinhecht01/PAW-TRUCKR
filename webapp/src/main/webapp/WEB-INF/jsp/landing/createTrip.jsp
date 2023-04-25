@@ -32,7 +32,6 @@
                     <form:errors path="licensePlate" cssClass="formError" element="p"/>
                     <form:input type="text" class="form-control" path="licensePlate" placeholder="AAA123"/>
                 </div>
-
                 <div class="mb-3 inlineFormInput">
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
                     <form:errors path="cargoType" cssClass="formError" element="p"/>

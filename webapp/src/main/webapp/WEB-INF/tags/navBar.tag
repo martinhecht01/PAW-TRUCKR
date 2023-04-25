@@ -18,7 +18,12 @@
                     <a class="nav-link" aria-current="page" href="<c:url value="/browseTrips"/>"><spring:message code="Explore"/></a>
                 </li>
                 <li class="nav-item ml-5">
-                    <a class="nav-link" href="<c:url value="/createTrip"/>"><spring:message code="CreateTrip"/></a>
+                    <c:if test="${currentRole == 'TRUCKER'}">
+                        <a class="nav-link" href="<c:url value="/createTrip"/>"><spring:message code="CreateTrip"/></a>
+                    </c:if>
+                    <c:if test="${currentRole == 'PROVIDER'}">
+                        <a class="nav-link" href="<c:url value="/createRequest"/>"><spring:message code="CreateRequest"/></a>
+                    </c:if>
                 </li>
             </ul>
         </div>
