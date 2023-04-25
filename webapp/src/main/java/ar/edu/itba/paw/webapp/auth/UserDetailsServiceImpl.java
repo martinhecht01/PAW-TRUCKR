@@ -12,30 +12,26 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 //import org.springframework.security.core.userdetails.User;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-//    private final UserService us;
-//
+    private final UserService us;
+
     @Autowired
-    private UserService us;
-//
-//    @Autowired
-//    public UserDetailsServiceImpl(final UserService us){
-//        this.us = us;
-//    }
+    public UserDetailsServiceImpl(final UserService us){
+        this.us = us;
+    }
 
     @Override
     public UserDetails loadUserByUsername(final String cuit) throws UsernameNotFoundException {
         final User user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
+        final Collection<GrantedAuthority> authorities = new HashSet<>();
 
-        //TODO: implement logic to grant only required authorities
-        final Collection<? extends GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_ADMIN"));
-
+        //TODO: roles
+        authorities.add(new SimpleGrantedAuthority(user.getRole()));
         return new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), authorities);
     }
 

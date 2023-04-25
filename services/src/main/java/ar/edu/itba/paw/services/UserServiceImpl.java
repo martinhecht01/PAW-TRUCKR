@@ -14,18 +14,18 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     String email;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder){
         this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public User createUser(String email, String name, String id, String password){
+    public User createUser(String email, String name, String id, String role, String password){
         this.email = email;
-        return userDao.create(email,name,id, passwordEncoder.encode(password));
+        return userDao.create(email,name,id, role, passwordEncoder.encode(password));
     }
 
     @Override
@@ -42,4 +42,5 @@ public class UserServiceImpl implements UserService {
     public String toString(){
         return this.email;
     }
+
 }

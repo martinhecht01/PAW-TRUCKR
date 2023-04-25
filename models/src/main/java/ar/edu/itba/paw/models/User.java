@@ -5,16 +5,17 @@ public class User {
     private final String email;
     private final String name;
     private final String cuit; //Cuit / cuil
-
+    private final String role;
     private final String password;
-
     private final int userId;
 
-    public User(final int userId, final String email, final String name, final String cuit, String password){
+
+    public User(final int userId, final String email, final String name, final String cuit, final String role, String password){
         this.userId = userId;
         this.email = email;
         this.name = name;
         this.cuit = cuit;
+        this.role = role;
         this.password = password;
     }
 
@@ -37,4 +38,6 @@ public class User {
     public String getPassword() {
         return password;
     }
+
+    public String getRole() {return role;}
 }

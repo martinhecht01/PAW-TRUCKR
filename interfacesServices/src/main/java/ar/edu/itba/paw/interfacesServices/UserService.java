@@ -6,8 +6,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User createUser(String email, String name, String id, String password);
+    User createUser(String email, String name, String id, String role, String password);
     Optional<User> getUserByCuit(String cuit);
     User getUserById(int id);
-
 }

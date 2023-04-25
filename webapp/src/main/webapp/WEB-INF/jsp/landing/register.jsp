@@ -41,6 +41,18 @@
                         <form:input type="text" class="form-control" path="cuit" placeholder="CUIT"/>
                         <form:label path="cuit">CUIT</form:label>
                     </div>
+
+                    <div class="form-floating">
+                        <div>
+                            <label for="clientRadio">I'm a provider! I will fill the truck with my cargo</label>
+                            <form:radiobutton path="role" id="clientRadio" name="role" value="PROVIDER" />
+                        </div>
+                        <div>
+                            <label for="truckerRadio">I'm a trucker! I will take your cargo where you need</label>
+                            <form:radiobutton path="role" id="truckerRadio" name="role" value="TRUCKER" />
+                        </div>
+                    </div>
+
                     <div class="form-floating">
                         <form:errors cssClass="form-error" path="password"/>
                         <form:input type="password" class="form-control" path="password" placeholder="Password"/>

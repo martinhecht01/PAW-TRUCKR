@@ -21,6 +21,17 @@ public class UserForm {
     @Pattern(regexp = "20-[0-9]{8}-[0-9]")
     private String cuit;
 
+    private String role;
+
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
