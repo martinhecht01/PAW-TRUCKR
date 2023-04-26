@@ -1,16 +1,17 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.CityService;
-import ar.edu.itba.paw.interfacesServices.TripService;
+import ar.edu.itba.paw.interfacesServices.RequestService;
+import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
+import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
-import ar.edu.itba.paw.webapp.form.TripForm;
+import ar.edu.itba.paw.webapp.form.RequestForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,21 +24,21 @@ import java.util.Arrays;
 import java.util.List;
 
 @Controller
-public class TripController {
+public class RequestController {
 
-    private final TripService ts;
+    private final RequestService rs;
     private final UserService us;
     private final CityService cs;
 
     @Autowired
-    public TripController(final TripService ts, final UserService us, final CityService cs){
-        this.ts = ts;
+    public RequestController(final RequestService rs, final UserService us, final CityService cs){
+        this.rs = rs;
         this.us = us;
         this.cs = cs;
     }
 
-    @RequestMapping("/browseTrips")
-    public ModelAndView browseTrips(@RequestParam(defaultValue = "1") String page,
+    @RequestMapping("/browseRequests")
+    public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
                                     @RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
                                     @RequestParam(required = false) Integer minAvailableVolume,
@@ -48,13 +49,13 @@ public class TripController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-        Integer maxPages = ts.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
         Integer currPage = Integer.parseInt(page);
         if(Integer.parseInt(page) < 1 || Integer.parseInt(page) > maxPages ){
             page = "1";
         }
 
-        final ModelAndView view = new ModelAndView("landing/browseTrips");
+        final ModelAndView view = new ModelAndView("landing/browseRequests");
 
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
@@ -67,14 +68,14 @@ public class TripController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
-        view.addObject("offers", trips);
+        List<Request> requests = rs.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        view.addObject("offers", requests);
         return view;
     }
 
-    @RequestMapping("/createTrip")
-    public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
-        final ModelAndView view = new ModelAndView("landing/createTrip");
+    @RequestMapping("/createRequest")
+    public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
+        final ModelAndView view = new ModelAndView("landing/createRequest");
         return view;
     }
 
@@ -89,69 +90,67 @@ public class TripController {
     }
 
 
-    @RequestMapping(value = "/create", method = { RequestMethod.POST })
-    public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
+    @RequestMapping(value = "/request", method = { RequestMethod.POST })
+    public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
-            return createTrip(form);
+            return createRequest(form);
         }
 
-        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
-        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
+        LocalDateTime departure = LocalDateTime.parse(form.getMinDepartureDate());
+        LocalDateTime arrival = LocalDateTime.parse(form.getMaxArrivalDate());
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
-        Trip trip = ts.createTrip(
+        Request request = rs.createRequest(
                 user.getCuit(),
-                form.getLicensePlate(),
-                Integer.parseInt(form.getAvailableWeight()),
-                Integer.parseInt(form.getAvailableVolume()),
+                Integer.parseInt(form.getRequestedWeight()),
+                Integer.parseInt(form.getRequestedVolume()),
                 departure,
                 arrival,
                 form.getOrigin(),
                 form.getDestination(),
                 form.getCargoType(),
-                Integer.parseInt(form.getPrice())
+                Integer.parseInt(form.getMaxPrice())
         );
 
-        return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
+        return new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
     }
 
-
-    @RequestMapping("/tripDetail")
-    public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        final ModelAndView mav = new ModelAndView("landing/tripDetails");
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
-        mav.addObject("trip", trip);
-        mav.addObject("user", us.getUserById(trip.getUserId()));
+    @RequestMapping("/requestDetail")
+    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
+        final ModelAndView mav = new ModelAndView("landing/requestDetails");
+        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("request", request);
+        mav.addObject("user", us.getUserById(request.getUserId()));
         return mav;
     }
 
     @RequestMapping(value = "/accept", method = { RequestMethod.POST })
     public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
-            return tripDetail(id, form);
+            return requestDetail(id, form);
         }
 
-        ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
+        rs.acceptRequest(id, form.getEmail(),form.getName(),form.getCuit());
 
-        return new ModelAndView("redirect:/browseTrips");
+        return new ModelAndView("redirect:/browseRequests");
     }
 
-    @RequestMapping("/trips/success")
-    public ModelAndView tripDetail(@RequestParam("id") int id) {
+    @RequestMapping("/requests/success")
+    public ModelAndView requestDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("landing/success");
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
-        mav.addObject("trip", trip);
+        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("request", request);
         return mav;
     }
 
-    @RequestMapping("/trips/myTrips")
-    public ModelAndView myTrips(){
+    @RequestMapping("/requests/myRequests")
+    public ModelAndView myRequests(){
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        final ModelAndView mav = new ModelAndView("landing/myTrips");
-        mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
+        final ModelAndView mav = new ModelAndView("landing/myRequests");
+        mav.addObject("offers", rs.getAllActiveRequestsByUserId(user.getUserId()));
         return mav;
     }
 

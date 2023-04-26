@@ -61,21 +61,21 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label for="minDepartureDate" path="minDepartureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
                     <form:errors path="minDepartureDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" class="form-control" path="minDepartureDate" placeholder="DD/MM/AAAA"/>
                 </div>
                 <div class="mb-3 inlineFormInput">
                     <form:label for="maxArrivalDate" path="maxArrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
                     <form:errors path="maxArrivalDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" class="form-control" path="maxArrivalDate" placeholder="DD/MM/AAAA"/>
                 </div>
             </div>
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 mr-3 inlineFormTripleInput">
                     <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
-                    <form:errors path="availableVolume" cssClass="formError" element="p"/>
+                    <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="availableVolume" placeholder="0"/>
+                        <form:input type="text" class="form-control" path="requestedVolume" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -84,9 +84,9 @@
 
                 <div class="mb-3 mx-3 inlineFormTripleInput">
                     <form:label path="availableWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
-                    <form:errors path="availableWeight" cssClass="formError" element="p"/>
+                    <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="availableWeight" placeholder="0"/>
+                        <form:input type="text" class="form-control" path="requestedWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
@@ -95,10 +95,10 @@
 
 
                 <div class="mb-3 ml-3 inlineFormTripleInput">
-                    <form:label path="minPrice" class="form-label"><spring:message code="Price"/></form:label>
-                    <form:errors path="minPrice" cssClass="formError" element="p"/>
+                    <form:label path="maxPrice" class="form-label"><spring:message code="Price"/></form:label>
+                    <form:errors path="maxPrice" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="price" placeholder="0"/>
+                        <form:input type="text" class="form-control" path="maxPrice" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">ARS</span>
                         </div>

@@ -2,11 +2,11 @@ package ar.edu.itba.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.RequestDao;
 import ar.edu.itba.paw.models.Request;
-import ar.edu.itba.paw.models.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.Timestamp;
@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class RequestDaoImpl implements RequestDao {
 
     private final static RowMapper<Request> ROW_MAPPER = (rs, rowNum) -> {
@@ -92,8 +93,8 @@ public class RequestDaoImpl implements RequestDao {
         data.put("type", type);
         data.put("price", price);
 
-        int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Request(tripId, userid, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
+        int requestId = jdbcInsert.executeAndReturnKey(data).intValue();
+        return new Request(requestId, userid, availableWeight, availableVolume,price, departureDate, arrivalDate, origin, destination, type,-1);
     }
 
     @Override
@@ -168,74 +169,74 @@ public class RequestDaoImpl implements RequestDao {
         return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
         }
 
-//
-//    @Override
-//    public List<Request> getAllActiveTripsByUserId(Integer userId) {
-//        String query = "SELECT * FROM trips WHERE userid = ? AND acceptuserid IS NULL";
-//        return jdbcTemplate.query(query, ROW_MAPPER, userId);
-//    }
-//
-//    @Override
-//    public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
-//        String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL ";
-//        List<Object> params = new ArrayList<>();
-//
-//        if (origin != null && !origin.equals("")){
-//            query = query + " AND origin = ?";
-//            params.add(origin);
-//        }
-//
-//        if (destination != null && !destination.equals("")){
-//            query = query + " AND destination = ?";
-//            params.add(destination);
-//        }
-//
-//        if (minAvailableVolume != null){
-//            query = query + " AND availableVolume >= ?";
-//            params.add(minAvailableVolume);
-//        }
-//
-//        if (minAvailableWeight != null){
-//            query = query + " AND availableWeight >= ?";
-//            params.add(minAvailableWeight);
-//        }
-//
-//        if (minPrice != null){
-//            query = query + " AND price >= ?";
-//            params.add(minPrice);
-//        }
-//
-//        if (maxPrice != null){
-//            query = query + " AND price <= ?";
-//            params.add(maxPrice);
-//        }
-//
-//        if (departureDate != null && !departureDate.equals("")){
-//            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
-//            params.add("'" + departureDate + "'");
-//        }
-//
-//        if (arrivalDate != null && !arrivalDate.equals("")){
-//            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
-//            params.add("'" + arrivalDate + "'");
-//        }
-//        return (int) Math.ceil((double) jdbcTemplate.queryForObject(query, params.toArray(), Integer.class) /ITEMS_PER_PAGE);
-//    }
-//    @Override
-//    public Optional<Trip> getRequestById(int tripid){
-//        List<Request> trips= jdbcTemplate.query("SELECT * FROM requests WHERE tripid = ?", ROW_MAPPER, tripid);
-//        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
-//    }
-//
-//    @Override
-//    public Trip acceptTrip(Trip trip, int acceptUserId){
-//        System.out.println(acceptUserId);
-//        int rowsAffected = jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE tripid = ?", acceptUserId, trip.getTripId());
-//        if(rowsAffected > 0){
-//            trip.setAcceptUserId(acceptUserId);
-//            return trip;
-//        } else {
-//            return null;
-//        }
-//    }
+
+    @Override
+    public List<Request> getAllActiveRequestsByUserId(Integer userId) {
+        String query = "SELECT * FROM requests WHERE userid = ? AND acceptuserid IS NULL";
+        return jdbcTemplate.query(query, ROW_MAPPER, userId);
+    }
+
+    @Override
+    public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
+        String query = "SELECT COUNT(*) FROM requests WHERE acceptuserid IS NULL ";
+        List<Object> params = new ArrayList<>();
+
+        if (origin != null && !origin.equals("")){
+            query = query + " AND origin = ?";
+            params.add(origin);
+        }
+
+        if (destination != null && !destination.equals("")){
+            query = query + " AND destination = ?";
+            params.add(destination);
+        }
+
+        if (minAvailableVolume != null){
+            query = query + " AND availableVolume >= ?";
+            params.add(minAvailableVolume);
+        }
+
+        if (minAvailableWeight != null){
+            query = query + " AND availableWeight >= ?";
+            params.add(minAvailableWeight);
+        }
+
+        if (minPrice != null){
+            query = query + " AND price >= ?";
+            params.add(minPrice);
+        }
+
+        if (maxPrice != null){
+            query = query + " AND price <= ?";
+            params.add(maxPrice);
+        }
+
+        if (departureDate != null && !departureDate.equals("")){
+            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
+            params.add("'" + departureDate + "'");
+        }
+
+        if (arrivalDate != null && !arrivalDate.equals("")){
+            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
+            params.add("'" + arrivalDate + "'");
+        }
+        return (int) Math.ceil((double) jdbcTemplate.queryForObject(query, params.toArray(), Integer.class) /ITEMS_PER_PAGE);
+    }
+    @Override
+    public Optional<Request> getRequestById(int reqid){
+        List<Request> trips= jdbcTemplate.query("SELECT * FROM requests WHERE requestid = ?", ROW_MAPPER, reqid);
+        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
+    }
+
+    @Override
+    public Request acceptRequest(Request request, int acceptUserId){
+        System.out.println(acceptUserId);
+        int rowsAffected = jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE requestid = ?", acceptUserId, request.getRequestId());
+        if(rowsAffected > 0){
+            request.setAcceptUserId(acceptUserId);
+            return request;
+        } else {
+            return null;
+        }
+    }
 }

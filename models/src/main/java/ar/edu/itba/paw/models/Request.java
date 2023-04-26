@@ -79,5 +79,8 @@ public class Request {
         return destination;
     }
 
+    public void setAcceptUserId(int acceptUserId) {
+        this.acceptUserId=acceptUserId;
+    }
 }
 
