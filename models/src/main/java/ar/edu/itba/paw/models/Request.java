@@ -21,12 +21,12 @@ public class Request {
                    int userId,
                    Number requestedWeight,
                    Number requestedVolume,
-                   Number maxPrice,
                    LocalDateTime minDepartureDate,
                    LocalDateTime maxArrivalDate,
-                   String type,
                    String origin,
                    String destination,
+                   String type,
+                   Number maxPrice,
                    int acceptUserId) {
 
         this.requestId = requestId;

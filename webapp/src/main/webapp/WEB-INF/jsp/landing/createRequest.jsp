@@ -15,7 +15,7 @@
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent">
-<c:url value="/requestcreation" var="postPathing"/>
+<c:url value="/falopa" var="postPathing"/>
 
 <components:navBar/>
 <%--Formulario--%>

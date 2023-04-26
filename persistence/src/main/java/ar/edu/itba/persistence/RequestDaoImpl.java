@@ -26,13 +26,13 @@ public class RequestDaoImpl implements RequestDao {
                 rs.getInt("requestid"),
                 rs.getInt("userid"),
                 rs.getInt("requestedweight"),
-                rs.getInt("requestevolume"),
-                rs.getInt("maxprice"),
+                rs.getInt("requestedvolume"),
                 departure,
                 arrival,
-                rs.getString("type"),
                 rs.getString("origin"),
                 rs.getString("destination"),
+                rs.getString("type"),
+                rs.getInt("maxprice"),
                 rs.getInt("acceptuserid")
         );
     };
@@ -54,8 +54,8 @@ public class RequestDaoImpl implements RequestDao {
                 "CREATE TABLE IF NOT EXISTS requests (\n" +
                         "  requestid SERIAL PRIMARY KEY,\n" +
                         "  userid INT NOT NULL REFERENCES users(userid),\n" +
-                        "  availableweight INT,\n" +
-                        "  availablevolume INT,\n" +
+                        "  requestedweight INT,\n" +
+                        "  requestedvolume INT,\n" +
                         "  mindeparturedate TIMESTAMP,\n" +
                         "  maxarrivaldate TIMESTAMP,\n" +
                         "  origin VARCHAR(255),\n" +
@@ -84,21 +84,21 @@ public class RequestDaoImpl implements RequestDao {
 
         //put all the data in the hashmap casting to string
         data.put("userid", userid);
-        data.put("availableWeight", availableWeight);
-        data.put("availableVolume", availableVolume);
-        data.put("departureDate", Timestamp.valueOf(departureDate));
-        data.put("arrivalDate", Timestamp.valueOf(arrivalDate));
+        data.put("requestedweight", availableWeight);
+        data.put("requestedvolume", availableVolume);
+        data.put("mindeparturedate", Timestamp.valueOf(departureDate));
+        data.put("maxarrivaldate", Timestamp.valueOf(arrivalDate));
         data.put("origin", origin);
         data.put("destination", destination);
         data.put("type", type);
-        data.put("price", price);
+        data.put("maxprice", price);
 
         int requestId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Request(requestId, userid, availableWeight, availableVolume,price, departureDate, arrivalDate, origin, destination, type,-1);
+        return new Request(requestId, userid, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type,price,-1);
     }
 
     @Override
-    public List<Request> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
+    public List<Request> getAllActiveRequests(String origin, String destination, Integer availableVolume, Integer availableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
         if (pag < 1)
             pag = 1;
         Integer offset = (pag - 1) * 10;
@@ -116,14 +116,14 @@ public class RequestDaoImpl implements RequestDao {
             params.add(destination);
         }
 
-        if (minAvailableVolume != null) {
+        if (availableVolume != null) {
             query = query + " AND availableVolume >= ?";
-            params.add(minAvailableVolume);
+            params.add(availableVolume);
         }
 
-        if (minAvailableWeight != null) {
+        if (availableWeight != null) {
             query = query + " AND availableWeight >= ?";
-            params.add(minAvailableWeight);
+            params.add(availableWeight);
         }
 
         if (minPrice != null) {
@@ -137,29 +137,29 @@ public class RequestDaoImpl implements RequestDao {
         }
 
         if (departureDate != null && !departureDate.equals("")) {
-            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
+            query = query + " AND DATE(mindeparturedate) = CAST(? AS DATE)";
             params.add("'" + departureDate + "'");
         }
 
         if (arrivalDate != null && !arrivalDate.equals("")) {
-            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
+            query = query + " AND DATE(maxarrivaldate) = CAST(? AS DATE)";
             params.add("'" + arrivalDate + "'");
         }
 
         if (sortOrder != null && !sortOrder.isEmpty()) {
             //sort order asc and desc
             if (sortOrder.equals("departureDate ASC")) {
-                query = query + " ORDER BY departuredate ASC";
+                query = query + " ORDER BY mindeparturedate ASC";
             } else if (sortOrder.equals("departureDate DESC")) {
-                query = query + " ORDER BY departuredate DESC";
+                query = query + " ORDER BY mindeparturedate DESC";
             } else if (sortOrder.equals("arrivalDate ASC")) {
-                query = query + " ORDER BY arrivaldate ASC";
+                query = query + " ORDER BY maxarrivaldate ASC";
             } else if (sortOrder.equals("arrivalDate DESC")) {
-                query = query + " ORDER BY arrivaldate DESC";
+                query = query + " ORDER BY maxarrivaldate DESC";
             } else if (sortOrder.equals("price ASC")) {
-                query = query + " ORDER BY price ASC";
-            } else if (sortOrder.equals("price DESC")) {
-                query = query + " ORDER BY price DESC";
+                query = query + " ORDER BY maxprice ASC";
+            } else if (sortOrder.equals("maxprice DESC")) {
+                query = query + " ORDER BY maxprice DESC";
             }
         }
         query = query + " LIMIT ? OFFSET ?";
@@ -177,7 +177,7 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
+    public Integer getTotalPages(String origin, String destination, Integer availableVolume, Integer availableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
         String query = "SELECT COUNT(*) FROM requests WHERE acceptuserid IS NULL ";
         List<Object> params = new ArrayList<>();
 
@@ -191,14 +191,14 @@ public class RequestDaoImpl implements RequestDao {
             params.add(destination);
         }
 
-        if (minAvailableVolume != null){
+        if (availableVolume != null){
             query = query + " AND availableVolume >= ?";
-            params.add(minAvailableVolume);
+            params.add(availableVolume);
         }
 
-        if (minAvailableWeight != null){
+        if (availableWeight != null){
             query = query + " AND availableWeight >= ?";
-            params.add(minAvailableWeight);
+            params.add(availableWeight);
         }
 
         if (minPrice != null){
