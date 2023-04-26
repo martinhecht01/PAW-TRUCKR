@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -34,29 +35,14 @@ public class UserController {
         this.ms = ms;
     }
 
-//    @RequestMapping("/")
-//    public ModelAndView landing() {
-//        final ModelAndView mav = new ModelAndView("landing/index");
-//        return mav;
-//    }
-
-    @ModelAttribute("currentRole")
-    public String getCurrentRole() {
-        Collection<? extends GrantedAuthority> c = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        Iterator<? extends GrantedAuthority> cIterator = c.iterator();
-        for (int i = 0; i < c.size(); i++) {
-            if (cIterator.next().getAuthority().equals("PROVIDER")){
-                return "PROVIDER";
-            }
-        }
-        return "TRUCKER";
-    }
 
     @RequestMapping("/")
     public ModelAndView landing() {
       //  final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
       //  final User user = us.getUserByCuit(userDetails.getUsername());
-        return new ModelAndView("landing/index");
+        ModelAndView view = new ModelAndView("landing/index");
+        view.addObject("currentRole", TripController.getCurrentRole());
+        return view;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

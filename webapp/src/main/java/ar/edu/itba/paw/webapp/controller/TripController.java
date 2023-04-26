@@ -19,7 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Controller
 public class TripController {
@@ -68,12 +71,28 @@ public class TripController {
         view.addObject("arrivalDate",arrivalDate);
         List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
         view.addObject("offers", trips);
+        view.addObject("currentRole", getCurrentRole());
         return view;
+    }
+
+        @ModelAttribute("currentRole")
+    public static String getCurrentRole() {
+        Collection<? extends GrantedAuthority> c = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        if (c.contains(new SimpleGrantedAuthority("TRUCKER"))){
+            return "TRUCKER";
+        }
+        else if (c.contains(new SimpleGrantedAuthority("PROVIDER"))){
+            return "PROVIDER";
+        }
+        return "";
+
+
     }
 
     @RequestMapping("/createTrip")
     public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
         final ModelAndView view = new ModelAndView("landing/createTrip");
+        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
@@ -112,8 +131,9 @@ public class TripController {
                 form.getCargoType(),
                 Integer.parseInt(form.getPrice())
         );
-
-        return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
+        ModelAndView view = new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
+        view.addObject("currentRole", getCurrentRole());
+        return view;
     }
 
     @RequestMapping("/tripDetail")
@@ -122,6 +142,7 @@ public class TripController {
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
+        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
@@ -150,6 +171,7 @@ public class TripController {
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         final ModelAndView mav = new ModelAndView("landing/myTrips");
         mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
+        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
