@@ -15,11 +15,11 @@
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent">
-<c:url value="/request" var="postPath"/>
+<c:url value="/requestcreation" var="postPathing"/>
 
 <components:navBar/>
 <%--Formulario--%>
-<form:form modelAttribute="requestForm" action="${postPath}" method="post">
+<form:form modelAttribute="requestForm" action="${postPathing}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
@@ -72,7 +72,7 @@
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 mr-3 inlineFormTripleInput">
-                    <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
+                    <form:label path="requestedVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
                     <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="text" class="form-control" path="requestedVolume" placeholder="0"/>
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="mb-3 mx-3 inlineFormTripleInput">
-                    <form:label path="availableWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
+                    <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
                     <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="text" class="form-control" path="requestedWeight" placeholder="0"/>
@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            <input type="submit" value="<spring:message code="CreateTrip"/>" class="btn btn-color mt-3 formButton"/>
+            <input  type="submit" value="<spring:message code="CreateTrip"/>" class="btn btn-color mt-3 formButton"/>
         </div>
     </div>
 </form:form>

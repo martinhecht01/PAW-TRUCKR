@@ -90,8 +90,9 @@ public class RequestController {
     }
 
 
-    @RequestMapping(value = "/request", method = { RequestMethod.POST })
-    public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
+    @RequestMapping(value = "/requestcreation", method = { RequestMethod.POST })
+    public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
+        System.out.println("llegueeeeee");
         if (errors.hasErrors()) {
             return createRequest(form);
         }
@@ -101,7 +102,7 @@ public class RequestController {
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-
+        System.out.println(form.getOrigin() + "FORM RESULT");
         Request request = rs.createRequest(
                 user.getCuit(),
                 Integer.parseInt(form.getRequestedWeight()),
@@ -114,7 +115,7 @@ public class RequestController {
                 Integer.parseInt(form.getMaxPrice())
         );
 
-        return new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
+        return new ModelAndView("redirect:/browseTrips");
     }
 
     @RequestMapping("/requestDetail")
@@ -126,16 +127,16 @@ public class RequestController {
         return mav;
     }
 
-    @RequestMapping(value = "/accept", method = { RequestMethod.POST })
-    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
-        if (errors.hasErrors()) {
-            return requestDetail(id, form);
-        }
-
-        rs.acceptRequest(id, form.getEmail(),form.getName(),form.getCuit());
-
-        return new ModelAndView("redirect:/browseRequests");
-    }
+//    @RequestMapping(value = "/accept", method = { RequestMethod.POST })
+//    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
+//        if (errors.hasErrors()) {
+//            return requestDetail(id, form);
+//        }
+//
+//        rs.acceptRequest(id, form.getEmail(),form.getName(),form.getCuit());
+//
+//        return new ModelAndView("redirect:/browseRequests");
+//    }
 
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
