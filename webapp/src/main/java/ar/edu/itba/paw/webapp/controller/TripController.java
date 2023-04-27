@@ -9,7 +9,6 @@ import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
-import ar.edu.itba.paw.webapp.form.RequestForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -140,7 +139,7 @@ public class TripController {
 
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("landing/success");
+        final ModelAndView mav = new ModelAndView("landing/tripSuccess");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;

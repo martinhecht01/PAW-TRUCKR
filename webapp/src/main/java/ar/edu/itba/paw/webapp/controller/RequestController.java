@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.CityService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
-import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.User;
@@ -10,7 +9,6 @@ import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
-import ar.edu.itba.paw.webapp.form.RequestForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,41 +35,40 @@ public class RequestController {
         this.cs = cs;
     }
 
-//    @RequestMapping("/browseRequests")
-//    public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
-//                                    @RequestParam(required = false) String origin,
-//                                    @RequestParam(required = false) String destination,
-//                                    @RequestParam(required = false) Integer minAvailableVolume,
-//                                    @RequestParam(required = false) Integer minAvailableWeight,
-//                                    @RequestParam(required = false) Integer minPrice,
-//                                    @RequestParam(required = false) Integer maxPrice,
-//                                    @RequestParam(required = false) String sortOrder,
-//                                    @RequestParam(required = false) String departureDate,
-//                                    @RequestParam(required = false) String arrivalDate)
-//    {
-//        Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
-//        Integer currPage = Integer.parseInt(page);
-//        if(Integer.parseInt(page) < 1 || Integer.parseInt(page) > maxPages ){
-//            page = "1";
-//        }
-//
-//        final ModelAndView view = new ModelAndView("landing/browseRequests");
-//
-//        view.addObject("maxPage", maxPages);
-//        view.addObject("currentPage", page);
-//        view.addObject("origin",origin);
-//        view.addObject("destination",destination);
-//        view.addObject("minAvailableVolume",minAvailableVolume);
-//        view.addObject("minAvailableWeight",minAvailableWeight);
-//        view.addObject("minPrice",minPrice);
-//        view.addObject("maxPrice",maxPrice);
-//        view.addObject("sortOrder",sortOrder);
-//        view.addObject("departureDate",departureDate);
-//        view.addObject("arrivalDate",arrivalDate);
-//        List<Request> requests = rs.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
-//        view.addObject("offers", requests);
-//        return view;
-//    }
+    @RequestMapping("/browseRequests")
+    public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
+                                    @RequestParam(required = false) String origin,
+                                    @RequestParam(required = false) String destination,
+                                    @RequestParam(required = false) Integer minAvailableVolume,
+                                    @RequestParam(required = false) Integer minAvailableWeight,
+                                    @RequestParam(required = false) Integer minPrice,
+                                    @RequestParam(required = false) Integer maxPrice,
+                                    @RequestParam(required = false) String sortOrder,
+                                    @RequestParam(required = false) String departureDate,
+                                    @RequestParam(required = false) String arrivalDate)
+    {
+        Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Integer currPage = Integer.parseInt(page);
+        if(Integer.parseInt(page) < 1 || Integer.parseInt(page) > maxPages ){
+            page = "1";
+        }
+
+        final ModelAndView view = new ModelAndView("landing/browseRequests");
+        view.addObject("maxPage", maxPages);
+        view.addObject("currentPage", page);
+        view.addObject("origin",origin);
+        view.addObject("destination",destination);
+        view.addObject("minAvailableVolume",minAvailableVolume);
+        view.addObject("minAvailableWeight",minAvailableWeight);
+        view.addObject("minPrice",minPrice);
+        view.addObject("maxPrice",maxPrice);
+        view.addObject("sortOrder",sortOrder);
+        view.addObject("departureDate",departureDate);
+        view.addObject("arrivalDate",arrivalDate);
+        List<Request> requests = rs.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        view.addObject("offers", requests);
+        return view;
+    }
 
     @RequestMapping("/createRequest")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
@@ -114,18 +111,17 @@ public class RequestController {
                 form.getCargoType(),
                 Integer.parseInt(form.getMaxPrice())
         );
-
-        return new ModelAndView("redirect:/browseTrips");
+        return new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
     }
 
-//    @RequestMapping("/requestDetail")
-//    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-//        final ModelAndView mav = new ModelAndView("landing/requestDetails");
-//        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
-//        mav.addObject("request", request);
-//        mav.addObject("user", us.getUserById(request.getUserId()));
-//        return mav;
-//    }
+    @RequestMapping("/requestDetail")
+    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
+        final ModelAndView mav = new ModelAndView("landing/requestDetails");
+        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("request", request);
+        mav.addObject("user", us.getUserById(request.getUserId()));
+        return mav;
+    }
 
 //    @RequestMapping(value = "/accept", method = { RequestMethod.POST })
 //    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
@@ -138,13 +134,13 @@ public class RequestController {
 //        return new ModelAndView("redirect:/browseRequests");
 //    }
 
-//    @RequestMapping("/requests/success")
-//    public ModelAndView requestDetail(@RequestParam("id") int id) {
-//        final ModelAndView mav = new ModelAndView("landing/success");
-//        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
-//        mav.addObject("request", request);
-//        return mav;
-//    }
+    @RequestMapping("/requests/success")
+    public ModelAndView requestDetail(@RequestParam("id") int id) {
+        final ModelAndView mav = new ModelAndView("landing/requestSuccess");
+        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("request", request);
+        return mav;
+    }
 //
 //    @RequestMapping("/requests/myRequests")
 //    public ModelAndView myRequests(){

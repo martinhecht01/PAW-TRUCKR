@@ -4,16 +4,13 @@ import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripService;
-import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -60,8 +57,6 @@ public class TripServiceImpl implements TripService {
     @Override
     public Trip acceptTrip(int tripId,String email, String name, String cuit ){
         User user = userDao.getUserByCuit(cuit).get();
-        if(user == null)
-            user = userDao.create(email,name,cuit, "New Accept User");
         int acceptUserId = user.getUserId();
 
         Trip trip = tripDao.getTripById(tripId).get();

@@ -17,6 +17,7 @@ public class Request {
     private final String origin;
     private final String destination;
 
+
     public Request(int requestId,
                    int userId,
                    Number requestedWeight,
@@ -81,6 +82,14 @@ public class Request {
 
     public void setAcceptUserId(int acceptUserId) {
         this.acceptUserId=acceptUserId;
+    }
+
+    public int getAcceptUserId() {
+        return acceptUserId;
+    }
+
+    public Number getRequestedWeight() {
+        return requestedWeight;
     }
 }
 
