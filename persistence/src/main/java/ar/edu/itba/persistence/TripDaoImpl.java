@@ -1,6 +1,7 @@
 package ar.edu.itba.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.TripDao;
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -9,8 +10,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -21,7 +20,7 @@ import java.util.*;
 @Repository
 public class TripDaoImpl implements TripDao {
 
-    private final static RowMapper<Trip> ROW_MAPPER = (rs, rowNum) -> {
+    private final static RowMapper<Trip> TRIP_ROW_MAPPER = (rs, rowNum) -> {
         LocalDateTime departure = rs.getTimestamp("departuredate").toLocalDateTime();
         LocalDateTime arrival = rs.getTimestamp("arrivaldate").toLocalDateTime();
         return new Trip(
@@ -40,10 +39,21 @@ public class TripDaoImpl implements TripDao {
         );
     };
 
+    private final static RowMapper<Proposal> PROPOSAL_ROW_MAPPER = (rs, rowNum) -> new Proposal(
+            rs.getInt("proposalid"),
+            rs.getInt("tripid"),
+            rs.getInt("userid"),
+            rs.getString("description"),
+            rs.getString("name")
+    );
+
 
     private static Integer ITEMS_PER_PAGE = 10;
     private final JdbcTemplate jdbcTemplate;
-    private final SimpleJdbcInsert jdbcInsert;
+    private final SimpleJdbcInsert jdbcTripInsert;
+
+    private final SimpleJdbcInsert jdbcProposalInsert;
+
     @Autowired
     public TripDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -69,7 +79,16 @@ public class TripDaoImpl implements TripDao {
                         "  acceptuserid INT REFERENCES users(userid)\n" +
                         ");"
         );
-        this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("trips").usingGeneratedKeyColumns("tripid");
+        jdbcTemplate.execute(
+                "CREATE TABLE IF NOT EXISTS proposals (\n" +
+                        "  proposalid SERIAL PRIMARY KEY,\n" +
+                        "  tripid INT NOT NULL REFERENCES trips(tripid)," +
+                        "  userid INT NOT NULL REFERENCES users(userid),\n" +
+                        "  description VARCHAR(300)\n" +
+                        ");"
+        );
+        this.jdbcTripInsert = new SimpleJdbcInsert(ds).withTableName("trips").usingGeneratedKeyColumns("tripid");
+        this.jdbcProposalInsert = new SimpleJdbcInsert(ds).withTableName("proposals").usingGeneratedKeyColumns("proposalid");
     }
 
     @Override
@@ -99,8 +118,31 @@ public class TripDaoImpl implements TripDao {
         data.put("type", type);
         data.put("price", price);
 
-        int tripId = jdbcInsert.executeAndReturnKey(data).intValue();
+        int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
         return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
+    }
+
+    @Override
+    public Proposal createProposal(int tripid, int userid, String description){
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("tripid", tripid);
+        data.put("userid", userid);
+        data.put("description", description);
+        int key = jdbcProposalInsert.executeAndReturnKey(data).intValue();
+        return new Proposal(key, tripid, userid, description,"");
+    }
+
+    @Override
+    public List<Proposal> getProposalsForTripId(int tripid){
+        String query = "SELECT * FROM proposals NATURAL JOIN users WHERE tripid =  ?";
+        return jdbcTemplate.query(query, PROPOSAL_ROW_MAPPER, tripid);
+    }
+
+    @Override
+    public Optional<Proposal> getProposalById(int proposalId){
+        String query = "SELECT * FROM proposals NATURAL JOIN users WHERE proposalid = ?";
+        List<Proposal> proposals = jdbcTemplate.query(query, PROPOSAL_ROW_MAPPER, proposalId);
+        return proposals.isEmpty() ? Optional.empty() : Optional.of(proposals.get(0));
     }
 
     @Override
@@ -172,14 +214,14 @@ public class TripDaoImpl implements TripDao {
         params.add(ITEMS_PER_PAGE);
         params.add(offset);
 
-        return jdbcTemplate.query(query, params.toArray(), ROW_MAPPER);
+        return jdbcTemplate.query(query, params.toArray(), TRIP_ROW_MAPPER);
 
     }
 
     @Override
     public List<Trip> getAllActiveTripsByUserId(Integer userId) {
         String query = "SELECT * FROM trips WHERE userid = ? AND acceptuserid IS NULL";
-        return jdbcTemplate.query(query, ROW_MAPPER, userId);
+        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userId);
     }
 
     @Override
@@ -230,19 +272,14 @@ public class TripDaoImpl implements TripDao {
     }
     @Override
     public Optional<Trip> getTripById(int tripid){
-        List<Trip> trips= jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ?", ROW_MAPPER, tripid);
+        List<Trip> trips = jdbcTemplate.query("SELECT * FROM trips WHERE tripid = ?", TRIP_ROW_MAPPER, tripid);
         return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
     }
 
     @Override
-    public Trip acceptTrip(Trip trip, int acceptUserId){
-        System.out.println(acceptUserId);
-        int rowsAffected = jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE tripid = ?", acceptUserId, trip.getTripId());
-        if(rowsAffected > 0){
-            trip.setAcceptUserId(acceptUserId);
-            return trip;
-        } else {
-            return null;
-        }
+    public void acceptTrip(int proposalId){
+        Proposal proposal = getProposalById(proposalId).get();
+        System.out.println("PROPOSAL DESCRIPTION = " + proposal.getDescription());
+        jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE tripid = ?", proposal.getUserid() , proposal.getTripid());
     }
 }

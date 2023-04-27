@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfacesServices;
 
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 
 import java.time.LocalDateTime;
@@ -24,9 +25,13 @@ public interface TripService {
 
     Optional<Trip> getTripById(int tripid);
 
-    Trip acceptTrip(int tripId,String email, String name, String cuit );
+    void acceptTrip(int proposalId);
+
+    List<Proposal> getProposalsForTripId(int tripId);
 
     List<Trip> getAllActiveTripsByUserId(Integer userid);
+
+    Proposal sendProposal(int tripId, int userid, String description);
 
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 }

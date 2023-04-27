@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripService;
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,20 +56,29 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Trip acceptTrip(int tripId,String email, String name, String cuit ){
-        User user = userDao.getUserByCuit(cuit).get();
-        int acceptUserId = user.getUserId();
+    public void acceptTrip(int proposalid){
+        tripDao.acceptTrip(proposalid);
 
-        Trip trip = tripDao.getTripById(tripId).get();
-        Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
-        User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
-        ms.sendEmailTrip(tripOwner, user, acceptedTrip);
-        return acceptedTrip;
+//        Trip trip = tripDao.getTripById(proposalid).get();
+//        Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
+//        User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
+//        ms.sendEmailTrip(tripOwner, user, acceptedTrip);
+//        return acceptedTrip;
+    }
+
+    @Override
+    public Proposal sendProposal(int tripId, int userid, String description){
+        return tripDao.createProposal(tripId, userid, description);
     }
 
     @Override
     public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
         return tripDao.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+    }
+
+    @Override
+    public List<Proposal> getProposalsForTripId(int tripId){
+        return tripDao.getProposalsForTripId(tripId);
     }
 
     @Override

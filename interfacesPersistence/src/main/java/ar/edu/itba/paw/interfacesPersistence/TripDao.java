@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 
 import javax.swing.text.html.Option;
@@ -19,6 +20,13 @@ public interface TripDao {
                 String destination,
                 String type,
                 int price);
+
+    Proposal createProposal(int tripid, int userid, String description);
+
+    List<Proposal> getProposalsForTripId(int tripid);
+
+    Optional<Proposal> getProposalById(int proposalId);
+
     List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
 
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
@@ -26,5 +34,5 @@ public interface TripDao {
     Optional<Trip> getTripById(int tripid);
 
     List<Trip> getAllActiveTripsByUserId(Integer userid);
-    Trip acceptTrip(Trip trip, int acceptUserId);
+    void acceptTrip(int proposalId);
 }

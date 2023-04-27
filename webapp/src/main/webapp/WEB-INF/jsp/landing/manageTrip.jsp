@@ -15,7 +15,7 @@
 </head>
 <body class="bodyContent">
 
-<c:url value="/sendProposal" var="postPath"/>
+<c:url value="/accept" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
     <div class="inlineFormInputContainer">
@@ -27,17 +27,13 @@
                 <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-striped">
                     <tr>
-                        <td><b><spring:message code="Driver"/></b></td>
-                        <td><c:out value="${user.name.toUpperCase()}"/></td>
-                    </tr>
-                    <tr>
                         <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
                         <td><c:out value="${trip.origin}-${trip.destination}"/></td>
                     </tr>
-                    <tr>
-                        <td><b><spring:message code="LicensePlate"/></b></td>
-                        <td><c:out value="${trip.licensePlate}"/></td>
-                    </tr>
+<%--                    <tr>--%>
+<%--                        <td><b><spring:message code="LicensePlate"/></b></td>--%>
+<%--                        <td><c:out value="${trip.licensePlate}"/></td>--%>
+<%--                    </tr>--%>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
                         <td><c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/></td>
@@ -57,25 +53,21 @@
                 </table>
             </div>
         </div>
-        <div class="inlineFormInputContainer justify-content-top align-items-top" >
-            <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
-                <div class="card browseCards" style="width: 20rem;">
-                    <div class="card-header">
-                        <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <form:label for="email" class="form-label" path="description"><spring:message code="Email"/></form:label>
-                            <spring:message code="EmailPlaceHolder" var="emailPlaceholder"/>
-                            <form:textarea type="text" class="form-control" path="description" placeholder="${emailPlaceholder}"/>
-                        </div>
-                        <div>
-                            <spring:message code="Reserve" var="reserve"/>
-                            <input type="submit" class="btn btn-color" value="${reserve}"/>
-                        </div>
+
+        <div class="justify-content-top align-items-top px-5" >
+            <c:forEach var="offer" items="${offers}">
+                <c:url value="/trips/acceptProposal" var="postPath"/>
+                <form:form action="${postPath}?id=${offer.proposalid}" method="post">
+                <div class="card p-3" style="width: 18rem;">
+                    <div class="ca rd-body">
+                        <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+                        <p class="card-text"><c:out value="${offer.description}"/></p>
+                        <spring:message code="Trips.AcceptProposal" var="reserve"/>
+                        <input type="submit" class="btn btn-color" value="${reserve}"/>
                     </div>
                 </div>
-            </form:form>
+                </form:form>
+            </c:forEach>
         </div>
     </div>
 </div>

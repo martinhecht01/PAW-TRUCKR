@@ -147,16 +147,37 @@ public class TripController {
         return mav;
     }
 
-    @RequestMapping(value = "/accept", method = { RequestMethod.POST })
+    @RequestMapping("/trips/manageTrip")
+    public ModelAndView manageTrip(@RequestParam("id") int id) {
+        final ModelAndView mav = new ModelAndView("landing/manageTrip");
+        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        mav.addObject("trip", trip);
+
+        mav.addObject("offers", ts.getProposalsForTripId(trip.getTripId()));
+        return mav;
+    }
+
+    @RequestMapping(value = "/sendProposal", method = { RequestMethod.POST })
     public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return tripDetail(id, form);
         }
 
-        //ts.acceptTrip(id, form.getEmail(),form.getName(),form.getCuit());
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+        ts.sendProposal(id, user.getUserId(), form.getDescription());
 
         return new ModelAndView("redirect:/browseTrips");
     }
+
+    @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
+    public ModelAndView acceptProposal(@RequestParam("id") int id) {
+        System.out.println("accepting proposal ID = " + id);
+        ts.acceptTrip(id);
+        return new ModelAndView("redirect:/browseTrips");
+    }
+
 
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
