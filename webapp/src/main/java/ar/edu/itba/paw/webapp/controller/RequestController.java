@@ -81,10 +81,10 @@ public class RequestController {
         return cs.getAllCities();
     }
 
-    @ModelAttribute("cargoOptions")
-    public List<String> getOptions() {
-        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-    }
+//    @ModelAttribute("cargoOptions")
+//    public List<String> getOptions() {
+//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
+//    }
 
 
     @RequestMapping(value = "/createReq", method = { RequestMethod.POST })

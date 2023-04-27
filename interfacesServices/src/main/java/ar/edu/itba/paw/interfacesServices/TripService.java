@@ -24,7 +24,7 @@ public interface TripService {
 
     Optional<Trip> getTripById(int tripid);
 
-   // Trip acceptTrip(int tripId,String email, String name, String cuit );
+    Trip acceptTrip(int tripId,String email, String name, String cuit );
 
     List<Trip> getAllActiveTripsByUserId(Integer userid);
 
