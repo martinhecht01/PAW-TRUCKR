@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import static ar.edu.itba.paw.webapp.controller.TripController.getCurrentRole;
+
 @Controller
 public class RequestController {
 
@@ -73,6 +75,7 @@ public class RequestController {
     @RequestMapping("/createRequest")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
         final ModelAndView view = new ModelAndView("landing/createRequest");
+        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
@@ -111,7 +114,9 @@ public class RequestController {
                 form.getCargoType(),
                 Integer.parseInt(form.getMaxPrice())
         );
-        return new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
+        ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
+        view.addObject("currentRole", getCurrentRole());
+        return view;
     }
 
     @RequestMapping("/requestDetail")

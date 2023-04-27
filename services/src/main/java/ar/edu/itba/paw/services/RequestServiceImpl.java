@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.models.Request;
+import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,16 +56,14 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request acceptRequest(int tripId, String email, String name, String cuit){
+    public Request acceptRequest(int requestId, String email, String name, String cuit ){
         User user = userDao.getUserByCuit(cuit).get();
-        if(user == null)
-            user = userDao.create(email,name,cuit, "New Accept User");
         int acceptUserId = user.getUserId();
 
-        Request request = requestDao.getRequestById(tripId).get();
-        Request acceptedRequest = requestDao.acceptRequest(request, acceptUserId);
-        User requestOwner = userDao.getUserById(acceptedRequest.getUserId());
-        //ms.sendEmailTrip(tripOwner, user, acceptedRequest);
+        Request req = requestDao.getRequestById(requestId).get();
+        Request acceptedRequest = requestDao.acceptRequest(req, acceptUserId);
+        User tripOwner = userDao.getUserById(acceptedRequest.getUserId());
+//        ms.sendEmail(tripOwner, user, acceptedRequest);
         return acceptedRequest;
     }
 
