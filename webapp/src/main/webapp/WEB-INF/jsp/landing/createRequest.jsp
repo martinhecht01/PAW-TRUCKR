@@ -74,7 +74,7 @@
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 mr-3 inlineFormTripleInput">
-                    <form:label path="requestedVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
+                    <form:label path="requestedVolume"  class="form-label"><spring:message code="CreateRequestRequestedVolume"/></form:label>
                     <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="text" class="form-control" path="requestedVolume" placeholder="0"/>
@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="mb-3 mx-3 inlineFormTripleInput">
-                    <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
+                    <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="CreateRequestRequestedWeight"/></form:label>
                     <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="text" class="form-control" path="requestedWeight" placeholder="0"/>

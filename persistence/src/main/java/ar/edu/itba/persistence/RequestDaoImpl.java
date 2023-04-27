@@ -98,7 +98,7 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public List<Request> getAllActiveRequests(String origin, String destination, Integer availableVolume, Integer availableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
+    public List<Request> getAllActiveRequests(String origin, String destination, Integer availableVolume, Integer availableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate,Integer maxAvailableVolume, Integer maxAvailableWeight, Integer pag) {
         if (pag < 1)
             pag = 1;
         Integer offset = (pag - 1) * 10;
@@ -117,22 +117,22 @@ public class RequestDaoImpl implements RequestDao {
         }
 
         if (availableVolume != null) {
-            query = query + " AND availableVolume >= ?";
+            query = query + " AND requestedvolume >= ?";
             params.add(availableVolume);
         }
 
         if (availableWeight != null) {
-            query = query + " AND availableWeight >= ?";
+            query = query + " AND requestedweight >= ?";
             params.add(availableWeight);
         }
 
         if (minPrice != null) {
-            query = query + " AND price >= ?";
+            query = query + " AND maxprice >= ?";
             params.add(minPrice);
         }
 
         if (maxPrice != null) {
-            query = query + " AND price <= ?";
+            query = query + " AND maxprice <= ?";
             params.add(maxPrice);
         }
 
@@ -144,6 +144,15 @@ public class RequestDaoImpl implements RequestDao {
         if (arrivalDate != null && !arrivalDate.equals("")) {
             query = query + " AND DATE(maxarrivaldate) = CAST(? AS DATE)";
             params.add("'" + arrivalDate + "'");
+        }
+
+        if (maxAvailableVolume != null) {
+            query = query + " AND requestedvolume <= ?";
+            params.add(maxAvailableVolume);
+        }
+        if (maxAvailableWeight != null) {
+            query = query + " AND requestedweight <= ?";
+            params.add(maxAvailableWeight);
         }
 
         if (sortOrder != null && !sortOrder.isEmpty()) {
@@ -177,48 +186,73 @@ public class RequestDaoImpl implements RequestDao {
     }
 
     @Override
-    public Integer getTotalPages(String origin, String destination, Integer availableVolume, Integer availableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
+    public Integer getTotalPages(String origin, String destination, Integer availableVolume, Integer maxAvailableVolume, Integer availableWeight,Integer maxAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
         String query = "SELECT COUNT(*) FROM requests WHERE acceptuserid IS NULL ";
         List<Object> params = new ArrayList<>();
-
-        if (origin != null && !origin.equals("")){
+        if (origin != null && !origin.equals("")) {
             query = query + " AND origin = ?";
             params.add(origin);
         }
 
-        if (destination != null && !destination.equals("")){
+        if (destination != null && !destination.equals("")) {
             query = query + " AND destination = ?";
             params.add(destination);
         }
 
-        if (availableVolume != null){
-            query = query + " AND availableVolume >= ?";
+        if (availableVolume != null) {
+            query = query + " AND requestedvolume >= ?";
             params.add(availableVolume);
         }
 
-        if (availableWeight != null){
-            query = query + " AND availableWeight >= ?";
+        if (availableWeight != null) {
+            query = query + " AND requestedweight >= ?";
             params.add(availableWeight);
         }
 
-        if (minPrice != null){
-            query = query + " AND price >= ?";
+        if (minPrice != null) {
+            query = query + " AND maxprice >= ?";
             params.add(minPrice);
         }
 
-        if (maxPrice != null){
-            query = query + " AND price <= ?";
+        if (maxPrice != null) {
+            query = query + " AND maxprice <= ?";
             params.add(maxPrice);
         }
 
-        if (departureDate != null && !departureDate.equals("")){
-            query = query + " AND DATE(departuredate) = CAST(? AS DATE)";
+        if (departureDate != null && !departureDate.equals("")) {
+            query = query + " AND DATE(mindeparturedate) = CAST(? AS DATE)";
             params.add("'" + departureDate + "'");
         }
 
-        if (arrivalDate != null && !arrivalDate.equals("")){
-            query = query + " AND DATE(arrivaldate) = CAST(? AS DATE)";
+        if (arrivalDate != null && !arrivalDate.equals("")) {
+            query = query + " AND DATE(maxarrivaldate) = CAST(? AS DATE)";
             params.add("'" + arrivalDate + "'");
+        }
+
+        if (maxAvailableVolume != null) {
+            query = query + " AND requestedvolume <= ?";
+            params.add(maxAvailableVolume);
+        }
+        if (maxAvailableWeight != null) {
+            query = query + " AND requestedweight <= ?";
+            params.add(maxAvailableWeight);
+        }
+
+        if (sortOrder != null && !sortOrder.isEmpty()) {
+            //sort order asc and desc
+            if (sortOrder.equals("departureDate ASC")) {
+                query = query + " ORDER BY mindeparturedate ASC";
+            } else if (sortOrder.equals("departureDate DESC")) {
+                query = query + " ORDER BY mindeparturedate DESC";
+            } else if (sortOrder.equals("arrivalDate ASC")) {
+                query = query + " ORDER BY maxarrivaldate ASC";
+            } else if (sortOrder.equals("arrivalDate DESC")) {
+                query = query + " ORDER BY maxarrivaldate DESC";
+            } else if (sortOrder.equals("price ASC")) {
+                query = query + " ORDER BY maxprice ASC";
+            } else if (sortOrder.equals("maxprice DESC")) {
+                query = query + " ORDER BY maxprice DESC";
+            }
         }
         return (int) Math.ceil((double) jdbcTemplate.queryForObject(query, params.toArray(), Integer.class) /ITEMS_PER_PAGE);
     }

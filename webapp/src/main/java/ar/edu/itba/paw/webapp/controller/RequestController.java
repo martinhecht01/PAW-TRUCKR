@@ -42,14 +42,16 @@ public class RequestController {
                                     @RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
                                     @RequestParam(required = false) Integer minAvailableVolume,
+                                    @RequestParam(required = false) Integer maxAvailableVolume,
                                     @RequestParam(required = false) Integer minAvailableWeight,
+                                    @RequestParam(required = false) Integer maxAvailableWeight,
                                     @RequestParam(required = false) Integer minPrice,
                                     @RequestParam(required = false) Integer maxPrice,
                                     @RequestParam(required = false) String sortOrder,
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-        Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume,maxAvailableVolume, minAvailableWeight, maxAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
         Integer currPage = Integer.parseInt(page);
         if(Integer.parseInt(page) < 1 || Integer.parseInt(page) > maxPages ){
             page = "1";
@@ -67,8 +69,11 @@ public class RequestController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        List<Request> requests = rs.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        view.addObject("maxAvailableWeight", maxAvailableWeight);
+        view.addObject("maxAvailableVolume", maxAvailableVolume);
+        List<Request> requests = rs.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate,maxAvailableVolume,maxAvailableWeight, Integer.parseInt(page));
         view.addObject("offers", requests);
+        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 

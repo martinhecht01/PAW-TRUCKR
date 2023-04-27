@@ -15,7 +15,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav justify-content-center">
                 <li class="nav-item ml-5" style="margin-right: 10px">
-                    <a class="nav-link" aria-current="page" href="<c:url value="/browseTrips"/>"><spring:message code="Explore"/></a>
+
+                    <c:if test="${currentRole == 'TRUCKER'}">
+                        <a class="nav-link" aria-current="page" href="<c:url value="/browseRequests"/>"><spring:message code="Explore"/></a>
+                    </c:if>
+                    <c:if test="${currentRole == 'PROVIDER'}">
+                        <a class="nav-link" aria-current="page" href="<c:url value="/browseTrips"/>"><spring:message code="Explore"/></a>
+                    </c:if>
                 </li>
                 <li class="nav-item ml-5">
                     <c:if test="${currentRole == 'TRUCKER'}">
