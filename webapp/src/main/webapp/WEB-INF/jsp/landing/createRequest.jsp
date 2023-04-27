@@ -15,11 +15,11 @@
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent">
-<c:url value="/falopa" var="postPathing"/>
+<c:url value="/createReq" var="postPath"/>
 
 <components:navBar/>
 <%--Formulario--%>
-<form:form modelAttribute="requestForm" action="${postPathing}" method="post">
+<form:form modelAttribute="requestForm" action="${postPath}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
@@ -106,7 +106,7 @@
                 </div>
             </div>
 
-            <input  type="submit" value="<spring:message code="CreateTrip"/>" class="btn btn-color mt-3 formButton"/>
+            <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton"/>
         </div>
     </div>
 </form:form>

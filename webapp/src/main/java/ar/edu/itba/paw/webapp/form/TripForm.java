@@ -1,17 +1,11 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.annotations.DateValidator;
+import ar.edu.itba.paw.webapp.annotations.DateValidation;
 import ar.edu.itba.paw.webapp.annotations.PreventPast;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
-
-@DateValidator
+@DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
     @Pattern(regexp="^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
     private  String licensePlate;

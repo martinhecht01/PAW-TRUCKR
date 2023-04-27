@@ -1,17 +1,12 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.annotations.DateValidator;
+import ar.edu.itba.paw.webapp.annotations.DateValidation;
 import ar.edu.itba.paw.webapp.annotations.PreventPast;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
-import java.util.Date;
 
 
-@DateValidator
+@DateValidation(start="minDepartureDate", end="maxArrivalDate")
 public class RequestForm {
 
     @Pattern(regexp = "^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$")
@@ -97,7 +92,7 @@ public class RequestForm {
         return minDepartureDate;
     }
 
-    public void setDepartureDate(String departureDate) {
+    public void setMinDepartureDate(String departureDate) {
         this.minDepartureDate = departureDate;
     }
 

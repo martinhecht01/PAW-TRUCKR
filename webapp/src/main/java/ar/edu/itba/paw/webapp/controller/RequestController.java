@@ -90,9 +90,8 @@ public class RequestController {
     }
 
 
-    @RequestMapping(value = "/falopa", method = { RequestMethod.POST })
+    @RequestMapping(value = "/createReq", method = { RequestMethod.POST })
     public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
-        System.out.println("llegueeeeee");
         if (errors.hasErrors()) {
             return createRequest(form);
         }
@@ -103,6 +102,7 @@ public class RequestController {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         System.out.println(form.getOrigin() + "FORM RESULT");
+
         Request request = rs.createRequest(
                 user.getCuit(),
                 Integer.parseInt(form.getRequestedWeight()),
