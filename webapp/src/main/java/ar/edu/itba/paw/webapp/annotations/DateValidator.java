@@ -1,18 +1,43 @@
 package ar.edu.itba.paw.webapp.annotations;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import java.lang.annotation.*;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-@Constraint(validatedBy = DateManager.class)
-public @interface DateValidator {
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.time.LocalDateTime;
 
-    String message() default "{javax.validation.constraints.DateValidator.message}";
+public class DateValidator implements ConstraintValidator<DateValidation, Object> {
 
-    Class<?>[] groups() default{};
-    Class<? extends Payload>[] payload() default{};
+    private String start;
+    private String end;
 
+    @Override
+    public void initialize(DateValidation constraintAnnotation) {
+        start = constraintAnnotation.start();
+        end = constraintAnnotation.end();
+    }
+
+    @Override
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
+
+        try {
+            BeanWrapper wrapper = new BeanWrapperImpl(value);
+            Object firstObj = wrapper.getPropertyValue(start);
+            Object secondObj = wrapper.getPropertyValue(end);
+            if (firstObj == null || secondObj == null) {
+                return false;
+            }
+            String start = (String) firstObj;
+            String end = (String) secondObj;
+
+            LocalDateTime startDateTime = LocalDateTime.parse(start);
+            LocalDateTime endDateTime = LocalDateTime.parse(end);
+
+            return !startDateTime.isAfter(endDateTime);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
 }

@@ -136,6 +136,7 @@ public class TripController {
         return view;
     }
 
+
     @RequestMapping("/tripDetail")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("landing/tripDetails");
@@ -159,7 +160,7 @@ public class TripController {
 
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("landing/success");
+        final ModelAndView mav = new ModelAndView("landing/tripSuccess");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;

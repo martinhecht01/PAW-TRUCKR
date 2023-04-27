@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS cities (
         id SERIAL PRIMARY KEY,
         name TEXT UNIQUE
 );
---
+
 -- INSERT INTO cities (name) VALUES
 --     ('Azul'),
 --     ('Bahía Blanca'),
