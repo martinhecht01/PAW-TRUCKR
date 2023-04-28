@@ -22,6 +22,9 @@
                     <c:if test="${currentRole == 'PROVIDER'}">
                         <a class="nav-link" aria-current="page" href="<c:url value="/browseTrips"/>"><spring:message code="Explore"/></a>
                     </c:if>
+                    <c:if test="${currentRole == ''}">
+                        <a class="nav-link" aria-current="page" href="<c:url value="/login"/>"><spring:message code="Explore"/></a>
+                    </c:if>
                 </li>
                 <li class="nav-item ml-5">
                     <c:if test="${currentRole == 'TRUCKER'}">
