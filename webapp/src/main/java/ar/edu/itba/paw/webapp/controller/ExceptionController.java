@@ -1,13 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
+import ar.edu.itba.paw.webapp.exception.AccessDeniedException;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
-
-import javax.servlet.ServletException;
 
 @ControllerAdvice
 public class ExceptionController {
@@ -39,7 +39,16 @@ public class ExceptionController {
         mv.addObject("errorCode", HttpStatus.INTERNAL_SERVER_ERROR);
         mv.addObject("errorMsgCode", "500ErrorCode");
         mv.setViewName("landing/error");
-
         return mv;
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ModelAndView accessDenied(){
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("errorCode", HttpStatus.FORBIDDEN);
+        mv.addObject("errorMsgCode", "403ErrorCode");
+        return mv;
+    }
+
 }

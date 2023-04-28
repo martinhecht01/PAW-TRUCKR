@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.config;
 
 import ar.edu.itba.paw.webapp.auth.UserDetailsServiceImpl;
+import ar.edu.itba.paw.webapp.exception.AccessDeniedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -12,7 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -35,6 +41,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        Properties props = new Properties();
+        try (InputStream input = getClass().getResourceAsStream("/application.properties")) {
+            props.load(input);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        String MyKey = props.getProperty("KEY");
+
         http.sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
@@ -52,19 +66,20 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().rememberMe()
                     .rememberMeParameter("rememberme")
                     .userDetailsService(userDetailsService)
-                .key("mysupersecretketthatnobodyknowsabout") // no hacer esto, crear una aleatoria segura suficientemente grande y colocarla bajo src/main/resources
+                .key(MyKey) // no hacer esto, crear una aleatoria segura suficientemente grande y colocarla bajo src/main/resources
                         .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
                     .and().logout()
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")
-                    .and().exceptionHandling()
-                        .accessDeniedPage("/403")
+                .and().exceptionHandling().accessDeniedPage("/errors/403")
                     .and().csrf().disable();
     }
+
+
 
     @Override
     public void configure(final WebSecurity web) throws Exception {
         web.ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", " /favicon.ico", "/resources/**", "/403");
+                .antMatchers("/css/**", "/js/**", "/img/**", " /favicon.ico", "/resources/**", "/errors/**");
     }
 }

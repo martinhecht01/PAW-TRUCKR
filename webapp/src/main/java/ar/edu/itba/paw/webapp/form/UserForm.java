@@ -9,7 +9,7 @@ public class UserForm {
     private String email;
 
     @Size(min = 6, max = 100)
-    @Pattern(regexp = "[a-zA-Z0-9]+")
+    @Pattern(regexp = "^[A-Z][a-z]*\\s[A-Z][a-z]*$")
     private String name;
 
     @Size(min = 6, max = 100)
