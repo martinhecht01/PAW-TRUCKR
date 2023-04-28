@@ -85,11 +85,6 @@ public class RequestController {
         return cs.getAllCities();
     }
 
-//    @ModelAttribute("cargoOptions")
-//    public List<String> getOptions() {
-//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-//    }
-
 
     @RequestMapping(value = "/create/request", method = { RequestMethod.POST })
     public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {

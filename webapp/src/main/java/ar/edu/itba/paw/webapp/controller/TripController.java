@@ -10,7 +10,6 @@ import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
@@ -93,9 +91,9 @@ public class TripController {
     public ModelAndView creates() {
         String role = getCurrentRole();
         if(role.equals("TRUCKER")){
-            return new ModelAndView("redirect:/browseRequests");
+            return new ModelAndView("forward:/browseRequests");
         } else if(role.equals("PROVIDER")){
-            return new ModelAndView("redirect:/browseTrips");
+            return new ModelAndView("forward:/browseTrips");
         }
         return new ModelAndView("redirect:/");
     }
@@ -104,11 +102,6 @@ public class TripController {
     public List<String> getCities() {
         return cs.getAllCities();
     }
-
-//    @ModelAttribute("cargoOptions")
-//    public List<String> getOptions() {
-//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-//    }
 
 
     @RequestMapping(value = "/create/trip", method = { RequestMethod.POST })
@@ -149,9 +142,9 @@ public class TripController {
     public ModelAndView create(){
         String role = getCurrentRole();
         if(role.equals("TRUCKER")){
-            return new ModelAndView("redirect:/create/trip");
+            return new ModelAndView("forward:/create/trip");
         } else if(role.equals("PROVIDER")){
-            return new ModelAndView("redirect:/create/request");
+            return new ModelAndView("forward:/create/request");
         }
         return new ModelAndView("redirect:/");
     }
