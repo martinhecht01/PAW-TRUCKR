@@ -6,7 +6,9 @@ import org.springframework.security.core.userdetails.User;
 import java.util.Collection;
 
 public class AuthUserDetailsImpl extends User {
-    public AuthUserDetailsImpl(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public AuthUserDetailsImpl(String username,
+                               String password,
+                               Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 

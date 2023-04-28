@@ -73,14 +73,13 @@ public class RequestController {
         view.addObject("maxAvailableVolume", maxAvailableVolume);
         List<Request> requests = rs.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate,maxAvailableVolume,maxAvailableWeight, Integer.parseInt(page));
         view.addObject("offers", requests);
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
-    @RequestMapping("/createRequest")
+
+    @RequestMapping("/create/request")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
         final ModelAndView view = new ModelAndView("landing/createRequest");
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
@@ -95,7 +94,7 @@ public class RequestController {
 //    }
 
 
-    @RequestMapping(value = "/createReq", method = { RequestMethod.POST })
+    @RequestMapping(value = "/create/request", method = { RequestMethod.POST })
     public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return createRequest(form);
@@ -120,7 +119,6 @@ public class RequestController {
                 Integer.parseInt(form.getMaxPrice())
         );
         ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 

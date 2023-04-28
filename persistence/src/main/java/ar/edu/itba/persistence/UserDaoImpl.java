@@ -22,7 +22,12 @@ public class UserDaoImpl implements UserDao {
     private final static RowMapper<User> ROW_MAPPER = new RowMapper<User>() {
         @Override
         public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return new User(rs.getInt("userid"),rs.getString("email"), rs.getString("name"),  rs.getString("cuit"),rs.getString("role"), rs.getString("password"));
+            return new User(rs.getInt("userid"),
+                    rs.getString("email"),
+                    rs.getString("name"),
+                    rs.getString("cuit"),
+                    rs.getString("role"),
+                    rs.getString("password"));
         }
     };
 
@@ -56,9 +61,9 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User create(final String email, final String name, final String cuit, final String role, final String password) {
         HashMap<String, String> data = new HashMap<>();
+        data.put("cuit", cuit);
         data.put("email", email);
         data.put("name", name);
-        data.put("cuit", cuit);
         data.put("role", role);
         data.put("password", password);
         int userId = jdbcInsert.executeAndReturnKey(data).intValue();
