@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-
-import static ar.edu.itba.paw.webapp.controller.TripController.getCurrentRole;
 
 @Controller
 public class RequestController {

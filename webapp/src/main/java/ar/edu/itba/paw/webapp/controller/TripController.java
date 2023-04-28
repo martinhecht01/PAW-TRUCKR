@@ -163,7 +163,6 @@ public class TripController {
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
-        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
@@ -213,7 +212,6 @@ public class TripController {
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         final ModelAndView mav = new ModelAndView("landing/myTrips");
         mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
-        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
