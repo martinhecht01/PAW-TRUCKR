@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
@@ -71,17 +70,16 @@ public class TripController {
         view.addObject("arrivalDate",arrivalDate);
         List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
         view.addObject("offers", trips);
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
-        @ModelAttribute("currentRole")
+    @ModelAttribute("currentRole")
     public static String getCurrentRole() {
         Collection<? extends GrantedAuthority> c = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if (c.contains(new SimpleGrantedAuthority("TRUCKER"))){
+        if (c.contains(new SimpleGrantedAuthority("ROLE_TRUCKER"))){
             return "TRUCKER";
         }
-        else if (c.contains(new SimpleGrantedAuthority("PROVIDER"))){
+        else if (c.contains(new SimpleGrantedAuthority("ROLE_PROVIDER"))){
             return "PROVIDER";
         }
         return "";
@@ -89,11 +87,15 @@ public class TripController {
 
     }
 
-    @RequestMapping("/createTrip")
-    public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
-        final ModelAndView view = new ModelAndView("landing/createTrip");
-        view.addObject("currentRole", getCurrentRole());
-        return view;
+    @RequestMapping("/explore")
+    public ModelAndView creates() {
+        String role = getCurrentRole();
+        if(role.equals("TRUCKER")){
+            return new ModelAndView("forward:/browseRequests");
+        } else if(role.equals("PROVIDER")){
+            return new ModelAndView("forward:/browseTrips");
+        }
+        return new ModelAndView("redirect:/");
     }
 
     @ModelAttribute("cities")
@@ -101,13 +103,8 @@ public class TripController {
         return cs.getAllCities();
     }
 
-//    @ModelAttribute("cargoOptions")
-//    public List<String> getOptions() {
-//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-//    }
 
-
-    @RequestMapping(value = "/create", method = { RequestMethod.POST })
+    @RequestMapping(value = "/create/trip", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return createTrip(form);
@@ -132,8 +129,24 @@ public class TripController {
                 Integer.parseInt(form.getPrice())
         );
         ModelAndView view = new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
-        view.addObject("currentRole", getCurrentRole());
         return view;
+    }
+
+    @RequestMapping(value = "/create/trip", method = { RequestMethod.GET })
+    public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
+        final ModelAndView view = new ModelAndView("landing/createTrip");
+        return view;
+    }
+
+    @RequestMapping("/create")
+    public ModelAndView create(){
+        String role = getCurrentRole();
+        if(role.equals("TRUCKER")){
+            return new ModelAndView("forward:/create/trip");
+        } else if(role.equals("PROVIDER")){
+            return new ModelAndView("forward:/create/request");
+        }
+        return new ModelAndView("redirect:/");
     }
 
 
@@ -143,7 +156,6 @@ public class TripController {
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
-        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
@@ -193,7 +205,6 @@ public class TripController {
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         final ModelAndView mav = new ModelAndView("landing/myTrips");
         mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
-        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 

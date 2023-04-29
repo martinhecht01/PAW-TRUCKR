@@ -15,7 +15,7 @@
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent">
-<c:url value="/createReq" var="postPath"/>
+<c:url value="/create/request" var="postPath"/>
 
 <components:navBar/>
 <%--Formulario--%>
