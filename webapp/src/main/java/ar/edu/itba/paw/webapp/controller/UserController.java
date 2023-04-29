@@ -1,15 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,37 +11,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserService us;
-    private final MailService ms;
 
 
     @Autowired
-    public UserController(final UserService us, final MailService ms){
+    public UserController(final UserService us){
         this.us = us;
-        this.ms = ms;
     }
 
 
     @RequestMapping("/")
     public ModelAndView landing() {
-      //  final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      //  final User user = us.getUserByCuit(userDetails.getUsername());
-        ModelAndView view = new ModelAndView("landing/index");
-        view.addObject("currentRole", TripController.getCurrentRole());
-        return view;
+        return new ModelAndView("landing/index");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
-        final ModelAndView view = new ModelAndView("landing/login");
-        return view;
+        return new ModelAndView("landing/login");
     }
 
     @RequestMapping(value = "/createUser", method = { RequestMethod.GET })

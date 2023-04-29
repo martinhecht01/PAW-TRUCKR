@@ -11,27 +11,23 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 
 <head>
-    <title><spring:message code="CreateTrip"/></title>
+    <title><spring:message code="CreateRequest"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
 </head>
 <body class="bodyContent">
-<c:url value="/create/trip" var="postPath"/>
+<c:url value="/requests/create" var="postPath"/>
 
 <components:navBar/>
 <%--Formulario--%>
-<form:form modelAttribute="tripForm" action="${postPath}" method="post">
+<form:form modelAttribute="requestForm" action="${postPath}" method="post">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
-            <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
+            <h4 class="card-title"><b><spring:message code="CreateRequest"/></b></h4>
         </div>
         <div class="card-body">
             <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
-                <div class="mb-3 inlineFormInput">
-                    <form:label path="licensePlate" class="form-label"><spring:message code="CreateTripLicensePlate"/></form:label>
-                    <form:errors path="licensePlate" cssClass="formError" element="p"/>
-                    <form:input type="text" class="form-control" path="licensePlate" placeholder="AAA123"/>
-                </div>
+
                 <div class="mb-3 inlineFormInput">
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
@@ -65,23 +61,23 @@
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
-                    <form:label for="departureDate" path="departureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
-                    <form:errors path="departureDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
+                    <form:label for="minDepartureDate" path="minDepartureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
+                    <form:errors path="minDepartureDate" cssClass="formError" element="p"/>
+                    <form:input type="datetime-local" class="form-control" path="minDepartureDate" placeholder="DD/MM/AAAA"/>
                 </div>
                 <div class="mb-3 inlineFormInput">
-                    <form:label for="arrivalDate" path="arrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
-                    <form:errors path="arrivalDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
+                    <form:label for="maxArrivalDate" path="maxArrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
+                    <form:errors path="maxArrivalDate" cssClass="formError" element="p"/>
+                    <form:input type="datetime-local" class="form-control" path="maxArrivalDate" placeholder="DD/MM/AAAA"/>
                 </div>
             </div>
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 mr-3 inlineFormTripleInput">
-                    <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
-                    <form:errors path="availableVolume" cssClass="formError" element="p"/>
+                    <form:label path="requestedVolume"  class="form-label"><spring:message code="CreateRequestRequestedVolume"/></form:label>
+                    <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="availableVolume" placeholder="0"/>
+                        <form:input type="text" class="form-control" path="requestedVolume" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -89,10 +85,10 @@
                 </div>
 
                 <div class="mb-3 mx-3 inlineFormTripleInput">
-                    <form:label path="availableWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
-                    <form:errors path="availableWeight" cssClass="formError" element="p"/>
+                    <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="CreateRequestRequestedWeight"/></form:label>
+                    <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="availableWeight" placeholder="0"/>
+                        <form:input type="text" class="form-control" path="requestedWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
@@ -101,10 +97,10 @@
 
 
                 <div class="mb-3 ml-3 inlineFormTripleInput">
-                    <form:label path="price" class="form-label"><spring:message code="Price"/></form:label>
-                    <form:errors path="price" cssClass="formError" element="p"/>
+                    <form:label path="maxPrice" class="form-label"><spring:message code="Price"/></form:label>
+                    <form:errors path="maxPrice" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="price" placeholder="0"/>
+                        <form:input type="text" class="form-control" path="maxPrice" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">ARS</span>
                         </div>
@@ -112,7 +108,7 @@
                 </div>
             </div>
 
-            <input type="submit" value="<spring:message code="CreateTrip"/>" class="btn btn-color mt-3 formButton"/>
+            <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton"/>
         </div>
     </div>
 </form:form>

@@ -34,7 +34,7 @@ public class RequestController {
         this.cs = cs;
     }
 
-    @RequestMapping("/browseRequests")
+    @RequestMapping("/requests/browse")
     public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
                                     @RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
@@ -54,7 +54,7 @@ public class RequestController {
             page = "1";
         }
 
-        final ModelAndView view = new ModelAndView("landing/browseRequests");
+        final ModelAndView view = new ModelAndView("requests/browse");
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
         view.addObject("origin",origin);
@@ -74,9 +74,9 @@ public class RequestController {
     }
 
 
-    @RequestMapping("/create/request")
+    @RequestMapping("/requests/create")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
-        final ModelAndView view = new ModelAndView("landing/createRequest");
+        final ModelAndView view = new ModelAndView("requests/create");
         return view;
     }
 
@@ -86,7 +86,7 @@ public class RequestController {
     }
 
 
-    @RequestMapping(value = "/create/request", method = { RequestMethod.POST })
+    @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
     public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return createRequest(form);
@@ -114,9 +114,9 @@ public class RequestController {
         return view;
     }
 
-    @RequestMapping("/requestDetail")
+    @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        final ModelAndView mav = new ModelAndView("landing/requestDetails");
+        final ModelAndView mav = new ModelAndView("requests/details");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         mav.addObject("user", us.getUserById(request.getUserId()));
@@ -136,7 +136,7 @@ public class RequestController {
 
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("landing/requestSuccess");
+        final ModelAndView mav = new ModelAndView("requests/success");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
