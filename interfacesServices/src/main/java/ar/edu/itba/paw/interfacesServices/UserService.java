@@ -8,5 +8,5 @@ public interface UserService {
 
     User createUser(String email, String name, String id, String role, String password);
     Optional<User> getUserByCuit(String cuit);
-    User getUserById(int id);
+    Optional<User> getUserById(int id);
 }

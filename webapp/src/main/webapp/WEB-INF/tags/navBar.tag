@@ -46,11 +46,15 @@
                     </c:if>
                 </li>
             </ul>
-            <c:if test="${currentRole == 'TRUCKER' || currentRole=='PROVIDER'}">
+            <c:if test="${currentUser != null}">
                 <div class="" style="margin: auto 0 auto auto; display: flex; flex-direction: row">
-<%--                    <ul class="navbar-nav">--%>
-<%--                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><svg width="2em" height="2em"><use xlink:href="#user"></use></svg></a>--%>
-<%--                    </ul>--%>
+                    <div class="userDetailsNavBar" style="">
+                        <h6 style="margin-bottom: 0.25rem; text-align: center;margin-top: 0.25rem;margin-right: 0.3rem"><b>${currentUser.getName()}</b></h6>
+                        <p style="margin:0 0.25rem 0 0;font-size: x-small; text-align: center;">${currentRole}</p>
+                    </div>
+                    <ul class="navbar-nav">
+                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><svg width="2em" height="2em"><use xlink:href="#user"></use></svg></a>
+                    </ul>
                     <ul class="navbar-nav">
                         <a class="nav-link m-auto" href="<c:url value="/logout"/>"><svg width="2em" height="2em"><use xlink:href="#logout"></use></svg></a>
                     </ul>

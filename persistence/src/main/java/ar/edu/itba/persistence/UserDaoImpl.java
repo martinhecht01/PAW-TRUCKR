@@ -75,11 +75,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserById(int id) {
+    public Optional<User> getUserById(int id) {
         List<User> users = jdbcTemplate.query("SELECT * FROM users WHERE userid = ?", ROW_MAPPER, id);
         if(users.isEmpty()){
-            return null;
+            return Optional.empty();
         }
-        return users.get(0);
+        return Optional.of(users.get(0));
     }
 }
