@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
-
-import static ar.edu.itba.paw.webapp.controller.TripController.getCurrentRole;
 
 @Controller
 public class RequestController {
@@ -37,7 +34,7 @@ public class RequestController {
         this.cs = cs;
     }
 
-    @RequestMapping("/browseRequests")
+    @RequestMapping("/requests/browse")
     public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
                                     @RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
@@ -57,7 +54,7 @@ public class RequestController {
             page = "1";
         }
 
-        final ModelAndView view = new ModelAndView("landing/browseRequests");
+        final ModelAndView view = new ModelAndView("requests/browse");
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
         view.addObject("origin",origin);
@@ -73,14 +70,13 @@ public class RequestController {
         view.addObject("maxAvailableVolume", maxAvailableVolume);
         List<Request> requests = rs.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate,maxAvailableVolume,maxAvailableWeight, Integer.parseInt(page));
         view.addObject("offers", requests);
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
-    @RequestMapping("/createRequest")
+
+    @RequestMapping("/requests/create")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
-        final ModelAndView view = new ModelAndView("landing/createRequest");
-        view.addObject("currentRole", getCurrentRole());
+        final ModelAndView view = new ModelAndView("requests/create");
         return view;
     }
 
@@ -89,13 +85,8 @@ public class RequestController {
         return cs.getAllCities();
     }
 
-//    @ModelAttribute("cargoOptions")
-//    public List<String> getOptions() {
-//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-//    }
 
-
-    @RequestMapping(value = "/createReq", method = { RequestMethod.POST })
+    @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
     public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return createRequest(form);
@@ -120,13 +111,12 @@ public class RequestController {
                 Integer.parseInt(form.getMaxPrice())
         );
         ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
-    @RequestMapping("/requestDetail")
+    @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        final ModelAndView mav = new ModelAndView("landing/requestDetails");
+        final ModelAndView mav = new ModelAndView("requests/details");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         mav.addObject("user", us.getUserById(request.getUserId()));
@@ -146,7 +136,7 @@ public class RequestController {
 
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("landing/requestSuccess");
+        final ModelAndView mav = new ModelAndView("requests/success");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;

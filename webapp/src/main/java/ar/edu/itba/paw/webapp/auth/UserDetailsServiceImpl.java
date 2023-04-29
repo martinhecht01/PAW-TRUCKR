@@ -30,8 +30,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final User user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
         final Collection<GrantedAuthority> authorities = new HashSet<>();
 
-        //TODO: roles
-        authorities.add(new SimpleGrantedAuthority(user.getRole()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
         return new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), authorities);
     }
 

@@ -30,29 +30,21 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService us;
-    private final MailService ms;
-
 
     @Autowired
-    public UserController(final UserService us, final MailService ms){
+    public UserController(final UserService us){
         this.us = us;
-        this.ms = ms;
     }
 
 
     @RequestMapping("/")
     public ModelAndView landing() {
-      //  final AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-      //  final User user = us.getUserByCuit(userDetails.getUsername());
-        ModelAndView view = new ModelAndView("landing/index");
-        view.addObject("currentRole", TripController.getCurrentRole());
-        return view;
+        return new ModelAndView("landing/index");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login(){
-        final ModelAndView view = new ModelAndView("landing/login");
-        return view;
+        return new ModelAndView("landing/login");
     }
 
     @RequestMapping(value = "/createUser", method = { RequestMethod.GET })
@@ -78,6 +70,9 @@ public class UserController {
     @RequestMapping("/profile")
     public ModelAndView profile() {
         final ModelAndView mav = new ModelAndView("user/profile");
+
+       // mav.addObject("user", us.findById(userId).orElseThrow(UserNotFoundException::new));
+
         return mav;
     }
 

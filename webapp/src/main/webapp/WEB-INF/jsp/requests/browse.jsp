@@ -120,7 +120,7 @@
                 <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
             </c:if>
             <c:forEach var="request" items="${offers}">
-                <a class="card mb-3 browseCards" href="<c:url value="/requestDetail?id=${request.requestId}"/>" style="display: flex; padding: 0">
+                <a class="card mb-3 browseCards" href="<c:url value="/requests/details?id=${request.requestId}"/>" style="display: flex; padding: 0">
                     <div class="card-header">
                         <div class="row g-0">
                             <div style="display: flex; justify-content: space-between; border-right: 3px black">

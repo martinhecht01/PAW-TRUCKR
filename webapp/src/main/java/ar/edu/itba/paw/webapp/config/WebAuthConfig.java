@@ -50,8 +50,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests()
                     .antMatchers("/login", "/register").anonymous()
                     .antMatchers("/admin/**").hasRole("ADMIN")
-                   // .antMatchers("/","/explore", "/trips/**", "/createTrip", "/browseTrips" ).hasRole("PROVIDER")
-                   // .antMatchers("/explore", "/trips/**", "/createTrip", "/browseTrips" ).hasRole("TRUCKER")
+                //TODO: revisar y especificar permisos
+                    .antMatchers("/requests/create", "/trips/browse" ).hasRole("PROVIDER")
+                    .antMatchers("/trips/create", "/requests/browse" ).hasRole("TRUCKER")
                     .antMatchers("/").permitAll()
                     .antMatchers("/**").authenticated()
                 .and().formLogin()

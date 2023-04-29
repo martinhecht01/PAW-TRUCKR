@@ -18,11 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 @Controller
 public class TripController {
@@ -38,8 +34,8 @@ public class TripController {
         this.cs = cs;
     }
 
-    @RequestMapping("/browseTrips")
-    public ModelAndView browseTrips(@RequestParam(defaultValue = "1") String page,
+    @RequestMapping("/trips/browse")
+    public ModelAndView browse(@RequestParam(defaultValue = "1") String page,
                                     @RequestParam(required = false) String origin,
                                     @RequestParam(required = false) String destination,
                                     @RequestParam(required = false) Integer minAvailableVolume,
@@ -56,7 +52,7 @@ public class TripController {
             page = "1";
         }
 
-        final ModelAndView view = new ModelAndView("landing/browseTrips");
+        final ModelAndView view = new ModelAndView("trips/browse");
 
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
@@ -71,28 +67,6 @@ public class TripController {
         view.addObject("arrivalDate",arrivalDate);
         List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
         view.addObject("offers", trips);
-        view.addObject("currentRole", getCurrentRole());
-        return view;
-    }
-
-        @ModelAttribute("currentRole")
-    public static String getCurrentRole() {
-        Collection<? extends GrantedAuthority> c = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        if (c.contains(new SimpleGrantedAuthority("TRUCKER"))){
-            return "TRUCKER";
-        }
-        else if (c.contains(new SimpleGrantedAuthority("PROVIDER"))){
-            return "PROVIDER";
-        }
-        return "";
-
-
-    }
-
-    @RequestMapping("/createTrip")
-    public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
-        final ModelAndView view = new ModelAndView("landing/createTrip");
-        view.addObject("currentRole", getCurrentRole());
         return view;
     }
 
@@ -101,13 +75,8 @@ public class TripController {
         return cs.getAllCities();
     }
 
-//    @ModelAttribute("cargoOptions")
-//    public List<String> getOptions() {
-//        return Arrays.asList("Refrigerada", "Peligrosa", "Granos", "Normal");
-//    }
 
-
-    @RequestMapping(value = "/create", method = { RequestMethod.POST })
+    @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return createTrip(form);
@@ -131,25 +100,27 @@ public class TripController {
                 form.getCargoType(),
                 Integer.parseInt(form.getPrice())
         );
-        ModelAndView view = new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
-        view.addObject("currentRole", getCurrentRole());
-        return view;
+        return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
     }
 
 
+    @RequestMapping(value = "/trips/create", method = { RequestMethod.GET })
+    public ModelAndView createTrip(@ModelAttribute("tripForm") final TripForm form) {
+        return new ModelAndView("trips/create");
+    }
+
     @RequestMapping("/tripDetail")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        final ModelAndView mav = new ModelAndView("landing/tripDetails");
+        final ModelAndView mav = new ModelAndView("details");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
-        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
     @RequestMapping("/trips/manageTrip")
     public ModelAndView manageTrip(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("landing/manageTrip");
+        final ModelAndView mav = new ModelAndView("trips/manageTrip");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
 
@@ -168,20 +139,20 @@ public class TripController {
 
         ts.sendProposal(id, user.getUserId(), form.getDescription());
 
-        return new ModelAndView("redirect:/browseTrips");
+        return new ModelAndView("redirect:/trips/browse");
     }
 
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("id") int id) {
         System.out.println("accepting proposal ID = " + id);
         ts.acceptTrip(id);
-        return new ModelAndView("redirect:/browseTrips");
+        return new ModelAndView("redirect:/trips/browse");
     }
 
 
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("landing/tripSuccess");
+        final ModelAndView mav = new ModelAndView("trips/success");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
@@ -191,9 +162,8 @@ public class TripController {
     public ModelAndView myTrips(){
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        final ModelAndView mav = new ModelAndView("landing/myTrips");
+        final ModelAndView mav = new ModelAndView("trips/myTrips");
         mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
-        mav.addObject("currentRole", getCurrentRole());
         return mav;
     }
 
