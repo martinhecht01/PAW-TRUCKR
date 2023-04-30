@@ -138,3 +138,7 @@ footer{
     margin-top: auto;
     background-color: white;
 }
+
+.userDetailsNavBar{
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+}

@@ -62,7 +62,7 @@ public class RequestServiceImpl implements RequestService {
 
         Request req = requestDao.getRequestById(requestId).get();
         Request acceptedRequest = requestDao.acceptRequest(req, acceptUserId);
-        User tripOwner = userDao.getUserById(acceptedRequest.getUserId());
+        Optional<User> tripOwner = userDao.getUserById(acceptedRequest.getUserId());
 //        ms.sendEmail(tripOwner, user, acceptedRequest);
         return acceptedRequest;
     }
