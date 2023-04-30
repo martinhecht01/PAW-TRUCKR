@@ -109,9 +109,9 @@ public class TripController {
         return new ModelAndView("trips/create");
     }
 
-    @RequestMapping("/tripDetail")
+    @RequestMapping("/trips/details")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        final ModelAndView mav = new ModelAndView("details");
+        final ModelAndView mav = new ModelAndView("trips/details");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("user", us.getUserById(trip.getUserId()));
