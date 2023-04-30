@@ -1,30 +1,19 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -59,9 +48,19 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
+
         if (errors.hasErrors()) {
+            if(us.existsUser(form.getCuit())){
+                errors.rejectValue("cuit", "alreadyExists");
+            }
             return register(form);
         }
+
+        if(us.existsUser(form.getCuit())){
+            errors.rejectValue("cuit", "alreadyExists");
+            return register(form);
+        }
+
         us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
         return new ModelAndView("redirect:/browseTrips");
     }

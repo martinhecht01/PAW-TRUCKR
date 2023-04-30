@@ -87,4 +87,11 @@ public class UserDaoImpl implements UserDao {
         }
         return Optional.of(users.get(0));
     }
+
+    @Override
+    public boolean existsUser(String cuit) {
+        String sql = "SELECT COUNT(*) FROM users WHERE cuit = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, cuit);
+        return count > 0;
+    }
 }
