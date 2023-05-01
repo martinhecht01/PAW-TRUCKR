@@ -10,6 +10,7 @@ import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -67,8 +68,15 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public Proposal sendProposal(int tripId, int userid, String description){
-        return tripDao.createProposal(tripId, userid, description);
+    public Proposal sendProposal(int tripId, int userid, String description) {
+        Proposal prop = tripDao.createProposal(tripId, userid, description);
+        Trip trip = tripDao.getTripById(tripId).get();
+        try{
+            ms.sendProposalEmail(userDao.getUserById(trip.getUserId()).get(),prop);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        return prop;
     }
 
     @Override

@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -129,7 +131,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/sendProposal", method = { RequestMethod.POST })
-    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
+    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             return tripDetail(id, form);
         }
@@ -137,7 +139,11 @@ public class TripController {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
-        ts.sendProposal(id, user.getUserId(), form.getDescription());
+        try {
+            ts.sendProposal(id, user.getUserId(), form.getDescription());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
 
         return new ModelAndView("redirect:/trips/browse");
     }

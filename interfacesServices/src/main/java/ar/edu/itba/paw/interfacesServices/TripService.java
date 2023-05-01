@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfacesServices;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,7 @@ public interface TripService {
 
     List<Trip> getAllActiveTripsByUserId(Integer userid);
 
-    Proposal sendProposal(int tripId, int userid, String description);
+    Proposal sendProposal(int tripId, int userid, String description) throws MessagingException;
 
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 }

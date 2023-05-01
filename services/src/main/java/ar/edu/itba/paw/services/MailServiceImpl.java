@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesServices.MailService;
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,22 @@ public class MailServiceImpl implements MailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setTo(user.getEmail());
         helper.setSubject("Trip confirmation");
+        helper.setText(htmlContent, true);
+        mailSender.send(message);
+    }
+    private String generateProposal(User user, Proposal proposal) {
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("proposal", proposal);
+        return templateEngine.process("proposal.html", context);
+    }
+
+    public void sendProposalEmail(User user,Proposal proposal) throws MessagingException {
+        String htmlContent = generateProposal(user,proposal);
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(user.getEmail());
+        helper.setSubject("Trip Proposal!");
         helper.setText(htmlContent, true);
         mailSender.send(message);
     }
