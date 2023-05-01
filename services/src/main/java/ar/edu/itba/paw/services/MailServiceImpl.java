@@ -35,7 +35,7 @@ public class MailServiceImpl implements MailService {
     private String generateEmailConfirmation(User confirmed) {
         Context context = new Context();
         context.setVariable("user", confirmed);
-        return templateEngine.process("confirmation.html", context);
+        return templateEngine.process("emailconfirmation.html", context);
     }
 
     public void sendConfirmationEmail(User user) throws MessagingException {
@@ -45,7 +45,21 @@ public class MailServiceImpl implements MailService {
         helper.setTo(user.getEmail());
         helper.setSubject("Account Confirmation");
         helper.setText(htmlContent, true);
-        // You can set additional properties, such as cc, bcc, attachments, etc. using the helper methods
+        mailSender.send(message);
+    }
+    private String generateTripConfirmation(Trip confirmed) {
+        Context context = new Context();
+        context.setVariable("trip", confirmed);
+        return templateEngine.process("tripconfirmation.html", context);
+    }
+
+    public void sendTripEmail(User user,Trip trip) throws MessagingException {
+        String htmlContent = generateTripConfirmation(trip);
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(user.getEmail());
+        helper.setSubject("Trip confirmation");
+        helper.setText(htmlContent, true);
         mailSender.send(message);
     }
 
