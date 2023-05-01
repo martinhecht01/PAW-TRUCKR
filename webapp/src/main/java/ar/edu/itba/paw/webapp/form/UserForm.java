@@ -1,11 +1,17 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.annotations.ConfirmPasswordValidation;
+
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+
+@ConfirmPasswordValidation(passwordFieldName = "password", confirmPasswordFieldName = "repeatPassword")
 public class UserForm {
 
     @Size(min = 6, max = 100)
+    @Pattern(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$")
     private String email;
 
     @Size(min = 6, max = 100)
@@ -15,12 +21,13 @@ public class UserForm {
     @Size(min = 6, max = 100)
     private String password;
 
-    @Size(min = 6, max = 100)
+
     private String repeatPassword;
 
     @Pattern(regexp = "20-[0-9]{8}-[0-9]")
     private String cuit;
 
+    @NotNull
     private String role;
 
 

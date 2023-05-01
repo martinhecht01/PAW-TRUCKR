@@ -10,4 +10,5 @@ public interface UserDao {
     public Optional<User> getUserByCuit(String userCuit);
     public Optional<User> getUserById(int id);
     Optional<User> findById(String id);
+    public boolean existsUser(String cuit);
 }

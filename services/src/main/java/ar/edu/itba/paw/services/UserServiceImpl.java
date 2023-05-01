@@ -54,4 +54,9 @@ public class UserServiceImpl implements UserService {
         return this.email;
     }
 
+    @Override
+    public boolean existsUser(String cuit) {
+        return userDao.existsUser(cuit);
+    }
+
 }
