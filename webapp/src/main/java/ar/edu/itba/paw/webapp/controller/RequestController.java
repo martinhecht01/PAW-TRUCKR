@@ -160,7 +160,7 @@ public class RequestController {
     public ModelAndView acceptProposal(@RequestParam("id") int id) {
         System.out.println("accepting proposal ID = " + id);
         rs.acceptRequest(id);
-        return new ModelAndView("redirect:/requests/browse");
+        return new ModelAndView("redirect:/trips/browse");
     }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
