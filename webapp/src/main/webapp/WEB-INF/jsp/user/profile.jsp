@@ -19,7 +19,7 @@
 <components:navBar/>
 <div class="w-75 m-auto pt-5">
     <main class="form-signin m-auto">
-        <div class="card py-2">
+        <div class="card">
             <div class="card-header">
                 <h4 class="card-title"><b><spring:message code="Profile"/></b></h4>
             </div>

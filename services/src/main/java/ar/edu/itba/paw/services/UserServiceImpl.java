@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(String email, String name, String id, String role, String password){
+    public User createUser(String email, String name, String id, String role, String password) throws UserExistsException {
         this.email = email;
+
+        if(id == null || userDao.existsUser(id))
+            throw new UserExistsException();
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
         try{

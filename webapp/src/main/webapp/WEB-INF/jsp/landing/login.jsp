@@ -24,7 +24,7 @@
             <div class="card-body">
                 <form:form action="${loginUrl}" method="post">
                     <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
-                    <h1 class="h3 mb-3 text-center">Log in</h1>
+                    <h1 class="h3 my-3 text-center">Log in</h1>
                     <p class="text-center">New to truckr? <a href="<c:url value="/register"/>">Sign up now</a></p>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="cuit" name="cuit" placeholder="00-00000000-0">
@@ -34,7 +34,7 @@
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                         <label for="password">Password</label>
                     </div>
-                    <p class="text-center"><a href="<c:url value="/resetPasswordRequest"/>">Forgot Password?</a></p>
+                    <p><a href="<c:url value="/resetPasswordRequest"/>">Forgot Password?</a></p>
 
 
                     <div class="checkbox mb-3">

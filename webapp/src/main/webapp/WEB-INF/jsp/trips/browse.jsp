@@ -141,7 +141,7 @@
         <div class="row g-0">
           <div style="display: flex; justify-content: space-between">
             <div style="width: 50%; justify-content: center;">
-              <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid" style="border-bottom-left-radius: 5px; width: 100%; height: 100%; max-height: 20vh ; object-position: left" alt="...">
+              <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="object-fit-cover" style="border-bottom-left-radius: 5px; max-height: 20vh;" alt="...">
             </div>
             <div  class="p-2" style="width: 50%; height: 100%; justify-content: center; align-items: center">
               <div class="row g-0" style="height: 75%">

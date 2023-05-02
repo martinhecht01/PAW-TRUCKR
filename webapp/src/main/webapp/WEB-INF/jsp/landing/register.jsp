@@ -20,59 +20,59 @@
 <c:url value="/register" var="postPath"/>
 <components:navBar/>
 
-<form:form modelAttribute="userForm" action="${postPath}" method="post">
 
-<div class="card w-75 mb-3 mt-5 formCard">
-    <div class="card-header">
-        <h4 class="card-title"><b>Register</b></h4>
-    </div>
-    <div class="card-body">
+<div class="w-75 m-auto">
+    <div class="card mb-3 mt-5 formCard">
+        <div class="card-body">
+            <h1 class="h3 my-3 text-center">Resgister</h1>
+            <p class="text-center">Already a user? <a href="<c:url value="/login"/>">Login</a></p>
+            <form:form modelAttribute="userForm" action="${postPath}" method="post">
+                <div class="mb-3">
+                    <form:label path="cuit" class="form-label">CUIT</form:label>
+                    <form:errors cssClass="formError" path="cuit" element="p"/>
+                    <form:input type="text" class="form-control" path="cuit" placeholder="CUIT"/>
+                </div>
+                <div class="mb-3">
+                    <form:label path="name" class="form-label">Name</form:label>
+                    <form:errors cssClass="formError" path="name" element="p"/>
+                    <form:input type="text" class="form-control" path="name" placeholder="Juan Perez"/>
+                </div>
+                <div class="mb-3">
+                    <form:label path="email" class="form-label">Email address</form:label>
+                    <form:errors cssClass="formError" path="email" element="p"/>
+                    <form:input type="email" class="form-control" path="email" placeholder="name@example.com"/>
+                </div>
+                <div class="mb-3">
+                    <form:label path="role" class="form-label">Role</form:label>
+                    <form:errors path="role" class="formError" element="p"/>
                     <div>
-                        <form:label path="cuit" class="form-label">CUIT</form:label>
-                        <form:errors cssClass="formError" path="cuit" element="p"/>
-                        <form:input type="text" class="form-control" path="cuit" placeholder="CUIT"/>
-                    </div>
-                    <div>
-                        <form:label path="name" class="form-label">Name</form:label>
-                        <form:errors cssClass="formError" path="name" element="p"/>
-                        <form:input type="text" class="form-control" path="name" placeholder="Juan Perez"/>
-                    </div>
-                    <div>
-                        <form:label path="email" class="form-label">Email address</form:label>
-                        <form:errors cssClass="formError" path="email" element="p"/>
-                        <form:input type="email" class="form-control" path="email" placeholder="name@example.com"/>
-                    </div>
+                        <form:radiobutton path="role" id="clientRadio" name="role" value="PROVIDER" />
+                        <form:label path="" for="clientRadio">I'm a provider! I will fill the truck with my cargo</form:label>
 
-                    <div>
-                        <form:label path="role" class="form-label">Role</form:label>
-                        <form:errors path="role" class="formError" element="p"/>
-                        <div>
-                            <form:label path="" for="clientRadio">I'm a provider! I will fill the truck with my cargo</form:label>
-                            <form:radiobutton path="role" id="clientRadio" name="role" value="PROVIDER" />
-                        </div>
-                        <div>
-                            <form:label path="" for="truckerRadio">I'm a trucker! I will take your cargo where you need</form:label>
-                            <form:radiobutton path="role" id="truckerRadio" name="role" value="TRUCKER" />
-                        </div>
                     </div>
+                    <div>
+                        <form:radiobutton path="role" id="truckerRadio" name="role" value="TRUCKER" />
+                        <form:label path="" for="truckerRadio">I'm a trucker! I will take your cargo where you need</form:label>
+                    </div>
+                </div>
 
-                    <div>
-                        <form:label path="password" class="form-label">Password</form:label>
-                        <form:errors cssClass="formError" path="password" element="p"/>
-                        <form:input type="password" class="form-control" path="password" placeholder="Password"/>
-                    </div>
-                    <div>
-                        <form:label path="repeatPassword" class="form-label">Confirm Password</form:label>
-                        <form:errors cssClass="formError" path="repeatPassword" element="p"/>
-                        <form:input type="password" class="form-control" path="repeatPassword" placeholder="Confirm Password"/>
-                        <form:errors cssClass="formError"/>
-                    </div>
-                    <button class="w-100 btn btn-lg btn-color" type="submit">Register</button>
-                </form:form>
+                <div class="mb-3">
+                    <form:label path="password" class="form-label">Password</form:label>
+                    <form:errors cssClass="formError" path="password" element="p"/>
+                    <form:input type="password" class="form-control" path="password" placeholder="Password"/>
+                </div>
+                <div class="mb-3">
+                    <form:label path="repeatPassword" class="form-label">Confirm Password</form:label>
+                    <form:errors cssClass="formError" path="repeatPassword" element="p"/>
+                    <form:input type="password" class="form-control" path="repeatPassword" placeholder="Confirm Password"/>
+                    <form:errors cssClass="formError"/>
+                </div>
+                <button class="w-100 btn btn-lg btn-color" type="submit">Register</button>
+            </form:form>
+        </div>
     </div>
 </div>
-
 </body>
-
-
+<components:waveDivider/>
+<components:footer/>
 </html>

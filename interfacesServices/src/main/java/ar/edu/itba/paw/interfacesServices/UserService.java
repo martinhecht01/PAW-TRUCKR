@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfacesServices;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 
@@ -8,7 +9,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    User createUser(String email, String name, String id, String role, String password);
+    User createUser(String email, String name, String id, String role, String password) throws UserExistsException;
 
     void resetPassword(Integer hash, String newPassword);
 
