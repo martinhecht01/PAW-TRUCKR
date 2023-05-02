@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html xmlns:th="http://www.thymeleaf.org"  xmlns:spring="http://www.springframework.org/tags" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
   <!--[if gte mso 9]>
   <xml>
@@ -155,7 +155,7 @@
                   <tr>
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Open Sans',sans-serif;" align="left">
 
-                      <h1 style="margin: 0px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word; font-family: 'Raleway',sans-serif; font-size: 48px; font-weight: 400;"><strong>Request has been confirmed!</strong></h1>
+                      <h1 style="margin: 0px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word; font-family: 'Raleway',sans-serif; font-size: 48px; font-weight: 400;"><strong th:text="#{ReqTitle}"></strong></h1>
 
                     </td>
                   </tr>
@@ -191,7 +191,7 @@
                       <div style="color: #333333; line-height: 130%; text-align: left; word-wrap: break-word;">
                         <p style="font-size: 14px; line-height: 130%;"><strong><span th:text="${user.name} + ','" style="font-size: 16px; line-height: 20.8px;"></span></strong></p>
                         <p style="font-size: 14px; line-height: 130%;"> </p>
-                        <p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;">A trip request has been accepted! </span></p>
+                        <p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;" th:text="#{ReqPhrase}"></span></p>
                       </div>
 
                     </td>
@@ -226,7 +226,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:25px 10px 0px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="line-height: 140%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;"><span style="font-family: Lato, sans-serif; font-size: 14px; line-height: 19.6px; color: #142d4c;"><strong><span style="font-size: 18px; line-height: 25.2px;">TRIP DETAILS</span></strong></span></p>
+                        <p style="font-size: 14px; line-height: 140%;"><span style="font-family: Lato, sans-serif; font-size: 14px; line-height: 19.6px; color: #142d4c;"><strong><span style="font-size: 18px; line-height: 25.2px;" th:text="#{ReqDetails}"></span></strong></span></p>
                       </div>
 
                     </td>
@@ -260,7 +260,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 10px 10px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;"><strong>Origin: </strong> <span th:text="${request.origin}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
+                        <p style="font-size: 14px; line-height: 140%;"><strong th:text="#{ReqOrigin}"></strong> <span th:text="${request.origin}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
                       </div>
 
                     </td>
@@ -274,7 +274,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px 10px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;"><strong>Destination: </strong> <span th:text="${request.destination}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
+                        <p style="font-size: 14px; line-height: 140%;"><strong th:text="#{ReqDestination}"></strong> <span th:text="${request.destination}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
                       </div>
 
                     </td>
@@ -288,7 +288,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px 10px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;"><strong>Departure Date / Time : </strong> <span th:text="${request.minDepartureDate}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
+                        <p style="font-size: 14px; line-height: 140%;"><strong th:text="#{ReqDeparture}"></strong> <span th:text="${request.minDepartureDate}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
                       </div>
 
                     </td>
@@ -302,7 +302,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px 10px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;"><strong>Arrival Date / Time : </strong> <span th:text="${request.maxArrivalDate}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
+                        <p style="font-size: 14px; line-height: 140%;"><strong th:text="#{ReqArrival}"></strong> <span th:text="${request.maxArrivalDate}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span></p>
                       </div>
 
                     </td>
@@ -316,7 +316,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:5px 10px 25px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 140%;"><strong>Price :  </strong><span th:text="${request.maxPrice}" style="color: #828080; font-size: 14px; line-height: 19.6px;"> </span> $</p>
+                        <p style="font-size: 14px; line-height: 140%;"><strong th:text="#{ReqPrice}"></strong><span th:text="${request.maxPrice}" style="color: #828080; font-size: 14px; line-height: 19.6px;"> </span> $</p>
                       </div>
 
                     </td>
@@ -351,7 +351,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:20px 20px 15px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 160%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px; font-family: Lato, sans-serif;">Please, consider this as a confirmation email. If you have any questions contact us with this link <span style="text-decoration: underline; line-height: 25.6px; color: #e67e23; font-size: 16px;">truckrconfirmation@gmail.com</span></span></p>
+                        <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px; font-family: Lato, sans-serif;" th:text="#{PleaseConsider}"><span style="text-decoration: underline; line-height: 25.6px; color: #e67e23; font-size: 16px;"></span></span></p>
                       </div>
 
                     </td>
@@ -365,7 +365,7 @@
                     <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px 30px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                       <div style="color: #333333; line-height: 160%; text-align: left; word-wrap: break-word;">
-                        <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px; font-family: Lato, sans-serif;">Happy Trucking!</span></p>
+                        <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px; font-family: Lato, sans-serif;" th:text="#{HappyTrucking}"></span></p>
                       </div>
 
                     </td>
@@ -382,7 +382,7 @@
                       <th:block th:if="not ${user.getRole().equals('TRUCKER')}">
                         <div align="center">
                           <a th:href="@{http://localhost:8080/trips/manageRequest(requestId=${request.requestId})}" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:'Open Sans',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #142d4c; border-radius: 2px;-webkit-border-radius: 2px; -moz-border-radius: 2px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
-                            <span style="display:block;padding:12px 35px;line-height:120%;"><span style="line-height: 16.8px;"><strong><span style="line-height: 16.8px;">View all details &gt;&gt;</span></strong></span></span>
+                            <span style="display:block;padding:12px 35px;line-height:120%;"><span style="line-height: 16.8px;"><strong><span style="line-height: 16.8px;" th:text="#{ViewDetails}"></span></strong></span></span>
                           </a>
                         </div>
                       </th:block>
