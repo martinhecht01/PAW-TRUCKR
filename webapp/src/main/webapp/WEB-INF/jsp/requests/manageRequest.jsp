@@ -11,8 +11,7 @@
 
 <head>
   <title><spring:message code="TripDetails"/></title>
-  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 
 <c:url value="/requests/acceptProposal" var="postPath"/>
@@ -24,16 +23,15 @@
         <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
       </div>
       <div class="card-body">
-        <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start p-3"  alt="TruckImg">
         <table class="table table-striped">
+          <tr>
+            <td><b><spring:message code="CargoType"/></b></td>
+            <td><spring:message code="${request.type}" htmlEscape="true" /></td>
+          </tr>
           <tr>
             <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
             <td><c:out value="${request.origin}-${request.destination}"/></td>
           </tr>
-          <%--                    <tr>--%>
-          <%--                        <td><b><spring:message code="LicensePlate"/></b></td>--%>
-          <%--                        <td><c:out value="${request.licensePlate}"/></td>--%>
-          <%--                    </tr>--%>
           <tr>
             <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
             <td><c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year} - ${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/></td>

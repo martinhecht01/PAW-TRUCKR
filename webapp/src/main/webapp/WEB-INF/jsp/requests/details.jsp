@@ -11,8 +11,7 @@
 
 <head>
     <title><spring:message code="TripDetails"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 
 <c:url value="/requests/sendProposal" var="postPath"/>
@@ -30,7 +29,11 @@
                         <td><c:out value="${currentUser.name.toUpperCase()}"/></td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
+                        <td><b><spring:message code="CargoType"/></b></td>
+                        <td><spring:message code="${request.type}" htmlEscape="true" /></td>
+                    </tr>
+                    <tr>
+                        <td><b><spring:message code="Origin"/> - <spring:message code="Destination"/></b></td>
                         <td><c:out value="${request.origin}-${request.destination}"/></td>
                     </tr>
                     <tr>

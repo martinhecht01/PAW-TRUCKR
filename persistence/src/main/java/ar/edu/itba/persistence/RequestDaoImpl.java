@@ -130,7 +130,7 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<ProposalRequest> getProposalsForRequestId(int requestid){
-        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ?";
+        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ? AND mindeparturedate >= now()";
         return jdbcTemplate.query(query, PROPOSALREQUEST_ROW_MAPPER, requestid);
     }
 
@@ -145,7 +145,7 @@ public class RequestDaoImpl implements RequestDao {
         if (pag < 1)
             pag = 1;
         Integer offset = (pag - 1) * 10;
-        String query = "SELECT * FROM requests WHERE acceptuserid IS NULL ";
+        String query = "SELECT * FROM requests WHERE acceptuserid IS NULL AND mindeparturedate <= now()";
         List<Object> params = new ArrayList<>();
 
 
@@ -230,7 +230,7 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public Integer getTotalPages(String origin, String destination, Integer availableVolume, Integer maxAvailableVolume, Integer availableWeight,Integer maxAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
-        String query = "SELECT COUNT(*) FROM requests WHERE acceptuserid IS NULL ";
+        String query = "SELECT COUNT(*) FROM requests WHERE acceptuserid IS NULL AND mindeparturedate >= now()";
         List<Object> params = new ArrayList<>();
         if (origin != null && !origin.equals("")) {
             query = query + " AND origin = ?";

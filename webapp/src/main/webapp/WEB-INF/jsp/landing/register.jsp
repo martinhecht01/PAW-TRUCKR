@@ -13,8 +13,7 @@
 
 <head>
     <title><spring:message code="Register"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 
 <body class="bodyContent">
 <c:url value="/register" var="postPath"/>
