@@ -47,10 +47,12 @@
                 <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.key.tripId}"/>">
                     <div class="card m-3" style="width: 25rem;">
                         <c:if test="${trip.value > 0}">
-                            <span class="position-absolute top-0 end-0 M-3 badge rounded-pill bg-danger">
-                                ${trip.value} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                            <h5 class="position-absolute top-0 end-0 M-3 ">
+                                <span class="badge rounded-pill bg-danger">
+                                    ${trip.value} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
                                 <span class="visually-hidden">unread messages</span>
                             </span>
+                            </h5>
                         </c:if>
                         <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
                         <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary">${trip.key.type}</span></h4>

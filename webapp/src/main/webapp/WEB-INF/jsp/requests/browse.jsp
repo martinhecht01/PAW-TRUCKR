@@ -104,7 +104,7 @@
         <div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
             <div class="tripCards m-auto justify-content-center">
                 <c:if test="${offers.size() == 0}">
-                    <h2 class="card-title text-center"><spring:message code="NoRequestsAvailable"/></h2>
+                    <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
                 </c:if>
                 <c:forEach var="request" items="${offers}">
                     <a class="text-decoration-none" href="<c:url value="/requests/details?id=${request.requestId}"/>">
