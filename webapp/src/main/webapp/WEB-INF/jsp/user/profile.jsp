@@ -17,7 +17,7 @@
 </head>
 <body class="bodyContent">
 <components:navBar/>
-<div class="w-75 m-auto">
+<div class="w-75 m-auto pt-5">
     <main class="form-signin m-auto">
         <div class="card py-2">
             <div class="card-header">
@@ -48,7 +48,7 @@
         </div>
     </main>
 </div>
-</body>
 <components:waveDivider/>
 <components:footer/>
+</body>
 </html>

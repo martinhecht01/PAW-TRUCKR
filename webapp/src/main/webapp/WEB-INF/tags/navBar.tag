@@ -13,7 +13,7 @@
     </symbol>
 </svg>
 
-<nav class="navbar py-3 navbar-expand-lg bg-body-tertiary">
+<nav class="navbar py-2 navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <%--        <img src="https://i.ibb.co/YBtwbSS/Logo.png" alt="Logo" height="40px" style="margin-right: 40px">--%>
         <a href="<c:url value="/"/>">

@@ -22,7 +22,7 @@
   <div class="filterCard">
       <div class="card">
         <div class="card-header">
-          <h4 class="card-title"><b><spring:message code="Filters"/></b></h4>
+          <h5 class="card-title"><b><spring:message code="Filters"/></b></h5>
         </div>
         <div class="card-body">
           <div class="row mb-3">
@@ -103,7 +103,7 @@
   </svg>
   <div class="tripCards">
     <c:if test="${offers.size() == 0}">
-      <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
+      <h2 class="card-title text-center"><spring:message code="NoRequestsAvailable"/></h2>
     </c:if>
     <c:forEach var="trip" items="${offers}">
       <a class="card mb-3 browseCards" href="<c:url value="/trips/details?id=${trip.tripId}"/>" style="display: flex; padding: 0">

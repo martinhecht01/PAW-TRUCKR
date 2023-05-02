@@ -34,6 +34,8 @@
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password">
                         <label for="password">Password</label>
                     </div>
+                    <p class="text-center"><a href="<c:url value="/resetPasswordRequest"/>">Forgot Password?</a></p>
+
 
                     <div class="checkbox mb-3">
                         <label>
