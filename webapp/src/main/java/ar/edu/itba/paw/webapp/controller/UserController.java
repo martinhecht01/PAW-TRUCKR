@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
@@ -54,20 +55,16 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
-
         if (errors.hasErrors()) {
-            if(us.existsUser(form.getCuit())){
-                errors.rejectValue("cuit", "alreadyExists");
-            }
             return register(form);
         }
 
-        if(us.existsUser(form.getCuit())){
+        try{
+            us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
+        } catch (UserExistsException e){
             errors.rejectValue("cuit", "alreadyExists");
             return register(form);
         }
-
-        us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
         return new ModelAndView("redirect:/browseTrips");
     }
 
