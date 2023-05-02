@@ -12,7 +12,7 @@ public interface UserDao {
     public User create(final String email, final String name, final String userId, final String password, final String role);
     public Optional<User> getUserByCuit(String userCuit);
     public Optional<User> getUserById(int id);
-    void createReset(Integer userId, Integer hash);
+    Optional<Integer> createReset(Integer userId, Integer hash);
 
     Optional<Reset> getResetByHash(Integer hash);
     void completeReset(Integer hash);

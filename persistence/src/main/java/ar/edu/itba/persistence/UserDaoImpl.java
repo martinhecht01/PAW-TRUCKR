@@ -68,13 +68,14 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void createReset(Integer userId, Integer hash ){
+    public Optional<Integer> createReset(Integer userId, Integer hash ){
         HashMap<String, Object> data = new HashMap<>();
         data.put("userid", userId);
         data.put("hash", hash);
         data.put("createdate", LocalDateTime.now());
         data.put("completed", null);
         jdbcInsertPasswordResets.execute(data);
+        return Optional.of(hash);
     }
 
     @Override
