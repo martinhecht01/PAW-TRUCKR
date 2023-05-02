@@ -99,6 +99,18 @@ public class TripServiceImpl implements TripService {
     public List<Trip> getAllActiveTripsByUserId(Integer userid){
         return tripDao.getAllActiveTripsByUserId(userid);
     }
+    @Override
+    public List<Trip> getAllProposedTripsByUserId(Integer userid){
+        return tripDao.getAllProposedTripsByUserId(userid);
+    }
+    @Override
+    public List<Trip> getAllAcceptedTripsByUserId(Integer userid){
+        return tripDao.getAllAcceptedTripsByUserId(userid);
+    }
+    @Override
+    public List<Trip> getAllUnproposedTripsByUserId(Integer userid){
+        return tripDao.getAllUnproposedTripsByUserId(userid);
+    }
 
     @Override
     public Optional<Trip> getTripByIdAndUserId(int tripid, int userid){

@@ -284,6 +284,24 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
+    public List<Trip> getAllUnproposedTripsByUserId(Integer userid) {
+        String query = "SELECT trips.* FROM trips LEFT JOIN proposals ON trips.tripid = proposals.tripid WHERE proposals.tripid IS NULL AND trips.userid = ? AND acceptuserid IS NULL;";
+        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid);
+    }
+
+    @Override
+    public List<Trip> getAllAcceptedTripsByUserId(Integer userid) {
+        String query = "SELECT * FROM trips WHERE userid = ? AND acceptuserid IS NOT NULL";
+        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid);
+    }
+
+    @Override
+    public List<Trip> getAllProposedTripsByUserId(Integer userid) {
+        String query = "SELECT trips.* FROM trips INNER JOIN proposals ON trips.tripid = proposals.tripid WHERE trips.userid = ? AND acceptuserid IS NULL;";
+        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid);
+    }
+
+    @Override
     public Optional<Trip> getTripByIdAndUserId(int tripid, int userid){
         return getTripById(tripid).filter(trip -> trip.getUserId() == userid);
     }
