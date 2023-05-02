@@ -4,9 +4,11 @@ import ar.edu.itba.paw.interfacesServices.CityService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Request;
+import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
+import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
@@ -137,6 +139,14 @@ public class RequestController {
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/success");
+        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("request", request);
+        return mav;
+    }
+
+    @RequestMapping("/requests/reserveSuccess")
+    public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
+        final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
