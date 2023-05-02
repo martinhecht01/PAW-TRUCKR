@@ -31,7 +31,11 @@
                         <td><c:out value="${currentUser.name.toUpperCase()}"/></td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
+                        <td><b><spring:message code="CargoType"/></b></td>
+                        <td><spring:message code="${trip.type}" htmlEscape="true" /></td>
+                    </tr>
+                    <tr>
+                        <td><b><spring:message code="Origin"/> - <spring:message code="Destination"/></b></td>
                         <td><c:out value="${trip.origin}-${trip.destination}"/></td>
                     </tr>
                     <tr>
