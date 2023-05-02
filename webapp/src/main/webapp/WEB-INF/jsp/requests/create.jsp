@@ -77,7 +77,7 @@
                     <form:label path="requestedVolume"  class="form-label"><spring:message code="CreateRequestRequestedVolume"/></form:label>
                     <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="requestedVolume" placeholder="0"/>
+                        <form:input type="number" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -88,7 +88,7 @@
                     <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="CreateRequestRequestedWeight"/></form:label>
                     <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="requestedWeight" placeholder="0"/>
+                        <form:input type="number" min="0" step="1" class="form-control" path="requestedWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
@@ -98,9 +98,9 @@
 
                 <div class="mb-3 ml-3 inlineFormTripleInput">
                     <form:label path="maxPrice" class="form-label"><spring:message code="Price"/></form:label>
-                    <form:errors path="maxPrice" cssClass="formError" element="p"/>
+                    <form:errors path="maxPrice" min="0" step="1" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="maxPrice" placeholder="0"/>
+                        <form:input type="number" class="form-control" path="maxPrice" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">ARS</span>
                         </div>

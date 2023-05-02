@@ -44,24 +44,24 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="minPrice"><spring:message code="FiltersMinPrice"/>:</label>
-                <input class="form-control" type="number" name="minPrice" id="minPrice" <c:if test="${minPrice != null && minPrice != ''}">value="${minPrice}"</c:if> placeholder="-"/>
+                <input class="form-control" type="number" min="0" step="1" name="minPrice" id="minPrice" <c:if test="${minPrice != null && minPrice != ''}">value="${minPrice}"</c:if> placeholder="-"/>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="maxPrice"><spring:message code="FiltersMaxPrice"/>:</label>
-                <input class="form-control" type="number" name="maxPrice" id="maxPrice" <c:if test="${maxPrice != null && maxPrice != ''}">value="${maxPrice}"</c:if> placeholder="-">
+                <input class="form-control" type="number" min="0" step="1" name="maxPrice" id="maxPrice" <c:if test="${maxPrice != null && maxPrice != ''}">value="${maxPrice}"</c:if> placeholder="-">
               </div>
             </div>
           </div>
           <div class="form-group mb-3">
             <label for="minAvailableVolume"><spring:message code="FiltersMinVolume"/>:</label>
-            <input type="number" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
+            <input type="number" min="0" step="1" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
                    <c:if test="${minAvailableVolume != null || minAvailableVolume != ''}">value="${minAvailableVolume}"</c:if> placeholder="-">
           </div>
           <div class="form-group mb-3">
             <label for="minAvailableWeight"><spring:message code="FiltersMinWeight"/>:</label>
-            <input type="number" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
+            <input type="number" min="0" step="1" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
                    <c:if test="${minAvailableWeight != null || minAvailableWeight != ''}">value="${minAvailableWeight}"</c:if> placeholder="-">
           </div>
           <div class="form-group row mb-3">
