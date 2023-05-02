@@ -66,7 +66,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createReset(Integer userId){
-        userDao.createReset(userId, Objects.hash(LocalDateTime.now() + userId.toString()) );
+        Integer hash = userDao.createReset(userId, Objects.hash(LocalDateTime.now() + userId.toString()) ).get();
+        try{ms.sendResetEmail(userDao.getUserById(userId).get(),hash);
+        } catch(MessagingException e){
+            throw new RuntimeException();
+        }
     }
     @Override
     public Optional<User> getUserByCuit(String cuit){

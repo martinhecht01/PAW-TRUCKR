@@ -14,5 +14,6 @@ public interface MailService {
     public void sendProposalEmail(User user, Proposal proposal) throws MessagingException;
     public void sendTripEmail(User user,Trip trip) throws MessagingException;
     void sendConfirmationEmail(User user) throws MessagingException;
+    public void sendResetEmail(User user,Integer hash) throws MessagingException;
 
 }

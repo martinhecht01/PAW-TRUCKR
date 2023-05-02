@@ -80,6 +80,23 @@ public class MailServiceImpl implements MailService {
         helper.setText(htmlContent, true);
         mailSender.send(message);
     }
+    private String generateReset(User user, Integer hash) {
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("hash", hash);
+        return templateEngine.process("resetpassword.html", context);
+    }
+
+    public void sendResetEmail(User user,Integer hash) throws MessagingException {
+        String htmlContent = generateReset(user,hash);
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+        helper.setTo(user.getEmail());
+        helper.setSubject("Password Reset");
+        helper.setText(htmlContent, true);
+        mailSender.send(message);
+    }
+
 
 
 
