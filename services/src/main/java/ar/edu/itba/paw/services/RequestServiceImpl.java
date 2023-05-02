@@ -65,25 +65,28 @@ public class RequestServiceImpl implements RequestService {
         ProposalRequest proposal = requestDao.getProposalById(proposalid).get();
         Request request = requestDao.getRequestById(proposal.getRequestid()).get();
 
-
-//        Trip trip = tripDao.getTripById(proposalid).get();
-        User tripOwner = userDao.getUserById(request.getUserId()).get();
-
-//        try{ms.sendTripEmail(tripOwner,request);}
-//        catch(MessagingException e){
-//            throw new RuntimeException();
-//        }
+        ;
+        User requestOwner = userDao.getUserById(request.getUserId()).get();
+        User proposed = userDao.getUserById(proposal.getUserid()).get();
+        try{ms.sendRequestEmail(requestOwner,request);}
+        catch(MessagingException e){
+            throw new RuntimeException();
+        }
+        try{ms.sendRequestEmail(proposed,request);}
+        catch(MessagingException e){
+            throw new RuntimeException();
+        }
     }
     
     @Override
     public ProposalRequest sendProposal(int requestId, int userid, String description){
         ProposalRequest prop = requestDao.createProposal(requestId, userid, description);
         Request request = requestDao.getRequestById(requestId).get();
-//        try{
-//            ms.sendProposalEmail(userDao.getUserById(request.getUserId()).get(),prop);
-//        } catch (MessagingException e) {
-//            throw new RuntimeException(e);
-//        }
+        try{
+            ms.sendProposalRequestEmail(userDao.getUserById(request.getUserId()).get(),prop);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
         return prop;
     }
 
