@@ -144,8 +144,10 @@ public class TripController {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+        ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
 
-        return new ModelAndView("redirect:/trips/browse");
+        mav.addObject("id",id);
+        return mav;
     }
 
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
@@ -159,6 +161,14 @@ public class TripController {
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("trips/success");
+        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        mav.addObject("trip", trip);
+        return mav;
+    }
+
+    @RequestMapping("/trips/reserveSuccess")
+    public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
+        final ModelAndView mav = new ModelAndView("trips/reserveSuccess");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;

@@ -26,19 +26,19 @@
             <div class="card-body">
                 <div>
                     <h5><b>Name:</b></h5>
-                    <p>${currentUser.getName()}</p>
+                    <p><c:out value="${currentUser.getName()}"/></p>
                 </div>
                 <div>
                     <h5><b>Cuit:</b></h5>
-                    <p>${currentUser.getCuit()}</p>
+                    <p><c:out value="${currentUser.getCuit()}"/></p>
                 </div>
                 <div>
                     <h5><b>Email:</b></h5>
-                    <p>${currentUser.getEmail()}</p>
+                    <p><c:out value="${currentUser.getEmail()}"/></p>
                 </div>
                 <div>
                     <h5><b>Role:</b></h5>
-                    <p>${currentRole}</p>
+                    <p><c:out value="${currentRole}"/></p>
                 </div>
                 <div>
                     <h5><b>Password:</b></h5>

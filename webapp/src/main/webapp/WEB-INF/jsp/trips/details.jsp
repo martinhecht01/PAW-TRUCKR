@@ -65,9 +65,8 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-3">
-                            <form:label for="email" class="form-label" path="description"><spring:message code="Email"/></form:label>
-                            <spring:message code="EmailPlaceHolder" var="emailPlaceholder"/>
-                            <form:textarea type="text" class="form-control" path="description" placeholder="${emailPlaceholder}"/>
+                            <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
+                            <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
                         </div>
                         <div>
                             <spring:message code="Reserve" var="reserve"/>
