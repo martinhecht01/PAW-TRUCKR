@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
+import ar.edu.itba.paw.models.Proposal;
+import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.Trip;
 
@@ -19,7 +21,11 @@ public interface RequestDao {
                    String type,
                    int price);
 
+    ProposalRequest createProposal(int tripid, int userid, String description);
 
+    List<ProposalRequest> getProposalsForRequestId(int tripid);
+
+    Optional<ProposalRequest> getProposalById(int proposalId);
     List<Request> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate,Integer maxAvailableVolume,Integer maxAvailableWeight, Integer pag);
 
     List<Request> getAllActiveRequestsByUserId(Integer userId);
@@ -28,5 +34,5 @@ public interface RequestDao {
 
     Optional<Request> getRequestById(int reqid);
 
-    Request acceptRequest(Request request, int acceptUserId);
+    void acceptRequest(int proposalId);
 }

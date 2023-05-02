@@ -18,6 +18,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -135,7 +137,31 @@ public class RequestController {
 //
 //        return new ModelAndView("redirect:/browseRequests");
 //    }
+    @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
+    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
+        if (errors.hasErrors()) {
+            return requestDetail(id, form);
+        }
 
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+        try {
+            rs.sendProposal(id, user.getUserId(), form.getDescription());
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+        ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
+
+        mav.addObject("id",id);
+        return mav;
+    }
+    @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
+    public ModelAndView acceptProposal(@RequestParam("id") int id) {
+        System.out.println("accepting proposal ID = " + id);
+        rs.acceptRequest(id);
+        return new ModelAndView("redirect:/requests/browse");
+    }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/success");
@@ -143,6 +169,7 @@ public class RequestController {
         mav.addObject("request", request);
         return mav;
     }
+
 
     @RequestMapping("/requests/reserveSuccess")
     public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {

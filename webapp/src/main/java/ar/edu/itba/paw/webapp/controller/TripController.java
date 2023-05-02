@@ -130,7 +130,7 @@ public class TripController {
         return mav;
     }
 
-    @RequestMapping(value = "/sendProposal", method = { RequestMethod.POST })
+    @RequestMapping(value = "/trips/sendProposal", method = { RequestMethod.POST })
     public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             return tripDetail(id, form);

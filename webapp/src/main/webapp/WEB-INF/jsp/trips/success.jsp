@@ -61,7 +61,7 @@
     </table>
   </div>
 </div>
-<a href="<c:url value="/explore"/>"><button value="<spring:message code="GoBack"/>" class="btn btn-color mt-3 formButton"></button></a>
+<a href="/explore" class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
 <div style="margin-top: auto">
   <components:waveDivider/>
   <components:footer/>

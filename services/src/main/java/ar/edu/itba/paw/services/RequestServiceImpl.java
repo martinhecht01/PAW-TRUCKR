@@ -4,12 +4,11 @@ import ar.edu.itba.paw.interfacesPersistence.RequestDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
-import ar.edu.itba.paw.models.Request;
-import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -56,22 +55,40 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request acceptRequest(int requestId, String email, String name, String cuit ){
-        User user = userDao.getUserByCuit(cuit).get();
-        int acceptUserId = user.getUserId();
+    public void acceptRequest(int proposalid ){
+        requestDao.acceptRequest(proposalid);
+        ProposalRequest proposal = requestDao.getProposalById(proposalid).get();
+        Request request = requestDao.getRequestById(proposal.getRequestid()).get();
 
-        Request req = requestDao.getRequestById(requestId).get();
-        Request acceptedRequest = requestDao.acceptRequest(req, acceptUserId);
-        Optional<User> tripOwner = userDao.getUserById(acceptedRequest.getUserId());
-//        ms.sendEmail(tripOwner, user, acceptedRequest);
-        return acceptedRequest;
+
+//        Trip trip = tripDao.getTripById(proposalid).get();
+        User tripOwner = userDao.getUserById(request.getUserId()).get();
+
+//        try{ms.sendTripEmail(tripOwner,request);}
+//        catch(MessagingException e){
+//            throw new RuntimeException();
+//        }
+    }
+    @Override
+    public ProposalRequest sendProposal(int requestId, int userid, String description){
+        ProposalRequest prop = requestDao.createProposal(requestId, userid, description);
+        Request request = requestDao.getRequestById(requestId).get();
+//        try{
+//            ms.sendProposalEmail(userDao.getUserById(request.getUserId()).get(),prop);
+//        } catch (MessagingException e) {
+//            throw new RuntimeException(e);
+//        }
+        return prop;
     }
 
     @Override
     public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume,Integer maxAvailableVolume, Integer minAvailableWeight,Integer maxAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
         return requestDao.getTotalPages(origin, destination,minAvailableVolume,maxAvailableVolume, minAvailableWeight,maxAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
     }
-
+    @Override
+    public List<ProposalRequest> getProposalsForRequestId(int requestId){
+        return requestDao.getProposalsForRequestId(requestId);
+    }
     @Override
     public List<Request> getAllActiveRequestsByUserId(Integer userid){
         return requestDao.getAllActiveRequestsByUserId(userid);

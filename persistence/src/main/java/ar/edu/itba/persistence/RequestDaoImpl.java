@@ -1,6 +1,8 @@
 package ar.edu.itba.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.RequestDao;
+import ar.edu.itba.paw.models.Proposal;
+import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,10 +39,20 @@ public class RequestDaoImpl implements RequestDao {
         );
     };
 
+    private final static RowMapper<ProposalRequest> PROPOSALREQUEST_ROW_MAPPER = (rs, rowNum) -> new ProposalRequest(
+            rs.getInt("proposalid"),
+            rs.getInt("requestid"),
+            rs.getInt("userid"),
+            rs.getString("description"),
+            rs.getString("name")
+    );
+
 
     private static Integer ITEMS_PER_PAGE = 10;
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+
+    private SimpleJdbcInsert jdbcProposalRequestInsert;
     @Autowired
     public RequestDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -65,7 +77,16 @@ public class RequestDaoImpl implements RequestDao {
                         "  acceptuserid INT REFERENCES users(userid)\n" +
                         ");"
         );
+        jdbcTemplate.execute(
+                "CREATE TABLE IF NOT EXISTS proposalrequests (\n" +
+                        "  proposalid SERIAL PRIMARY KEY,\n" +
+                        "  requestid INT NOT NULL REFERENCES requests(requestid)," +
+                        "  userid INT NOT NULL REFERENCES users(userid),\n" +
+                        "  description VARCHAR(300)\n" +
+                        ");"
+        );
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("requests").usingGeneratedKeyColumns("requestid");
+        this.jdbcProposalRequestInsert = new SimpleJdbcInsert(ds).withTableName("proposalrequests").usingGeneratedKeyColumns("proposalid");
     }
 
     @Override
@@ -96,7 +117,28 @@ public class RequestDaoImpl implements RequestDao {
         int requestId = jdbcInsert.executeAndReturnKey(data).intValue();
         return new Request(requestId, userid, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type,price,-1);
     }
+    @Override
+    public ProposalRequest createProposal(int requestid, int userid, String description){
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("requestid", requestid);
+        data.put("userid", userid);
+        data.put("description", description);
+        int key = jdbcProposalRequestInsert.executeAndReturnKey(data).intValue();
+        return new ProposalRequest(key, requestid, userid, description,"");
+    }
 
+    @Override
+    public List<ProposalRequest> getProposalsForRequestId(int requestid){
+        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ?";
+        return jdbcTemplate.query(query, PROPOSALREQUEST_ROW_MAPPER, requestid);
+    }
+
+    @Override
+    public Optional<ProposalRequest> getProposalById(int proposalId){
+        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE proposalid = ?";
+        List<ProposalRequest> proposals = jdbcTemplate.query(query, PROPOSALREQUEST_ROW_MAPPER, proposalId);
+        return proposals.isEmpty() ? Optional.empty() : Optional.of(proposals.get(0));
+    }
     @Override
     public List<Request> getAllActiveRequests(String origin, String destination, Integer availableVolume, Integer availableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate,Integer maxAvailableVolume, Integer maxAvailableWeight, Integer pag) {
         if (pag < 1)
@@ -258,19 +300,14 @@ public class RequestDaoImpl implements RequestDao {
     }
     @Override
     public Optional<Request> getRequestById(int reqid){
-        List<Request> trips= jdbcTemplate.query("SELECT * FROM requests WHERE requestid = ?", ROW_MAPPER, reqid);
-        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
+        List<Request> requests= jdbcTemplate.query("SELECT * FROM requests WHERE requestid = ?", ROW_MAPPER, reqid);
+        return requests.isEmpty() ? Optional.empty() : Optional.of(requests.get(0));
     }
 
     @Override
-    public Request acceptRequest(Request request, int acceptUserId){
-        System.out.println(acceptUserId);
-        int rowsAffected = jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE requestid = ?", acceptUserId, request.getRequestId());
-        if(rowsAffected > 0){
-            request.setAcceptUserId(acceptUserId);
-            return request;
-        } else {
-            return null;
-        }
+    public void acceptRequest(int proposalId){
+        ProposalRequest proposal = getProposalById(proposalId).get();
+        System.out.println("PROPOSAL DESCRIPTION = " + proposal.getDescription());
+        jdbcTemplate.update("UPDATE requests SET acceptuserid = ? WHERE requestid = ?", proposal.getUserid() , proposal.getRequestid());
     }
 }

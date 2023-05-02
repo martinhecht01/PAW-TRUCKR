@@ -15,7 +15,7 @@
 </head>
 <body class="bodyContent">
 
-<c:url value="/accept" var="postPath"/>
+<c:url value="/requests/sendProposal" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
     <div class="inlineFormInputContainer">
@@ -52,40 +52,25 @@
                 </table>
             </div>
         </div>
-<%--        <div class="inlineFormInputContainer justify-content-top align-items-top" >--%>
-<%--            <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">--%>
-<%--                <div class="card browseCards" style="width: 20rem;">--%>
-<%--                    <div class="card-header">--%>
-<%--                        <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>--%>
-<%--                    </div>--%>
-<%--                    <div class="card-body">--%>
-<%--                        <div class="mb-3">--%>
-<%--                            <form:label for="name" class="form-label" path="name"><spring:message code="Name"/></form:label>--%>
-<%--                            <form:errors path="name" cssClass="formError" element="p"/>--%>
-<%--                            <spring:message code="NamePlaceholder" var="namePlaceholder"/>--%>
-<%--                            <form:input type="text" class="form-control" placeholder="${namePlaceholder}" path="name"/>--%>
-<%--                        </div>--%>
-
-<%--                        <div class="mb-3">--%>
-<%--                            <form:label for="cuit" class="form-label" path="cuit"><spring:message code="Cuit"/></form:label>--%>
-<%--                            <form:errors path="cuit" cssClass="formError" element="p"/>--%>
-<%--                            <form:input type="text" class="form-control" path="cuit" placeholder="00-00000000-0"/>--%>
-<%--                        </div>--%>
-
-<%--                        <div class="mb-3">--%>
-<%--                            <form:label for="email" class="form-label" path="email"><spring:message code="Email"/></form:label>--%>
-<%--                            <form:errors path="email" cssClass="formError" element="p"/>--%>
-<%--                            <spring:message code="EmailPlaceHolder" var="emailPlaceholder"/>--%>
-<%--                            <form:input type="text" class="form-control" path="email" placeholder="${emailPlaceholder}"/>--%>
-<%--                        </div>--%>
-<%--                        <div>--%>
-<%--                            <spring:message code="Reserve" var="reserve"/>--%>
-<%--                            <input type="submit" class="btn btn-color" value="${reserve}"/>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </form:form>--%>
-<%--        </div>--%>
+        <div class="inlineFormInputContainer justify-content-top align-items-top" >
+            <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">
+                <div class="card browseCards" style="width: 20rem;">
+                    <div class="card-header">
+                        <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
+                            <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
+                        </div>
+                        <div>
+                            <spring:message code="Reserve" var="reserve"/>
+                            <input type="submit" class="btn btn-color" value="${reserve}"/>
+                        </div>
+                    </div>
+                </div>
+            </form:form>
+        </div>
     </div>
 </div>
 <div style="margin-top: auto">

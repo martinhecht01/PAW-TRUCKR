@@ -15,7 +15,7 @@
 </head>
 <body class="bodyContent">
 
-<c:url value="/sendProposal" var="postPath"/>
+<c:url value="/trips/sendProposal" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
     <div class="inlineFormInputContainer">
