@@ -27,217 +27,58 @@
     <symbol id="heavy" viewBox="0 0 16 16">
         <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2zM5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0V5z"/>
     </symbol>
+    <symbol id="notification" viewBox="0 0 16 16">
+        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+    </symbol>
 </svg>
 <form:form method="get">
-    <div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
-        <div class="tripCards m-auto">
-            <c:if test="${acceptedTrips.size() == 0}">
+    <div class="d-flex pt-5 w-100">
+        <div class="tripCards w-75 m-auto">
+            <c:if test="${offers.size() == 0}">
                 <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
             </c:if>
-            <div>
-                <c:if test="${acceptedTrips.size() != 0}">
-                <h3 class="column-header">Accepted Trips</h3>
-                </c:if>
-                <c:forEach var="trip" items="${acceptedTrips}">
-                    <a class="card mb-3 browseCards" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>" style="display: flex; padding: 0">
-                        <div class="card-header">
-                            <div class="row g-0">
-                                <div style="display: flex; justify-content: space-between; border-right: 3px black">
-                                    <div class="py-1 px-3" style="width: 50%; justify-content: space-between; display: flex;">
-                                        <div style="display: flex; width: 100%; justify-content: space-between; text-align: center">
-                                            <div>
-                                                <div class="mx-2">
-                                                    <h5><c:out value="${trip.origin}"/></h5>
-                                                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="mx-2">
-                                                    <h5><c:out value="${trip.destination}"/></h5>
-                                                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div  class="py-3" style="display: flex; flex-direction: row; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                        <h5 class="px-3"><c:out value="${trip.type}"/></h5>
-                                            <%--                <svg width="2em" height="3em"><use xlink:href="#cold"></use></svg>--%>
-                                    </div>
+            <c:forEach var="trip" items="${unproposedTrips}">
+                <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
+                    <div class="card m-3" style="width: 25rem;">
+                        <span class="position-absolute top-0 end-0 M-3 badge rounded-pill bg-danger">
+                            9 <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                        <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
+                        <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary">${trip.type}</span></h4>
+                        <div class="card-body">
+                            <div class="w-100 d-flex space-apart">
+                                <div class="text-truncate text-center" style="width: 35%">
+                                    <h5><c:out value="${trip.origin}"/></h5>
+                                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
+                                </div>
+
+                                <div style="width: 30%">
+                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                </div>
+
+                                <div class="text-truncate text-center" style="width: 35%">
+                                    <h5><c:out value="${trip.destination}"/></h5>
+                                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="row g-0">
-                            <div style="display: flex; justify-content: space-between">
-                                <div style="width: 50%; justify-content: center;">
-                                    <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid" style="border-bottom-left-radius: 5px; width: 100%; height: 100%; max-height: 20vh ; object-position: left" alt="...">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                                <div class="text-center">
+                                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.availableWeight}"/> KG </h5>
+                                    <p><spring:message code="AvailableWeight"/></p>
                                 </div>
-                                <div  class="p-2" style="width: 50%; height: 100%; justify-content: center; align-items: center">
-                                    <div class="row g-0" style="height: 75%">
-                                        <div style="display: flex; margin-top: auto; justify-content: space-between">
-                                            <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                                <p class="pb-2"><spring:message code="AvailableWeight"/></p>
-                                                <svg width="3em" height="3em"><use xlink:href="#heavy"></use></svg>
-                                                <h4><c:out value="${trip.availableWeight}"/> KG </h4>
-                                            </div>
-                                            <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                                <p class="pb-2"><spring:message code="AvailableVolume"/></p>
-                                                <svg width="3em" height="3em"><use xlink:href="#volume"></use></svg>
-                                                <h4><c:out value="${trip.availableVolume}"/> M3 </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-0 pt-3" style="text-align: center; height: 25%">
-                                        <div>
-                                            <h4>$<c:out value="${trip.price}"/></h4>
-                                        </div>
-                                    </div>
+                                <div class="text-center">
+                                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.availableVolume}"/> M3 </h5>
+                                    <p><spring:message code="AvailableVolume"/></p>
                                 </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
-            <div>
-                <c:if test="${proposedTrips.size() != 0}">
-                <h3 class="column-header">Proposed Trips</h3>
-                </c:if>
-                <c:forEach var="trip" items="${proposedTrips}">
-                    <a class="card mb-3 browseCards" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>" style="display: flex; padding: 0">
-                        <div class="card-header">
-                            <div class="row g-0">
-                                <div style="display: flex; justify-content: space-between; border-right: 3px black">
-                                    <div class="py-1 px-3" style="width: 50%; justify-content: space-between; display: flex;">
-                                        <div style="display: flex; width: 100%; justify-content: space-between; text-align: center">
-                                            <div>
-                                                <div class="mx-2">
-                                                    <h5><c:out value="${trip.origin}"/></h5>
-                                                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="mx-2">
-                                                    <h5><c:out value="${trip.destination}"/></h5>
-                                                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div  class="py-3" style="display: flex; flex-direction: row; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                        <h5 class="px-3"><c:out value="${trip.type}"/></h5>
-                                            <%--                <svg width="2em" height="3em"><use xlink:href="#cold"></use></svg>--%>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-0">
-                            <div style="display: flex; justify-content: space-between">
-                                <div style="width: 50%; justify-content: center;">
-                                    <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid" style="border-bottom-left-radius: 5px; width: 100%; height: 100%; max-height: 20vh ; object-position: left" alt="...">
-                                </div>
-                                <div  class="p-2" style="width: 50%; height: 100%; justify-content: center; align-items: center">
-                                    <div class="row g-0" style="height: 75%">
-                                        <div style="display: flex; margin-top: auto; justify-content: space-between">
-                                            <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                                <p class="pb-2"><spring:message code="AvailableWeight"/></p>
-                                                <svg width="3em" height="3em"><use xlink:href="#heavy"></use></svg>
-                                                <h4><c:out value="${trip.availableWeight}"/> KG </h4>
-                                            </div>
-                                            <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                                <p class="pb-2"><spring:message code="AvailableVolume"/></p>
-                                                <svg width="3em" height="3em"><use xlink:href="#volume"></use></svg>
-                                                <h4><c:out value="${trip.availableVolume}"/> M3 </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-0 pt-3" style="text-align: center; height: 25%">
-                                        <div>
-                                            <h4>$<c:out value="${trip.price}"/></h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
-            <div>
-                <c:if test="${unproposedTrips.size() != 0}">
-                <h3 class="column-header">Unproposed Trips</h3>
-                </c:if>
-                <c:forEach var="trip" items="${unproposedTrips}">
-                    <a class="card mb-3 browseCards" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>" style="display: flex; padding: 0">
-                        <div class="card-header">
-                            <div class="row g-0">
-                                <div style="display: flex; justify-content: space-between; border-right: 3px black">
-                                    <div class="py-1 px-3" style="width: 50%; justify-content: space-between; display: flex;">
-                                        <div style="display: flex; width: 100%; justify-content: space-between; text-align: center">
-                                            <div>
-                                                <div class="mx-2">
-                                                    <h5><c:out value="${trip.origin}"/></h5>
-                                                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div>
-                                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="mx-2">
-                                                    <h5><c:out value="${trip.destination}"/></h5>
-                                                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div  class="py-3" style="display: flex; flex-direction: row; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                        <h5 class="px-3"><c:out value="${trip.type}"/></h5>
-                                            <%--                <svg width="2em" height="3em"><use xlink:href="#cold"></use></svg>--%>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row g-0">
-                            <div style="display: flex; justify-content: space-between">
-                                <div style="width: 50%; justify-content: center;">
-                                    <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="img-fluid" style="border-bottom-left-radius: 5px; width: 100%; height: 100%; max-height: 20vh ; object-position: left" alt="...">
-                                </div>
-                                <div  class="p-2" style="width: 50%; height: 100%; justify-content: center; align-items: center">
-                                    <div class="row g-0" style="height: 75%">
-                                        <div style="display: flex; margin-top: auto; justify-content: space-between">
-                                            <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                                <p class="pb-2"><spring:message code="AvailableWeight"/></p>
-                                                <svg width="3em" height="3em"><use xlink:href="#heavy"></use></svg>
-                                                <h4><c:out value="${trip.availableWeight}"/> KG </h4>
-                                            </div>
-                                            <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                                                <p class="pb-2"><spring:message code="AvailableVolume"/></p>
-                                                <svg width="3em" height="3em"><use xlink:href="#volume"></use></svg>
-                                                <h4><c:out value="${trip.availableVolume}"/> M3 </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row g-0 pt-3" style="text-align: center; height: 25%">
-                                        <div>
-                                            <h4>$<c:out value="${trip.price}"/></h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </a>
-                </c:forEach>
-            </div>
+                            </li>
+                            <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
+                        </ul>
+                    </div>
+                </a>
+            </c:forEach>
         </div>
     </div>
 
