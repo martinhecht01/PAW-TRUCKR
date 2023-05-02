@@ -34,13 +34,28 @@
             </ul>
             <c:if test="${currentUser != null}">
                 <div class="" style="margin: auto 0 auto auto; display: flex; flex-direction: row">
-                    <div class="userDetailsNavBar" style="">
-                        <h6 style="margin-bottom: 0.25rem; text-align: center;margin-top: 0.25rem;margin-right: 0.3rem"><b>${currentUser.getName()}</b></h6>
+                    <div style="margin: auto 1.5rem auto auto">
+                        <c:if test="${currentRole == 'TRUCKER'}">
+                            <a class="nav-link" aria-current="page" href="<c:url value="/trips/myTrips"/>"><spring:message code="MyTrips"/></a>
+                        </c:if>
+                        <c:if test="${currentRole == 'PROVIDER'}">
+                            <a class="nav-link" aria-current="page" href="<c:url value="/requests/myRequests"/>"><spring:message code="MyRequests"/></a>
+                        </c:if>
+                    </div>
 
+                    <div class="userDetailsNavBar" style="">
+
+
+                        <h6 style="margin-bottom: 0.25rem; text-align: center;margin-top: 0.25rem;margin-right: 0.3rem"><b>${currentUser.getName()}</b></h6>
                         <p style="margin:0 0.25rem 0 0;font-size: x-small; text-align: center;"><c:if test="${currentRole == 'TRUCKER'}"><spring:message code="Trucker"/></c:if><c:if test="${currentRole == 'PROVIDER'}"><spring:message code="Provider"/></c:if></p>
+
+
+
+
+
                     </div>
                     <ul class="navbar-nav">
-                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><svg width="2em" height="2em"><use xlink:href="#user"></use></svg></a>
+                        <a class="nav-link m-auto" href="<c:url value="/p\ofile"/>"><svg width="2em" height="2em"><use xlink:href="#user"></use></svg></a>
                     </ul>
                     <ul class="navbar-nav">
                         <a class="nav-link m-auto" href="<c:url value="/logout"/>"><svg width="2em" height="2em"><use xlink:href="#logout"></use></svg></a>
