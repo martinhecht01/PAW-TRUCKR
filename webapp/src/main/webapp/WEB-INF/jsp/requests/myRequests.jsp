@@ -35,62 +35,40 @@
         <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
       </c:if>
       <c:forEach var="request" items="${offers}">
-        <a class="card mb-3 browseCards" href="<c:url value="/requests/manageRequest?requestId=${request.requestId}"/>" style="display: flex; padding: 0">
-          <div class="card-header">
-            <div class="row g-0">
-              <div style="display: flex; justify-content: space-between; border-right: 3px black">
-                <div class="py-1 px-3" style="width: 50%; justify-content: space-between; display: flex;">
-                  <div style="display: flex; width: 100%; justify-content: space-between; text-align: center">
-                    <div>
-                      <div class="mx-2">
-                        <h5><c:out value="${request.origin}"/></h5>
-                        <c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year}"/>
-                      </div>
-                    </div>
-                    <div>
-                      <div>
-                        <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="mx-2">
-                        <h5><c:out value="${request.destination}"/></h5>
-                        <c:out value="${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/>
-                      </div>
-                    </div>
-                  </div>
+        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.requestId}"/>">
+          <div class="card m-3" style="width: 25rem;">
+            <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 end-0"><span class="badge rounded-pill text-bg-primary">${request.type}</span></h4>
+            <div class="card-body">
+              <div class="w-100 d-flex space-apart">
+                <div class="text-truncate text-center" style="width: 35%">
+                  <h5><c:out value="${request.origin}"/></h5>
+                  <c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year}"/>
                 </div>
-                <div  class="py-3" style="display: flex; flex-direction: row; width: 50%; justify-content: center; text-align: center; align-items: center">
-                  <h5 class="px-3"><c:out value="${request.type}"/></h5>
-                    <%--                <svg width="2em" height="3em"><use xlink:href="#cold"></use></svg>--%>
+
+                <div style="width: 30%">
+                  <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                </div>
+
+                <div class="text-truncate text-center" style="width: 35%">
+                  <h5><c:out value="${request.destination}"/></h5>
+                  <c:out value="${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="row g-0">
-            <div style="display: flex; justify-content: space-between">
-              <div  class="p-2" style="width: 50%; height: 100%; justify-content: center; align-items: center">
-                <div class="row g-0" style="height: 75%">
-                  <div style="display: flex; margin-top: auto; justify-content: space-between">
-                    <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                      <p class="pb-2"><spring:message code="CreateRequestRequestedWeight"/></p>
-                      <svg width="3em" height="3em"><use xlink:href="#heavy"></use></svg>
-                      <h4><c:out value="${request.requestedWeight}"/> KG </h4>
-                    </div>
-                    <div style="display: flex; flex-direction: column; width: 50%; justify-content: center; text-align: center; align-items: center">
-                      <p class="pb-2"><spring:message code="CreateRequestRequestedVolume"/></p>
-                      <svg width="3em" height="3em"><use xlink:href="#volume"></use></svg>
-                      <h4><c:out value="${request.requestedVolume}"/> M3 </h4>
-                    </div>
-                  </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                <div class="text-center">
+                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${request.requestedWeight}"/> KG </h5>
+                  <p><spring:message code="AvailableWeight"/></p>
                 </div>
-                <div class="row g-0 pt-3" style="text-align: center; height: 25%">
-                  <div>
-                    <h4>$<c:out value="${request.maxPrice}"/></h4>
-                  </div>
+                <div class="text-center">
+                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${request.requestedVolume}"/> M3 </h5>
+                  <p><spring:message code="AvailableVolume"/></p>
                 </div>
-              </div>
-            </div>
+              </li>
+              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.maxPrice}"/></h4></li>
+            </ul>
           </div>
         </a>
       </c:forEach>
