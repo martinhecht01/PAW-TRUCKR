@@ -38,10 +38,14 @@ public class UserController {
         return new ModelAndView("landing/index");
     }
 
+
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(){
-        return new ModelAndView("landing/login");
+    public ModelAndView login(@RequestParam(value = "error", required = false) final String error){
+        ModelAndView mav = new ModelAndView("landing/login");
+        mav.addObject("error", error != null);
+        return mav;
     }
+
 
     @RequestMapping(value = "/createUser", method = { RequestMethod.GET })
     public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form) {

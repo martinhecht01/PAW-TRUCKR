@@ -26,9 +26,12 @@
                     <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
                     <h1 class="h3 my-3 text-center">Log in</h1>
                     <p class="text-center">New to truckr? <a href="<c:url value="/register"/>">Sign up now</a></p>
-                    <div class="form-floating">
-                        <input type="text" class="form-control" id="cuit" name="cuit" placeholder="00-00000000-0">
-                        <label for="cuit">Cuit</label>
+                    <div class="mb-3">
+                        <c:if test="${error}">
+                            <p class="formError mb-3"><spring:message code="LoginError"/></p>
+                        </c:if>
+                        <label class="form-label" for="cuit">Cuit</label>
+                        <input type="text" class="form-control" id="cuit" name="cuit" placeholder="00-00000000-0"/>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="password" id="password" placeholder="Password">
