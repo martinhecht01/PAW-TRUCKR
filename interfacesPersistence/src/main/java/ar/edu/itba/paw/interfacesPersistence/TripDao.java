@@ -2,6 +2,7 @@ package ar.edu.itba.paw.interfacesPersistence;
 
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
+import javafx.util.Pair;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ public interface TripDao {
     List<Trip> getAllActiveTripsByUserId(Integer userid);
     void acceptTrip(int proposalId);
 
-    List<Trip> getAllUnproposedTripsByUserId(Integer userid);
+    List<Pair<Trip, Integer>> getAllActiveTripsAndProposalCount(Integer userid);
 
     List<Trip> getAllAcceptedTripsByUserId(Integer userid);
 

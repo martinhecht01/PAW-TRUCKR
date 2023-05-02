@@ -69,6 +69,7 @@ public class TripController {
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
         List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        System.out.println("TRIPS SIZE"+trips.size());
         view.addObject("offers", trips);
         return view;
     }
@@ -169,8 +170,7 @@ public class TripController {
         User user = getUser();
         final ModelAndView mav = new ModelAndView("trips/myTrips");
         mav.addObject("acceptedTrips",ts.getAllAcceptedTripsByUserId(user.getUserId()) );
-        mav.addObject("proposedTrips",ts.getAllProposedTripsByUserId(user.getUserId()));
-        mav.addObject("unproposedTrips",ts.getAllUnproposedTripsByUserId(user.getUserId()));
+        mav.addObject("myTrips", ts.getAllActiveTripsAndProposalCount(user.getUserId()));
         return mav;
     }
 
