@@ -3,6 +3,7 @@
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="html" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <link>
@@ -43,7 +44,7 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="origin" for="origin" class="form-label"><spring:message code="Origin"/></form:label>
                     <form:errors path="origin" cssClass="formError" element="p"/>
-                    <form:select class="form-select" path="origin">
+                    <form:select class="form-select" path="origin" html:required="true">
                         <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
                         <form:options items="${cities}"/>
                     </form:select>
@@ -51,7 +52,7 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="destination" for="destination" class="form-label"><spring:message code="Destination"/></form:label>
                     <form:errors path="destination" cssClass="formError" element="p"/>
-                    <form:select class="form-select" path="destination">
+                    <form:select class="form-select" path="destination" html:required="true">
                         <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
                         <form:options items="${cities}"/>
                     </form:select>
@@ -76,7 +77,7 @@
                     <form:label path="requestedVolume"  class="form-label"><spring:message code="CreateRequestRequestedVolume"/></form:label>
                     <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57"/>
+                        <form:input type="number" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
