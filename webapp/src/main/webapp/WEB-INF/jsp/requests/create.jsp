@@ -12,8 +12,7 @@
 
 <head>
     <title><spring:message code="CreateRequest"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 <c:url value="/requests/create" var="postPath"/>
 
