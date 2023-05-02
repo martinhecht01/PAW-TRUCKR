@@ -120,16 +120,6 @@ public class TripController {
         return mav;
     }
 
-    @RequestMapping("/trips/manageTrip")
-    public ModelAndView manageTrip(@RequestParam("id") int id) {
-        final ModelAndView mav = new ModelAndView("trips/manageTrip");
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
-        mav.addObject("trip", trip);
-
-        mav.addObject("offers", ts.getProposalsForTripId(trip.getTripId()));
-        return mav;
-    }
-
     @RequestMapping(value = "/trips/sendProposal", method = { RequestMethod.POST })
     public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
