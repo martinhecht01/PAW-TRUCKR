@@ -29,7 +29,7 @@
                 <div class="mb-3">
                     <form:label path="cuit" class="form-label">CUIT</form:label>
                     <form:errors cssClass="formError" path="cuit" element="p"/>
-                    <form:input type="text" class="form-control" path="cuit" placeholder="CUIT"/>
+                    <form:input type="text" class="form-control" id="cuit" maxlength="13" path="cuit" placeholder="CUIT"/>
                 </div>
                 <div class="mb-3">
                     <form:label path="name" class="form-label">Name</form:label>
@@ -75,3 +75,12 @@
 <components:waveDivider/>
 <components:footer/>
 </html>
+
+<script>
+    const tele = document.querySelector('#cuit');
+    tele.addEventListener('keyup', function(e){
+        if (e.key !== 'Backspace' && (tele.value.length === 2 || tele.value.length === 11)){
+            tele.value += '-';
+        }
+    });
+</script>

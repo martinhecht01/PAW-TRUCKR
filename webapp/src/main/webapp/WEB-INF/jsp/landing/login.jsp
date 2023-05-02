@@ -30,7 +30,7 @@
                             <p class="formError mb-3"><spring:message code="LoginError"/></p>
                         </c:if>
                         <label class="form-label" for="cuit">Cuit</label>
-                        <input type="text" class="form-control" id="cuit" name="cuit" placeholder="00-00000000-0"/>
+                        <input type="text" class="form-control" id="cuit" maxlength="13" name="cuit" placeholder="00-00000000-0"/>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="password"><spring:message code="Password"/></label>
@@ -52,3 +52,12 @@
 <components:waveDivider/>
 <components:footer/>
 </html>
+
+<script>
+    const tele = document.querySelector('#cuit');
+    tele.addEventListener('keyup', function(e){
+        if (e.key !== 'Backspace' && (tele.value.length === 2 || tele.value.length === 11)){
+            tele.value += '-';
+        }
+    });
+</script>
