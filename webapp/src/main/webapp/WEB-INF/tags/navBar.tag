@@ -58,7 +58,7 @@
                         <p style="margin:0 0.25rem 0 0;font-size: x-small; text-align: center;"><c:if test="${currentRole == 'TRUCKER'}"><spring:message code="Trucker"/></c:if><c:if test="${currentRole == 'PROVIDER'}"><spring:message code="Provider"/></c:if></p>
                     </div>
                     <ul class="navbar-nav">
-                        <a class="nav-link m-auto" href="<c:url value="/p\ofile"/>"><svg width="2em" height="2em"><use xlink:href="#user"></use></svg></a>
+                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><svg width="2em" height="2em"><use xlink:href="#user"></use></svg></a>
                     </ul>
                     <ul class="navbar-nav">
                         <a class="nav-link m-auto" href="<c:url value="/logout"/>"><svg width="2em" height="2em"><use xlink:href="#logout"></use></svg></a>

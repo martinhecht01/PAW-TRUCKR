@@ -150,7 +150,7 @@ public class TripDaoImpl implements TripDao {
         if(pag < 1)
             pag = 1;
         Integer offset = (pag-1)*10;
-        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL ";
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL AND departuredate <= now()";
         List<Object> params = new ArrayList<>();
 
 
@@ -226,7 +226,7 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
-        String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL ";
+        String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL AND departuredate <= now()";
         List<Object> params = new ArrayList<>();
 
         if (origin != null && !origin.equals("")){

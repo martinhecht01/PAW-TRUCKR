@@ -130,7 +130,7 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<ProposalRequest> getProposalsForRequestId(int requestid){
-        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ?";
+        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ? AND mindeparturedate <= now()";
         return jdbcTemplate.query(query, PROPOSALREQUEST_ROW_MAPPER, requestid);
     }
 
