@@ -24,8 +24,8 @@
             <div class="card-body">
                 <form:form action="${loginUrl}" method="post">
                     <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
-                    <h1 class="h3 my-3 text-center">Log in</h1>
-                    <p class="text-center">New to truckr? <a href="<c:url value="/register"/>">Sign up now</a></p>
+                    <h1 class="h3 my-3 text-center"><spring:message code="Login"/></h1>
+                    <p class="text-center"><spring:message code="NewToTruckr"/> <a href="<c:url value="/register"/>"><spring:message code="SignUpNow"/></a></p>
                     <div class="mb-3">
                         <c:if test="${error}">
                             <p class="formError mb-3"><spring:message code="LoginError"/></p>
@@ -33,19 +33,17 @@
                         <label class="form-label" for="cuit">Cuit</label>
                         <input type="text" class="form-control" id="cuit" name="cuit" placeholder="00-00000000-0"/>
                     </div>
-                    <div class="form-floating">
-                        <input type="password" class="form-control" name="password" id="password" placeholder="Password">
-                        <label for="password">Password</label>
+                    <div class="mb-3">
+                        <label class="form-label" for="password"><spring:message code="Password"/></label>
+                        <input class="form-control" type="password"  name="password" id="password" placeholder="<spring:message code="Password"/>">
                     </div>
-                    <p><a href="<c:url value="/resetPasswordRequest"/>">Forgot Password?</a></p>
+                    <p><a href="<c:url value="/resetPasswordRequest"/>"><spring:message code="ForgotPassword"/></a></p>
 
 
                     <div class="checkbox mb-3">
-                        <label>
-                            <input type="checkbox" name="rememberme" value="remember-me"> Remember me
-                        </label>
+                        <label><input type="checkbox" name="rememberme" value="remember-me"> <spring:message code="RememberMe"/></label>
                     </div>
-                    <input class="w-100 btn btn-lg btn-color" type="submit" value="Log in"/>
+                    <input class="w-100 btn btn-lg btn-color" type="submit" value="<spring:message code="Login"/>"/>
                 </form:form>
             </div>
         </div>
