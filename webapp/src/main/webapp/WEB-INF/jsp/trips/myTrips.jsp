@@ -27,22 +27,78 @@
         <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2zM5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0V5z"/>
     </symbol>
     <symbol id="notification" viewBox="0 0 16 16">
-        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+        <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.493 4.493 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586l-1.239-.757ZM16 4.697v4.974A4.491 4.491 0 0 0 12.5 8a4.49 4.49 0 0 0-1.965.45l-.338-.207L16 4.697Z"/>
+        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1.5a.5.5 0 0 1-1 0V11a.5.5 0 0 1 1 0Zm0 3a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0Z"/>
     </symbol>
 </svg>
 <form:form method="get">
-    <div class="d-flex pt-5 w-100">
+    <div class="pt-5 w-100">
+        <h3 class="mt-3 mb-2 text-center"><spring:message code="ActiveTrips"/></h3>
+        <div class="w-100 d-flex justify-content-center">
+            <hr class="w-50">
+        </div>
+
+        <div class="tripCards w-75 m-auto">
+            <c:if test="${myTrips.size() == 0 && acceptedTrips.size() == 0}">
+                <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
+            </c:if>
+            <c:forEach var="trip" items="${myTrips}">
+                <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.key.tripId}"/>">
+                    <div class="card m-3" style="width: 25rem;">
+                        <c:if test="${trip.value > 0}">
+                            <span class="position-absolute top-0 end-0 M-3 badge rounded-pill bg-danger">
+                                ${trip.value} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                                <span class="visually-hidden">unread messages</span>
+                            </span>
+                        </c:if>
+                        <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
+                        <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary">${trip.key.type}</span></h4>
+                        <div class="card-body">
+                            <div class="w-100 d-flex space-apart">
+                                <div class="text-truncate text-center" style="width: 35%">
+                                    <h5><c:out value="${trip.key.origin}"/></h5>
+                                    <c:out value="${trip.key.departureDate.dayOfMonth}/${trip.key.departureDate.monthValue}/${trip.key.departureDate.year}"/>
+                                </div>
+
+                                <div style="width: 30%">
+                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                </div>
+
+                                <div class="text-truncate text-center" style="width: 35%">
+                                    <h5><c:out value="${trip.key.destination}"/></h5>
+                                    <c:out value="${trip.key.arrivalDate.dayOfMonth}/${trip.key.arrivalDate.monthValue}/${trip.key.arrivalDate.year}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                                <div class="text-center">
+                                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.key.availableWeight}"/> KG </h5>
+                                    <p><spring:message code="AvailableWeight"/></p>
+                                </div>
+                                <div class="text-center">
+                                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.key.availableVolume}"/> M3 </h5>
+                                    <p><spring:message code="AvailableVolume"/></p>
+                                </div>
+                            </li>
+                            <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.key.price}"/></h4></li>
+                        </ul>
+                    </div>
+                </a>
+            </c:forEach>
+        </div>
+
+        <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedTrips"/></h3>
+        <div class="w-100 d-flex justify-content-center">
+            <hr class="w-50">
+        </div>
         <div class="tripCards w-75 m-auto">
             <c:if test="${offers.size() == 0}">
                 <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
             </c:if>
-            <c:forEach var="trip" items="${unproposedTrips}">
+            <c:forEach var="trip" items="${acceptedTrips}">
                 <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                     <div class="card m-3" style="width: 25rem;">
-                        <span class="position-absolute top-0 end-0 M-3 badge rounded-pill bg-danger">
-                            9 <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
                         <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
                         <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary">${trip.type}</span></h4>
                         <div class="card-body">

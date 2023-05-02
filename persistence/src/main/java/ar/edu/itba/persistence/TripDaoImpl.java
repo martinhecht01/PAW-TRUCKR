@@ -3,6 +3,7 @@ package ar.edu.itba.persistence;
 import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -38,6 +39,8 @@ public class TripDaoImpl implements TripDao {
                 rs.getInt("acceptuserid")
         );
     };
+
+    private final static RowMapper<Pair<Trip, Integer>> ACTIVE_TRIP_COUNT_MAPPER = (rs, rowNum) -> new Pair<>(TRIP_ROW_MAPPER.mapRow(rs, rowNum), rs.getInt("proposalcount"));
 
     private final static RowMapper<Proposal> PROPOSAL_ROW_MAPPER = (rs, rowNum) -> new Proposal(
             rs.getInt("proposalid"),
@@ -150,7 +153,7 @@ public class TripDaoImpl implements TripDao {
         if(pag < 1)
             pag = 1;
         Integer offset = (pag-1)*10;
-        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL AND departuredate <= now()";
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NULL AND departuredate >= now()";
         List<Object> params = new ArrayList<>();
 
 
@@ -226,7 +229,7 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate) {
-        String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL AND departuredate <= now()";
+        String query = "SELECT COUNT(*) FROM trips WHERE acceptuserid IS NULL AND departuredate >= now()";
         List<Object> params = new ArrayList<>();
 
         if (origin != null && !origin.equals("")){
@@ -284,9 +287,9 @@ public class TripDaoImpl implements TripDao {
     }
 
     @Override
-    public List<Trip> getAllUnproposedTripsByUserId(Integer userid) {
-        String query = "SELECT trips.* FROM trips LEFT JOIN proposals ON trips.tripid = proposals.tripid WHERE proposals.tripid IS NULL AND trips.userid = ? AND acceptuserid IS NULL;";
-        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid);
+    public List<Pair<Trip, Integer>> getAllActiveTripsAndProposalCount(Integer userid) {
+        String query = "SELECT trips.*, COUNT(proposals.proposalid) AS proposalcount FROM trips LEFT JOIN proposals ON trips.tripid = proposals.tripid WHERE trips.userid = ? AND acceptuserid IS NULL GROUP BY trips.tripid";
+        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid);
     }
 
     @Override
