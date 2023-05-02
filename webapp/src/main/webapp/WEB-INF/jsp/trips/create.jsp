@@ -81,7 +81,7 @@
                     <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
                     <form:errors path="availableVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" min="0" step="1" class="form-control" path="availableVolume" placeholder="0"/>
+                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" class="form-control" path="availableVolume" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -92,7 +92,7 @@
                     <form:label path="availableWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
                     <form:errors path="availableWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" min="0" step="1" class="form-control" path="availableWeight" placeholder="0"/>
+                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" class="form-control" path="availableWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
@@ -104,7 +104,7 @@
                     <form:label path="price" class="form-label"><spring:message code="Price"/></form:label>
                     <form:errors path="price" min="0" step="1" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" class="form-control" path="price" placeholder="0"/>
+                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" class="form-control" path="price" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">ARS</span>
                         </div>
