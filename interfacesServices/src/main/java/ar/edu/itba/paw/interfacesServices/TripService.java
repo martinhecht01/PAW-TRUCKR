@@ -37,4 +37,10 @@ public interface TripService {
     Proposal sendProposal(int tripId, int userid, String description) throws MessagingException;
 
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
+
+    List<Trip> getAllProposedTripsByUserId(Integer userid);
+    List<Trip> getAllAcceptedTripsByUserId(Integer userid);
+
+    public List<Trip> getAllUnproposedTripsByUserId(Integer userid);
+
 }

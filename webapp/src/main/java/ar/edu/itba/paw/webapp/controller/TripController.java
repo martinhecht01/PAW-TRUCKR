@@ -168,7 +168,9 @@ public class TripController {
     public ModelAndView myTrips(){
         User user = getUser();
         final ModelAndView mav = new ModelAndView("trips/myTrips");
-        mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
+        mav.addObject("acceptedTrips",ts.getAllAcceptedTripsByUserId(user.getUserId()) );
+        mav.addObject("proposedTrips",ts.getAllProposedTripsByUserId(user.getUserId()));
+        mav.addObject("unproposedTrips",ts.getAllUnproposedTripsByUserId(user.getUserId()));
         return mav;
     }
 
