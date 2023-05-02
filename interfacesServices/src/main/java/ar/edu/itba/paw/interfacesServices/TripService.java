@@ -26,6 +26,8 @@ public interface TripService {
 
     Optional<Trip> getTripById(int tripid);
 
+    Optional<Trip> getTripByIdAndUserId(int tripid, int userid);
+
     void acceptTrip(int proposalId);
 
     List<Proposal> getProposalsForTripId(int tripId);

@@ -34,5 +34,7 @@ public interface RequestDao {
 
     Optional<Request> getRequestById(int reqid);
 
-    void acceptRequest(int proposalId);
+    Optional<Request> getRequestByIdAndUserId(int reqid, int userid);
+
+    Request acceptRequest(Request request, int acceptUserId);
 }

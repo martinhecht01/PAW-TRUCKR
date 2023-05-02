@@ -282,4 +282,10 @@ public class TripDaoImpl implements TripDao {
         System.out.println("PROPOSAL DESCRIPTION = " + proposal.getDescription());
         jdbcTemplate.update("UPDATE trips SET acceptuserid = ? WHERE tripid = ?", proposal.getUserid() , proposal.getTripid());
     }
+
+    @Override
+    public Optional<Trip> getTripByIdAndUserId(int tripid, int userid){
+        return getTripById(tripid).filter(trip -> trip.getUserId() == userid);
+    }
+
 }

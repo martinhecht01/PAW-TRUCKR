@@ -33,6 +33,8 @@ public interface TripDao {
 
     Optional<Trip> getTripById(int tripid);
 
+    Optional<Trip> getTripByIdAndUserId(int tripid, int userid);
+
     List<Trip> getAllActiveTripsByUserId(Integer userid);
     void acceptTrip(int proposalId);
 }

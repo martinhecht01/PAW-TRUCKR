@@ -172,21 +172,33 @@ public class RequestController {
 
 
     @RequestMapping("/requests/reserveSuccess")
-    public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
+    public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
-//
-//    @RequestMapping("/requests/myRequests")
-//    public ModelAndView myRequests(){
-//        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-//        final ModelAndView mav = new ModelAndView("landing/myRequests");
-//        mav.addObject("offers", rs.getAllActiveRequestsByUserId(user.getUserId()));
-//        return mav;
-//    }
 
+    @RequestMapping("/requests/myRequests")
+    public ModelAndView myRequests(){
+        User user = getUser();
+        final ModelAndView mav = new ModelAndView("requests/myRequests");
+        mav.addObject("offers", rs.getAllActiveRequestsByUserId(user.getUserId()));
+        return mav;
+    }
 
+    @RequestMapping("/requests/manageRequest")
+    public ModelAndView manageRequest(@RequestParam("requestId") int requestId) {
+        final ModelAndView mav = new ModelAndView("requests/manageRequest");
+        int userId = getUser().getUserId();
+        Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("request", request);
+        mav.addObject("offers", rs.getProposalsForRequestId(request.getRequestId()));
+        return mav;
+    }
+
+    private User getUser() {
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+    }
 }

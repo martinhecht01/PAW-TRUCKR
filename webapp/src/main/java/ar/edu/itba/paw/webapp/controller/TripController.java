@@ -11,6 +11,7 @@ import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -87,8 +88,7 @@ public class TripController {
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
 
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        User user = getUser();
 
         Trip trip = ts.createTrip(
                 user.getCuit(),
@@ -136,8 +136,7 @@ public class TripController {
             return tripDetail(id, form);
         }
 
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        User user = getUser();
 
         try {
             ts.sendProposal(id, user.getUserId(), form.getDescription());
@@ -176,12 +175,25 @@ public class TripController {
 
     @RequestMapping("/trips/myTrips")
     public ModelAndView myTrips(){
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+        User user = getUser();
         final ModelAndView mav = new ModelAndView("trips/myTrips");
         mav.addObject("offers", ts.getAllActiveTripsByUserId(user.getUserId()));
         return mav;
     }
 
+    @RequestMapping("/trips/manageTrip")
+    public ModelAndView manageTrip(@RequestParam("tripId") int tripId) {
+        final ModelAndView mav = new ModelAndView("trips/manageTrip");
+        int userId = getUser().getUserId();
+        Trip trip = ts.getTripByIdAndUserId(tripId, userId).orElseThrow(TripNotFoundException::new);
+        mav.addObject("trip", trip);
+        mav.addObject("offers", ts.getProposalsForTripId(trip.getTripId()));
+        return mav;
+    }
+
+    private User getUser() {
+        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+    }
 
 }

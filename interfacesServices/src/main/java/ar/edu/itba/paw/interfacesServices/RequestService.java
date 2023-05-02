@@ -23,10 +23,11 @@ public interface RequestService {
 
     List<Request> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate,Integer maxAvailableVolume,Integer maxAvailableWeight, Integer pag);
 
-    Optional<Request> getRequestById(int requestid);
+    Optional<Request> getRequestById(int requestId);
 
     void acceptRequest(int proposalId);
     List<ProposalRequest> getProposalsForRequestId(int requestId);
+    Optional<Request> getRequestByIdAndUserId(int reqid, int userid);
 
     ProposalRequest sendProposal(int requestId, int userid, String description) throws MessagingException;
 

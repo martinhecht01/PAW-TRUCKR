@@ -100,5 +100,10 @@ public class TripServiceImpl implements TripService {
         return tripDao.getAllActiveTripsByUserId(userid);
     }
 
+    @Override
+    public Optional<Trip> getTripByIdAndUserId(int tripid, int userid){
+        return tripDao.getTripByIdAndUserId(tripid, userid);
+    }
+
 
 }

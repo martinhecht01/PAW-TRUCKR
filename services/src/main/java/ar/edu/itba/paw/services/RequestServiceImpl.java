@@ -50,8 +50,13 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Optional<Request> getRequestById(int tripid){
-        return requestDao.getRequestById(tripid);
+    public Optional<Request> getRequestById(int requestId){
+        return requestDao.getRequestById(requestId);
+    }
+    
+    @Override
+    public Optional<Request> getRequestByIdAndUserId(int requestId, int userid){
+        return requestDao.getRequestByIdAndUserId(requestId, userid);
     }
 
     @Override
@@ -69,6 +74,7 @@ public class RequestServiceImpl implements RequestService {
 //            throw new RuntimeException();
 //        }
     }
+    
     @Override
     public ProposalRequest sendProposal(int requestId, int userid, String description){
         ProposalRequest prop = requestDao.createProposal(requestId, userid, description);

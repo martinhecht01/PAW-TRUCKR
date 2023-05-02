@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.RequestDao;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
+import ar.edu.itba.paw.models.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -309,5 +310,10 @@ public class RequestDaoImpl implements RequestDao {
         ProposalRequest proposal = getProposalById(proposalId).get();
         System.out.println("PROPOSAL DESCRIPTION = " + proposal.getDescription());
         jdbcTemplate.update("UPDATE requests SET acceptuserid = ? WHERE requestid = ?", proposal.getUserid() , proposal.getRequestid());
+    }
+    
+    @Override
+    public Optional<Request> getRequestByIdAndUserId(int reqid, int userid){
+        return getRequestById(reqid).filter(request -> request.getUserId() == userid);
     }
 }
