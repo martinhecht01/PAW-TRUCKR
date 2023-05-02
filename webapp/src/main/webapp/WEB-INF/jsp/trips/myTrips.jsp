@@ -33,11 +33,12 @@
 </svg>
 <form:form method="get">
     <div class="pt-5 w-100">
-        <h3 class="mt-3 mb-2 text-center"><spring:message code="ActiveTrips"/></h3>
-        <div class="w-100 d-flex justify-content-center">
-            <hr class="w-50">
-        </div>
-
+        <c:if test="${myTrips.size()>0}">
+            <h3 class="mt-3 mb-2 text-center"><spring:message code="ActiveTrips"/></h3>
+            <div class="w-100 d-flex justify-content-center">
+                <hr class="w-50">
+            </div>
+        </c:if>
         <div class="tripCards w-75 m-auto">
             <c:if test="${myTrips.size() == 0 && acceptedTrips.size() == 0}">
                 <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
@@ -87,15 +88,13 @@
                 </a>
             </c:forEach>
         </div>
-
-        <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedTrips"/></h3>
-        <div class="w-100 d-flex justify-content-center">
-            <hr class="w-50">
-        </div>
+        <c:if test="${acceptedTrips.size()>0}">
+            <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedTrips"/></h3>
+            <div class="w-100 d-flex justify-content-center">
+                <hr class="w-50">
+            </div>
+        </c:if>
         <div class="tripCards w-75 m-auto">
-            <c:if test="${offers.size() == 0}">
-                <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
-            </c:if>
             <c:forEach var="trip" items="${acceptedTrips}">
                 <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                     <div class="card m-3" style="width: 25rem;">
