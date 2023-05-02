@@ -48,14 +48,15 @@ public class MailServiceImpl implements MailService {
         helper.setText(htmlContent, true);
         mailSender.send(message);
     }
-    private String generateTripConfirmation(Trip confirmed) {
+    private String generateTripConfirmation(User user, Trip confirmed) {
         Context context = new Context();
+        context.setVariable("user", user);
         context.setVariable("trip", confirmed);
         return templateEngine.process("tripconfirmation.html", context);
     }
 
     public void sendTripEmail(User user,Trip trip) throws MessagingException {
-        String htmlContent = generateTripConfirmation(trip);
+        String htmlContent = generateTripConfirmation(user,trip);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setTo(user.getEmail());

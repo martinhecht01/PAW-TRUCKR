@@ -59,11 +59,17 @@ public class TripServiceImpl implements TripService {
     @Override
     public void acceptTrip(int proposalid){
         tripDao.acceptTrip(proposalid);
+        Proposal proposal = tripDao.getProposalById(proposalid).get();
+        Trip trip = tripDao.getTripById(proposal.getTripid()).get();
+
 
 //        Trip trip = tripDao.getTripById(proposalid).get();
-//        Trip acceptedTrip = tripDao.acceptTrip(trip, acceptUserId);
-//        User tripOwner = userDao.getUserById(acceptedTrip.getUserId());
-//        ms.sendEmailTrip(tripOwner, user, acceptedTrip);
+         User tripOwner = userDao.getUserById(trip.getUserId()).get();
+
+        try{ms.sendTripEmail(tripOwner,trip);}
+        catch(MessagingException e){
+            throw new RuntimeException();
+        }
 //        return acceptedTrip;
     }
 
