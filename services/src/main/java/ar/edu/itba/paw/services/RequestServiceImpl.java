@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.models.*;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -101,6 +102,16 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> getAllActiveRequestsByUserId(Integer userid){
         return requestDao.getAllActiveRequestsByUserId(userid);
+    }
+
+    @Override
+    public List<Pair<Request, Integer>> getAllActiveRequestsAndProposalCount(int userId) {
+        return requestDao.getAllActiveRequestsAndProposalCount(userId);
+    }
+
+    @Override
+    public List<Request> getAllAcceptedRequestsByUserId(int userId) {
+        return requestDao.getAllAcceptedRequestsByUserId(userId);
     }
 
 

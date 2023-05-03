@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.Trip;
+import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -39,6 +40,9 @@ public class RequestDaoImpl implements RequestDao {
                 rs.getInt("acceptuserid")
         );
     };
+
+    private final static RowMapper<Pair<Request, Integer>> ACTIVE_REQUEST_COUNT_MAPPER = (rs, rowNum) -> new Pair<>(ROW_MAPPER.mapRow(rs, rowNum), rs.getInt("proposalcount"));
+
 
     private final static RowMapper<ProposalRequest> PROPOSALREQUEST_ROW_MAPPER = (rs, rowNum) -> new ProposalRequest(
             rs.getInt("proposalid"),
@@ -130,7 +134,7 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<ProposalRequest> getProposalsForRequestId(int requestid){
-        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ? AND mindeparturedate >= now()";
+        String query = "SELECT * FROM proposalrequests NATURAL JOIN users WHERE requestid =  ?";
         return jdbcTemplate.query(query, PROPOSALREQUEST_ROW_MAPPER, requestid);
     }
 
@@ -145,7 +149,7 @@ public class RequestDaoImpl implements RequestDao {
         if (pag < 1)
             pag = 1;
         Integer offset = (pag - 1) * 10;
-        String query = "SELECT * FROM requests WHERE acceptuserid IS NULL AND mindeparturedate <= now()";
+        String query = "SELECT * FROM requests WHERE acceptuserid IS NULL AND mindeparturedate >= now()";
         List<Object> params = new ArrayList<>();
 
 
@@ -311,7 +315,19 @@ public class RequestDaoImpl implements RequestDao {
         System.out.println("PROPOSAL DESCRIPTION = " + proposal.getDescription());
         jdbcTemplate.update("UPDATE requests SET acceptuserid = ? WHERE requestid = ?", proposal.getUserid() , proposal.getRequestid());
     }
-    
+
+    @Override
+    public List<Pair<Request, Integer>> getAllActiveRequestsAndProposalCount(int userid) {
+        String query = "SELECT requests.*, COUNT(proposalrequests.proposalid) AS proposalcount FROM requests LEFT JOIN proposalrequests ON requests.requestid = proposalrequests.requestid WHERE requests.userid = ? AND acceptuserid IS NULL GROUP BY requests.requestid";
+        return jdbcTemplate.query(query, ACTIVE_REQUEST_COUNT_MAPPER, userid);
+    }
+
+    @Override
+    public List<Request> getAllAcceptedRequestsByUserId(int userId) {
+        String query = "SELECT * FROM requests WHERE userid = ? AND acceptuserid IS NOT NULL";
+        return jdbcTemplate.query(query, ROW_MAPPER, userId);
+    }
+
     @Override
     public Optional<Request> getRequestByIdAndUserId(int reqid, int userid){
         return getRequestById(reqid).filter(request -> request.getUserId() == userid);

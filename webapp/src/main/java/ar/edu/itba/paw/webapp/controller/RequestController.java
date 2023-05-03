@@ -151,7 +151,7 @@ public class RequestController {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-        ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
+        ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 
         mav.addObject("id",id);
         return mav;
@@ -160,7 +160,7 @@ public class RequestController {
     public ModelAndView acceptProposal(@RequestParam("id") int id) {
         System.out.println("accepting proposal ID = " + id);
         rs.acceptRequest(id);
-        return new ModelAndView("redirect:/trips/browse");
+        return new ModelAndView("redirect:/explore");
     }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
@@ -183,7 +183,8 @@ public class RequestController {
     public ModelAndView myRequests(){
         User user = getUser();
         final ModelAndView mav = new ModelAndView("requests/myRequests");
-        mav.addObject("offers", rs.getAllActiveRequestsByUserId(user.getUserId()));
+        mav.addObject("acceptedRequests",rs.getAllAcceptedRequestsByUserId(user.getUserId()) );
+        mav.addObject("myRequests", rs.getAllActiveRequestsAndProposalCount(user.getUserId()));
         return mav;
     }
 
