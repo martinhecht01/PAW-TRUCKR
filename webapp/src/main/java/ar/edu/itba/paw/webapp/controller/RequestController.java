@@ -123,7 +123,7 @@ public class RequestController {
         final ModelAndView mav = new ModelAndView("requests/details");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
-        mav.addObject("user", us.getUserById(request.getUserId()));
+        mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
         return mav;
     }
 

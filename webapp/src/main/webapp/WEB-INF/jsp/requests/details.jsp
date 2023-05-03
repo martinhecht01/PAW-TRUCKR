@@ -26,7 +26,7 @@
                 <table class="table table-striped">
                     <tr>
                         <td><b><spring:message code="Driver"/></b></td>
-                        <td><c:out value="${currentUser.name.toUpperCase()}"/></td>
+                        <td><c:out value="${user.name.toUpperCase()}"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="CargoType"/></b></td>
