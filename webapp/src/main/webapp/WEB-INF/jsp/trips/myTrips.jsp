@@ -39,7 +39,7 @@
                 <hr class="w-50">
             </div>
         </c:if>
-        <div class="tripCards w-75 m-auto">
+        <div class="tripCards w-75 justify-content-center m-auto">
             <c:if test="${myTrips.size() == 0 && acceptedTrips.size() == 0}">
                 <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
             </c:if>
@@ -55,7 +55,7 @@
                             </h5>
                         </c:if>
                         <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
-                        <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary">${trip.key.type}</span></h4>
+                        <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${trip.key.type}" htmlEscape="true"/></span></h4>
                         <div class="card-body">
                             <div class="w-100 d-flex space-apart">
                                 <div class="text-truncate text-center" style="width: 35%">
@@ -96,7 +96,7 @@
                 <hr class="w-50">
             </div>
         </c:if>
-        <div class="tripCards w-75 m-auto">
+        <div class="tripCards w-75 justify-content-center m-auto">
             <c:forEach var="trip" items="${acceptedTrips}">
                 <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                     <div class="card m-3" style="width: 25rem;">

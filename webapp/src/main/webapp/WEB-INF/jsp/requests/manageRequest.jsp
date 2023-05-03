@@ -51,7 +51,7 @@
         </table>
       </div>
     </div>
-<c:if test="${request.acceptUserId==null}">
+  <c:if test="${request.acceptUserId <= 0}">
     <div class="justify-content-top align-items-top px-5" >
       <c:forEach var="offer" items="${offers}">
         <c:url value="/requests/acceptProposal" var="postPath"/>

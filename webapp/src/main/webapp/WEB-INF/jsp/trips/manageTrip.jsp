@@ -27,7 +27,7 @@
                 <table class="table table-striped">
                     <tr>
                         <td><b><spring:message code="CargoType"/></b></td>
-                        <td><spring:message code="${trip.type}" htmlEscape="true" /></td>
+                        <td><spring:message code="${trip.type}" htmlEscape="true"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
@@ -56,7 +56,7 @@
                 </table>
             </div>
         </div>
-        <c:if test="${trip.acceptUserId==null}">
+        <c:if test="${trip.acceptUserId <= 0}">
         <div class="justify-content-top align-items-top px-5" >
             <c:forEach var="offer" items="${offers}">
                 <c:url value="/trips/acceptProposal" var="postPath"/>

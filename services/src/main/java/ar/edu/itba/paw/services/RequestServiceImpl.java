@@ -5,7 +5,7 @@ import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.models.*;
-import javafx.util.Pair;
+import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

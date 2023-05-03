@@ -7,7 +7,7 @@ import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
-import javafx.util.Pair;
+import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

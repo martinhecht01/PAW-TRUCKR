@@ -32,14 +32,14 @@
   </symbol>
 </svg>
 <form:form method="get">
-  <div class="pt-5 w-100">
+  <div class="pt-5 w-100 justify-content-center">
     <c:if test="${myRequests.size()>0}">
       <h3 class="mt-3 mb-2 text-center"><spring:message code="ActiveRequests"/></h3>
       <div class="w-100 d-flex justify-content-center">
         <hr class="w-50">
       </div>
     </c:if>
-    <div class="tripCards w-75 m-auto">
+    <div class="tripCards w-75 justify-content-center m-auto">
       <c:if test="${myRequests.size() == 0 && acceptedRequests.size() == 0}">
         <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
       </c:if>
@@ -48,14 +48,14 @@
           <div class="card m-3" style="width: 25rem;">
             <c:if test="${request.value > 0}">
               <h5 class="position-absolute top-0 end-0 M-3 ">
-                                <span class="badge rounded-pill bg-danger">
-                                    ${request.value} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
+                  <span class="badge rounded-pill bg-danger">
+                      <c:out value="${request.value}"/> <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                      <span class="visually-hidden">unread messages</span>
+                  </span>
               </h5>
             </c:if>
             <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
-            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary">${request.key.type}</span></h4>
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${request.key.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
@@ -96,7 +96,7 @@
         <hr class="w-50">
       </div>
     </c:if>
-    <div class="tripCards w-75 m-auto">
+    <div class="tripCards w-75 justify-content-center m-auto">
       <c:forEach var="request" items="${acceptedRequests}">
         <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.requestId}"/>">
           <div class="card m-3" style="width: 25rem;">

@@ -193,6 +193,8 @@ public class RequestController {
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = getUser().getUserId();
         Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
+        System.out.println("ACCEPT UID = " + request.getAcceptUserId());
+        System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
         mav.addObject("request", request);
         mav.addObject("offers", rs.getProposalsForRequestId(request.getRequestId()));
         return mav;

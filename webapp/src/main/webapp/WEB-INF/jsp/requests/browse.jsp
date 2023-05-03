@@ -14,11 +14,11 @@
 <head>
     <title><spring:message code="Explore"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
-<body class="bodyContent" style="height: 100%">
+<body class="bodyContent h-100">
 <components:navBar/>
 <form:form method="get">
-<div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
-    <div class="filterCard">
+<div class="d-flex pt-5 w-100" style="padding: 10% 10% ">
+    <div class="filterCard w-100" style="max-width: 18rem">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title"><b><spring:message code="Filters"/></b></h5>
@@ -101,7 +101,7 @@
         </symbol>
     </svg>
     <div>
-        <div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
+        <div class="d-flex w-100">
             <div class="tripCards m-auto justify-content-center">
                 <c:if test="${offers.size() == 0}">
                     <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>

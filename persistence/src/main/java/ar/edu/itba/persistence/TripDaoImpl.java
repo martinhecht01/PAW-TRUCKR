@@ -3,7 +3,7 @@ package ar.edu.itba.persistence;
 import ar.edu.itba.paw.interfacesPersistence.TripDao;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
-import javafx.util.Pair;
+import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

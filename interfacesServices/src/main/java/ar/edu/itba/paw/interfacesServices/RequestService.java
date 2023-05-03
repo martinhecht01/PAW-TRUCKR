@@ -2,7 +2,7 @@ package ar.edu.itba.paw.interfacesServices;
 
 import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
-import javafx.util.Pair;
+import ar.edu.itba.paw.models.Pair;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;

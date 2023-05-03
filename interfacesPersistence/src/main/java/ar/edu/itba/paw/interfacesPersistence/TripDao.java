@@ -2,7 +2,7 @@ package ar.edu.itba.paw.interfacesPersistence;
 
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
-import javafx.util.Pair;
+import ar.edu.itba.paw.models.Pair;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
