@@ -3,6 +3,7 @@
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="html" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <link>
@@ -12,8 +13,7 @@
 
 <head>
     <title><spring:message code="CreateTrip"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 <c:url value="/trips/create" var="postPath"/>
 
@@ -48,7 +48,7 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="origin" for="origin" class="form-label"><spring:message code="Origin"/></form:label>
                     <form:errors path="origin" cssClass="formError" element="p"/>
-                    <form:select class="form-select" path="origin">
+                    <form:select class="form-select" path="origin" html:required="true">
                         <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
                         <form:options items="${cities}"/>
                     </form:select>
@@ -56,7 +56,7 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="destination" for="destination" class="form-label"><spring:message code="Destination"/></form:label>
                     <form:errors path="destination" cssClass="formError" element="p"/>
-                    <form:select class="form-select" path="destination">
+                    <form:select class="form-select" path="destination" html:required="true">
                         <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
                         <form:options items="${cities}"/>
                     </form:select>
@@ -81,7 +81,7 @@
                     <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
                     <form:errors path="availableVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="availableVolume" placeholder="0"/>
+                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" class="form-control" path="availableVolume" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -92,7 +92,7 @@
                     <form:label path="availableWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
                     <form:errors path="availableWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="availableWeight" placeholder="0"/>
+                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" class="form-control" path="availableWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
@@ -102,9 +102,9 @@
 
                 <div class="mb-3 ml-3 inlineFormTripleInput">
                     <form:label path="price" class="form-label"><spring:message code="Price"/></form:label>
-                    <form:errors path="price" cssClass="formError" element="p"/>
+                    <form:errors path="price" min="0" step="1" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="text" class="form-control" path="price" placeholder="0"/>
+                        <form:input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" class="form-control" path="price" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">ARS</span>
                         </div>

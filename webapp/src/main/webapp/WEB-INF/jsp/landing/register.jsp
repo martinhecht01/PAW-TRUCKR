@@ -13,8 +13,7 @@
 
 <head>
     <title><spring:message code="Register"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 
 <body class="bodyContent">
 <c:url value="/register" var="postPath"/>
@@ -24,47 +23,47 @@
 <div class="w-75 m-auto">
     <div class="card mb-3 mt-5 formCard">
         <div class="card-body">
-            <h1 class="h3 my-3 text-center">Resgister</h1>
-            <p class="text-center">Already a user? <a href="<c:url value="/login"/>">Login</a></p>
+            <h1 class="h3 my-3 text-center"><spring:message code="Register"/></h1>
+            <p class="text-center"><spring:message code="AlreadyUser"/><a href="<c:url value="/login"/>"><spring:message code="Login"/></a></p>
             <form:form modelAttribute="userForm" action="${postPath}" method="post">
                 <div class="mb-3">
-                    <form:label path="cuit" class="form-label">CUIT</form:label>
+                    <form:label path="cuit" class="form-label" ><spring:message code="Cuit"/></form:label>
                     <form:errors cssClass="formError" path="cuit" element="p"/>
-                    <form:input type="text" class="form-control" path="cuit" placeholder="CUIT"/>
+                    <form:input type="text" class="form-control" id="cuit" maxlength="13" path="cuit" placeholder="CUIT"/>
                 </div>
                 <div class="mb-3">
-                    <form:label path="name" class="form-label">Name</form:label>
+                    <form:label path="name" class="form-label"><spring:message code="Name"/></form:label>
                     <form:errors cssClass="formError" path="name" element="p"/>
                     <form:input type="text" class="form-control" path="name" placeholder="Juan Perez"/>
                 </div>
                 <div class="mb-3">
-                    <form:label path="email" class="form-label">Email address</form:label>
+                    <form:label path="email" class="form-label"><spring:message code="Email"/></form:label>
                     <form:errors cssClass="formError" path="email" element="p"/>
                     <form:input type="email" class="form-control" path="email" placeholder="name@example.com"/>
                 </div>
                 <div class="mb-3">
-                    <form:label path="role" class="form-label">Role</form:label>
+                    <form:label path="role" class="form-label"><spring:message code="Role"/></form:label>
                     <form:errors path="role" class="formError" element="p"/>
                     <div>
                         <form:radiobutton path="role" id="clientRadio" name="role" value="PROVIDER" />
-                        <form:label path="" for="clientRadio">I'm a provider! I will fill the truck with my cargo</form:label>
+                        <form:label path="" for="clientRadio"><spring:message code="ProviderMessage"/></form:label>
 
                     </div>
                     <div>
                         <form:radiobutton path="role" id="truckerRadio" name="role" value="TRUCKER" />
-                        <form:label path="" for="truckerRadio">I'm a trucker! I will take your cargo where you need</form:label>
+                        <form:label path="" for="truckerRadio"><spring:message code="TruckerMessage"/></form:label>
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <form:label path="password" class="form-label">Password</form:label>
+                    <form:label path="password" class="form-label"><spring:message code="Password"/></form:label>
                     <form:errors cssClass="formError" path="password" element="p"/>
-                    <form:input type="password" class="form-control" path="password" placeholder="Password"/>
+                    <form:input type="password" class="form-control" path="password"  placeholder="********"/>
                 </div>
                 <div class="mb-3">
-                    <form:label path="repeatPassword" class="form-label">Confirm Password</form:label>
+                    <form:label path="repeatPassword" class="form-label"><spring:message code="ConfirmPassword"/></form:label>
                     <form:errors cssClass="formError" path="repeatPassword" element="p"/>
-                    <form:input type="password" class="form-control" path="repeatPassword" placeholder="Confirm Password"/>
+                    <form:input type="password" class="form-control" path="repeatPassword" placeholder="********"/>
                     <form:errors cssClass="formError"/>
                 </div>
                 <button class="w-100 btn btn-lg btn-color" type="submit">Register</button>
@@ -76,3 +75,12 @@
 <components:waveDivider/>
 <components:footer/>
 </html>
+
+<script>
+    const tele = document.querySelector('#cuit');
+    tele.addEventListener('keyup', function(e){
+        if (e.key !== 'Backspace' && (tele.value.length === 2 || tele.value.length === 11)){
+            tele.value += '-';
+        }
+    });
+</script>

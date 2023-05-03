@@ -27,10 +27,18 @@
             <c:if test="${currentUser != null}">
                 <ul class="navbar-nav justify-content-center">
                     <li class="nav-item ml-5" style="margin-right: 10px">
-                        <a class="nav-link" aria-current="page" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
+                        <a class="nav-link" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
                     </li>
                     <li class="nav-item ml-5">
                         <a class="nav-link" href="<c:url value="/create"/>"><spring:message code="Create"/></a>
+                    </li>
+                    <li class="nav-item ml-5">
+                        <c:if test="${currentRole == 'TRUCKER'}">
+                            <a class="nav-link" href="<c:url value="/trips/myTrips"/>"><spring:message code="MyTrips"/></a>
+                        </c:if>
+                        <c:if test="${currentRole == 'PROVIDER'}">
+                            <a class="nav-link" href="<c:url value="/requests/myRequests"/>"><spring:message code="MyRequests"/></a>
+                        </c:if>
                     </li>
                 </ul>
             </c:if>
@@ -42,18 +50,7 @@
                 </c:if>
                 <c:if test="${currentUser != null}">
                 <div class="" style="margin: auto 0 auto auto; display: flex; flex-direction: row">
-                    <div style="margin: auto 1.5rem auto auto">
-                        <c:if test="${currentRole == 'TRUCKER'}">
-                            <a class="nav-link" aria-current="page" href="<c:url value="/trips/myTrips"/>"><spring:message code="MyTrips"/></a>
-                        </c:if>
-                        <c:if test="${currentRole == 'PROVIDER'}">
-                            <a class="nav-link" aria-current="page" href="<c:url value="/requests/myRequests"/>"><spring:message code="MyRequests"/></a>
-                        </c:if>
-                    </div>
-
                     <div class="userDetailsNavBar" style="">
-
-
                         <h6 style="margin-bottom: 0.25rem; text-align: center;margin-top: 0.25rem;margin-right: 0.3rem"><b>${currentUser.getName()}</b></h6>
                         <p style="margin:0 0.25rem 0 0;font-size: x-small; text-align: center;"><c:if test="${currentRole == 'TRUCKER'}"><spring:message code="Trucker"/></c:if><c:if test="${currentRole == 'PROVIDER'}"><spring:message code="Provider"/></c:if></p>
                     </div>

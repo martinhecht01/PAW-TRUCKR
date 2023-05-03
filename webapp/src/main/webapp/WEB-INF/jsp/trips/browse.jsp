@@ -13,8 +13,7 @@
 
 <head>
     <title><spring:message code="Explore"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent h-100" style="height: 100%">
 <components:navBar/>
 <form:form method="get">
@@ -44,24 +43,24 @@
             <div class="col-md-6">
               <div class="form-group">
                 <label for="minPrice"><spring:message code="FiltersMinPrice"/>:</label>
-                <input class="form-control" type="number" name="minPrice" id="minPrice" <c:if test="${minPrice != null && minPrice != ''}">value="${minPrice}"</c:if> placeholder="-"/>
+                <input class="form-control" type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" name="minPrice" id="minPrice" <c:if test="${minPrice != null && minPrice != ''}">value="${minPrice}"</c:if> placeholder="-"/>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
                 <label for="maxPrice"><spring:message code="FiltersMaxPrice"/>:</label>
-                <input class="form-control" type="number" name="maxPrice" id="maxPrice" <c:if test="${maxPrice != null && maxPrice != ''}">value="${maxPrice}"</c:if> placeholder="-">
+                <input class="form-control" type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" name="maxPrice" id="maxPrice" <c:if test="${maxPrice != null && maxPrice != ''}">value="${maxPrice}"</c:if> placeholder="-">
               </div>
             </div>
           </div>
           <div class="form-group mb-3">
             <label for="minAvailableVolume"><spring:message code="FiltersMinVolume"/>:</label>
-            <input type="number" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
+            <input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
                    <c:if test="${minAvailableVolume != null || minAvailableVolume != ''}">value="${minAvailableVolume}"</c:if> placeholder="-">
           </div>
           <div class="form-group mb-3">
             <label for="minAvailableWeight"><spring:message code="FiltersMinWeight"/>:</label>
-            <input type="number" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
+            <input type="number" onkeydown="return event.keyCode >= 48 && event.keyCode <= 57" min="0" step="1" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
                    <c:if test="${minAvailableWeight != null || minAvailableWeight != ''}">value="${minAvailableWeight}"</c:if> placeholder="-">
           </div>
           <div class="form-group row mb-3">
@@ -105,7 +104,7 @@
     <div class="d-flex pt-5" style="width: 100%; padding: 0 10% ">
       <div class="tripCards m-auto justify-content-center">
         <c:if test="${offers.size() == 0}">
-          <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
+          <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
         </c:if>
         <c:forEach var="trip" items="${offers}">
           <a class="text-decoration-none" href="<c:url value="/trips/details?id=${trip.tripId}"/>">

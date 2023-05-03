@@ -11,8 +11,7 @@
 
 <head>
   <title><spring:message code="TripDetails"/></title>
-  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/JmB4xhT/Truckr-Logo.png">
-</head>
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 
 <c:url value="/requests/acceptProposal" var="postPath"/>
@@ -52,7 +51,7 @@
         </table>
       </div>
     </div>
-
+<c:if test="${request.acceptUserId==null}">
     <div class="justify-content-top align-items-top px-5" >
       <c:forEach var="offer" items="${offers}">
         <c:url value="/requests/acceptProposal" var="postPath"/>
@@ -68,6 +67,7 @@
         </form:form>
       </c:forEach>
     </div>
+  </c:if>
   </div>
 </div>
 <div style="margin-top: auto">
