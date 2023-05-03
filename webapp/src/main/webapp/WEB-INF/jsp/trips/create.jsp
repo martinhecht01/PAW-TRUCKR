@@ -123,14 +123,3 @@
 
 </body>
 </html>
-
-<script>
-    const tele = document.querySelector('#telle');
-
-    tele.addEventListener('keyup', function(e){
-        if (e.key !== 'Backspace' && (tele.value.length === 2 || tele.value.length === 11)){
-            tele.value += '-';
-        }
-    });
-
-</script>
