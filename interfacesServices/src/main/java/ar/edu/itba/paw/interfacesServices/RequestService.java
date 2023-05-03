@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.interfacesServices;
 
-import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
-import ar.edu.itba.paw.models.Trip;
+import javafx.util.Pair;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
@@ -34,4 +33,8 @@ public interface RequestService {
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume,Integer maxAvailableVolume, Integer minAvailableWeight,Integer maxAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 
     List<Request> getAllActiveRequestsByUserId(Integer userid);
+
+    List<Pair<Request, Integer>> getAllActiveRequestsAndProposalCount(int userId);
+
+    List<Request> getAllAcceptedRequestsByUserId(int userId);
 }
