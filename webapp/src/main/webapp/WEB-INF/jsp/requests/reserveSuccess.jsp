@@ -31,7 +31,7 @@
         <table class="table table-striped">
             <tr>
                 <td><b><spring:message code="CreateTripCargoType"/></b></td>
-                <td><c:out value="${request.type}"/></td>
+                <td><spring:message code="${request.type}" htmlEscape="true"/></td>
             </tr>
             <tr>
                 <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>

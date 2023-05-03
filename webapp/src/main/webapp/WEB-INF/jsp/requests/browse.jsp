@@ -110,7 +110,7 @@
                     <a class="text-decoration-none" href="<c:url value="/requests/details?id=${request.requestId}"/>">
                         <div class="card m-3" style="width: 25rem;">
                             <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
-                            <h4 class="mx-4 my-3 w-25 position-absolute top-0 end-0"><span class="badge rounded-pill text-bg-primary">${request.type}</span></h4>
+                            <h4 class="mx-4 my-3 w-25 position-absolute top-0 end-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${request.type}" htmlEscape="true"/></span></h4>
                             <div class="card-body">
                                 <div class="w-100 d-flex space-apart">
                                     <div class="text-truncate text-center" style="width: 35%">

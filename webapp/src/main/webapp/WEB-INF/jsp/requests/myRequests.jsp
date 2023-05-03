@@ -37,7 +37,7 @@
         <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.requestId}"/>">
           <div class="card m-3" style="width: 25rem;">
             <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
-            <h4 class="mx-4 my-3 w-25 position-absolute top-0 end-0"><span class="badge rounded-pill text-bg-primary">${request.type}</span></h4>
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 end-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${request.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
@@ -59,11 +59,11 @@
               <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
                 <div class="text-center">
                   <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${request.requestedWeight}"/> KG </h5>
-                  <p><spring:message code="AvailableWeight"/></p>
+                  <p><spring:message code="CreateRequestRequestedWeight"/></p>
                 </div>
                 <div class="text-center">
                   <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${request.requestedVolume}"/> M3 </h5>
-                  <p><spring:message code="AvailableVolume"/></p>
+                  <p><spring:message code="CreateRequestRequestedVolume"/></p>
                 </div>
               </li>
               <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.maxPrice}"/></h4></li>
