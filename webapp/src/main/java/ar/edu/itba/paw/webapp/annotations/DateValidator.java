@@ -6,6 +6,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 public class DateValidator implements ConstraintValidator<DateValidation, Object> {
 
@@ -20,24 +21,20 @@ public class DateValidator implements ConstraintValidator<DateValidation, Object
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-
+        BeanWrapper wrapper = new BeanWrapperImpl(value);
+        Object startValue = wrapper.getPropertyValue(start);
+        Object endValue = wrapper.getPropertyValue(end);
+        if (startValue == null || endValue == null) {
+            return false; // Skip validation if either value is null
+        }
+        String start = startValue.toString();
+        String end = endValue.toString();
         try {
-            BeanWrapper wrapper = new BeanWrapperImpl(value);
-            Object firstObj = wrapper.getPropertyValue(start);
-            Object secondObj = wrapper.getPropertyValue(end);
-            if (firstObj == null || secondObj == null) {
-                return false;
-            }
-            String start = (String) firstObj;
-            String end = (String) secondObj;
-
             LocalDateTime startDateTime = LocalDateTime.parse(start);
             LocalDateTime endDateTime = LocalDateTime.parse(end);
-
             return !startDateTime.isAfter(endDateTime);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (DateTimeParseException e) {
+            return false; // Return false if either value cannot be parsed as LocalDateTime
         }
-        return true;
     }
 }

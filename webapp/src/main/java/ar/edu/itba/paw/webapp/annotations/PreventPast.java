@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = PastPreventer.class)
 public @interface PreventPast {
 
-    String message() default "{javax.validation.constraints.PreventPast.message}";
+    String message() default "Select future date";
 
     Class<?>[] groups() default{};
     Class<? extends Payload>[] payload() default{};
