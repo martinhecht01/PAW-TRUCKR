@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 
 @DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
+
     @Pattern(regexp="^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
     private  String licensePlate;
 
@@ -19,17 +20,15 @@ public class TripForm {
     @Pattern(regexp="^[1-9][0-9]*$")
     private String price;
 
-    //custom annotation para validar.
-    @NotNull
+    @Pattern(regexp="^(?!\\s*$).+")
     @PreventPast
     private String departureDate;
 
-    @NotNull
     @PreventPast
+    @Pattern(regexp="^(?!\\s*$).+")
     private  String arrivalDate;
 
     @NotNull
-    @Size(min = 4)
     private String cargoType;
 
     @Size(min = 1, max = 100)

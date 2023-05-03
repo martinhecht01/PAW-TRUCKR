@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.annotations.DateValidation;
 import ar.edu.itba.paw.webapp.annotations.PreventPast;
-
 import javax.validation.constraints.*;
 
 
@@ -18,17 +17,15 @@ public class RequestForm {
     @Pattern(regexp = "^[1-9][0-9]*$")
     private String maxPrice;
 
-    //custom annotation para validar.
-    @NotNull
+    @Pattern(regexp="^(?!\\s*$).+")
     @PreventPast
     private String minDepartureDate;
 
-    @NotNull
     @PreventPast
+    @Pattern(regexp="^(?!\\s*$).+")
     private String maxArrivalDate;
 
     @NotNull
-    @Size(min = 4)
     private String cargoType;
 
     @Size(min = 1, max = 100)

@@ -56,7 +56,7 @@
                 </table>
             </div>
         </div>
-
+        <c:if test="${trip.acceptUserId==null}">
         <div class="justify-content-top align-items-top px-5" >
             <c:forEach var="offer" items="${offers}">
                 <c:url value="/trips/acceptProposal" var="postPath"/>
@@ -72,6 +72,7 @@
                 </form:form>
             </c:forEach>
         </div>
+        </c:if>
     </div>
 </div>
 <div style="margin-top: auto">

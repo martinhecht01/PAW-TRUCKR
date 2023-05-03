@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>
 <%@ taglib prefix="components" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page contentType="text/html; charset=UTF-8"%>
 
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -60,7 +61,7 @@
     </table>
   </div>
 </div>
-<a href="/explore" class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
+<a href="<c:url value='/explore'/>" class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
 <div style="margin-top: auto">
   <components:waveDivider/>
   <components:footer/>
