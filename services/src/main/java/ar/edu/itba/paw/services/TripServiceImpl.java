@@ -53,6 +53,13 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
+    public void confirmTrip(int tripId, int userId){
+        tripDao.confirmTrip(tripId, userId);
+        Trip trip = tripDao.getTripById(tripId).get();
+        //Send email
+    }
+
+    @Override
     public Optional<Trip> getTripById(int tripid){
         return tripDao.getTripById(tripid);
     }
@@ -64,8 +71,9 @@ public class TripServiceImpl implements TripService {
         Trip trip = tripDao.getTripById(proposal.getTripid()).get();
 
 
-         User tripOwner = userDao.getUserById(trip.getUserId()).get();
-         User user = userDao.getUserById(proposal.getUserid()).get();
+        User tripOwner = userDao.getUserById(trip.getUserId()).get();
+        User user = userDao.getUserById(proposal.getUserid()).get();
+
         try{ms.sendTripEmail(tripOwner,trip);}
         catch(MessagingException e){
             throw new RuntimeException();

@@ -7,7 +7,7 @@ public class Trip {
     private final int tripId;
 
     private final int userId; //Linked to User.userId
-    private int acceptUserId; //Linked to User.userId
+    private final int acceptUserId; //Linked to User.userId
     private final String licensePlate; //Linked to Truck.licensePlate
     private final Number availableWeight;
     private final Number availableVolume;
@@ -17,6 +17,11 @@ public class Trip {
     private final String destination;
     private final String type;
     private final Number price;
+
+    private final Boolean sender_confirmation;
+    private final Boolean receiver_confirmation;
+
+    private final LocalDateTime confirmation_date;
 
     public Trip(int tripId,
                 int userId,
@@ -29,7 +34,10 @@ public class Trip {
                 String destination,
                 String type,
                 int price,
-                int acceptUserId)
+                int acceptUserId,
+                Boolean sender_confirmation,
+                Boolean receiver_confirmation,
+                LocalDateTime confirmation_date)
     {
 
         this.userId = userId;
@@ -44,11 +52,21 @@ public class Trip {
         this.tripId = tripId;
         this.acceptUserId = acceptUserId;
         this.price = price;
+        this.sender_confirmation = sender_confirmation;
+        this.receiver_confirmation = receiver_confirmation;
+        this.confirmation_date = confirmation_date;
     }
 
+    public Boolean getSender_confirmation() {
+        return sender_confirmation;
+    }
 
-    public void setAcceptUserId(int acceptUserId) {
-        this.acceptUserId = acceptUserId;
+    public Boolean getReceiver_confirmation() {
+        return receiver_confirmation;
+    }
+
+    public LocalDateTime getConfirmation_date() {
+        return confirmation_date;
     }
 
     public int getTripId() {

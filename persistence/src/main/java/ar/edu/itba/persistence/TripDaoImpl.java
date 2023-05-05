@@ -6,11 +6,13 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -24,6 +26,7 @@ public class TripDaoImpl implements TripDao {
     private final static RowMapper<Trip> TRIP_ROW_MAPPER = (rs, rowNum) -> {
         LocalDateTime departure = rs.getTimestamp("departuredate").toLocalDateTime();
         LocalDateTime arrival = rs.getTimestamp("arrivaldate").toLocalDateTime();
+        LocalDateTime confirmation = rs.getTimestamp("confirmation_date") == null ? null : rs.getTimestamp("confirmation_date").toLocalDateTime();
         return new Trip(
                 rs.getInt("tripid"),
                 rs.getInt("userid"),
@@ -36,7 +39,10 @@ public class TripDaoImpl implements TripDao {
                 rs.getString("destination"),
                 rs.getString("type"),
                 rs.getInt("price"),
-                rs.getInt("acceptuserid")
+                rs.getInt("acceptuserid"),
+                rs.getBoolean("sender_confirmation"),
+                rs.getBoolean("receiver_confirmation"),
+                confirmation
         );
     };
 
@@ -70,16 +76,19 @@ public class TripDaoImpl implements TripDao {
                 "CREATE TABLE IF NOT EXISTS trips (\n" +
                         "  tripid SERIAL PRIMARY KEY,\n" +
                         "  userid INT NOT NULL REFERENCES users(userid),\n" +
-                        "  licenseplate VARCHAR(255),\n" +
+                        "  licenseplate VARCHAR(30),\n" +
                         "  availableweight INT,\n" +
                         "  availablevolume INT,\n" +
                         "  departuredate TIMESTAMP,\n" +
                         "  arrivaldate TIMESTAMP,\n" +
-                        "  origin VARCHAR(255),\n" +
-                        "  destination VARCHAR(255),\n" +
-                        "  type VARCHAR(255),\n" +
+                        "  origin VARCHAR(50),\n" +
+                        "  destination VARCHAR(50),\n" +
+                        "  type VARCHAR(50),\n" +
                         "  price INT,\n" +
-                        "  acceptuserid INT REFERENCES users(userid)\n" +
+                        "  acceptuserid INT REFERENCES users(userid),\n" +
+                        "  sender_confirmation BOOLEAN DEFAULT FALSE,\n" +
+                        "  receiver_confirmation BOOLEAN DEFAULT FALSE,\n" +
+                        "  confirmation_date TIMESTAMP\n" +
                         ");"
         );
         jdbcTemplate.execute(
@@ -122,7 +131,35 @@ public class TripDaoImpl implements TripDao {
         data.put("price", price);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1);
+        return new Trip(tripId, userid, licensePlate, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type, price,-1, false, false, null);
+    }
+
+
+
+    @Override
+    public void confirmTrip(int tripid, int userid){
+        jdbcTemplate.execute(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(
+                            "UPDATE trips " +
+                                    "SET sender_confirmation = CASE " +
+                                    "    WHEN sender_confirmation = FALSE AND userid = ? THEN TRUE " +
+                                    "    ELSE sender_confirmation " +
+                                    "END, " +
+                                    "receiver_confirmation = CASE " +
+                                    "    WHEN receiver_confirmation = FALSE AND acceptuserid = ? THEN TRUE " +
+                                    "    ELSE receiver_confirmation " +
+                                    "END, " +
+                                    "confirmation_date = ? "+
+                                    "WHERE tripid = ? AND" +
+                                    "(sender_confirmation = FALSE OR receiver_confirmation = FALSE)");
+                    ps.setInt(1, userid);
+                    ps.setInt(2, userid);
+                    ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setInt(4, tripid);
+                    return ps;
+                },
+                (PreparedStatement ps) -> ps.executeUpdate());
     }
 
     @Override

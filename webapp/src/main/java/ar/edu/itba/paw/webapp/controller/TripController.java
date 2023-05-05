@@ -169,7 +169,7 @@ public class TripController {
     public ModelAndView myTrips(){
         User user = getUser();
         final ModelAndView mav = new ModelAndView("trips/myTrips");
-        mav.addObject("acceptedTrips",ts.getAllAcceptedTripsByUserId(user.getUserId()) );
+        mav.addObject("acceptedTrips",ts.getAllAcceptedTripsByUserId(user.getUserId()));
         mav.addObject("myTrips", ts.getAllActiveTripsAndProposalCount(user.getUserId()));
         return mav;
     }
@@ -179,9 +179,19 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/manageTrip");
         int userId = getUser().getUserId();
         Trip trip = ts.getTripByIdAndUserId(tripId, userId).orElseThrow(TripNotFoundException::new);
+        if(trip.getAcceptUserId() > 0)
+            mav.addObject("acceptUser", us.getUserById(trip.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
         mav.addObject("trip", trip);
+        mav.addObject("userId", userId);
         mav.addObject("offers", ts.getProposalsForTripId(trip.getTripId()));
         return mav;
+    }
+
+    @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })
+    public ModelAndView confirmTrip(@RequestParam("id") int tripId) {
+        User user = getUser();
+        ts.confirmTrip(tripId, user.getUserId());
+        return new ModelAndView("redirect:/trips/manageTrip?tripId="+tripId);
     }
 
     private User getUser() {

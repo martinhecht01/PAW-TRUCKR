@@ -25,6 +25,8 @@ public interface TripService {
 
     List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
 
+    void confirmTrip(int tripId, int userId);
+
     Optional<Trip> getTripById(int tripid);
 
     Optional<Trip> getTripByIdAndUserId(int tripid, int userid);

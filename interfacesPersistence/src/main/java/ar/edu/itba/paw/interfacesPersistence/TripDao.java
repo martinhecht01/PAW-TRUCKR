@@ -22,6 +22,8 @@ public interface TripDao {
                 String type,
                 int price);
 
+    void confirmTrip(int tripid, int userid);
+
     Proposal createProposal(int tripid, int userid, String description);
 
     List<Proposal> getProposalsForTripId(int tripid);
