@@ -22,6 +22,7 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class TripController {
@@ -117,6 +118,7 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/details");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
+        mav.addObject("userId", getUser().getUserId());
         mav.addObject("user", us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
         return mav;
     }
@@ -191,7 +193,10 @@ public class TripController {
     public ModelAndView confirmTrip(@RequestParam("id") int tripId) {
         User user = getUser();
         ts.confirmTrip(tripId, user.getUserId());
-        return new ModelAndView("redirect:/trips/manageTrip?tripId="+tripId);
+        if (Objects.equals(user.getRole(), "TRUCKER"))
+            return new ModelAndView("redirect:/trips/manageTrip?tripId="+tripId);
+        else
+            return new ModelAndView("redirect:/trips/details?id="+tripId);
     }
 
     private User getUser() {
