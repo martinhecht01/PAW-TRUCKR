@@ -9,6 +9,9 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -83,6 +86,54 @@ public class TripServiceImpl implements TripService {
             throw new RuntimeException();
         }
 
+    }
+
+    @Async
+    @Scheduled(cron = "0 0 0 * * ?") // runs every day
+    protected void cleanTrips(){
+        System.out.println("Cleaning Trips");
+        tripDao.cleanExpiredTripsAndItsProposals();
+        System.out.println("Cleaning Finished");
+    }
+
+    @Async
+    @Scheduled(cron = "0 0 0 * * ?") // runs every day
+    protected void confirmTrips(){
+        System.out.println("Confirming Trips");
+        //tripDao.confirmTrips();
+        System.out.println("Confirming Finished");
+    }
+
+    @Async
+    @Scheduled(cron = "0 * * * * ?") // runs every min
+    protected void tripsConfirmationUpdates(){
+        System.out.println("Sending Confirmation Reminder Mail");
+        List<Trip> trips = tripDao.getTripsToBeConfirmed();
+        for(Trip trip : trips) {
+
+            //If one of them confirmed, and it passed more than 5 days since the confirmation the trip gets automatically confirmed.
+            if((trip.getSenderConfirmation() || trip.getReceiverConfirmation()) && trip.getConfirmationDate().plusDays(5).isAfter(LocalDateTime.now())){
+                tripDao.confirmTrip(trip.getTripId());
+                //TODO: @TobiasPerry enviar email diciendo que el viaje se confirmo automaticamente a ambos usuarios.
+                //TODO: trip.getUserId() y trip.getAcceptUserId()
+            }
+
+            //If sender confirmed and the receiver didn't confirm after 2 days
+            if(!trip.getReceiverConfirmation() && trip.getSenderConfirmation() && trip.getConfirmationDate().plusDays(2).isBefore(LocalDateTime.now())){
+                User user = userDao.getUserById(trip.getAcceptUserId()).orElseThrow(RuntimeException::new);
+                //TODO: @TobiasPerry enviar email a user.getEmail() diciendo que se esta esperando la confirmacion.
+                return;
+            }
+
+            //If receiver confirmed but sender didn't confirm after 2 days.
+            if(!trip.getSenderConfirmation() && trip.getReceiverConfirmation() && trip.getConfirmationDate().plusDays(2).isBefore(LocalDateTime.now())){
+                //TODO: SI EL RECEIVER CONFIRMA NO CONFIRMO EL VIAJE Y LISTO????
+                User user = userDao.getUserById(trip.getAcceptUserId()).orElseThrow(RuntimeException::new);
+                //TODO: @TobiasPerry enviar email a user.getEmail() diciendo que se esta esperando la confirmacion.
+                return;
+            }
+        }
+        System.out.println("Sending Confirmation Reminder Mail Finished");
     }
 
     @Override

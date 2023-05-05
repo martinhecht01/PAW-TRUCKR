@@ -23,6 +23,7 @@ public interface TripDao {
                 int price);
 
     void confirmTrip(int tripid, int userid);
+    void confirmTrip(int tripId);
 
     Proposal createProposal(int tripid, int userid, String description);
 
@@ -35,6 +36,9 @@ public interface TripDao {
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
 
     Optional<Trip> getTripById(int tripid);
+
+    List<Trip> getTripsToBeConfirmed();
+    void cleanExpiredTripsAndItsProposals();
 
     Optional<Trip> getTripByIdAndUserId(int tripid, int userid);
 

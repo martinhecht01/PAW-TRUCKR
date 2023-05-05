@@ -6,7 +6,6 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -160,6 +159,11 @@ public class TripDaoImpl implements TripDao {
                     return ps;
                 },
                 (PreparedStatement ps) -> ps.executeUpdate());
+    }
+
+    @Override
+    public void confirmTrip(int tripId){
+        jdbcTemplate.update("UPDATE trips SET sender_confirmation = TRUE, receiver_confirmation = TRUE, confirmation_date = ? WHERE tripid = ?", Timestamp.valueOf(LocalDateTime.now()), tripId);
     }
 
     @Override
@@ -339,6 +343,18 @@ public class TripDaoImpl implements TripDao {
     public List<Trip> getAllProposedTripsByUserId(Integer userid) {
         String query = "SELECT trips.* FROM trips INNER JOIN proposals ON trips.tripid = proposals.tripid WHERE trips.userid = ? AND acceptuserid IS NULL;";
         return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid);
+    }
+
+    @Override
+    public List<Trip> getTripsToBeConfirmed(){
+        String query = "SELECT * FROM trips WHERE acceptuserid IS NOT NULL AND arrivaldate < now() AND (sender_confirmation = false OR receiver_confirmation = false)";
+        return  jdbcTemplate.query(query, TRIP_ROW_MAPPER);
+    }
+
+    @Override
+    public void cleanExpiredTripsAndItsProposals(){
+        jdbcTemplate.update("DELETE FROM proposals WHERE tripid IN (SELECT tripid FROM trips WHERE departuredate < now() AND acceptuserid IS NULL)");
+        jdbcTemplate.update("DELETE FROM trips WHERE departuredate < now() AND acceptuserid IS NULL");
     }
 
     @Override

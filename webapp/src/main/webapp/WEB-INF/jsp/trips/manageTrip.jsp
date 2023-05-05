@@ -78,21 +78,24 @@
                         <h4>Status:</h4>
                     </div>
                     <div class="card-body p-3">
-                        <c:if test="${trip.sender_confirmation}">
+                        <c:if test="${trip.senderConfirmation && !trip.receiverConfirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> You finished this trip!</p>
                         </c:if>
-                        <c:if test="${!trip.sender_confirmation}">
+                        <c:if test="${!trip.senderConfirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> You didn't complete this trip.</p>
                         </c:if>
-                        <c:if test="${trip.receiver_confirmation}">
+                        <c:if test="${trip.receiverConfirmation && !trip.senderConfirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> Cargo received!</p>
                         </c:if>
-                        <c:if test="${!trip.receiver_confirmation}">
+                        <c:if test="${!trip.receiverConfirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> Receiver didn't confirm yet.</p>
+                        </c:if>
+                        <c:if test="${trip.receiverConfirmation && trip.senderConfirmation}">
+                            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg>Trip finished!</h4>
                         </c:if>
                     </div>
                 </div>
-                <c:if test="${trip.acceptUserId > 0 && !trip.sender_confirmation}">
+                <c:if test="${trip.acceptUserId > 0 && !trip.senderConfirmation}">
                     <c:url value="/trips/confirmTrip" var="confirmPath"/>
                     <form:form method="post" action="${confirmPath}?id=${trip.tripId}">
                         <input type="submit" class="btn btn-color mt-3 w-100" value="I completed the trip!"/>

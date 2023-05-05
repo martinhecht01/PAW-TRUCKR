@@ -57,15 +57,15 @@ public class Trip {
         this.confirmation_date = confirmation_date;
     }
 
-    public Boolean getSender_confirmation() {
+    public Boolean getSenderConfirmation() {
         return sender_confirmation;
     }
 
-    public Boolean getReceiver_confirmation() {
+    public Boolean getReceiverConfirmation() {
         return receiver_confirmation;
     }
 
-    public LocalDateTime getConfirmation_date() {
+    public LocalDateTime getConfirmationDate() {
         return confirmation_date;
     }
 
