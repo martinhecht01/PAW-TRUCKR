@@ -39,10 +39,6 @@
                     <h5><b>Role:</b></h5>
                     <p><c:out value="${currentRole}"/></p>
                 </div>
-                <div>
-                    <h5><b>Password:</b></h5>
-                    <p>**********</p>
-                </div>
             </div>
         </div>
     </main>
