@@ -11,7 +11,8 @@
 
 <head>
     <title><spring:message code="TripDetails"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent">
 
 <svg  xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -66,28 +67,22 @@
                 </table>
             </div>
         </div>
-<%--        <c:if test="${trip.acceptUserId == null}">--%>
-        <h1>HOLA</h1> <%-- POV NO APARECEE --%>
+        <c:if test="${trip.acceptUserId <= 0}">
             <div class="inlineFormInputContainer justify-content-top align-items-top" >
                 <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
                     <div class="card browseCards" style="width: 20rem;">
                         <div class="mb-3">
-
                                 <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-
                                 <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
-
                             </div>
-
                         <div>
-
                             <spring:message code="Reserve" var="reserve"/>
-
                             <input type="submit" class="btn btn-color" value="${reserve}"/>
-
                         </div>
+                    </div>
                 </form:form>
-<%--        </c:if>--%>
+            </div>
+        </c:if>
         <c:if test="${trip.acceptUserId == userId}">
             <div class="justify-content-top align-items-top px-5" >
                 <div class="card" style="width: 18rem;">
