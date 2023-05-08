@@ -147,7 +147,11 @@ public class TripController {
     public ModelAndView acceptProposal(@RequestParam("id") int id) {
         System.out.println("accepting proposal ID = " + id);
         ts.acceptTrip(id);
-        return new ModelAndView("redirect:/requests/browse");
+        ModelAndView mav = new ModelAndView("trips/acceptSuccess");
+
+        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        mav.addObject("trip", trip);
+        return mav;
     }
 
 
