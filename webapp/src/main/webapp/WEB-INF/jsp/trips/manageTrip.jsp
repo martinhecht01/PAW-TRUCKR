@@ -107,7 +107,7 @@
         <div class="justify-content-top align-items-top px-5" >
             <c:forEach var="offer" items="${offers}">
                 <c:url value="/trips/acceptProposal" var="postPath"/>
-                <form:form action="${postPath}?id=${offer.tripid}" method="post">
+                <form:form action="${postPath}?proposalid=${offer.proposalid}&tripid=${offer.tripid}" method="post">
                 <div class="card p-3" style="width: 18rem;">
                     <div class="ca rd-body">
                         <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>

@@ -145,12 +145,12 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
-    public ModelAndView acceptProposal(@RequestParam("id") int id) {
-        System.out.println("accepting proposal ID = " + id);
-        ts.acceptTrip(id);
+    public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalid, @RequestParam("tripid") int tripid) {
+        System.out.println("accepting proposal ID = " + proposalid);
+        ts.acceptTrip(proposalid);
         ModelAndView mav = new ModelAndView("trips/acceptSuccess");
 
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripById(tripid).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
