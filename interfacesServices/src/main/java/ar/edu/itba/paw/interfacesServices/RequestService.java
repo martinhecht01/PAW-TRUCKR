@@ -29,6 +29,8 @@ public interface RequestService {
     List<ProposalRequest> getProposalsForRequestId(int requestId);
     Optional<Request> getRequestByIdAndUserId(int reqid, int userid);
 
+    void confirmRequest(int requestId, int userId);
+
     ProposalRequest sendProposal(int requestId, int userid, String description) throws MessagingException;
 
     Integer getTotalPages(String origin, String destination, Integer minAvailableVolume,Integer maxAvailableVolume, Integer minAvailableWeight,Integer maxAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);

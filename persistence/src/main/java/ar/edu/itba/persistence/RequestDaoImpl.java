@@ -1,10 +1,8 @@
 package ar.edu.itba.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.RequestDao;
-import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
-import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,6 +11,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -84,8 +83,8 @@ public class RequestDaoImpl implements RequestDao {
                         "  type VARCHAR(255),\n" +
                         "  maxprice INT,\n" +
                         "  acceptuserid INT REFERENCES users(userid),\n" +
-                        "  sender_confirmation BOOLEAN DEFAULT FALSE,\n" +
-                        "  receiver_confirmation BOOLEAN DEFAULT FALSE,\n" +
+                        "  sender_confirmation BOOLEAN DEFAULT false,\n" +
+                        "  receiver_confirmation BOOLEAN DEFAULT false,\n" +
                         "  confirmation_date TIMESTAMP\n" +
                         ");"
         );
@@ -99,6 +98,32 @@ public class RequestDaoImpl implements RequestDao {
         );
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("requests").usingGeneratedKeyColumns("requestid");
         this.jdbcProposalRequestInsert = new SimpleJdbcInsert(ds).withTableName("proposalrequests").usingGeneratedKeyColumns("proposalid");
+    }
+
+    @Override
+    public void confirmRequest(int requestId, int userid){
+        jdbcTemplate.execute(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(
+                            "UPDATE requests " +
+                                    "SET receiver_confirmation = CASE " +
+                                    "    WHEN receiver_confirmation = FALSE AND userid = ? THEN TRUE " +
+                                    "    ELSE receiver_confirmation " +
+                                    "END, " +
+                                    "sender_confirmation = CASE " +
+                                    "    WHEN sender_confirmation = FALSE AND acceptuserid = ? THEN TRUE " +
+                                    "    ELSE sender_confirmation " +
+                                    "END, " +
+                                    "confirmation_date = ? "+
+                                    "WHERE requestid = ? AND" +
+                                    "(sender_confirmation = FALSE OR receiver_confirmation = FALSE)");
+                    ps.setInt(1, userid);
+                    ps.setInt(2, userid);
+                    ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setInt(4, requestId);
+                    return ps;
+                },
+                (PreparedStatement ps) -> ps.executeUpdate());
     }
 
     @Override
@@ -342,7 +367,7 @@ public class RequestDaoImpl implements RequestDao {
 
     @Override
     public List<Request> getAllRequestsInProgressByAcceptUserId(Integer acceptuserid){
-        String query = "SELECT * FROM requests WHERE acceptuserid = ? AND confirmation_date IS NULL";
+        String query = "SELECT * FROM requests WHERE acceptuserid = ?";
         return jdbcTemplate.query(query, ROW_MAPPER, acceptuserid);
     }
 }

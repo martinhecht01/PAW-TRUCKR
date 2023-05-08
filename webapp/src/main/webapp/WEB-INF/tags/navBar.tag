@@ -33,9 +33,6 @@
                         <a class="nav-link" href="<c:url value="/create"/>"><spring:message code="Create"/></a>
                     </li>
                     <li class="nav-item ml-5">
-                        <a class="nav-link" href="<c:url value="/active"/>"><spring:message code="ActiveTrips"/></a>
-                    </li>
-                    <li class="nav-item ml-5">
                         <c:if test="${currentRole == 'TRUCKER'}">
                             <a class="nav-link" href="<c:url value="/trips/myTrips"/>"><spring:message code="MyTrips"/></a>
                         </c:if>

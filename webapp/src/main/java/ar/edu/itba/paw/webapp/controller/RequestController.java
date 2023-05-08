@@ -2,13 +2,12 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.CityService;
 import ar.edu.itba.paw.interfacesServices.RequestService;
+import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Request;
-import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
@@ -24,6 +23,7 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class RequestController {
@@ -32,11 +32,14 @@ public class RequestController {
     private final UserService us;
     private final CityService cs;
 
+    private final TripService ts;
+
     @Autowired
-    public RequestController(final RequestService rs, final UserService us, final CityService cs){
+    public RequestController(final RequestService rs, final UserService us, final CityService cs, final TripService ts) {
         this.rs = rs;
         this.us = us;
         this.cs = cs;
+        this.ts = ts;
     }
 
     @RequestMapping("/requests/browse")
@@ -123,21 +126,22 @@ public class RequestController {
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("requests/details");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        mav.addObject("userId", getUser().getUserId());
         mav.addObject("request", request);
         mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
         return mav;
     }
 
-//    @RequestMapping(value = "/accept", method = { RequestMethod.POST })
-//    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) {
-//        if (errors.hasErrors()) {
-//            return requestDetail(id, form);
-//        }
-//
-//        rs.acceptRequest(id, form.getEmail(),form.getName(),form.getCuit());
-//
-//        return new ModelAndView("redirect:/browseRequests");
-//    }
+    @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
+    public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
+        User user = getUser();
+        rs.confirmRequest(requestId, user.getUserId());
+        if (Objects.equals(user.getRole(), "PROVIDER"))
+            return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);
+        else
+            return new ModelAndView("redirect:/requests/details?id="+ requestId);
+    }
+
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
     public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
@@ -188,6 +192,7 @@ public class RequestController {
         User user = getUser();
         final ModelAndView mav = new ModelAndView("requests/myRequests");
         mav.addObject("acceptedRequests",rs.getAllAcceptedRequestsByUserId(user.getUserId()) );
+        mav.addObject("acceptedTrips", ts.getAllActiveTripsByAcceptUserId(user.getUserId()));
         mav.addObject("myRequests", rs.getAllActiveRequestsAndProposalCount(user.getUserId()));
         return mav;
     }

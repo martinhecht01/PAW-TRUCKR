@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.CityService;
+import ar.edu.itba.paw.interfacesServices.RequestService;
 import ar.edu.itba.paw.interfacesServices.TripService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
@@ -32,11 +33,13 @@ public class TripController {
     private final UserService us;
     private final CityService cs;
 
+    private final RequestService rs;
     @Autowired
-    public TripController(final TripService ts, final UserService us, final CityService cs){
+    public TripController(final TripService ts, final UserService us, final CityService cs, final RequestService rs){
         this.ts = ts;
         this.us = us;
         this.cs = cs;
+        this.rs = rs;
     }
 
     @RequestMapping("/trips/browse")
@@ -192,6 +195,8 @@ public class TripController {
         User user = getUser();
         final ModelAndView mav = new ModelAndView("trips/myTrips");
         mav.addObject("acceptedTrips",ts.getAllAcceptedTripsByUserId(user.getUserId()));
+        System.out.println("PROPOSAL COUNT = " + rs.getAllRequestsInProgressByAcceptUserId(user.getUserId()).size());
+        mav.addObject("acceptedProposals", rs.getAllRequestsInProgressByAcceptUserId(user.getUserId()));
         mav.addObject("myTrips", ts.getAllActiveTripsAndProposalCount(user.getUserId()));
         return mav;
     }

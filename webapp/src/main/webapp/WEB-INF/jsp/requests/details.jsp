@@ -10,9 +10,15 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet">
 
 <head>
-    <title><spring:message code="TripDetails"/></title>
+    <title><spring:message code="RequestDetails"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
+
+<svg  xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="check" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </symbol>
+</svg>
 
 <c:url value="/requests/sendProposal" var="postPath"/>
 <components:navBar/>
@@ -23,7 +29,8 @@
                 <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
             </div>
             <div class="card-body">
-                <table class="table table-striped">
+                <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img rounded-start p-3"  alt="TruckImg">
+                <table class="table table-srequested">
                     <tr>
                         <td><b><spring:message code="Driver"/></b></td>
                         <td><c:out value="${user.name.toUpperCase()}"/></td>
@@ -56,24 +63,70 @@
             </div>
         </div>
         <div class="inlineFormInputContainer justify-content-top align-items-top" >
-            <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">
-                <div class="card browseCards" style="width: 20rem;">
-                    <div class="card-header">
-                        <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
+
+        </div>
+        <c:if test="${request.acceptUserId <= 0}">
+            <div class="inlineFormInputContainer justify-content-top align-items-top" >
+                <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">
+                    <div class="card browseCards" style="width: 20rem;">
+                        <div class="card-header">
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="Reserve"/></b></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
+                                <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
+                            </div>
+                            <div>
+                                <spring:message code="Reserve" var="reserve"/>
+                                <input type="submit" class="btn btn-color" value="${reserve}"/>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                            <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
-                        </div>
-                        <div>
-                            <spring:message code="Reserve" var="reserve"/>
-                            <input type="submit" class="btn btn-color" value="${reserve}"/>
-                        </div>
+                </form:form>
+            </div>
+        </c:if>
+        <c:if test="${request.acceptUserId == userId}">
+            <div class="justify-content-top align-items-top px-5" >
+                <div class="card" style="width: 18rem;">
+                    <div class="card-header">
+                        <h4>Driver:</h4>
+                    </div>
+                    <div class="card-body p-3">
+                        <h5 class="card-title"><c:out value="${user.name.toUpperCase()}"/></h5>
+                        <p class="card-text"><c:out value="${user.email.toLowerCase()}"/></p>
                     </div>
                 </div>
-            </form:form>
-        </div>
+                <div class="card mt-4" style="width: 18rem;">
+                    <div class="card-header">
+                        <h4>Status:</h4>
+                    </div>
+                    <div class="card-body p-3">
+                        <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> You finished this request!</p>
+                        </c:if>
+                        <c:if test="${!request.senderConfirmation}">
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> You didn't complete this trip.</p>
+                        </c:if>
+                        <c:if test="${request.receiverConfirmation && !request.senderConfirmation}">
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> Cargo received!</p>
+                        </c:if>
+                        <c:if test="${!request.receiverConfirmation}">
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> Provider didn't receive the cargo.</p>
+                        </c:if>
+                        <c:if test="${request.receiverConfirmation && request.senderConfirmation}">
+                            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg>request finished!</h4>
+                        </c:if>
+                    </div>
+                </div>
+                <c:if test="${request.acceptUserId > 0 && !request.senderConfirmation}">
+                    <c:url value="/requests/confirmRequest" var="confirmPath"/>
+                    <form:form method="post" action="${confirmPath}?requestId=${request.requestId}">
+                        <input type="submit" class="btn btn-color mt-3 w-100" value="I finished the trip!"/>
+                    </form:form>
+                </c:if>
+            </div>
+        </c:if>
     </div>
 </div>
 <div style="margin-top: auto">

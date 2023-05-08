@@ -29,6 +29,7 @@
         <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
       </div>
       <div class="card-body">
+        <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img rounded-start p-3"  alt="TruckImg">
         <table class="table table-striped">
           <tr>
             <td><b><spring:message code="CargoType"/></b></td>
@@ -91,8 +92,8 @@
           </div>
         </div>
         <c:if test="${request.acceptUserId > 0 && !request.senderConfirmation}">
-          <c:url value="/requests/confirmTrip" var="confirmPath"/>
-          <form:form method="post" action="${confirmPath}?id=${request.requestId}">
+          <c:url value="/requests/confirmRequest" var="confirmPath"/>
+          <form:form method="post" action="${confirmPath}?requestId=${request.requestId}">
             <input type="submit" class="btn btn-color mt-3 w-100" value="I received the cargo!"/>
           </form:form>
         </c:if>

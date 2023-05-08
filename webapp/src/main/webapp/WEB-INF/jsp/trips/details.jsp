@@ -10,7 +10,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet">
 
 <head>
-    <title><spring:message code="TripDetails"/></title>
+    <title><spring:message code="TripDetailsTitle"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">
@@ -71,13 +71,18 @@
             <div class="inlineFormInputContainer justify-content-top align-items-top" >
                 <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
                     <div class="card browseCards" style="width: 20rem;">
-                        <div class="mb-3">
+                        <div class="card-header">
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
                                 <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
                                 <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
                             </div>
-                        <div>
-                            <spring:message code="Reserve" var="reserve"/>
-                            <input type="submit" class="btn btn-color" value="${reserve}"/>
+                            <div>
+                                <spring:message code="Reserve" var="reserve"/>
+                                <input type="submit" class="btn btn-color" value="${reserve}"/>
+                            </div>
                         </div>
                     </div>
                 </form:form>

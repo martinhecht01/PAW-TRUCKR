@@ -78,6 +78,11 @@ public class RequestServiceImpl implements RequestService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public void confirmRequest(int requestId, int userId){
+        requestDao.confirmRequest(requestId, userId);
+    }
     
     @Override
     public ProposalRequest sendProposal(int requestId, int userid, String description){

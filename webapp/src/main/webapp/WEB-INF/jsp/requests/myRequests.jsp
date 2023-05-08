@@ -90,7 +90,7 @@
         </a>
       </c:forEach>
     </div>
-    <c:if test="${acceptedRequests.size()>0}">
+    <c:if test="${acceptedRequests.size() > 0 || acceptedTrips.size() > 0}">
       <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedRequests"/></h3>
       <div class="w-100 d-flex justify-content-center">
         <hr class="w-50">
@@ -131,6 +131,45 @@
                 </div>
               </li>
               <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.maxPrice}"/></h4></li>
+            </ul>
+          </div>
+        </a>
+      </c:forEach>
+
+      <c:forEach var="trip" items="${acceptedTrips}">
+        <a class="text-decoration-none" href="<c:url value="/trips/details?id=${trip.tripId}"/>">
+          <div class="card m-3" style="width: 25rem;">
+            <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
+            <div class="card-body">
+              <div class="w-100 d-flex space-apart">
+                <div class="text-truncate text-center" style="width: 35%">
+                  <h5><c:out value="${trip.origin}"/></h5>
+                  <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
+                </div>
+
+                <div style="width: 30%">
+                  <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                </div>
+
+                <div class="text-truncate text-center" style="width: 35%">
+                  <h5><c:out value="${trip.destination}"/></h5>
+                  <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                </div>
+              </div>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                <div class="text-center">
+                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.availableWeight}"/> KG </h5>
+                  <p><spring:message code="AvailableWeight"/></p>
+                </div>
+                <div class="text-center">
+                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.availableVolume}"/> M3 </h5>
+                  <p><spring:message code="AvailableVolume"/></p>
+                </div>
+              </li>
+              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
             </ul>
           </div>
         </a>

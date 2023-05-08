@@ -364,7 +364,7 @@ public class TripDaoImpl implements TripDao {
 
     @Override
     public List<Trip> getAllActiveTripsByAcceptUserId(Integer acceptuserid){
-        String query = "SELECT * FROM trips WHERE acceptuserid = ? AND confirmation_date IS NULL";
+        String query = "SELECT * FROM trips WHERE acceptuserid = ?";
         return jdbcTemplate.query(query, TRIP_ROW_MAPPER, acceptuserid);
     }
 

@@ -12,6 +12,8 @@ import java.util.Optional;
 
 public interface RequestDao {
 
+    void confirmRequest(int requestId, int userid);
+
     Request create(int userid,
                    int availableWeight,
                    int availableVolume,
