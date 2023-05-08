@@ -158,11 +158,11 @@ public class RequestController {
         return mav;
     }
     @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
-    public ModelAndView acceptProposal(@RequestParam("id") int id) {
-        System.out.println("accepting proposal ID = " + id);
-        rs.acceptRequest(id);
+    public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
+        System.out.println("accepting proposal ID = " + proposalId);
+        rs.acceptRequest(proposalId);
         final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
-        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Request request = rs.getRequestById(requestId).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
