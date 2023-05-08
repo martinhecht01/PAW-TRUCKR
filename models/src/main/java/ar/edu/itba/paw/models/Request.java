@@ -16,6 +16,10 @@ public class Request {
     private final String type;
     private final String origin;
     private final String destination;
+    private final Boolean sender_confirmation;
+    private final Boolean receiver_confirmation;
+
+    private final LocalDateTime confirmation_date;
 
 
     public Request(int requestId,
@@ -28,7 +32,10 @@ public class Request {
                    String destination,
                    String type,
                    Number maxPrice,
-                   int acceptUserId) {
+                   int acceptUserId,
+                   Boolean sender_confirmation,
+                   Boolean receiver_confirmation,
+                   LocalDateTime confirmation_date) {
 
         this.requestId = requestId;
         this.userId = userId;
@@ -41,7 +48,22 @@ public class Request {
         this.type = type;
         this.origin = origin;
         this.destination = destination;
+        this.sender_confirmation = sender_confirmation;
+        this.receiver_confirmation = receiver_confirmation;
+        this.confirmation_date = confirmation_date;
         this.acceptUserId = acceptUserId;
+    }
+
+    public Boolean getSenderConfirmation() {
+        return sender_confirmation;
+    }
+
+    public Boolean getReceiverConfirmation() {
+        return receiver_confirmation;
+    }
+
+    public LocalDateTime getConfirmationDate() {
+        return confirmation_date;
     }
 
     public int getRequestId() {

@@ -161,7 +161,7 @@ public class RequestController {
     public ModelAndView acceptProposal(@RequestParam("id") int id) {
         System.out.println("accepting proposal ID = " + id);
         rs.acceptRequest(id);
-        final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
+        final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
@@ -197,9 +197,12 @@ public class RequestController {
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = getUser().getUserId();
         Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
+        if(request.getAcceptUserId() > 0)
+            mav.addObject("acceptUser", us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
         System.out.println("ACCEPT UID = " + request.getAcceptUserId());
         System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
         mav.addObject("request", request);
+        mav.addObject("userId", userId);
         mav.addObject("offers", rs.getProposalsForRequestId(request.getRequestId()));
         return mav;
     }
