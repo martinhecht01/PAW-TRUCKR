@@ -113,5 +113,18 @@ public class Trip {
         return acceptUserId;
     }
 
+    public Boolean getSender_confirmation() {
+        return sender_confirmation;
+    }
+
+    public Boolean getReceiver_confirmation() {
+        return receiver_confirmation;
+    }
+
+    public LocalDateTime getConfirmation_date() {
+        return confirmation_date;
+    }
+
     public Number getPrice() {return price;}
+
 }
