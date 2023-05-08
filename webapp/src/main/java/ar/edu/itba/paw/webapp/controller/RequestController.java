@@ -160,7 +160,7 @@ public class RequestController {
     public ModelAndView acceptProposal(@RequestParam("id") int id) {
         System.out.println("accepting proposal ID = " + id);
         rs.acceptRequest(id);
-        final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
+        final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;

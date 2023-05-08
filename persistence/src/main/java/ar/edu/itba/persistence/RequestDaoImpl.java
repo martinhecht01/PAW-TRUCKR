@@ -26,6 +26,7 @@ public class RequestDaoImpl implements RequestDao {
     private final static RowMapper<Request> ROW_MAPPER = (rs, rowNum) -> {
         LocalDateTime departure = rs.getTimestamp("mindeparturedate").toLocalDateTime();
         LocalDateTime arrival = rs.getTimestamp("maxarrivaldate").toLocalDateTime();
+        LocalDateTime confirmation = rs.getTimestamp("confirmation_date") == null ? null : rs.getTimestamp("confirmation_date").toLocalDateTime();
         return new Request(
                 rs.getInt("requestid"),
                 rs.getInt("userid"),
@@ -37,7 +38,10 @@ public class RequestDaoImpl implements RequestDao {
                 rs.getString("destination"),
                 rs.getString("type"),
                 rs.getInt("maxprice"),
-                rs.getInt("acceptuserid")
+                rs.getInt("acceptuserid"),
+                rs.getBoolean("sender_confirmation"),
+                rs.getBoolean("receiver_confirmation"),
+                confirmation
         );
     };
 
@@ -79,7 +83,10 @@ public class RequestDaoImpl implements RequestDao {
                         "  destination VARCHAR(255),\n" +
                         "  type VARCHAR(255),\n" +
                         "  maxprice INT,\n" +
-                        "  acceptuserid INT REFERENCES users(userid)\n" +
+                        "  acceptuserid INT REFERENCES users(userid),\n" +
+                        "  sender_confirmation BOOLEAN DEFAULT FALSE,\n" +
+                        "  receiver_confirmation BOOLEAN DEFAULT FALSE,\n" +
+                        "  confirmation_date TIMESTAMP\n" +
                         ");"
         );
         jdbcTemplate.execute(
@@ -120,7 +127,7 @@ public class RequestDaoImpl implements RequestDao {
         data.put("maxprice", price);
 
         int requestId = jdbcInsert.executeAndReturnKey(data).intValue();
-        return new Request(requestId, userid, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type,price,-1);
+        return new Request(requestId, userid, availableWeight, availableVolume, departureDate, arrivalDate, origin, destination, type,price,-1, false, false, null);
     }
     @Override
     public ProposalRequest createProposal(int requestid, int userid, String description){
