@@ -77,11 +77,11 @@ public class TripServiceImpl implements TripService {
         User tripOwner = userDao.getUserById(trip.getUserId()).get();
         User user = userDao.getUserById(proposal.getUserid()).get();
 
-        try{ms.sendTripEmail(tripOwner,trip);}
+        try{ms.sendTripEmail(tripOwner,user,trip);}
         catch(MessagingException e){
             throw new RuntimeException();
         }
-        try{ms.sendTripEmail(user,trip);}
+        try{ms.sendTripEmail(user,tripOwner,trip);}
         catch(MessagingException e){
             throw new RuntimeException();
         }

@@ -69,11 +69,11 @@ public class RequestServiceImpl implements RequestService {
         ;
         User requestOwner = userDao.getUserById(request.getUserId()).get();
         User proposed = userDao.getUserById(proposal.getUserid()).get();
-        try{ms.sendRequestEmail(requestOwner,request);}
+        try{ms.sendRequestEmail(requestOwner,proposed,request);}
         catch(MessagingException e){
             throw new RuntimeException();
         }
-        try{ms.sendRequestEmail(proposed,request);}
+        try{ms.sendRequestEmail(proposed,requestOwner,request);}
         catch(MessagingException e){
             throw new RuntimeException();
         }

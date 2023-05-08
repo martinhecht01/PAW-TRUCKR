@@ -40,15 +40,17 @@ public class MailServiceImpl implements MailService {
         helper.setText(htmlContent, true);
         mailSender.send(message);
     }
-    private String generateTripConfirmation(User user, Trip confirmed) {
+    private String generateTripConfirmation(User user,User user2, Trip confirmed) {
         Context context = new Context();
         context.setVariable("user", user);
+        context.setVariable("user2", user2);
+
         context.setVariable("trip", confirmed);
         return templateEngine.process("tripconfirmation.html", context);
     }
 
-    public void sendTripEmail(User user,Trip trip) throws MessagingException {
-        String htmlContent = generateTripConfirmation(user,trip);
+    public void sendTripEmail(User user,User user2,Trip trip) throws MessagingException {
+        String htmlContent = generateTripConfirmation(user,user2,trip);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setTo(user.getEmail());
@@ -56,15 +58,16 @@ public class MailServiceImpl implements MailService {
         helper.setText(htmlContent, true);
         mailSender.send(message);
     }
-    private String generateRequestConfirmation(User user, Request confirmed) {
+    private String generateRequestConfirmation(User user, User user2, Request confirmed) {
         Context context = new Context();
         context.setVariable("user", user);
+        context.setVariable("user2", user);
         context.setVariable("request", confirmed);
         return templateEngine.process("requestconfirmation.html", context);
     }
 
-    public void sendRequestEmail(User user,Request request) throws MessagingException {
-        String htmlContent = generateRequestConfirmation(user,request);
+    public void sendRequestEmail(User user,User user2,Request request) throws MessagingException {
+        String htmlContent = generateRequestConfirmation(user,user2,request);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
         helper.setTo(user.getEmail());
