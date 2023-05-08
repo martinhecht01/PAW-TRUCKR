@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfacesServices;
 import ar.edu.itba.paw.models.ProposalRequest;
 import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.Pair;
+import ar.edu.itba.paw.models.Trip;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
@@ -37,4 +38,6 @@ public interface RequestService {
     List<Pair<Request, Integer>> getAllActiveRequestsAndProposalCount(int userId);
 
     List<Request> getAllAcceptedRequestsByUserId(int userId);
+
+    List<Request> getAllRequestsInProgressByAcceptUserId(Integer acceptuserid);
 }

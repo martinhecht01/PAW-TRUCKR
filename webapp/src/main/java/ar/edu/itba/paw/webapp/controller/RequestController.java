@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -200,6 +201,22 @@ public class RequestController {
         System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
         mav.addObject("request", request);
         mav.addObject("offers", rs.getProposalsForRequestId(request.getRequestId()));
+        return mav;
+    }
+
+    @RequestMapping(value = "/requests/active")
+    public ModelAndView activeRequests(){
+        ModelAndView mav = new ModelAndView("requests/active");
+        User user  = getUser();
+        List<Request> requests =  rs.getAllRequestsInProgressByAcceptUserId(user.getUserId());
+        mav.addObject("requests", requests);
+        List<User> providers = new ArrayList<>();
+
+        for (Request request: requests ) {
+            providers.add( us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
+        }
+
+        mav.addObject("providers", providers);
         return mav;
     }
 

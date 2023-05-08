@@ -156,7 +156,7 @@ public class TripController {
     }
 
     @RequestMapping(value = "/trips/active")
-    public ModelAndView activeRequests(){
+    public ModelAndView activeTrips(){
         ModelAndView mav = new ModelAndView("trips/active");
         User user  = getUser();
         List<Trip> trips =  ts.getAllActiveTripsByAcceptUserId(user.getUserId());

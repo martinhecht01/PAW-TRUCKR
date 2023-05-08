@@ -332,4 +332,10 @@ public class RequestDaoImpl implements RequestDao {
     public Optional<Request> getRequestByIdAndUserId(int reqid, int userid){
         return getRequestById(reqid).filter(request -> request.getUserId() == userid);
     }
+
+    @Override
+    public List<Request> getAllRequestsInProgressByAcceptUserId(Integer acceptuserid){
+        String query = "SELECT * FROM requests WHERE acceptuserid = ? AND confirmation_date IS NULL";
+        return jdbcTemplate.query(query, ROW_MAPPER, acceptuserid);
+    }
 }

@@ -42,4 +42,7 @@ public interface RequestDao {
     List<Pair<Request, Integer>> getAllActiveRequestsAndProposalCount(int userId);
 
     List<Request> getAllAcceptedRequestsByUserId(int userId);
+
+    List<Request> getAllRequestsInProgressByAcceptUserId(Integer acceptuserid);
+
 }

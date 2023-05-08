@@ -114,5 +114,10 @@ public class RequestServiceImpl implements RequestService {
         return requestDao.getAllAcceptedRequestsByUserId(userId);
     }
 
+    @Override
+    public List<Request> getAllRequestsInProgressByAcceptUserId(Integer acceptuserid){
+        return requestDao.getAllRequestsInProgressByAcceptUserId(acceptuserid);
+    }
+
 
 }
