@@ -62,7 +62,7 @@
       <div class="justify-content-top align-items-top px-5" >
         <div class="card" style="width: 18rem;">
           <div class="card-header">
-            <h4>Accepted by:</h4>
+            <h4><spring:message code="Driver"/>:</h4>
           </div>
           <div class="card-body p-3">
             <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/></h5>
@@ -71,30 +71,31 @@
         </div>
         <div class="card mt-4" style="width: 18rem;">
           <div class="card-header">
-            <h4>Status:</h4>
+            <h4><spring:message code="Status"/>:</h4>
           </div>
           <div class="card-body p-3">
-            <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> You received the cargo!</p>
-            </c:if>
-            <c:if test="${!request.senderConfirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> You didn't receive the cargo.</p>
-            </c:if>
             <c:if test="${request.receiverConfirmation && !request.senderConfirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> The trucker completed the trip.</p>
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
             </c:if>
             <c:if test="${!request.receiverConfirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> The trucker didn't deliver the cargo yet.</p>
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
+            </c:if>
+            <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
+            </c:if>
+            <c:if test="${!request.senderConfirmation}">
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
             </c:if>
             <c:if test="${request.receiverConfirmation && request.senderConfirmation}">
-              <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg>Trip finished!</h4>
+              <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
             </c:if>
           </div>
         </div>
-        <c:if test="${request.acceptUserId > 0 && !request.senderConfirmation}">
+        <c:if test="${request.acceptUserId > 0 && !request.receiverConfirmation}">
           <c:url value="/requests/confirmRequest" var="confirmPath"/>
           <form:form method="post" action="${confirmPath}?requestId=${request.requestId}">
-            <input type="submit" class="btn btn-color mt-3 w-100" value="I received the cargo!"/>
+            <spring:message var="received" code="IReceivedCargo"/>
+            <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
           </form:form>
         </c:if>
       </div>
