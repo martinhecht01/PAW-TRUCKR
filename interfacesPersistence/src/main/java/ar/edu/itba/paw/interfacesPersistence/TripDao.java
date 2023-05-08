@@ -49,5 +49,7 @@ public interface TripDao {
 
     List<Trip> getAllAcceptedTripsByUserId(Integer userid);
 
-    List<Trip> getAllProposedTripsByUserId(Integer userid);
+    List<Trip> getAllActiveTripsByAcceptUserId(Integer userid);
+
+    List<Trip> getAllProposedTripsByUserId(Integer acceptuserid);
 }

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -150,6 +151,21 @@ public class TripController {
         return new ModelAndView("redirect:/requests/browse");
     }
 
+    @RequestMapping(value = "/trips/active")
+    public ModelAndView activeRequests(){
+        ModelAndView mav = new ModelAndView("trips/active");
+        User user  = getUser();
+        List<Trip> trips =  ts.getAllActiveTripsByAcceptUserId(user.getUserId());
+        mav.addObject("trips", trips);
+        List<User> truckers = new ArrayList<>();
+
+        for (Trip trip: trips ) {
+            truckers.add( us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
+        }
+
+        mav.addObject("truckers", truckers);
+        return mav;
+    }
 
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {

@@ -30,4 +30,15 @@ public class NavigationController {
         return new ModelAndView("redirect:/");
     }
 
+    @RequestMapping("/active")
+    public ModelAndView active(){
+        String role = UserControllerAdvice.getCurrentRole();
+        if(role.equals("TRUCKER")){
+            return new ModelAndView("forward:/requests/active", "method", "GET");
+        } else if(role.equals("PROVIDER")){
+            return new ModelAndView("forward:/trips/active", "method", "GET");
+        }
+        return new ModelAndView("redirect:/");
+    }
+
 }
