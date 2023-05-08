@@ -14,6 +14,12 @@
   <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 
+<svg  xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="check" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+  </symbol>
+</svg>
+
 <c:url value="/requests/acceptProposal" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
@@ -51,6 +57,47 @@
         </table>
       </div>
     </div>
+    <c:if test="${request.acceptUserId > 0}">
+      <div class="justify-content-top align-items-top px-5" >
+        <div class="card" style="width: 18rem;">
+          <div class="card-header">
+            <h4>Accepted by:</h4>
+          </div>
+          <div class="card-body p-3">
+            <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/></h5>
+            <p class="card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
+          </div>
+        </div>
+        <div class="card mt-4" style="width: 18rem;">
+          <div class="card-header">
+            <h4>Status:</h4>
+          </div>
+          <div class="card-body p-3">
+            <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> You received the cargo!</p>
+            </c:if>
+            <c:if test="${!request.senderConfirmation}">
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> You didn't receive the cargo.</p>
+            </c:if>
+            <c:if test="${request.receiverConfirmation && !request.senderConfirmation}">
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> The trucker completed the trip.</p>
+            </c:if>
+            <c:if test="${!request.receiverConfirmation}">
+              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> The trucker didn't deliver the cargo yet.</p>
+            </c:if>
+            <c:if test="${request.receiverConfirmation && request.senderConfirmation}">
+              <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg>Trip finished!</h4>
+            </c:if>
+          </div>
+        </div>
+        <c:if test="${request.acceptUserId > 0 && !request.senderConfirmation}">
+          <c:url value="/requests/confirmTrip" var="confirmPath"/>
+          <form:form method="post" action="${confirmPath}?id=${request.requestId}">
+            <input type="submit" class="btn btn-color mt-3 w-100" value="I received the cargo!"/>
+          </form:form>
+        </c:if>
+      </div>
+    </c:if>
   <c:if test="${request.acceptUserId <= 0}">
     <div class="justify-content-top align-items-top px-5" >
       <c:forEach var="offer" items="${offers}">
