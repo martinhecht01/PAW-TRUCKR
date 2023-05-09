@@ -11,42 +11,42 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TripService {
-    Trip createTrip(String cuit,
-                    String licensePlate,
-                    int availableWeight,
-                    int availableVolume,
-                    LocalDateTime departureDate,
-                    LocalDateTime arrivalDate,
-                    String origin,
-                    String destination,
-                    String type,
-                    int price
-    );
-
-    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
-
-    void confirmTrip(int tripId, int userId);
-
-    Optional<Trip> getTripById(int tripid);
-
-    Optional<Trip> getTripByIdAndUserId(int tripid, int userid);
-
-    void acceptTrip(int proposalId);
-
-    List<Proposal> getProposalsForTripId(int tripId);
-
-    List<Pair<Trip, Integer>> getAllActiveTripsAndProposalCount(Integer userid);
-
-    List<Trip> getAllActiveTripsByUserId(Integer userid);
-
-    Proposal sendProposal(int tripId, int userid, String description) throws MessagingException;
-
-    Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
-
-    List<Trip> getAllProposedTripsByUserId(Integer userid);
-
-    List<Trip> getAllAcceptedTripsByUserId(Integer userid);
-
-    List<Trip> getAllActiveTripsByAcceptUserId(Integer acceptuserid);
+//    Trip createTrip(String cuit,
+//                    String licensePlate,
+//                    int availableWeight,
+//                    int availableVolume,
+//                    LocalDateTime departureDate,
+//                    LocalDateTime arrivalDate,
+//                    String origin,
+//                    String destination,
+//                    String type,
+//                    int price
+//    );
+//
+//    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
+//
+//    void confirmTrip(int tripId, int userId);
+//
+//    Optional<Trip> getTripById(int tripid);
+//
+//    Optional<Trip> getTripByIdAndUserId(int tripid, int userid);
+//
+//    void acceptTrip(int proposalId);
+//
+//    List<Proposal> getProposalsForTripId(int tripId);
+//
+//    List<Pair<Trip, Integer>> getAllActiveTripsAndProposalCount(Integer userid);
+//
+//    List<Trip> getAllActiveTripsByUserId(Integer userid);
+//
+//    Proposal sendProposal(int tripId, int userid, String description) throws MessagingException;
+//
+//    Integer getTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate);
+//
+//    List<Trip> getAllProposedTripsByUserId(Integer userid);
+//
+//    List<Trip> getAllAcceptedTripsByUserId(Integer userid);
+//
+//    List<Trip> getAllActiveTripsByAcceptUserId(Integer acceptuserid);
 
 }

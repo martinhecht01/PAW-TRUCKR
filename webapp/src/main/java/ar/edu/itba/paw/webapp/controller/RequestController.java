@@ -1,13 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfacesServices.CityService;
-import ar.edu.itba.paw.interfacesServices.RequestService;
-import ar.edu.itba.paw.interfacesServices.TripService;
-import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.models.Request;
+import ar.edu.itba.paw.interfacesServices.*;
+import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
+import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
@@ -27,19 +25,17 @@ import java.util.Objects;
 
 @Controller
 public class RequestController {
+    private final TripServiceV2 ts;
 
-    private final RequestService rs;
-    private final UserService us;
     private final CityService cs;
 
-    private final TripService ts;
+    private final UserService us;
 
     @Autowired
-    public RequestController(final RequestService rs, final UserService us, final CityService cs, final TripService ts) {
-        this.rs = rs;
-        this.us = us;
-        this.cs = cs;
+    public RequestController(final TripServiceV2 ts, CityService cs, UserService us) {
         this.ts = ts;
+        this.cs = cs;
+        this.us = us;
     }
 
     @RequestMapping("/requests/browse")
@@ -56,9 +52,10 @@ public class RequestController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-        Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume,maxAvailableVolume, minAvailableWeight, maxAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        //Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume,maxAvailableVolume, minAvailableWeight, maxAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Integer maxPages = 10;
         Integer currPage = Integer.parseInt(page);
-        if(Integer.parseInt(page) < 1 || Integer.parseInt(page) > maxPages ){
+        if(currPage < 1 || currPage > maxPages ){
             page = "1";
         }
 
@@ -76,7 +73,8 @@ public class RequestController {
         view.addObject("arrivalDate",arrivalDate);
         view.addObject("maxAvailableWeight", maxAvailableWeight);
         view.addObject("maxAvailableVolume", maxAvailableVolume);
-        List<Request> requests = rs.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate,maxAvailableVolume,maxAvailableWeight, Integer.parseInt(page));
+        //TODO: AGREGAR MAX WEIGHT Y MAX VOLUME
+        List<Trip> requests = ts.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
         view.addObject("offers", requests);
         return view;
     }
@@ -105,10 +103,9 @@ public class RequestController {
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        System.out.println(form.getOrigin() + "FORM RESULT");
 
-        Request request = rs.createRequest(
-                user.getCuit(),
+        Trip request = ts.createRequest(
+                user.getUserId(),
                 Integer.parseInt(form.getRequestedWeight()),
                 Integer.parseInt(form.getRequestedVolume()),
                 departure,
@@ -118,24 +115,24 @@ public class RequestController {
                 form.getCargoType(),
                 Integer.parseInt(form.getMaxPrice())
         );
-        ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getRequestId());
+
+        ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getTripId());
         return view;
     }
 
     @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("requests/details");
-        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("userId", getUser().getUserId());
         mav.addObject("request", request);
-        mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
+        mav.addObject("user", us.getUserById(request.getProviderId()).orElseThrow(UserNotFoundException::new));
         return mav;
     }
-
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
-        rs.confirmRequest(requestId, user.getUserId());
+        ts.confirmTrip(requestId, user.getUserId());
         if (Objects.equals(user.getRole(), "PROVIDER"))
             return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);
         else
@@ -151,11 +148,7 @@ public class RequestController {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
-        try {
-            rs.sendProposal(id, user.getUserId(), form.getDescription());
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        ts.createProposal(id, user.getUserId(), form.getDescription());
         ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 
         mav.addObject("id",id);
@@ -164,16 +157,16 @@ public class RequestController {
     @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
         System.out.println("accepting proposal ID = " + proposalId);
-        rs.acceptRequest(proposalId);
+        ts.acceptProposal(proposalId);
         final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
-        Request request = rs.getRequestById(requestId).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripById(requestId).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/success");
-        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -182,7 +175,7 @@ public class RequestController {
     @RequestMapping("/requests/reserveSuccess")
     public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
-        Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -191,9 +184,8 @@ public class RequestController {
     public ModelAndView myRequests(){
         User user = getUser();
         final ModelAndView mav = new ModelAndView("requests/myRequests");
-        mav.addObject("acceptedRequests",rs.getAllAcceptedRequestsByUserId(user.getUserId()) );
-        mav.addObject("acceptedTrips", ts.getAllActiveTripsByAcceptUserId(user.getUserId()));
-        mav.addObject("myRequests", rs.getAllActiveRequestsAndProposalCount(user.getUserId()));
+        mav.addObject("acceptedRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
+        mav.addObject("myRequests", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
         return mav;
     }
 
@@ -201,33 +193,15 @@ public class RequestController {
     public ModelAndView manageRequest(@RequestParam("requestId") int requestId) {
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = getUser().getUserId();
-        Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
-        if(request.getAcceptUserId() > 0)
-            mav.addObject("acceptUser", us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
-        System.out.println("ACCEPT UID = " + request.getAcceptUserId());
-        System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
+        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
+        if(request.getTruckerId() > 0)
+            mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
+        System.out.println("ACCEPT UID = " + request.getTruckerId());
         mav.addObject("request", request);
         mav.addObject("userId", userId);
-        mav.addObject("offers", rs.getProposalsForRequestId(request.getRequestId()));
+        mav.addObject("offers", ts.getAllProposalsForTripId(requestId));
         return mav;
     }
-
-    @RequestMapping(value = "/requests/active")
-    public ModelAndView activeRequests(){
-        ModelAndView mav = new ModelAndView("requests/active");
-        User user  = getUser();
-        List<Request> requests =  rs.getAllRequestsInProgressByAcceptUserId(user.getUserId());
-        mav.addObject("requests", requests);
-        List<User> providers = new ArrayList<>();
-
-        for (Request request: requests ) {
-            providers.add( us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
-        }
-
-        mav.addObject("providers", providers);
-        return mav;
-    }
-
     private User getUser() {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
