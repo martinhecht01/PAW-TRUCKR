@@ -45,19 +45,19 @@
                     </tr>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                        <td><c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year} - ${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/></td>
+                        <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableVolume"/></b></td>
-                        <td><c:out value="${request.requestedVolume}"/> m3</td>
+                        <td><c:out value="${request.volume}"/> m3</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableWeight"/></b></td>
-                        <td><c:out value="${request.requestedWeight}"/> kg</td>
+                        <td><c:out value="${request.weight}"/> kg</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Price"/></b></td>
-                        <td>$<c:out value="${request.maxPrice}"/></td>
+                        <td>$<c:out value="${request.price}"/></td>
                     </tr>
                 </table>
             </div>
@@ -65,9 +65,9 @@
         <div class="inlineFormInputContainer justify-content-top align-items-top" >
 
         </div>
-        <c:if test="${request.acceptUserId <= 0}">
+        <c:if test="${request.truckerId <= 0}">
             <div class="inlineFormInputContainer justify-content-top align-items-top" >
-                <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">
+                <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
                     <div class="card browseCards" style="width: 20rem;">
                         <div class="card-header">
                             <h4 class="card-title" style="color: #142D4C"><b><spring:message code="Reserve"/></b></h4>
@@ -86,7 +86,7 @@
                 </form:form>
             </div>
         </c:if>
-        <c:if test="${request.acceptUserId == userId}">
+        <c:if test="${request.truckerId == userId}">
             <div class="justify-content-top align-items-top px-5" >
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
@@ -102,26 +102,26 @@
                         <h4><spring:message code="Status"/></h4>
                     </div>
                     <div class="card-body p-3">
-                        <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
+                        <c:if test="${request.trucker_confirmation && !request.provider_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
                         </c:if>
-                        <c:if test="${!request.senderConfirmation}">
+                        <c:if test="${!request.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
                         </c:if>
-                        <c:if test="${request.receiverConfirmation && !request.senderConfirmation}">
+                        <c:if test="${request.provider_confirmation && !request.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
                         </c:if>
-                        <c:if test="${!request.receiverConfirmation}">
+                        <c:if test="${!request.provider_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="ProviderDidntReceiveCargo"/></p>
                         </c:if>
-                        <c:if test="${request.receiverConfirmation && request.senderConfirmation}">
+                        <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
                             <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg><spring:message code="TripFinished"/></h4>
                         </c:if>
                     </div>
                 </div>
-                <c:if test="${request.acceptUserId > 0 && !request.senderConfirmation}">
+                <c:if test="${request.truckerId > 0 && !request.trucker_confirmation}">
                     <c:url value="/requests/confirmRequest" var="confirmPath"/>
-                    <form:form method="post" action="${confirmPath}?requestId=${request.requestId}">
+                    <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
                         <spring:message var="finished" code="IFinishedTrip"/>
                         <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
                     </form:form>

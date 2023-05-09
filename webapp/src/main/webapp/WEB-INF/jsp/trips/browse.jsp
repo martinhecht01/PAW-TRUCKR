@@ -131,11 +131,11 @@
               <ul class="list-group list-group-flush">
                 <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
                   <div class="text-center">
-                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.availableWeight}"/> KG </h5>
+                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
                     <p><spring:message code="AvailableWeight"/></p>
                   </div>
                   <div class="text-center">
-                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.availableVolume}"/> M3 </h5>
+                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
                     <p><spring:message code="AvailableVolume"/></p>
                   </div>
                 </li>

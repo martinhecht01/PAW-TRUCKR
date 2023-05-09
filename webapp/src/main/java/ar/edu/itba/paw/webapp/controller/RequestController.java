@@ -59,7 +59,9 @@ public class RequestController {
             page = "1";
         }
 
+
         final ModelAndView view = new ModelAndView("requests/browse");
+
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
         view.addObject("origin",origin);
@@ -71,11 +73,9 @@ public class RequestController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        view.addObject("maxAvailableWeight", maxAvailableWeight);
-        view.addObject("maxAvailableVolume", maxAvailableVolume);
-        //TODO: AGREGAR MAX WEIGHT Y MAX VOLUME
-        List<Trip> requests = ts.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
-        view.addObject("offers", requests);
+        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        System.out.println("ACTIVE REQUESTS SIZE: "+trips.size());
+        view.addObject("offers", trips);
         return view;
     }
 
@@ -93,7 +93,7 @@ public class RequestController {
 
 
     @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
-    public ModelAndView createReq(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
+    public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             return createRequest(form);
         }
@@ -123,7 +123,7 @@ public class RequestController {
     @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("requests/details");
-        Trip request = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("userId", getUser().getUserId());
         mav.addObject("request", request);
         mav.addObject("user", us.getUserById(request.getProviderId()).orElseThrow(UserNotFoundException::new));
@@ -140,7 +140,7 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
-    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
+    public ModelAndView acceptProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             return requestDetail(id, form);
         }
@@ -159,14 +159,14 @@ public class RequestController {
         System.out.println("accepting proposal ID = " + proposalId);
         ts.acceptProposal(proposalId);
         final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
-        Trip request = ts.getTripById(requestId).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(requestId).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/success");
-        Trip request = ts.getTripById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -175,7 +175,7 @@ public class RequestController {
     @RequestMapping("/requests/reserveSuccess")
     public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
-        Trip request = ts.getTripById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -184,8 +184,10 @@ public class RequestController {
     public ModelAndView myRequests(){
         User user = getUser();
         final ModelAndView mav = new ModelAndView("requests/myRequests");
-        mav.addObject("acceptedRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
-        mav.addObject("myRequests", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
+        System.out.println("ACCEPTED SIZE = " + ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()).size());
+        System.out.println("ACTIVE SIZE = " + ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()).size());
+        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
+        mav.addObject("activeTripsAndRequest", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
         return mav;
     }
 
@@ -202,6 +204,7 @@ public class RequestController {
         mav.addObject("offers", ts.getAllProposalsForTripId(requestId));
         return mav;
     }
+
     private User getUser() {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);

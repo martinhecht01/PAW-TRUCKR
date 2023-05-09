@@ -44,7 +44,7 @@ public interface TripServiceV2 {
 
     List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId);
 
-    Optional<Trip> getTripById(int tripid);
+    Optional<Trip> getTripOrRequestById(int tripid);
 
     void acceptProposal(int proposalId);
 

@@ -96,6 +96,8 @@ public class TripDaoV2Impl implements TripDaoV2 {
         data.put("destination", destination);
         data.put("type", type);
         data.put("price", price);
+        data.put("trucker_confirmation", false);
+        data.put("provider_confirmation", false);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
         return new Trip(tripId, truckerId, null, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null);
@@ -125,6 +127,8 @@ public class TripDaoV2Impl implements TripDaoV2 {
         data.put("destination", destination);
         data.put("type", type);
         data.put("price", price);
+        data.put("trucker_confirmation", false);
+        data.put("provider_confirmation", false);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
         return new Trip(tripId, null, providerId, null, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null);
@@ -136,17 +140,17 @@ public class TripDaoV2Impl implements TripDaoV2 {
                 connection -> {
                     PreparedStatement ps = connection.prepareStatement(
                             "UPDATE trips " +
-                                    "SET sender_confirmation = CASE " +
-                                    "    WHEN sender_confirmation = FALSE AND user_id = ? THEN TRUE " +
-                                    "    ELSE sender_confirmation " +
+                                    "SET trucker_confirmation = CASE " +
+                                    "    WHEN trucker_confirmation = FALSE AND trucker_id = ? THEN TRUE " +
+                                    "    ELSE trucker_confirmation " +
                                     "END, " +
-                                    "receiver_confirmation = CASE " +
-                                    "    WHEN receiver_confirmation = FALSE AND acceptuser_id = ? THEN TRUE " +
-                                    "    ELSE receiver_confirmation " +
+                                    "provider_confirmation = CASE " +
+                                    "    WHEN provider_confirmation = FALSE AND provider_id = ? THEN TRUE " +
+                                    "    ELSE provider_confirmation " +
                                     "END, " +
                                     "confirmation_date = ? "+
                                     "WHERE trip_id = ? AND" +
-                                    "(sender_confirmation = FALSE OR receiver_confirmation = FALSE)");
+                                    "(trucker_confirmation = FALSE OR provider_confirmation = FALSE)");
                     ps.setInt(1, userId);
                     ps.setInt(2, userId);
                     ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
@@ -174,25 +178,25 @@ public class TripDaoV2Impl implements TripDaoV2 {
 
     @Override
     public List<Proposal> getAllProposalsForTripId(int tripId){
-        String query = "SELECT * FROM proposals NATURAL JOIN users WHERE tripid = ?";
+        String query = "SELECT * FROM proposals JOIN users ON proposals.user_id = users.userid WHERE trip_id = ?";
         return jdbcTemplate.query(query, PROPOSAL_ROW_MAPPER, tripId);
     }
 
     @Override
     public Optional<Proposal> getProposalById(int proposalId){
-        String query = "SELECT * FROM proposals NATURAL JOIN users WHERE proposalid = ?";
+        String query = "SELECT * FROM proposals NATURAL JOIN users WHERE proposal_id = ?";
         List<Proposal> proposals = jdbcTemplate.query(query, PROPOSAL_ROW_MAPPER, proposalId);
         return proposals.isEmpty() ? Optional.empty() : Optional.of(proposals.get(0));
     }
 
     private Pair<String, List<Object>> buildQuery(String tripType,String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
 
-        String query;
+        String query = "";
 
         if(pag < 1)
             pag = 1;
 
-        if(tripType == TRIP_TYPE)
+        if(TRIP_TYPE.equals(tripType))
             query = "SELECT * FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
         else
             query = "SELECT * FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
@@ -277,6 +281,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
         Pair<String, List<Object>> builder = buildQuery(REQUEST_TYPE, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
         String query = builder.getKey();
         List<Object> params = builder.getValue();
+        System.out.println("GET ALL ACTIVE REQUESTS QUERY: " + query);
         return jdbcTemplate.query(query, params.toArray(), TRIP_ROW_MAPPER);
     }
 
@@ -288,32 +293,38 @@ public class TripDaoV2Impl implements TripDaoV2 {
     }
 
     @Override
-    public Optional<Trip> getTripById(int tripid){
+    public Optional<Trip> getTripOrRequestById(int tripid){
         List<Trip> trips = jdbcTemplate.query("SELECT * FROM trips WHERE trip_id = ?", TRIP_ROW_MAPPER, tripid);
         return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
     }
     @Override
     public void acceptProposal(Proposal proposal){
-        String sql = "UPDATE trips AS t \n" +
-                        "SET provider_id = CASE WHEN p.user_id = t.provider_id THEN p.user_id ELSE t.provider_id END, \n" +
-                        "trucker_id = CASE WHEN p.user_id = t.trucker_id THEN p.user_id ELSE t.trucker_id END \n" +
-                        "FROM proposals AS p \n" +
-                        "WHERE p.proposal_id = ? AND t.trip_id = p.trip_id;";
-        jdbcTemplate.update(sql, proposal.getProposalId());
+        //TODO: CATCHEAR ESTA EXCEPCION EN EL CONTROLLER
+        Trip trip = getTripOrRequestById(proposal.getTripId()).orElseThrow(NoSuchElementException::new);
+        String sql;
+        if(trip.getTruckerId() == null)
+            sql = "UPDATE trips SET trucker_id = ? WHERE trip_id = ?";
+        else
+            sql = "UPDATE trips SET provider_id = ? WHERE trip_id = ?";
+        jdbcTemplate.update(sql, proposal.getUserId(), proposal.getTripId());
+
+        sql = "DELETE FROM proposals WHERE proposal_id != ? AND trip_id = ?";
+        jdbcTemplate.update(sql, proposal.getProposalId(), proposal.getTripId());
     }
     @Override
     public List<Pair<Trip, Integer>> getAllActiveTripsOrRequestAndProposalsCount(Integer userid) {
         String query = "SELECT trips.*, COUNT(proposals.proposal_id) AS proposalcount FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id WHERE (trips.trucker_id = ? AND provider_id IS NULL) OR (trips.provider_id = ? AND trucker_id IS NULL) GROUP BY trips.trip_id";
-        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid);
+        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid, userid);
     }
 
     @Override
     public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid) {
-        String query = "SELECT * FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL))";
-        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid);
+        String query = "SELECT * FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL)";
+        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid, userid);
     }
+
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid){
-        return getTripById(id).filter(trip -> trip.getTruckerId() == userid || trip.getProviderId() == userid);
+        return getTripOrRequestById(id).filter(trip -> trip.getTruckerId() == userid || trip.getProviderId() == userid);
     }
 }

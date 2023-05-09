@@ -18,8 +18,8 @@ public class Trip {
     private final String type;
     private final Number price;
 
-    private final Boolean sender_confirmation;
-    private final Boolean receiver_confirmation;
+    private final Boolean trucker_confirmation;
+    private final Boolean provider_confirmation;
 
     private final LocalDateTime confirmation_date;
 
@@ -50,8 +50,8 @@ public class Trip {
         this.destination = destination;
         this.type = type;
         this.price = price;
-        this.sender_confirmation = sender_confirmation;
-        this.receiver_confirmation = receiver_confirmation;
+        this.trucker_confirmation = sender_confirmation;
+        this.provider_confirmation = receiver_confirmation;
         this.confirmation_date = confirmation_date;
     }
 
@@ -103,12 +103,12 @@ public class Trip {
         return price;
     }
 
-    public Boolean getSender_confirmation() {
-        return sender_confirmation;
+    public Boolean getTrucker_confirmation() {
+        return trucker_confirmation;
     }
 
-    public Boolean getReceiver_confirmation() {
-        return receiver_confirmation;
+    public Boolean getProvider_confirmation() {
+        return provider_confirmation;
     }
 
     public LocalDateTime getConfirmation_date() {

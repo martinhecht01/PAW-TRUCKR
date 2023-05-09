@@ -44,7 +44,7 @@ public interface TripDaoV2 {
 
     List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId);
 
-    Optional<Trip> getTripById(int tripid);
+    Optional<Trip> getTripOrRequestById(int tripid);
 
     void acceptProposal(Proposal proposal);
 

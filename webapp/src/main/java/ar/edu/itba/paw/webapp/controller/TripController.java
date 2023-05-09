@@ -116,7 +116,7 @@ public class TripController {
     @RequestMapping("/trips/details")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("trips/details");
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         //Usar currentUser
         return mav;
@@ -142,7 +142,7 @@ public class TripController {
         ts.acceptProposal(proposalid);
         ModelAndView mav = new ModelAndView("trips/acceptSuccess");
 
-        Trip trip = ts.getTripById(tripid).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(tripid).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -151,7 +151,7 @@ public class TripController {
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("trips/success");
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -159,7 +159,7 @@ public class TripController {
     @RequestMapping("/trips/reserveSuccess")
     public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("trips/reserveSuccess");
-        Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -168,8 +168,8 @@ public class TripController {
     public ModelAndView myTrips(){
         User user = getUser();
         final ModelAndView mav = new ModelAndView("trips/myTrips");
-        mav.addObject("acceptedTrips",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
-        mav.addObject("active", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
+        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
+        mav.addObject("activeTripsAndRequests", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
         return mav;
     }
 
@@ -182,6 +182,7 @@ public class TripController {
             mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
         mav.addObject("trip", trip);
         mav.addObject("userId", userId);
+
         mav.addObject("offers", ts.getAllProposalsForTripId(trip.getTripId()));
         return mav;
     }

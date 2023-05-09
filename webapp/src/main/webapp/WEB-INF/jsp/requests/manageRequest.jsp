@@ -29,7 +29,7 @@
         <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
       </div>
       <div class="card-body">
-        <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img rounded-start p-3"  alt="TruckImg">
+        <img src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
         <table class="table table-striped">
           <tr>
             <td><b><spring:message code="CargoType"/></b></td>
@@ -41,24 +41,24 @@
           </tr>
           <tr>
             <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-            <td><c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year} - ${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/></td>
+            <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
           </tr>
           <tr>
             <td><b><spring:message code="CreateRequestRequestedVolume"/></b></td>
-            <td><c:out value="${request.requestedVolume}"/> m3</td>
+            <td><c:out value="${request.volume}"/> m3</td>
           </tr>
           <tr>
             <td><b><spring:message code="CreateRequestRequestedWeight"/></b></td>
-            <td><c:out value="${request.requestedWeight}"/> kg</td>
+            <td><c:out value="${request.weight}"/> kg</td>
           </tr>
           <tr>
             <td><b><spring:message code="Price"/></b></td>
-            <td>$<c:out value="${request.maxPrice}"/></td>
+            <td>$<c:out value="${request.price}"/></td>
           </tr>
         </table>
       </div>
     </div>
-    <c:if test="${request.acceptUserId > 0}">
+    <c:if test="${request.truckerId > 0}">
       <div class="justify-content-top align-items-top px-5" >
         <div class="card" style="width: 18rem;">
           <div class="card-header">
@@ -74,37 +74,37 @@
             <h4><spring:message code="Status"/>:</h4>
           </div>
           <div class="card-body p-3">
-            <c:if test="${request.receiverConfirmation && !request.senderConfirmation}">
+            <c:if test="${request.provider_confirmation && !request.trucker_confirmation}">
               <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
             </c:if>
-            <c:if test="${!request.receiverConfirmation}">
+            <c:if test="${!request.provider_confirmation}">
               <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
             </c:if>
-            <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
+            <c:if test="${request.trucker_confirmation && !request.provider_confirmation}">
               <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
             </c:if>
-            <c:if test="${!request.senderConfirmation}">
+            <c:if test="${!request.trucker_confirmation}">
               <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
             </c:if>
-            <c:if test="${request.receiverConfirmation && request.senderConfirmation}">
+            <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
               <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
             </c:if>
           </div>
         </div>
-        <c:if test="${request.acceptUserId > 0 && !request.receiverConfirmation}">
+        <c:if test="${!request.provider_confirmation }">
           <c:url value="/requests/confirmRequest" var="confirmPath"/>
-          <form:form method="post" action="${confirmPath}?requestId=${request.requestId}">
+          <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
             <spring:message var="received" code="IReceivedCargo"/>
             <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
           </form:form>
         </c:if>
       </div>
     </c:if>
-  <c:if test="${request.acceptUserId <= 0}">
+  <c:if test="${request.truckerId <= 0}">
     <div class="justify-content-top align-items-top px-5" >
       <c:forEach var="offer" items="${offers}">
         <c:url value="/requests/acceptProposal" var="postPath"/>
-        <form:form action="${postPath}?proposalid=${offer.proposalid}&requestid=${offer.requestid}" method="post">
+        <form:form action="${postPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">
           <div class="card p-3" style="width: 18rem;">
             <div class="ca rd-body">
               <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>

@@ -33,34 +33,34 @@
 </svg>
 <form:form method="get">
   <div class="pt-5 w-100 justify-content-center">
-    <c:if test="${myRequests.size()>0}">
+    <c:if test="${activeTripsAndRequest.size()>0}">
       <h3 class="mt-3 mb-2 text-center"><spring:message code="ActiveRequests"/></h3>
       <div class="w-100 d-flex justify-content-center">
         <hr class="w-50">
       </div>
     </c:if>
     <div class="tripCards w-75 justify-content-center m-auto">
-      <c:if test="${myRequests.size() == 0 && acceptedRequests.size() == 0}">
+      <c:if test="${activeTripsAndRequest.size() == 0 && acceptedTripsAndRequests.size() == 0 }">
         <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
       </c:if>
-      <c:forEach var="request" items="${myRequests}">
-        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.key.requestId}"/>">
+      <c:forEach var="object" items="${activeTripsAndRequest}">
+        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${object.key.tripId}"/>">
           <div class="card m-3" style="width: 25rem;">
-            <c:if test="${request.value > 0}">
+            <c:if test="${object.value > 0}">
               <h5 class="position-absolute top-0 end-0 M-3 ">
                   <span class="badge rounded-pill bg-danger">
-                      <c:out value="${request.value}"/> <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                      <c:out value="${object.value}"/> <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
                       <span class="visually-hidden">unread messages</span>
                   </span>
               </h5>
             </c:if>
             <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
-            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${request.key.type}" htmlEscape="true"/></span></h4>
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${object.key.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${request.key.origin}"/></h5>
-                  <c:out value="${request.key.minDepartureDate.dayOfMonth}/${request.key.minDepartureDate.monthValue}/${request.key.minDepartureDate.year}"/>
+                  <h5><c:out value="${object.key.origin}"/></h5>
+                  <c:out value="${object.key.departureDate.dayOfMonth}/${object.key.departureDate.monthValue}/${object.key.departureDate.year}"/>
                 </div>
 
                 <div style="width: 30%">
@@ -68,45 +68,45 @@
                 </div>
 
                 <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${request.key.destination}"/></h5>
-                  <c:out value="${request.key.maxArrivalDate.dayOfMonth}/${request.key.maxArrivalDate.monthValue}/${request.key.maxArrivalDate.year}"/>
+                  <h5><c:out value="${object.key.destination}"/></h5>
+                  <c:out value="${object.key.arrivalDate.dayOfMonth}/${object.key.arrivalDate.monthValue}/${object.key.arrivalDate.year}"/>
                 </div>
               </div>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
                 <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${request.key.requestedWeight}"/> KG </h5>
+                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${object.key.weight}"/> KG </h5>
                   <p><spring:message code="CreateRequestRequestedWeight"/></p>
                 </div>
                 <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${request.key.requestedVolume}"/> M3 </h5>
+                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${object.key.volume}"/> M3 </h5>
                   <p><spring:message code="CreateRequestRequestedVolume"/></p>
                 </div>
               </li>
-              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.key.maxPrice}"/></h4></li>
+              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${object.key.price}"/></h4></li>
             </ul>
           </div>
         </a>
       </c:forEach>
     </div>
-    <c:if test="${acceptedRequests.size() > 0 || acceptedTrips.size() > 0}">
+    <c:if test="${acceptedTripsAndRequests.size() > 0 }">
       <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedRequests"/></h3>
       <div class="w-100 d-flex justify-content-center">
         <hr class="w-50">
       </div>
     </c:if>
     <div class="tripCards w-75 justify-content-center m-auto">
-      <c:forEach var="request" items="${acceptedRequests}">
-        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.requestId}"/>">
+      <c:forEach var="object" items="${acceptedTripsAndRequests}">
+        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${object.tripId}"/>">
           <div class="card m-3" style="width: 25rem;">
-            <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
-            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${request.type}" htmlEscape="true"/></span></h4>
+            <img src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img-top" alt="...">
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${object.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${request.origin}"/></h5>
-                  <c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year}"/>
+                  <h5><c:out value="${object.origin}"/></h5>
+                  <c:out value="${object.departureDate.dayOfMonth}/${object.departureDate.monthValue}/${object.departureDate.year}"/>
                 </div>
 
                 <div style="width: 30%">
@@ -114,76 +114,29 @@
                 </div>
 
                 <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${request.destination}"/></h5>
-                  <c:out value="${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/>
+                  <h5><c:out value="${object.destination}"/></h5>
+                  <c:out value="${object.arrivalDate.dayOfMonth}/${object.arrivalDate.monthValue}/${object.arrivalDate.year}"/>
                 </div>
               </div>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
                 <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${request.requestedWeight}"/> KG </h5>
+                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${object.weight}"/> KG </h5>
                   <p><spring:message code="CreateRequestRequestedWeight"/></p>
                 </div>
                 <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${request.requestedVolume}"/> M3 </h5>
+                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${object.volume}"/> M3 </h5>
                   <p><spring:message code="CreateRequestRequestedVolume"/></p>
                 </div>
               </li>
-              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.maxPrice}"/></h4></li>
-            </ul>
-          </div>
-        </a>
-      </c:forEach>
-
-      <c:forEach var="trip" items="${acceptedTrips}">
-        <a class="text-decoration-none" href="<c:url value="/trips/details?id=${trip.tripId}"/>">
-          <div class="card m-3" style="width: 25rem;">
-            <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
-            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
-            <div class="card-body">
-              <div class="w-100 d-flex space-apart">
-                <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${trip.origin}"/></h5>
-                  <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
-                </div>
-
-                <div style="width: 30%">
-                  <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                </div>
-
-                <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${trip.destination}"/></h5>
-                  <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
-                </div>
-              </div>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
-                <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.availableWeight}"/> KG </h5>
-                  <p><spring:message code="AvailableWeight"/></p>
-                </div>
-                <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.availableVolume}"/> M3 </h5>
-                  <p><spring:message code="AvailableVolume"/></p>
-                </div>
-              </li>
-              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
+              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${object.price}"/></h4></li>
             </ul>
           </div>
         </a>
       </c:forEach>
     </div>
   </div>
-
-  <%--  <script>--%>
-  <%--    function filterApply() {--%>
-  <%--      currentPage = 1;--%>
-  <%--      form.submit();--%>
-
-  <%--    }--%>
-  <%--  </script>--%>
 </form:form>
 <div style="margin-top: auto">
   <components:waveDivider/>
