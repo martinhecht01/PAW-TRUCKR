@@ -81,7 +81,13 @@
                             </div>
                             <div>
                                 <spring:message code="Reserve" var="reserve"/>
-                                <input type="submit" class="btn btn-color" value="${reserve}"/>
+
+                                <c:if test="${currentRole == ''}">
+                                    <a href="/login" class="btn btn-color">${reserve}</a>
+                                </c:if>
+                                <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
+                                    <input type="submit" class="btn btn-color" value="${reserve}"/>
+                                </c:if>
                             </div>
                         </div>
                     </div>

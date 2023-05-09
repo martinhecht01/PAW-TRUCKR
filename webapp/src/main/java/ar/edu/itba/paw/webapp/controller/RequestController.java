@@ -126,9 +126,12 @@ public class RequestController {
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("requests/details");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
-        mav.addObject("userId", getUser().getUserId());
+        User user = getUser();
+        if (user != null){
+            mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
+            mav.addObject("userId", getUser().getUserId());
+        }
         mav.addObject("request", request);
-        mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
         return mav;
     }
 
@@ -229,7 +232,12 @@ public class RequestController {
     }
 
     private User getUser() {
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userDetails instanceof AuthUserDetailsImpl){
+            AuthUserDetailsImpl userDetails1 = (AuthUserDetailsImpl) userDetails;
+            return us.getUserByCuit(userDetails1.getUsername()).orElseThrow(UserNotFoundException::new);
+        }
+        return null;
     }
 }

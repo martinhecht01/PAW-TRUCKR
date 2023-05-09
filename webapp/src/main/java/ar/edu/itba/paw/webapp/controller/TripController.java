@@ -122,8 +122,11 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/details");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
-        mav.addObject("userId", getUser().getUserId());
-        mav.addObject("user", us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
+        User user = getUser();
+        if (user != null){
+            mav.addObject("userId", getUser().getUserId());
+            mav.addObject("user", us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
+        }
         return mav;
     }
 
@@ -225,8 +228,13 @@ public class TripController {
     }
 
     private User getUser() {
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userDetails instanceof AuthUserDetailsImpl){
+            AuthUserDetailsImpl userDetails1 = (AuthUserDetailsImpl) userDetails;
+            return us.getUserByCuit(userDetails1.getUsername()).orElseThrow(UserNotFoundException::new);
+        }
+        return null;
     }
 
 }
