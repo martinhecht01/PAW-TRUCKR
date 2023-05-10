@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfacesServices.CityService;
-import ar.edu.itba.paw.interfacesServices.RequestService;
-import ar.edu.itba.paw.interfacesServices.TripService;
-import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.*;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
@@ -12,7 +9,6 @@ import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -34,12 +30,15 @@ public class TripController {
     private final CityService cs;
 
     private final RequestService rs;
+    private final ReviewService revs;
+
     @Autowired
-    public TripController(final TripService ts, final UserService us, final CityService cs, final RequestService rs){
+    public TripController(final TripService ts, final UserService us, final CityService cs, final RequestService rs,final ReviewService revs){
         this.ts = ts;
         this.us = us;
         this.cs = cs;
         this.rs = rs;
+        this.revs = revs;
     }
 
     @RequestMapping("/trips/browse")
@@ -212,7 +211,7 @@ public class TripController {
         Trip trip = ts.getTripByIdAndUserId(tripId, userId).orElseThrow(TripNotFoundException::new);
         if(trip.getAcceptUserId() > 0) {
             mav.addObject("acceptUser", us.getUserById(trip.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, userId).orElseThrow(TripNotFoundException::new)); //TODO: fijarse si existe una review para este trip de este usuario
         }
             mav.addObject("trip", trip);
         mav.addObject("userId", userId);
