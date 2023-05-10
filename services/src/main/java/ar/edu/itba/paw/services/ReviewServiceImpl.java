@@ -21,13 +21,12 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Optional<Review> getReviewByTripAndUserId(int tripId, int userId) {
-        Optional<Review> optionalReview = reviewDao.getReviewByTripAndUserId(tripId,userId);
 
-        return Optional.empty();
+        return reviewDao.getReviewByTripAndUserId(tripId,userId);
     }
 
     @Override
     public Optional<Review> getReviewByRequestAndUserId(int requestId, int userId) {
-        return Optional.empty();
+        return reviewDao.getReviewByTripAndUserId(requestId,userId);
     }
 }

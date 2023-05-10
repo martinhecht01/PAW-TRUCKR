@@ -110,12 +110,11 @@
             <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
           </form:form>
         </c:if>
-      </div>
     </c:if>
     <c:if test="${request.senderConfirmation && request.receiverConfirmation }">
-      <c:if test="${!reviewed}">
+      <c:if test="${reviewed == null}">
         <c:url value="/requests/sendReview" var="reviewPath"/>
-        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestIdId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
+        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
           <div class="card mt-4" style="width: 18rem;">
             <div class="card-header">
               <h4>
@@ -148,7 +147,7 @@
           <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
         </form:form>
       </c:if>
-      <c:if test="${reviewed}">
+      <c:if test="${reviewed != null}">
         <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
       </c:if>
     </c:if>
@@ -169,6 +168,7 @@
       </c:forEach>
     </div>
   </c:if>
+  </div>
   </div>
 </div>
 <div style="margin-top: auto">

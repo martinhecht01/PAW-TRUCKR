@@ -80,19 +80,25 @@
         </div>
         <c:if test="${request.acceptUserId <= 0}">
             <div class="inlineFormInputContainer justify-content-top align-items-top" >
-                <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">
+                <form:form modelAttribute="acceptForm" action="${postPath}?id=${request.requestId}" method="post">
                     <div class="card browseCards" style="width: 20rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="Reserve"/></b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
                                 <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                                <form:textarea type="text" id="description" class="form-control" path="description" placeholder="Write a description"/>
+                                <form:textarea type="text" class="form-control" id="description" path="description" placeholder="Write a description"/>
                             </div>
                             <div>
                                 <spring:message code="Reserve" var="reserve"/>
-                                <input type="submit" class="btn btn-color" value="${reserve}"/>
+
+                                <c:if test="${currentRole == ''}">
+                                    <a href="/login" class="btn btn-color">${reserve}</a>
+                                </c:if>
+                                <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
+                                    <input type="submit" class="btn btn-color" value="${reserve}"/>
+                                </c:if>
                             </div>
                         </div>
                     </div>
@@ -103,7 +109,7 @@
             <div class="justify-content-top align-items-top px-5" >
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
-                        <h4><spring:message code="Provider"/>:</h4>
+                        <h4><spring:message code="Driver"/>:</h4>
                     </div>
                     <div class="card-body p-3">
                         <h5 class="card-title"><c:out value="${user.name.toUpperCase()}"/></h5>
@@ -112,75 +118,77 @@
                 </div>
                 <div class="card mt-4" style="width: 18rem;">
                     <div class="card-header">
-                        <h4><spring:message code="Status"/></h4>
+                        <h4><spring:message code="Status"/>: </h4>
                     </div>
                     <div class="card-body p-3">
-                        <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
-                        </c:if>
-                        <c:if test="${!request.senderConfirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
-                        </c:if>
                         <c:if test="${request.receiverConfirmation && !request.senderConfirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
                         </c:if>
                         <c:if test="${!request.receiverConfirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="ProviderDidntReceiveCargo"/></p>
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
+                        </c:if>
+                        <c:if test="${request.senderConfirmation && !request.receiverConfirmation}">
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
+                        </c:if>
+                        <c:if test="${!request.senderConfirmation}">
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
                         </c:if>
                         <c:if test="${request.receiverConfirmation && request.senderConfirmation}">
-                            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg><spring:message code="TripFinished"/></h4>
+                            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
                         </c:if>
                     </div>
                 </div>
-                <c:if test="${request.acceptUserId > 0 && !request.senderConfirmation}">
+                <c:if test="${request.acceptUserId > 0 && !request.receiverConfirmation}">
                     <c:url value="/requests/confirmRequest" var="confirmPath"/>
-                    <form:form method="post" action="${confirmPath}?requestId=${request.requestId}">
-                        <spring:message var="finished" code="IFinishedTrip"/>
-                        <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
+                    <form:form method="post" action="${confirmPath}?id=${request.requestId}">
+                        <spring:message var="received" code="IReceivedCargo"/>
+                        <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
                     </form:form>
+                </c:if>
+                <c:if test="${request.senderConfirmation && request.receiverConfirmation }">
+                    <c:if test="${reviewed == null}">
+                        <c:url value="/requests/sendReview" var="reviewPath"/>
+                        <form:form id="reviewForm" method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
+                            <div class="card mt-4" style="width: 18rem;">
+                                <div class="card-header">
+                                    <h4>
+                                        <c:if test="${currentRole == 'TRUCKER'}">
+                                            <spring:message code="ReviewProvider"/>
+                                        </c:if>
+                                        <c:if test="${currentRole == 'PROVIDER'}">
+                                            <spring:message code="ReviewTrucker"/>
+                                        </c:if>
+                                    </h4>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div>
+                                        <button type="button" onclick="changeStars(0)" class="btn-color btn mr-2">-</button>
+                                        <c:forEach items="${selectedStars}">
+                                            <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>
+                                        </c:forEach>
+                                        <c:forEach begin="0" step="1" end="${4-selectedStars}">
+                                            <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>
+                                        </c:forEach>
+                                        <button type="button" onclick="changeStars(1)" class="btn-color btn ml-2">+</button>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <spring:message var="writeReview" code="WriteReview"/>
+                                        <form:textarea type="text" id="review" class="form-control" path="description" placeholder="${writeReview}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <spring:message var="sendReview" code="SendReview"/>
+                            <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
+                        </form:form>
+                    </c:if>
+                    <c:if test="${reviewed != null}">
+                        <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+                    </c:if>
                 </c:if>
             </div>
         </c:if>
-        <c:if test="${request.senderConfirmation && request.receiverConfirmation }">
-            <c:if test="${!reviewed}">
-                <c:url value="/requests/sendReview" var="reviewPath"/>
-                <form:form nestedPath="reviewForm" id="reviewForm" method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestIdId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
-                    <div class="card mt-4" style="width: 18rem;">
-                        <div class="card-header">
-                            <h4>
-                                <c:if test="${currentRole == 'TRUCKER'}">
-                                    <spring:message code="ReviewProvider"/>
-                                </c:if>
-                                <c:if test="${currentRole == 'PROVIDER'}">
-                                    <spring:message code="ReviewTrucker"/>
-                                </c:if>
-                            </h4>
-                        </div>
-                        <div class="card-body p-3">
-                            <div>
-                                <button type="button" onclick="changeStars(0)" class="btn-color btn mr-2">-</button>
-                                <c:forEach items="${selectedStars}">
-                                    <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>
-                                </c:forEach>
-                                <c:forEach begin="0" step="1" end="${4-selectedStars}">
-                                    <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>
-                                </c:forEach>
-                                <button type="button" onclick="changeStars(1)" class="btn-color btn ml-2">+</button>
-                            </div>
-                            <div class="mt-2">
-                                <spring:message var="writeReview" code="WriteReview"/>
-                                <form:textarea type="text" id="review" class="form-control" path="description" placeholder="${writeReview}"/>
-                            </div>
-                        </div>
-                    </div>
-                    <spring:message var="sendReview" code="SendReview"/>
-                    <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
-                </form:form>
-            </c:if>
-            <c:if test="${reviewed}">
-                <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
-            </c:if>
-        </c:if>
+
     </div>
 </div>
 <div style="margin-top: auto">

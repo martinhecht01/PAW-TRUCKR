@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -46,13 +47,21 @@ public class ReviewDaoImpl implements ReviewDao {
     @Override
     public Optional<Review> getReviewByTripAndUserId(int tripId, int userId) {
         String query = "SELECT * FROM reviews WHERE tripid = ? AND userid = ?";
-        return Optional.of(jdbcTemplate.query(query, ROW_MAPPER_REVIEW,tripId,userId).get(0));
+        List<Review> reviews= jdbcTemplate.query(query, ROW_MAPPER_REVIEW,tripId,userId);
+        if(reviews.isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(reviews.get(0));
     }
 
     @Override
     public Optional<Review> getReviewByRequestAndUserId(int requestId, int userId) {
-        String query = "SELECT * FROM reviews WHERE requestid = ? AND userid = ?";
-        return Optional.of(jdbcTemplate.query(query, ROW_MAPPER_REVIEW,requestId,userId).get(0));
+        String query = "SELECT * FROM reviews WHERE tripid = ? AND userid = ?";
+        List<Review> reviews= jdbcTemplate.query(query, ROW_MAPPER_REVIEW,requestId,userId);
+        if(reviews.isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(reviews.get(0));
     }
 
     @Override
