@@ -21,6 +21,19 @@
     </symbol>
 </svg>
 
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+    <symbol id="star-fill" viewBox="0 0 16 16">
+        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+    </symbol>
+</svg>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+    <symbol id="star" viewBox="0 0 16 16">
+        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+    </symbol>
+</svg>
+
 <c:url value="/trips/sendProposal" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
@@ -77,7 +90,7 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                                <form:textarea type="text" class="form-control" path="description" placeholder="Write a description"/>
+                                <form:textarea type="text" class="form-control" id="description" path="description" placeholder="Write a description"/>
                             </div>
                             <div>
                                 <spring:message code="Reserve" var="reserve"/>
@@ -134,6 +147,47 @@
                         <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
                     </form:form>
                 </c:if>
+                <c:if test="${trip.senderConfirmation && trip.receiverConfirmation }">
+                    <c:if test="${!reviewed}">
+                        <c:url value="/trips/sendReview" var="reviewPath"/>
+                        <form:form id="reviewForm" method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
+                            <div class="card mt-4" style="width: 18rem;">
+                                <div class="card-header">
+                                    <h4>
+                                        <c:if test="${currentRole == 'TRUCKER'}">
+                                            <spring:message code="ReviewProvider"/>
+                                        </c:if>
+                                        <c:if test="${currentRole == 'PROVIDER'}">
+                                            <spring:message code="ReviewTrucker"/>
+                                        </c:if>
+                                    </h4>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div>
+                                        <button type="button" onclick="changeStars(0)" class="btn-color btn mr-2">-</button>
+                                        <c:forEach items="${selectedStars}">
+                                            <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>
+                                        </c:forEach>
+                                        <c:forEach begin="0" step="1" end="${4-selectedStars}">
+                                            <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>
+                                        </c:forEach>
+                                        <button type="button" onclick="changeStars(1)" class="btn-color btn ml-2">+</button>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <spring:message var="writeReview" code="WriteReview"/>
+                                        <form:textarea type="text" id="review" class="form-control" path="description" placeholder="${writeReview}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <spring:message var="sendReview" code="SendReview"/>
+                            <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
+                        </form:form>
+                    </c:if>
+                    <c:if test="${reviewed}">
+                        <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+                    </c:if>
+                </c:if>
             </div>
         </c:if>
 
@@ -145,3 +199,25 @@
 </div>
 </body>
 </html>
+
+<script>
+    var selectedStars=[1,2,3]
+
+    function changeStars(action){
+        if (action === 1)
+            selectedStars++;
+        if (action === 0)
+            selectedStars--;
+    }
+    $(document).ready(function() {
+        // Event handler for when a star is clicked
+        $('.star').click(function() {
+            var rating = $(this).data('rating');
+            //TODO: enviar al server el nuevo rating seleccionado
+            // Update the star colors based on the clicked star
+            $(this).addClass('bi-star-fill');
+            $(this).prevAll().addClass('bi-star-fill');
+            $(this).nextAll().removeClass('bi-star-fill');
+        });
+    });
+</script>
