@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.paw.interfacesServices.CityService;
-import ar.edu.itba.paw.interfacesServices.RequestService;
-import ar.edu.itba.paw.interfacesServices.TripService;
-import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.*;
 import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
@@ -34,12 +31,15 @@ public class RequestController {
 
     private final TripService ts;
 
+    private final ReviewService revs;
+
     @Autowired
-    public RequestController(final RequestService rs, final UserService us, final CityService cs, final TripService ts) {
+    public RequestController(final RequestService rs, final UserService us, final CityService cs, final TripService ts, final ReviewService revs) {
         this.rs = rs;
         this.us = us;
         this.cs = cs;
         this.ts = ts;
+        this.revs = revs;
     }
 
     @RequestMapping("/requests/browse")
@@ -129,7 +129,7 @@ public class RequestController {
         User user = getUser();
 
         if (user != null){
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(id, user.getUserId()).orElseThrow(RequestNotFoundException::new)); //TODO: fijarse si existe una review para este request de este usuario
             mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
             mav.addObject("userId", getUser().getUserId());
         }
@@ -209,7 +209,7 @@ public class RequestController {
         Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
         if(request.getAcceptUserId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new)); //TODO: fijarse si existe una review para este request de este usuario
         }
         System.out.println("ACCEPT UID = " + request.getAcceptUserId());
         System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
