@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Este archivo es encontrado por logback automaticamente para autoconfigurarse -->
+
+<!--
+    Logging circular: la idea es que pongamos una cantidad fija de tamaño de disco que usan los logs. De esta forma
+    sabemos que no van a explotar los logs en tamaño, cosa que podría dejarnos sin disco y por ende romper la bd.
+    A medida que se escriben logs nuevos entonces, se van borrando los viejos. Para usar esto conviene usar un
+    nivel de logging bajo, como WARN o ERROR, ya que DEBUG printea una cantidad insólita de cosas.
+    También, debemos logear no a la consola, sino a un archivo.
+ -->
+<!--Consignas:
+    usar multiples niveles de login
+    en las excepciones usar el parametro final new RuntimeException() para que imprima el stack trace
+    en las validaciones poner logs
+    warnings y error en error handling loggear
+    cuando lanzo y atrapo excepciones loggear
+ -->
+
+
+<configuration>
+    <property name="defaultPattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <appender name="root-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw-2023a-08.warnings.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="paw-appender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <maxHistory>5</maxHistory>
+            <fileNamePattern>logs/paw-2023a-08.paw.%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${defaultPattern:-}</pattern>
+        </encoder>
+    </appender>
+
+    <!--
+        Configuramos dos loggers, uno para ar.edu.itba.paw, donde está nuestro código, y otro para todo lo demás. La
+        idea es que no queremos que librerías como Spring esten imprimiendo mensajes de debug, confiamos en que están
+        bien testeadas, pero sí queremos escuchar si loggean WARN o ERROR. Al mismo tiempo, queremos que nuestro código
+        haga logging hasta el nivel de debug.
+    -->
+
+    <root level="WARN">
+        <appender-ref ref="root-appender"/>
+    </root>
+
+    <!--
+        El additivity="false" nos asegura de lo que captura este logger no siga subiendo en el arbol de loggers y por
+        ende se loggea solo una vez. Si no, un mismo mensaje podría ser capturado por ambos loggers.
+        Por que lo activamos? Si loggeo un DEBUG en mi codigo, lo va a agarrar el logger "ar.edu.itba.paw" por estar
+        mas cerca al archivo del cual se lanzo. Sin embargo, al agarrar al log, se le remueve el filtro de nivel,
+        y como sigue escalando por implementacion, el otro lo lanzaria tambien, por mas de que sea de
+        WARN (mas especifico).
+     -->
+    <logger name="ar.edu.itba.paw" level="INFO" additivity="false">
+        <appender-ref ref="paw-appender"/>
+    </logger>
+</configuration>
