@@ -9,14 +9,17 @@ public class User {
     private final String password;
     private final int userId;
 
+    private final boolean accountVerified;
 
-    public User(final int userId, final String email, final String name, final String cuit, final String role, String password){
+
+    public User(final int userId, final String email, final String name, final String cuit, final String role, String password, boolean accountVerified){
         this.userId = userId;
         this.email = email;
         this.name = name;
         this.cuit = cuit;
         this.role = role;
         this.password = password;
+        this.accountVerified = accountVerified;
     }
 
     public String getEmail() {
@@ -40,4 +43,6 @@ public class User {
     }
 
     public String getRole() {return role;}
+
+    public Boolean getAccountVerified(){return accountVerified;};
 }
