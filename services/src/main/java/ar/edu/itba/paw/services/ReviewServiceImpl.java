@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,5 +34,15 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public void createReview(int tripid, int userid, float rating, String comment) {
          reviewDao.createReview(tripid,userid,rating,comment);
+    }
+
+    @Override
+    public float getUserRating(int userId) {
+        return reviewDao.getUserRating(userId);
+    }
+
+    @Override
+    public List<Review> getUserReviews(int userId) {
+        return reviewDao.getUserReviews(userId);
     }
 }

@@ -77,4 +77,20 @@ public class ReviewDaoImpl implements ReviewDao {
 
         jdbcInsertReviews.execute(data);
     }
+
+    @Override
+    public float getUserRating(int userId) {
+        String sql = "SELECT AVG(rating) FROM reviews WHERE userid = ?";
+        Float result = jdbcTemplate.queryForObject(sql, Float.class,userId);
+        if( result == null){
+            return 0;
+        }
+        return result;
+    }
+
+    @Override
+    public List<Review> getUserReviews(int userId) {
+        String query = "SELECT * FROM reviews WHERE userid = ?";
+        return jdbcTemplate.query(query, ROW_MAPPER_REVIEW,userId);
+    }
 }

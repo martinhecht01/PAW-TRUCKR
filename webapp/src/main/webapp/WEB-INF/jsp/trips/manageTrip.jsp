@@ -130,15 +130,16 @@
                                 </h4>
                             </div>
                             <div class="card-body p-3">
-                                <div>
-                                    <button type="button" onclick="changeStars(0)" class="btn-color btn mr-2">-</button>
-                                    <c:forEach items="${selectedStars}">
+                                <div id="starsAndButtons">
+                                    <c:set var="selectedStars" value="0" />
+                                    <button type="button" onclick="updateStars(-1)" class="btn-color btn mr-2">-</button>
+                                    <c:forEach begin="0" step="1" end="${selectedStars}">
                                         <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>
                                     </c:forEach>
                                     <c:forEach begin="0" step="1" end="${4-selectedStars}">
                                         <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>
                                     </c:forEach>
-                                    <button type="button" onclick="changeStars(1)" class="btn-color btn ml-2">+</button>
+                                    <button type="button" onclick="updateStars(1)" class="btn-color btn ml-2">+</button>
                                 </div>
 
                                 <div class="mt-2">
@@ -189,23 +190,16 @@
 </html>
 
 <script>
-    var selectedStars=[1,2,3]
-
-    function changeStars(action){
-        if (action === 1)
-            selectedStars++;
-        if (action === 0)
-            selectedStars--;
+    function updateStars(change) {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                document.getElementById('starsAndButtons').innerHTML = xhr.responseText;
+            }
+        };
+        xhr.open('GET', 'updateStars.jsp?change=' + change, true);
+        xhr.send();
     }
-    $(document).ready(function() {
-        // Event handler for when a star is clicked
-        $('.star').click(function() {
-            var rating = $(this).data('rating');
-            //TODO: enviar al server el nuevo rating seleccionado
-            // Update the star colors based on the clicked star
-            $(this).addClass('bi-star-fill');
-            $(this).prevAll().addClass('bi-star-fill');
-            $(this).nextAll().removeClass('bi-star-fill');
-        });
-    });
 </script>
+
+

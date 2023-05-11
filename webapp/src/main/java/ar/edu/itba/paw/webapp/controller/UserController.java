@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
@@ -26,10 +27,12 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService us;
+    private final ReviewService revs;
 
     @Autowired
-    public UserController(final UserService us){
+    public UserController(final UserService us, ReviewService revs){
         this.us = us;
+        this.revs = revs;
     }
 
 
@@ -77,7 +80,9 @@ public class UserController {
     public ModelAndView profile() {
         final ModelAndView mav = new ModelAndView("user/profile");
 
-       // mav.addObject("user", us.findById(userId).orElseThrow(UserNotFoundException::new));
+        mav.addObject("userRating", revs.getUserRating(getCurrentUser().getUserId()));
+        mav.addObject("userReviews", revs.getUserReviews(getCurrentUser().getUserId()));
+
 
         return mav;
     }

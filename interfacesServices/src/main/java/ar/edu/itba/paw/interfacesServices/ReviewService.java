@@ -3,6 +3,7 @@ package ar.edu.itba.paw.interfacesServices;
 import ar.edu.itba.paw.models.Review;
 
 import java.util.Optional;
+import java.util.List;
 
 public interface ReviewService {
 
@@ -11,4 +12,8 @@ public interface ReviewService {
 
 
     void createReview(int tripid, int userid, float rating, String comment);
+
+    float getUserRating(int userId);
+
+    List<Review> getUserReviews(int userId);
 }
