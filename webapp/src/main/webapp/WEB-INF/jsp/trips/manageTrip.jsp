@@ -85,7 +85,7 @@
                     </div>
                     <div class="card-body p-3">
                         <c:if test="${trip.trucker_confirmation && !trip.provider_confirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
+                            <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
                         </c:if>
                         <c:if test="${!trip.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
@@ -98,6 +98,11 @@
                         </c:if>
                         <c:if test="${trip.provider_confirmation && trip.trucker_confirmation}">
                             <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
+                        </c:if>
+                        <c:if test="${trip.confirmation_date != null}">
+                            <div class="pt-2 pb-0 w-100 text-center">
+                                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmation_date.dayOfMonth}/${trip.confirmation_date.monthValue}/${trip.confirmation_date.year}</span>
+                            </div>
                         </c:if>
                     </div>
                 </div>

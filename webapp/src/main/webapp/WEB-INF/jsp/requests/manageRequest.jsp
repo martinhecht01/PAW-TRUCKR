@@ -95,6 +95,11 @@
             <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
               <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
             </c:if>
+            <c:if test="${trip.confirmation_date != null}">
+              <div class="pt-2 pb-0 w-100 text-center">
+                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmation_date.dayOfMonth}/${trip.confirmation_date.monthValue}/${trip.confirmation_date.year}</span>
+              </div>
+            </c:if>
           </div>
         </div>
         <c:if test="${!request.provider_confirmation }">

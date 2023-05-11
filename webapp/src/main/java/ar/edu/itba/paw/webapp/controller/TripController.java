@@ -186,7 +186,6 @@ public class TripController {
             mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
         }
         mav.addObject("trip", trip);
-        mav.addObject("userId", userId);
         mav.addObject("offers", ts.getAllProposalsForTripId(trip.getTripId()));
         return mav;
     }
@@ -202,7 +201,6 @@ public class TripController {
     }
 
     private User getUser() {
-
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userDetails instanceof AuthUserDetailsImpl){
             AuthUserDetailsImpl userDetails1 = (AuthUserDetailsImpl) userDetails;
