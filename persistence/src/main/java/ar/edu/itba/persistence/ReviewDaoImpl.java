@@ -64,17 +64,17 @@ public class ReviewDaoImpl implements ReviewDao {
         return Optional.of(reviews.get(0));
     }
 
+
+
     @Override
-    public Review create(int tripId, int userId, float rating, String review) {
+    public void createReview(int tripid, int userid, float rating, String comment) {
         HashMap<String,Object> data = new HashMap<>();
 
-        data.put("tripid", tripId);
-        data.put("userid",userId);
+        data.put("tripid", tripid);
+        data.put("userid",userid);
         data.put("rating",rating);
-        data.put("review",review);
+        data.put("review",comment);
 
         jdbcInsertReviews.execute(data);
-
-        return new Review(tripId,userId,rating,review);
     }
 }

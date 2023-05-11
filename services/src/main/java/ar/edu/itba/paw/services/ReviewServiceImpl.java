@@ -29,4 +29,9 @@ public class ReviewServiceImpl implements ReviewService {
     public Optional<Review> getReviewByRequestAndUserId(int requestId, int userId) {
         return reviewDao.getReviewByTripAndUserId(requestId,userId);
     }
+
+    @Override
+    public void createReview(int tripid, int userid, float rating, String comment) {
+         reviewDao.createReview(tripid,userid,rating,comment);
+    }
 }

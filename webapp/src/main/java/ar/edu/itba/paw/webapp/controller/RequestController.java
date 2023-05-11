@@ -129,13 +129,26 @@ public class RequestController {
         User user = getUser();
 
         if (user != null){
-            mav.addObject("acceptUser",null); //TODO : pasarle esto bien
+            mav.addObject("acceptUser",us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new)); //TODO : pasarle esto bien
             mav.addObject("reviewed", revs.getReviewByRequestAndUserId(id, user.getUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
             mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
             mav.addObject("userId", getUser().getUserId());
         }
         mav.addObject("request", request);
         return mav;
+    }
+
+    @RequestMapping(value="/requests/sendReview", method = { RequestMethod.POST })
+    public ModelAndView sendReview(@RequestParam("requestid") int requestid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
+        User user = getUser();
+        if (user == null){
+            return new ModelAndView("redirect:/login");
+        }
+        revs.createReview(requestid, userid, rating, comment);
+        if (Objects.equals(user.getRole(), "PROVIDER"))
+            return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestid);
+        else
+            return new ModelAndView("redirect:/requests/details?id="+ requestid);
     }
 
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })

@@ -150,7 +150,7 @@
                 <c:if test="${trip.senderConfirmation && trip.receiverConfirmation }">
                     <c:if test="${reviewed == null}">
                         <c:url value="/trips/sendReview" var="reviewPath"/>
-                        <form:form id="reviewForm" method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
+                        <form:form id="reviewForm" method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${acceptUser.userId}&rating=4">
                             <div class="card mt-4" style="width: 18rem;">
                                 <div class="card-header">
                                     <h4>

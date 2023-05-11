@@ -10,4 +10,5 @@ public interface ReviewService {
     Optional<Review> getReviewByRequestAndUserId(int requestId, int userId);
 
 
+    void createReview(int tripid, int userid, float rating, String comment);
 }

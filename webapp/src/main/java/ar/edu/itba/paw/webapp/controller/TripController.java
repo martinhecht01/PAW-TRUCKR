@@ -123,7 +123,7 @@ public class TripController {
         mav.addObject("trip", trip);
         User user = getUser();
         if (user != null){
-            mav.addObject("acceptUser",null); //TODO : pasarle esto bien
+            mav.addObject("acceptUser",us.getUserById(trip.getAcceptUserId()).orElseThrow(UserNotFoundException::new)); //TODO : pasarle esto bien
             mav.addObject("reviewed", revs.getReviewByTripAndUserId(id, user.getUserId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
             mav.addObject("userId", getUser().getUserId());
             mav.addObject("user", us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
@@ -150,6 +150,21 @@ public class TripController {
         mav.addObject("id",id);
         return mav;
     }
+
+    @RequestMapping(value="/trips/sendReview", method = { RequestMethod.POST })
+    public ModelAndView sendReview(@RequestParam("tripid") int tripid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
+        User user = getUser();
+        if (user == null){
+            return new ModelAndView("redirect:/login");
+        }
+        revs.createReview(tripid, userid, rating, comment);
+        if (Objects.equals(user.getRole(), "TRUCKER"))
+            return new ModelAndView("redirect:/trip/manageTrip?tripId="+ tripid);
+        else
+            return new ModelAndView("redirect:/trip/details?id="+ tripid);
+    }
+
+
 
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalid, @RequestParam("tripid") int tripid) {

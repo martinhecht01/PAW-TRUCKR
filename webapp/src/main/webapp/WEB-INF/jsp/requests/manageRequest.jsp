@@ -114,7 +114,7 @@
     <c:if test="${request.senderConfirmation && request.receiverConfirmation }">
       <c:if test="${reviewed == null}">
         <c:url value="/requests/sendReview" var="reviewPath"/>
-        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
+        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestId}&userid=${acceptUser.userId}&rating=4">
           <div class="card mt-4" style="width: 18rem;">
             <div class="card-header">
               <h4>

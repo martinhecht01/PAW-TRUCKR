@@ -9,7 +9,6 @@ public interface ReviewDao {
     Optional<Review> getReviewByTripAndUserId(int tripId, int userId);
     Optional<Review> getReviewByRequestAndUserId(int tripId, int userId);
 
-    Review create(int tripId, int userId, float rating, String review);
 
-
+    void createReview(int tripid, int userid, float rating, String comment);
 }
