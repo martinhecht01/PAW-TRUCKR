@@ -122,8 +122,12 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/details");
         Trip trip = ts.getTripById(id).orElseThrow(TripNotFoundException::new);
         mav.addObject("trip", trip);
-        mav.addObject("userId", getUser().getUserId());
-        mav.addObject("user", us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
+        User user = getUser();
+        if (user != null){
+            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+            mav.addObject("userId", getUser().getUserId());
+            mav.addObject("user", us.getUserById(trip.getUserId()).orElseThrow(UserNotFoundException :: new));
+        }
         return mav;
     }
 
@@ -202,13 +206,15 @@ public class TripController {
     }
 
     @RequestMapping("/trips/manageTrip")
-    public ModelAndView manageTrip(@RequestParam("tripId") int tripId) {
+    public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {
         final ModelAndView mav = new ModelAndView("trips/manageTrip");
-        int userId = getUser().getUserId();
+        int userId = Objects.requireNonNull(getUser()).getUserId();
         Trip trip = ts.getTripByIdAndUserId(tripId, userId).orElseThrow(TripNotFoundException::new);
-        if(trip.getAcceptUserId() > 0)
+        if(trip.getAcceptUserId() > 0) {
             mav.addObject("acceptUser", us.getUserById(trip.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
-        mav.addObject("trip", trip);
+            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+        }
+            mav.addObject("trip", trip);
         mav.addObject("userId", userId);
         mav.addObject("offers", ts.getProposalsForTripId(trip.getTripId()));
         return mav;
@@ -225,8 +231,13 @@ public class TripController {
     }
 
     private User getUser() {
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userDetails instanceof AuthUserDetailsImpl){
+            AuthUserDetailsImpl userDetails1 = (AuthUserDetailsImpl) userDetails;
+            return us.getUserByCuit(userDetails1.getUsername()).orElseThrow(UserNotFoundException::new);
+        }
+        return null;
     }
 
 }

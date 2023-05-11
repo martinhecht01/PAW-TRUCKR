@@ -143,3 +143,11 @@ footer{
 .userDetailsNavBar{
     display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
+
+.rating-stars {
+    cursor: pointer;
+}
+
+.star {
+    color: #385170;
+}

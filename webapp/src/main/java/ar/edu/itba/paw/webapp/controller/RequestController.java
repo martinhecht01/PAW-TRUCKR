@@ -123,12 +123,19 @@ public class RequestController {
     }
 
     @RequestMapping("/requests/details")
-    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
+    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve, @ModelAttribute("acceptForm") final AcceptForm formReview) {
         final ModelAndView mav = new ModelAndView("requests/details");
         Request request = rs.getRequestById(id).orElseThrow(RequestNotFoundException::new);
-        mav.addObject("userId", getUser().getUserId());
+        User user = getUser();
+        if (formReview == null){
+            //Viene de error del accept
+        }
+        if (user != null){
+            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
+            mav.addObject("userId", getUser().getUserId());
+        }
         mav.addObject("request", request);
-        mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
         return mav;
     }
 
@@ -145,7 +152,7 @@ public class RequestController {
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
     public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
-            return requestDetail(id, form);
+            return requestDetail(id, form,null);
         }
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -198,12 +205,14 @@ public class RequestController {
     }
 
     @RequestMapping("/requests/manageRequest")
-    public ModelAndView manageRequest(@RequestParam("requestId") int requestId) {
+    public ModelAndView manageRequest(@RequestParam("requestId") int requestId, @ModelAttribute("acceptForm") final AcceptForm form ) {
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = getUser().getUserId();
         Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
-        if(request.getAcceptUserId() > 0)
+        if(request.getAcceptUserId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
+            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
+        }
         System.out.println("ACCEPT UID = " + request.getAcceptUserId());
         System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
         mav.addObject("request", request);
@@ -229,7 +238,12 @@ public class RequestController {
     }
 
     private User getUser() {
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+
+        Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (userDetails instanceof AuthUserDetailsImpl){
+            AuthUserDetailsImpl userDetails1 = (AuthUserDetailsImpl) userDetails;
+            return us.getUserByCuit(userDetails1.getUsername()).orElseThrow(UserNotFoundException::new);
+        }
+        return null;
     }
 }

@@ -27,7 +27,7 @@ public class NavigationController {
         } else if(role.equals("PROVIDER")){
             return new ModelAndView("forward:/trips/browse");
         }
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("forward:/trips/browse");
     }
 
     @RequestMapping("/active")

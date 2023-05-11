@@ -24,11 +24,13 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse d-flex" id="navbarNav">
+            <ul class="navbar-nav justify-content-center">
+                <li class="nav-item ml-5" style="margin-right: 10px">
+                    <a class="nav-link" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
+                </li>
+            </ul>
             <c:if test="${currentUser != null}">
                 <ul class="navbar-nav justify-content-center">
-                    <li class="nav-item ml-5" style="margin-right: 10px">
-                        <a class="nav-link" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
-                    </li>
                     <li class="nav-item ml-5">
                         <a class="nav-link" href="<c:url value="/create"/>"><spring:message code="Create"/></a>
                     </li>
