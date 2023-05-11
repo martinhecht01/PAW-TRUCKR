@@ -15,4 +15,5 @@ public interface MailService {
 
     public void sendRequestEmail(User user,User user2, Trip request) throws MessagingException;
 
+    void sendSecureTokenEmail(User user, Integer tokenValue) throws MessagingException;
 }

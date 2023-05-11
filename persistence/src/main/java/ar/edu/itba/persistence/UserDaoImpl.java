@@ -2,6 +2,7 @@ package ar.edu.itba.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.models.Reset;
+import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -28,7 +29,8 @@ public class UserDaoImpl implements UserDao {
                     rs.getString("name"),
                     rs.getString("cuit"),
                     rs.getString("role"),
-                    rs.getString("password"));
+                    rs.getString("password"),
+                    rs.getBoolean("accountverified"));
         }
     };
 
@@ -42,10 +44,21 @@ public class UserDaoImpl implements UserDao {
         }
     };
 
+    private final static RowMapper<SecureToken> ROW_MAPPER_TOKEN = new RowMapper<SecureToken>() {
+        @Override
+        public SecureToken mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return new SecureToken(rs.getInt("userid"),
+                    rs.getString("token"),
+                    rs.getTimestamp("expireDate").toLocalDateTime());
+        }
+    };
+
+
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsertUsers;
     private final SimpleJdbcInsert jdbcInsertPasswordResets;
+    private final SimpleJdbcInsert jdbcInsertSecureTokens;
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
@@ -55,7 +68,8 @@ public class UserDaoImpl implements UserDao {
                 "  email VARCHAR(255),\n" +
                 "  name VARCHAR(255),\n" +
                 "  role VARCHAR(255),\n" +
-                "  password VARCHAR(255)\n" +
+                "  password VARCHAR(255),\n" +
+                "  accountverified BOOLEAN\n"+
                 ");");
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS passwordresets(\n" +
                 "   userid int REFERENCES users(userid),\n" +
@@ -63,8 +77,14 @@ public class UserDaoImpl implements UserDao {
                 "   createdate TIMESTAMP,\n" +
                 "   completed VARCHAR(20)\n" +
                 ");");
+        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS securetokens(\n" +
+                "   userid int REFERENCES users(userid),\n" +
+                "   token int PRIMARY KEY,\n" +
+                "   expiredate TIMESTAMP\n" +
+                ");");
         this.jdbcInsertUsers = new SimpleJdbcInsert(ds).withTableName("users").usingGeneratedKeyColumns("userid");
         this.jdbcInsertPasswordResets = new SimpleJdbcInsert(ds).withTableName("passwordresets");
+        this.jdbcInsertSecureTokens = new SimpleJdbcInsert(ds).withTableName("securetokens");
     }
 
     @Override
@@ -77,6 +97,31 @@ public class UserDaoImpl implements UserDao {
         jdbcInsertPasswordResets.execute(data);
         return Optional.of(hash);
     }
+
+    public Integer createSecureToken(Integer userId, int token){
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("userid", userId);
+        data.put("token", token);
+        data.put("expiredate", LocalDateTime.now().plusHours(1));
+        jdbcInsertSecureTokens.execute(data);
+        return token;
+    }
+
+    @Override
+    public Optional<SecureToken> getSecureTokenByValue(Integer tokenValue) {
+        List<SecureToken> tokens = jdbcTemplate.query("SELECT * FROM securetokens WHERE token = ?", ROW_MAPPER_TOKEN, tokenValue);
+        if(tokens.isEmpty()){
+            return Optional.empty();
+        }
+        return Optional.of(tokens.get(0));
+    }
+
+    @Override
+    public void verifyAccount(Integer userId){
+        String sql = "UPDATE users SET accountverified = true WHERE userid = ?";
+        jdbcTemplate.update(sql, userId);
+    }
+
 
     @Override
     public Optional<Reset> getResetByHash(Integer hash){
@@ -116,9 +161,10 @@ public class UserDaoImpl implements UserDao {
         data.put("email", email);
         data.put("name", name);
         data.put("role", role);
-        data.put("password", password); 
+        data.put("password", password);
+        data.put("accountverified", "false");
         int userId = jdbcInsertUsers.executeAndReturnKey(data).intValue();
-        return new User( userId, email, name, cuit, role, password);
+        return new User( userId, email, name, cuit, role, password, false);
     }
 
     @Override

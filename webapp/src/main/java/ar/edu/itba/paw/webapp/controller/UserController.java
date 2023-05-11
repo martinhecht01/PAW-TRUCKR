@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
+import ar.edu.itba.paw.interfacesServices.exceptions.VerifyErrorException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
@@ -10,6 +11,7 @@ import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
+import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -81,6 +83,25 @@ public class UserController {
 
         return mav;
     }
+    @RequestMapping(value = "/verifyAccount", method = RequestMethod.GET)
+    public ModelAndView verifyAccountView(@ModelAttribute("verifyAccountForm") final VerifyAccountForm form){
+        return new ModelAndView("user/verifyAccount");
+    }
+
+    @RequestMapping(value = "/verifyAccount", method = RequestMethod.POST)
+    public ModelAndView verifyAccount(@Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,final BindingResult errors){
+        if (errors.hasErrors()) {
+            return verifyAccountView(form);
+        }
+
+        try{
+            us.verifyAccount(Integer.parseInt(form.getToken()));
+        } catch (VerifyErrorException e){
+            errors.rejectValue("token", "incorrect");
+            return verifyAccountView(form);
+        }
+        return new ModelAndView("redirect:/login");
+    }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
     public ModelAndView resetPassword(@ModelAttribute("userForm") final ResetPasswordForm form, @RequestParam(value = "hash") Integer hash){
@@ -100,6 +121,8 @@ public class UserController {
         mv.addObject("hash", hash);
         return mv;
     }
+
+
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public ModelAndView resetPassword(@RequestParam("hash") Integer hash, @Valid @ModelAttribute("userForm") final ResetPasswordForm form, final BindingResult errors){
