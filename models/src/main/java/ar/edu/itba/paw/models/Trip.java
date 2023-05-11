@@ -20,9 +20,8 @@ public class Trip {
 
     private final Boolean trucker_confirmation;
     private final Boolean provider_confirmation;
-
     private final LocalDateTime confirmation_date;
-
+    private Integer proposalCount;
     public Trip(int tripId,
                 Integer truckerId,
                 Integer providerId,
@@ -37,7 +36,8 @@ public class Trip {
                 Number price,
                 Boolean sender_confirmation,
                 Boolean receiver_confirmation,
-                LocalDateTime confirmation_date) {
+                LocalDateTime confirmation_date,
+                Integer proposalCount) {
         this.tripId = tripId;
         this.truckerId = truckerId;
         this.providerId = providerId;
@@ -53,8 +53,16 @@ public class Trip {
         this.trucker_confirmation = sender_confirmation;
         this.provider_confirmation = receiver_confirmation;
         this.confirmation_date = confirmation_date;
+        this.proposalCount = proposalCount;
     }
 
+    public void setProposalCount(Integer proposalCount) {
+        this.proposalCount = proposalCount;
+    }
+
+    public Integer getProposalCount() {
+        return proposalCount;
+    }
     public int getTripId() {
         return tripId;
     }

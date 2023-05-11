@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
         LocalDateTime departure = rs.getTimestamp("departure_date").toLocalDateTime();
         LocalDateTime arrival = rs.getTimestamp("arrival_date").toLocalDateTime();
         LocalDateTime confirmation = rs.getTimestamp("confirmation_date") == null ? null : rs.getTimestamp("confirmation_date").toLocalDateTime();
+
         return new Trip(
                 rs.getInt("trip_id"),
                 rs.getInt("trucker_id"),
@@ -41,12 +44,15 @@ public class TripDaoV2Impl implements TripDaoV2 {
                 rs.getInt("price"),
                 rs.getBoolean("trucker_confirmation"),
                 rs.getBoolean("provider_confirmation"),
-                confirmation
+                confirmation,
+                0
         );
     };
-
-    private final static RowMapper<Pair<Trip, Integer>> ACTIVE_TRIP_COUNT_MAPPER = (rs, rowNum) -> new Pair<>(TRIP_ROW_MAPPER.mapRow(rs, rowNum), rs.getInt("proposalcount"));
-
+    private final static RowMapper<Trip> ACTIVE_TRIP_COUNT_MAPPER = (resultSet, i) -> {
+        Trip trip = TRIP_ROW_MAPPER.mapRow(resultSet, i);
+        trip.setProposalCount(resultSet.getInt("proposalcount"));
+        return trip;
+    };
     private final static RowMapper<Proposal> PROPOSAL_ROW_MAPPER = (rs, rowNum) -> new Proposal(
             rs.getInt("proposal_id"),
             rs.getInt("trip_id"),
@@ -99,7 +105,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
         data.put("provider_confirmation", false);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, truckerId, null, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null);
+        return new Trip(tripId, truckerId, null, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null, 0);
     }
 
     @Override
@@ -130,7 +136,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
         data.put("provider_confirmation", false);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, null, providerId, null, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null);
+        return new Trip(tripId, null, providerId, null, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null, 0);
     }
 
     @Override
@@ -319,7 +325,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
         jdbcTemplate.update(sql, proposal.getProposalId(), proposal.getTripId());
     }
     @Override
-    public List<Pair<Trip, Integer>> getAllActiveTripsOrRequestAndProposalsCount(Integer userid) {
+    public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid) {
         String query = "SELECT trips.*, COUNT(proposals.proposal_id) AS proposalcount FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id WHERE (trips.trucker_id = ? AND provider_id IS NULL) OR (trips.provider_id = ? AND trucker_id IS NULL) GROUP BY trips.trip_id";
         return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid, userid);
     }

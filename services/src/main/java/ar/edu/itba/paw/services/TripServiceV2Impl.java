@@ -152,7 +152,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Pair<Trip, Integer>> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId){
+    public List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId){
         return tripDaoV2.getAllActiveTripsOrRequestAndProposalsCount(userId);
     }
 

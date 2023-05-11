@@ -48,7 +48,7 @@ public interface TripServiceV2 {
 
     void acceptProposal(int proposalId);
 
-    List<Pair<Trip, Integer>> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId);
+    List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId);
 
     List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId);
 

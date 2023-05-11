@@ -44,23 +44,23 @@
         <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoRequestsAvailable"/></h2>
       </c:if>
       <c:forEach var="object" items="${activeTripsAndRequest}">
-        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${object.key.tripId}"/>">
+        <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${object.tripId}"/>">
           <div class="card m-3" style="width: 25rem;">
-            <c:if test="${object.value > 0}">
+            <c:if test="${object.proposalCount > 0}">
               <h5 class="position-absolute top-0 end-0 M-3 ">
                   <span class="badge rounded-pill bg-danger">
-                      <c:out value="${object.value}"/> <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                      <c:out value="${object.proposalCount}"/> <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
                       <span class="visually-hidden">unread messages</span>
                   </span>
               </h5>
             </c:if>
             <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
-            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${object.key.type}" htmlEscape="true"/></span></h4>
+            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill text-bg-primary"><spring:message code="${object.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${object.key.origin}"/></h5>
-                  <c:out value="${object.key.departureDate.dayOfMonth}/${object.key.departureDate.monthValue}/${object.key.departureDate.year}"/>
+                  <h5><c:out value="${object.origin}"/></h5>
+                  <c:out value="${object.departureDate.dayOfMonth}/${object.departureDate.monthValue}/${object.departureDate.year}"/>
                 </div>
 
                 <div style="width: 30%">
@@ -68,23 +68,23 @@
                 </div>
 
                 <div class="text-truncate text-center" style="width: 35%">
-                  <h5><c:out value="${object.key.destination}"/></h5>
-                  <c:out value="${object.key.arrivalDate.dayOfMonth}/${object.key.arrivalDate.monthValue}/${object.key.arrivalDate.year}"/>
+                  <h5><c:out value="${object.destination}"/></h5>
+                  <c:out value="${object.arrivalDate.dayOfMonth}/${object.arrivalDate.monthValue}/${object.arrivalDate.year}"/>
                 </div>
               </div>
             </div>
             <ul class="list-group list-group-flush">
               <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
                 <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${object.key.weight}"/> KG </h5>
+                  <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${object.weight}"/> KG </h5>
                   <p><spring:message code="CreateRequestRequestedWeight"/></p>
                 </div>
                 <div class="text-center">
-                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${object.key.volume}"/> M3 </h5>
+                  <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${object.volume}"/> M3 </h5>
                   <p><spring:message code="CreateRequestRequestedVolume"/></p>
                 </div>
               </li>
-              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${object.key.price}"/></h4></li>
+              <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${object.price}"/></h4></li>
             </ul>
           </div>
         </a>
