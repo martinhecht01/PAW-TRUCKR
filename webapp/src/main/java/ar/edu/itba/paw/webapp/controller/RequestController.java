@@ -130,7 +130,7 @@ public class RequestController {
 
         if (user != null){
             mav.addObject("acceptUser",us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new)); //TODO : pasarle esto bien
-            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(id, user.getUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(id, request.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
             mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
             mav.addObject("userId", getUser().getUserId());
         }
@@ -223,7 +223,7 @@ public class RequestController {
         Request request = rs.getRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
         if(request.getAcceptUserId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, userId).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, request.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
         }
         System.out.println("ACCEPT UID = " + request.getAcceptUserId());
         System.out.println("PROPOSAL COUNT = " +  rs.getProposalsForRequestId(request.getRequestId()).size());
