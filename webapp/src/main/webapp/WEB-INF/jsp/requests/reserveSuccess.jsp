@@ -39,19 +39,19 @@
             </tr>
             <tr>
                 <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                <td><c:out value="${request.minDepartureDate.dayOfMonth}/${request.minDepartureDate.monthValue}/${request.minDepartureDate.year} - ${request.maxArrivalDate.dayOfMonth}/${request.maxArrivalDate.monthValue}/${request.maxArrivalDate.year}"/></td>
+                <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
             </tr>
             <tr>
                 <td><b><spring:message code="CreateRequestRequestedVolume"/></b></td>
-                <td><c:out value="${request.requestedVolume}"/> m3</td>
+                <td><c:out value="${request.volume}"/> m3</td>
             </tr>
             <tr>
                 <td><b><spring:message code="CreateRequestRequestedWeight"/></b></td>
-                <td><c:out value="${request.requestedWeight}"/> kg</td>
+                <td><c:out value="${request.weight}"/> kg</td>
             </tr>
             <tr>
                 <td><b><spring:message code="Price"/></b></td>
-                <td>$<c:out value="${request.maxPrice}"/></td>
+                <td>$<c:out value="${request.price}"/></td>
             </tr>
         </table>
     </div>

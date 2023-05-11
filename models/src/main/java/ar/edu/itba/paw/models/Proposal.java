@@ -2,34 +2,34 @@ package ar.edu.itba.paw.models;
 
 public class Proposal {
 
-    private final int proposalid;
-    private final int tripid;
-    private final int userid;
+    private final int proposalId;
+    private final int tripId;
+    private final int userId;
     private final String description;
     private final String userName;
 
-    public Proposal(int proposalid,int tripid, int userid, String description, String userName) {
-        this.tripid = tripid;
-        this.userid = userid;
+    public Proposal(int proposalid, int tripId, int userId, String description, String userName) {
+        this.tripId = tripId;
+        this.userId = userId;
         this.description = description;
-        this.proposalid = proposalid;
+        this.proposalId = proposalid;
         this.userName = userName;
     }
 
-    public int getProposalid() {
-        return proposalid;
+    public int getProposalId() {
+        return proposalId;
     }
 
     public String getUserName(){
         return userName;
     }
 
-    public int getTripid() {
-        return tripid;
+    public int getTripId() {
+        return tripId;
     }
 
-    public int getUserid() {
-        return userid;
+    public int getUserId() {
+        return userId;
     }
 
     public String getDescription() {

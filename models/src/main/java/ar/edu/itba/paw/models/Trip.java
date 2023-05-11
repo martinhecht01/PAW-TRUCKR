@@ -6,11 +6,11 @@ import java.util.Date;
 public class Trip {
     private final int tripId;
 
-    private final int userId; //Linked to User.userId
-    private final int acceptUserId; //Linked to User.userId
+    private final Integer truckerId; //Linked to User.userId
+    private final Integer providerId; //Linked to User.userId
     private final String licensePlate; //Linked to Truck.licensePlate
-    private final Number availableWeight;
-    private final Number availableVolume;
+    private final Number weight;
+    private final Number volume;
     private final LocalDateTime departureDate;
     private final LocalDateTime arrivalDate;
     private final String origin;
@@ -18,79 +18,65 @@ public class Trip {
     private final String type;
     private final Number price;
 
-    private final Boolean sender_confirmation;
-    private final Boolean receiver_confirmation;
+    private final Boolean trucker_confirmation;
+    private final Boolean provider_confirmation;
 
     private final LocalDateTime confirmation_date;
 
     public Trip(int tripId,
-                int userId,
+                Integer truckerId,
+                Integer providerId,
                 String licensePlate,
-                int availableWeight,
-                int availableVolume,
+                Number weight,
+                Number volume,
                 LocalDateTime departureDate,
                 LocalDateTime arrivalDate,
                 String origin,
                 String destination,
                 String type,
-                int price,
-                int acceptUserId,
+                Number price,
                 Boolean sender_confirmation,
                 Boolean receiver_confirmation,
-                LocalDateTime confirmation_date)
-    {
-
-        this.userId = userId;
+                LocalDateTime confirmation_date) {
+        this.tripId = tripId;
+        this.truckerId = truckerId;
+        this.providerId = providerId;
         this.licensePlate = licensePlate;
-        this.availableWeight = availableWeight;
-        this.availableVolume = availableVolume;
+        this.weight = weight;
+        this.volume = volume;
         this.departureDate = departureDate;
         this.arrivalDate = arrivalDate;
         this.origin = origin;
         this.destination = destination;
         this.type = type;
-        this.tripId = tripId;
-        this.acceptUserId = acceptUserId;
         this.price = price;
-        this.sender_confirmation = sender_confirmation;
-        this.receiver_confirmation = receiver_confirmation;
+        this.trucker_confirmation = sender_confirmation;
+        this.provider_confirmation = receiver_confirmation;
         this.confirmation_date = confirmation_date;
-    }
-
-    public Boolean getSenderConfirmation() {
-        return sender_confirmation;
-    }
-
-    public Boolean getReceiverConfirmation() {
-        return receiver_confirmation;
-    }
-
-    public LocalDateTime getConfirmationDate() {
-        return confirmation_date;
     }
 
     public int getTripId() {
         return tripId;
     }
 
-    public int getUserId() {
-        return userId;
+    public Integer getTruckerId() {
+        return truckerId;
     }
 
-    public String getType() {
-        return type;
+    public Integer getProviderId() {
+        return providerId;
     }
 
     public String getLicensePlate() {
         return licensePlate;
     }
 
-    public Number getAvailableWeight() {
-        return availableWeight;
+    public Number getWeight() {
+        return weight;
     }
 
-    public Number getAvailableVolume() {
-        return availableVolume;
+    public Number getVolume() {
+        return volume;
     }
 
     public LocalDateTime getDepartureDate() {
@@ -109,22 +95,23 @@ public class Trip {
         return destination;
     }
 
-    public int getAcceptUserId() {
-        return acceptUserId;
+    public String getType() {
+        return type;
     }
 
-    public Boolean getSender_confirmation() {
-        return sender_confirmation;
+    public Number getPrice() {
+        return price;
     }
 
-    public Boolean getReceiver_confirmation() {
-        return receiver_confirmation;
+    public Boolean getTrucker_confirmation() {
+        return trucker_confirmation;
+    }
+
+    public Boolean getProvider_confirmation() {
+        return provider_confirmation;
     }
 
     public LocalDateTime getConfirmation_date() {
         return confirmation_date;
     }
-
-    public Number getPrice() {return price;}
-
 }

@@ -67,11 +67,11 @@
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableVolume"/></b></td>
-                        <td><c:out value="${trip.availableVolume}"/> m3</td>
+                        <td><c:out value="${trip.volume}"/> m3</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableWeight"/></b></td>
-                        <td><c:out value="${trip.availableWeight}"/> kg</td>
+                        <td><c:out value="${trip.weight}"/> kg</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Price"/></b></td>
@@ -80,7 +80,7 @@
                 </table>
             </div>
         </div>
-        <c:if test="${trip.acceptUserId <= 0}">
+        <c:if test="${trip.providerId <= 0}">
             <div class="inlineFormInputContainer justify-content-top align-items-top" >
                 <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
                     <div class="card browseCards" style="width: 20rem;">
@@ -107,7 +107,7 @@
                 </form:form>
             </div>
         </c:if>
-        <c:if test="${trip.acceptUserId == userId}">
+        <c:if test="${trip.providerId == userId}">
             <div class="justify-content-top align-items-top px-5" >
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
@@ -123,24 +123,24 @@
                         <h4><spring:message code="Status"/>: </h4>
                     </div>
                     <div class="card-body p-3">
-                        <c:if test="${trip.receiverConfirmation && !trip.senderConfirmation}">
+                        <c:if test="${trip.provider_confirmation && !trip.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
                         </c:if>
-                        <c:if test="${!trip.receiverConfirmation}">
+                        <c:if test="${!trip.provider_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
                         </c:if>
-                        <c:if test="${trip.senderConfirmation && !trip.receiverConfirmation}">
+                        <c:if test="${trip.trucker_confirmation && !trip.provider_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
                         </c:if>
-                        <c:if test="${!trip.senderConfirmation}">
+                        <c:if test="${!trip.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
                         </c:if>
-                        <c:if test="${trip.receiverConfirmation && trip.senderConfirmation}">
+                        <c:if test="${trip.provider_confirmation && trip.trucker_confirmation}">
                             <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
                         </c:if>
                     </div>
                 </div>
-                <c:if test="${trip.acceptUserId > 0 && !trip.receiverConfirmation}">
+                <c:if test="${trip.providerId > 0 && !trip.provider_confirmation}">
                     <c:url value="/trips/confirmTrip" var="confirmPath"/>
                     <form:form method="post" action="${confirmPath}?id=${trip.tripId}">
                         <spring:message var="received" code="IReceivedCargo"/>

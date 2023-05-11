@@ -7,18 +7,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class NavigationController {
-
     @RequestMapping("/create")
     public ModelAndView create(){
         String role = UserControllerAdvice.getCurrentRole();
         if(role.equals("TRUCKER")){
-            return new ModelAndView("forward:/trips/create", "method", "GET");
+            return new ModelAndView("forward:/trips/create");
         } else if(role.equals("PROVIDER")){
-            return new ModelAndView("forward:/requests/create", "method", "GET");
+            return new ModelAndView("forward:/requests/create");
         }
         return new ModelAndView("redirect:/");
     }
-
     @RequestMapping("/explore")
     public ModelAndView creates() {
         String role = UserControllerAdvice.getCurrentRole();

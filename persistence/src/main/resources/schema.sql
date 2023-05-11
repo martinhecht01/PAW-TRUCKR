@@ -3,6 +3,38 @@ CREATE TABLE IF NOT EXISTS cities (
         name TEXT UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS users (
+        userid SERIAL PRIMARY KEY,
+        cuit VARCHAR(255) UNIQUE NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS trips (
+        trip_id SERIAL PRIMARY KEY,
+        provider_id INT REFERENCES users(userid),
+        trucker_id INT REFERENCES users(userid),
+        licenseplate VARCHAR(30),
+        weight INT,
+        volume INT,
+        departure_date TIMESTAMP,
+        arrival_date TIMESTAMP,
+        origin VARCHAR(50),
+        destination VARCHAR(50),
+        type VARCHAR(50),
+        price INT,
+        trucker_confirmation BOOLEAN DEFAULT FALSE,
+        provider_confirmation BOOLEAN DEFAULT FALSE,
+        confirmation_date TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS proposals (
+        proposal_id SERIAL PRIMARY KEY,
+        trip_id INT NOT NULL REFERENCES trips(trip_id),
+        user_id INT NOT NULL REFERENCES users(userid),
+        description VARCHAR(300)
+);
+
 -- INSERT INTO cities (name) VALUES
 --     ('Azul'),
 --     ('Bahía Blanca'),
