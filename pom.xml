@@ -7,7 +7,7 @@
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>paw-2023a-08</name>
-    
+
   <properties>
     <spring-security.version>4.0.4.RELEASE</spring-security.version>
     <spring.version>4.2.5.RELEASE</spring.version>
@@ -122,6 +122,11 @@
         <artifactId>logback-ext-spring</artifactId>
         <version>${logback-ext-spring.version}</version>
         <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-tx</artifactId>
+        <version>${spring.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
