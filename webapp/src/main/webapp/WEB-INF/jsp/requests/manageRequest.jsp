@@ -27,7 +27,6 @@
   </symbol>
 </svg>
 
-<c:url value="/requests/acceptProposal" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
   <div class="inlineFormInputContainer">
@@ -150,8 +149,8 @@
   <c:if test="${request.truckerId <= 0}">
     <div class="justify-content-top align-items-top px-5" >
       <c:forEach var="offer" items="${offers}">
-        <c:url value="/requests/acceptProposal" var="postPath"/>
-        <form:form action="${postPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">
+        <c:url value="/requests/acceptProposal" var="acceptPath"/>
+        <form:form action="${acceptPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">
           <div class="card p-3" style="width: 18rem;">
             <div class="ca rd-body">
               <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>

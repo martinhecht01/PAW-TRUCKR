@@ -95,7 +95,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         Trip trip = tripDaoV2.getTripOrRequestById(proposal.getTripId()).orElseThrow(ProposalNotFoundException::new);
 
         User trucker = userDao.getUserById(trip.getTruckerId()).orElseThrow(ProposalNotFoundException::new);
-        User provider = userDao.getUserById(proposal.getUserId()).orElseThrow(ProposalNotFoundException::new);
+        User provider = userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
 
         try{ms.sendTripEmail(trucker, provider,trip);}
         catch(MessagingException e){

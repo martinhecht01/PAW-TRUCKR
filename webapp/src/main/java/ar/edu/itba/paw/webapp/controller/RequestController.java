@@ -165,6 +165,8 @@ public class RequestController {
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
         System.out.println("accepting proposal ID = " + proposalId);
         ts.acceptProposal(proposalId);
+
+
         final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
         Trip request = ts.getTripOrRequestById(requestId).orElseThrow(RequestNotFoundException::new);
         mav.addObject("request", request);

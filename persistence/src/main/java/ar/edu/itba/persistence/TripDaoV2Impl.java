@@ -301,11 +301,19 @@ public class TripDaoV2Impl implements TripDaoV2 {
         //TODO: CATCHEAR ESTA EXCEPCION EN EL CONTROLLER
         Trip trip = getTripOrRequestById(proposal.getTripId()).orElseThrow(NoSuchElementException::new);
         String sql;
-        if(trip.getTruckerId() == null)
+        System.out.println("ACCEPT PROPOSAL DEBUG");
+        System.out.println("TRIP ID: " + trip.getTripId());
+        System.out.println("TRUCKER ID: " + trip.getTruckerId());
+        System.out.println("PROVIDER ID: " + trip.getProviderId());
+        System.out.println("PROPOSAL ID: " + proposal.getProposalId());
+        System.out.println("USER ID: " + proposal.getUserId());
+        if(trip.getTruckerId() <= 0)
             sql = "UPDATE trips SET trucker_id = ? WHERE trip_id = ?";
         else
             sql = "UPDATE trips SET provider_id = ? WHERE trip_id = ?";
         jdbcTemplate.update(sql, proposal.getUserId(), proposal.getTripId());
+
+
 
         sql = "DELETE FROM proposals WHERE proposal_id != ? AND trip_id = ?";
         jdbcTemplate.update(sql, proposal.getProposalId(), proposal.getTripId());
