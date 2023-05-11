@@ -66,9 +66,7 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("requestconfirmation.html", context);
     }
     @Async
-    public void sendRequestEmail(User user,User user2,Request request) throws MessagingException {
-
-    public void sendRequestEmail(User user,User user2, Trip request) throws MessagingException {
+    public void sendRequestEmail(User user,User user2,Trip request) throws MessagingException {
         String htmlContent = generateRequestConfirmation(user,user2,request);
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
