@@ -1,28 +1,24 @@
 package ar.edu.itba.paw.interfacesServices;
 
-import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
-import ar.edu.itba.paw.interfacesServices.exceptions.VerifyErrorException;
 import ar.edu.itba.paw.models.Reset;
-import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 
 import java.util.Optional;
 
 public interface UserService {
 
-    User createUser(String email, String name, String id, String role, String password) throws UserExistsException;
+    User createUser(String email, String name, String id, String role, String password);
 
     void resetPassword(Integer hash, String newPassword);
 
-    Optional<Reset> getResetByHash(Integer hash) throws ResetErrorException;
+    Optional<Reset> getResetByHash(Integer hash);
 
     void createReset(Integer userId);
 
    void createSecureToken(Integer userId);
 
 
-    void verifyAccount(Integer tokenValue) throws VerifyErrorException;
+    boolean verifyAccount(Integer tokenValue);
 
     Optional<User> getUserByCuit(String cuit);
 

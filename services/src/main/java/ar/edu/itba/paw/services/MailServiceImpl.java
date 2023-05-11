@@ -77,7 +77,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendSecureTokenEmail(User user, Integer tokenValue) throws MessagingException {
+    public void sendSecureTokenEmail(User user, Integer tokenValue) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
         message.setSubject("Secure Token");

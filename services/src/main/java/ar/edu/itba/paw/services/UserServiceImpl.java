@@ -3,19 +3,13 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
-import ar.edu.itba.paw.interfacesServices.exceptions.VerifyErrorException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.keygen.BytesKeyGenerator;
-import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -38,11 +32,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(String email, String name, String id, String role, String password) throws UserExistsException {
+    public User createUser(String email, String name, String id, String role, String password){
         this.email = email;
 
         if(id == null || userDao.existsUser(id))
-            throw new UserExistsException();
+            return null;
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
         try{
@@ -65,17 +59,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<Reset> getResetByHash(Integer hash) throws ResetErrorException {
+    public Optional<Reset> getResetByHash(Integer hash){
         Optional<Reset> reset = userDao.getResetByHash(hash);
+
         if(!reset.isPresent())
             return reset;
+
         Duration interval = Duration.between(reset.get().getCreateDate(), LocalDateTime.now());
-        if(reset.get().isCompleted())
-            throw new ResetErrorException("UsedResetLink");
-        if(interval.toHours() > 24){
-            throw new ResetErrorException("ExpiredResetLink");
-        } else
-            return reset;
+        if(reset.get().isCompleted() || interval.toHours() > 24)
+            return Optional.empty();
+
+        return reset;
     }
 
     @Override
@@ -105,13 +99,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void verifyAccount(Integer tokenValue) throws VerifyErrorException {
+    public boolean verifyAccount(Integer tokenValue){
         Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
-        if(token.get().isExpired())
-            throw new VerifyErrorException("EXPIRED TOKEN");
+        if(!token.isPresent() || token.get().isExpired())
+            return false;
         else
             userDao.verifyAccount(token.get().getUserId());
-
+        return true;
     }
 
     @Override

@@ -8,7 +8,7 @@ import ar.edu.itba.paw.models.Pair;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.Exceptions.ProposalNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

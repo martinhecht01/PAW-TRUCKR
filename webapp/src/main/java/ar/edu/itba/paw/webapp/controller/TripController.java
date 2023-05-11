@@ -1,15 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -116,7 +114,7 @@ public class TripController {
     @RequestMapping("/trips/details")
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         final ModelAndView mav = new ModelAndView("trips/details");
-        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         User user = getUser();
         if (user != null){
@@ -147,7 +145,7 @@ public class TripController {
         ts.acceptProposal(proposalid);
         ModelAndView mav = new ModelAndView("trips/acceptSuccess");
 
-        Trip trip = ts.getTripOrRequestById(tripid).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(tripid).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -156,7 +154,7 @@ public class TripController {
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("trips/success");
-        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -164,7 +162,7 @@ public class TripController {
     @RequestMapping("/trips/reserveSuccess")
     public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("trips/reserveSuccess");
-        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -182,7 +180,7 @@ public class TripController {
     public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {
         final ModelAndView mav = new ModelAndView("trips/manageTrip");
         int userId = Objects.requireNonNull(getUser()).getUserId();
-        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripNotFoundException::new);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
         if(trip.getProviderId() > 0) {
             mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
             mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario

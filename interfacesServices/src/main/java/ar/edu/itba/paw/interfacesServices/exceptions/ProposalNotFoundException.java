@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.services.Exceptions;
+package ar.edu.itba.paw.interfacesServices.exceptions;
 
 public class ProposalNotFoundException extends RuntimeException{
 

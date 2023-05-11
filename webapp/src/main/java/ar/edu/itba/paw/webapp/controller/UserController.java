@@ -1,14 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
-import ar.edu.itba.paw.interfacesServices.exceptions.VerifyErrorException;
-import ar.edu.itba.paw.models.Reset;
+import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
@@ -65,9 +61,8 @@ public class UserController {
             return register(form);
         }
 
-        try{
-            us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
-        } catch (UserExistsException e){
+        User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
+        if(user == null){
             errors.rejectValue("cuit", "alreadyExists");
             return register(form);
         }
@@ -94,9 +89,8 @@ public class UserController {
             return verifyAccountView(form);
         }
 
-        try{
-            us.verifyAccount(Integer.parseInt(form.getToken()));
-        } catch (VerifyErrorException e){
+        boolean success = us.verifyAccount(Integer.parseInt(form.getToken()));
+        if(!success){
             errors.rejectValue("token", "incorrect");
             return verifyAccountView(form);
         }
@@ -105,18 +99,7 @@ public class UserController {
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
     public ModelAndView resetPassword(@ModelAttribute("userForm") final ResetPasswordForm form, @RequestParam(value = "hash") Integer hash){
-        Reset reset;
-        try{
-            reset = us.getResetByHash(hash).orElseThrow(TripNotFoundException::new);
-        } catch (ResetErrorException e){
-            ModelAndView mv = new ModelAndView("landing/error");
-            mv.addObject("errorMsgCode", e.getMessage());
-            mv.setViewName("landing/error");
-            return mv;
-        }
-        if(reset.isCompleted()){
-            return new ModelAndView("redirect:/login");
-        }
+        us.getResetByHash(hash).orElseThrow(ResetErrorException::new);
         ModelAndView mv = new ModelAndView("user/resetPassword");
         mv.addObject("hash", hash);
         return mv;
@@ -134,11 +117,7 @@ public class UserController {
     @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.POST)
     public ModelAndView resetPasswordRequest(@RequestParam(value = "cuit", required = false) String cuit){
         User user;
-        try {
-            user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
-        }catch (UserNotFoundException e){
-            return resetPasswordRequest("true", cuit, "false");
-        }
+        user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
         us.createReset(user.getUserId());
         return resetPasswordRequest("false", user.getEmail(), "true");
     }
@@ -157,7 +136,7 @@ public class UserController {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (userDetails instanceof UserDetails) {
             AuthUserDetailsImpl userDetails1 = (AuthUserDetailsImpl) userDetails;
-            return us.getUserByCuit(userDetails1.getUsername()).get();
+            return us.getUserByCuit(userDetails1.getUsername()).orElseThrow(UserNotFoundException::new);
         }
         return null;
     }

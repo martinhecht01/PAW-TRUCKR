@@ -12,7 +12,7 @@ public class ErrorsController {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ModelAndView error403() {
         ModelAndView mv = new ModelAndView();
-        mv.addObject("errorCode", HttpStatus.FORBIDDEN);
+        mv.addObject("errorCode", 403);
         mv.addObject("errorMsgCode", "403ErrorCode");
         mv.setViewName("landing/error");
         return mv;

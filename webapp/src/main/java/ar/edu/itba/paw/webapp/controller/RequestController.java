@@ -1,12 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -123,7 +121,7 @@ public class RequestController {
     @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve, @ModelAttribute("acceptForm") final AcceptForm formReview) {
         final ModelAndView mav = new ModelAndView("requests/details");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         User user = getUser();
         if (formReview == null){
             //Viene de error del accept
@@ -168,14 +166,14 @@ public class RequestController {
 
 
         final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
-        Trip request = ts.getTripOrRequestById(requestId).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(requestId).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/success");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -184,7 +182,7 @@ public class RequestController {
     @RequestMapping("/requests/reserveSuccess")
     public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -204,7 +202,7 @@ public class RequestController {
     public ModelAndView manageRequest(@RequestParam("requestId") int requestId, @ModelAttribute("acceptForm") final AcceptForm form ) {
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = getUser().getUserId();
-        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(TripOrRequestNotFoundException::new);
 
         if(request.getTruckerId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
