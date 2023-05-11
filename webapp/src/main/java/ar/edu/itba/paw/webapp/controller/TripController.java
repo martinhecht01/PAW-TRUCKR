@@ -159,9 +159,9 @@ public class TripController {
         }
         revs.createReview(tripid, userid, rating, comment);
         if (Objects.equals(user.getRole(), "TRUCKER"))
-            return new ModelAndView("redirect:/trip/manageTrip?tripId="+ tripid);
+            return new ModelAndView("redirect:/trips/manageTrip?tripId="+ tripid);
         else
-            return new ModelAndView("redirect:/trip/details?id="+ tripid);
+            return new ModelAndView("redirect:/trips/details?id="+ tripid);
     }
 
 
