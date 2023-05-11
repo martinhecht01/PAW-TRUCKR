@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.CityDao;
 import ar.edu.itba.paw.interfacesServices.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class CityServiceImpl implements CityService {
         this.cityDao= cityDao;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<String> getAllCities() {
         return cityDao.getAllCities();

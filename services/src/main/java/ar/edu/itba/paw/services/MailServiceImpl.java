@@ -31,6 +31,7 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("emailconfirmation.html", context);
     }
     @Async
+    @Override
     public void sendConfirmationEmail(User user) throws MessagingException {
         String htmlContent = generateEmailConfirmation(user);
         MimeMessage message = mailSender.createMimeMessage();
@@ -49,6 +50,7 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("tripconfirmation.html", context);
     }
     @Async
+    @Override
     public void sendTripEmail(User user,User user2,Trip trip) throws MessagingException {
         String htmlContent = generateTripConfirmation(user,user2,trip);
         MimeMessage message = mailSender.createMimeMessage();
@@ -61,11 +63,12 @@ public class MailServiceImpl implements MailService {
     private String generateRequestConfirmation(User user, User user2, Trip confirmed) {
         Context context = new Context();
         context.setVariable("user", user);
-        context.setVariable("user2", user);
+        context.setVariable("user2", user2);
         context.setVariable("request", confirmed);
         return templateEngine.process("requestconfirmation.html", context);
     }
     @Async
+    @Override
     public void sendRequestEmail(User user,User user2,Trip request) throws MessagingException {
         String htmlContent = generateRequestConfirmation(user,user2,request);
         MimeMessage message = mailSender.createMimeMessage();
@@ -92,6 +95,7 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("proposal.html", context);
     }
     @Async
+    @Override
     public void sendProposalEmail(User user,Proposal proposal) throws MessagingException {
         String htmlContent = generateProposal(user,proposal);
         MimeMessage message = mailSender.createMimeMessage();
@@ -108,6 +112,7 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("proposal.html", context);
     }
 
+    @Override
     public void sendProposalRequestEmail(User user, Proposal proposal) throws MessagingException {
         String htmlContent = generateProposalRequest(user,proposal);
         MimeMessage message = mailSender.createMimeMessage();
@@ -125,6 +130,7 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("resetpassword.html", context);
     }
 
+    @Override
     public void sendResetEmail(User user,Integer hash) throws MessagingException {
         String htmlContent = generateReset(user,hash);
         MimeMessage message = mailSender.createMimeMessage();
