@@ -15,9 +15,12 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <jstl.version>1.2</jstl.version>
     <javax.validation-api.version>2.0.1.Final</javax.validation-api.version>
+    <javax.servlet.api.version>2.5</javax.servlet.api.version>
     <org.hibernate.validator>5.4.3.Final</org.hibernate.validator>
     <javax.mail.version>1.6.2</javax.mail.version>
+    <spring-boot-starter-thymeleaf-version>2.3.3.RELEASE</spring-boot-starter-thymeleaf-version>
     <slf4j.version>1.7.5</slf4j.version>
     <logback.version>1.1.2</logback.version>
     <logback-ext-spring.version>0.1.1</logback-ext-spring.version>
@@ -63,13 +66,13 @@
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>servlet-api</artifactId>
-        <version>2.5</version>
+        <version>${javax.servlet.api.version}</version>
         <scope>provided</scope>
       </dependency>
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>jstl</artifactId>
-        <version>1.2</version>
+        <version>${jstl.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.validation</groupId>
@@ -90,6 +93,11 @@
         <groupId>javax.mail</groupId>
         <artifactId>javax.mail-api</artifactId>
         <version>${javax.mail.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        <version>${spring-boot-starter-thymeleaf-version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
