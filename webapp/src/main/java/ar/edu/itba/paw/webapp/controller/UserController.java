@@ -8,6 +8,7 @@ import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -51,22 +52,26 @@ public class UserController {
     }
 
     @RequestMapping("/register")
-    public ModelAndView register(@ModelAttribute("userForm") final UserForm form) {
-        return new ModelAndView("landing/register");
+    public ModelAndView register(@RequestParam(value = "success", required = false) boolean success, @RequestParam(value = "email", required = false) String email, @ModelAttribute("userForm") final UserForm form) {
+
+        ModelAndView mav = new ModelAndView("landing/register");
+        mav.addObject("success", success);
+        mav.addObject("email", email == null ? "" : email);
+        return mav;
     }
 
     @RequestMapping(value = "/register", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
-            return register(form);
+            return register(false, "", form);
         }
 
         User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
         if(user == null){
             errors.rejectValue("cuit", "alreadyExists");
-            return register(form);
+            return register(false, "", form);
         }
-        return new ModelAndView("redirect:/browseTrips");
+        return new ModelAndView("redirect:/register?success=true&email=" + user.getEmail());
     }
 
 
