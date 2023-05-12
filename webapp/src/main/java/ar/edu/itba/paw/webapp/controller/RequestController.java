@@ -5,6 +5,7 @@ import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
+import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
@@ -133,7 +134,7 @@ public class RequestController {
                 mav.addObject("acceptUser",us.getUserById(request.getAcceptUserId()).orElseThrow(UserNotFoundException::new)); //TODO : pasarle esto bien
 
             }
-            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(id, request.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(id, ts.getTripById(id).orElseThrow(TripNotFoundException::new).getUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
             mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
             mav.addObject("userId", getUser().getUserId());
         }
