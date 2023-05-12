@@ -47,8 +47,7 @@ public class TripController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-        //Integer maxPages = ts.getTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
-        Integer maxPages = 10;
+        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
         Integer currPage = Integer.parseInt(page);
         if(currPage < 1 || currPage > maxPages ){
             page = "1";
@@ -149,8 +148,6 @@ public class TripController {
         mav.addObject("trip", trip);
         return mav;
     }
-
-
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
         final ModelAndView mav = new ModelAndView("trips/success");

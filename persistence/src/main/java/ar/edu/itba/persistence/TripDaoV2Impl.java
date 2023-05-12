@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -194,17 +193,13 @@ public class TripDaoV2Impl implements TripDaoV2 {
         return proposals.isEmpty() ? Optional.empty() : Optional.of(proposals.get(0));
     }
 
-    private Pair<String, List<Object>> buildQuery(String tripType,String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
+    private Pair<String, List<Object>> buildQuery(Boolean pagination,String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
 
         String query = "";
 
         if(pag < 1)
             pag = 1;
 
-        if(TRIP_TYPE.equals(tripType))
-            query = "SELECT * FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
-        else
-            query = "SELECT * FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
         List<Object> params = new ArrayList<>();
         Integer offset = (pag-1)*ITEMS_PER_PAGE;
 
@@ -264,18 +259,19 @@ public class TripDaoV2Impl implements TripDaoV2 {
                 query = query + " ORDER BY price DESC";
             }
         }
-
-        query = query + " LIMIT ? OFFSET ?";
-        params.add(ITEMS_PER_PAGE);
-        params.add(offset);
-
+        if(pagination){
+            query = query + " LIMIT ? OFFSET ?";
+            params.add(ITEMS_PER_PAGE);
+            params.add(offset);
+        }
         return new Pair<>(query, params);
     }
 
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
-        Pair<String, List<Object>> builder = buildQuery(TRIP_TYPE, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        String query = builder.getKey();
+        Pair<String, List<Object>> builder = buildQuery(true, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
+        String query = "SELECT * FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        query += builder.getKey();
         List<Object> params = builder.getValue();
         return jdbcTemplate.query(query, params.toArray(), TRIP_ROW_MAPPER);
 
@@ -283,13 +279,31 @@ public class TripDaoV2Impl implements TripDaoV2 {
 
     @Override
     public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
-        Pair<String, List<Object>> builder = buildQuery(REQUEST_TYPE, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        String query = builder.getKey();
+        Pair<String, List<Object>> builder = buildQuery(true, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
+        String query = "SELECT * FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
+        query += builder.getKey();
         List<Object> params = builder.getValue();
         System.out.println("GET ALL ACTIVE REQUESTS QUERY: " + query);
         return jdbcTemplate.query(query, params.toArray(), TRIP_ROW_MAPPER);
     }
 
+    @Override
+    public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate){
+        Pair<String, List<Object>> builder = buildQuery(false, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, "ASC", departureDate, arrivalDate, 1);
+        String query = "SELECT count(*) as total FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        query += builder.getKey();
+        Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), builder.getValue().toArray()).get(0);
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+    }
+
+    @Override
+    public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate){
+        Pair<String, List<Object>> builder = buildQuery(false, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, "ASC", departureDate, arrivalDate, 1);
+        String query = "SELECT count(*) as total FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
+        query += builder.getKey();
+        Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), builder.getValue().toArray()).get(0);
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+    }
 
     @Override
     public List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId) {

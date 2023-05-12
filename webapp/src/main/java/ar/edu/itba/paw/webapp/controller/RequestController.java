@@ -50,13 +50,14 @@ public class RequestController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-        //Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume,maxAvailableVolume, minAvailableWeight, maxAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
-        Integer maxPages = 10;
+        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
         Integer currPage = Integer.parseInt(page);
         if(currPage < 1 || currPage > maxPages ){
             page = "1";
         }
 
+
+        System.out.println("MAX PAGES = "+maxPages);
 
         final ModelAndView view = new ModelAndView("requests/browse");
 
