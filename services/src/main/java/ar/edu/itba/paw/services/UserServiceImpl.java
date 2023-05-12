@@ -42,12 +42,10 @@ public class UserServiceImpl implements UserService {
             return null;
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
-        try{
-            ms.sendConfirmationEmail(us);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+
+        ms.sendConfirmationEmail(us);
         createSecureToken(us.getUserId());
+
         return us;
     }
 
@@ -78,11 +76,7 @@ public class UserServiceImpl implements UserService {
     public void createReset(Integer userId){
         //TODO corregir errors
         Integer hash = userDao.createReset(userId, Objects.hash(LocalDateTime.now() + userId.toString()) ).get();
-        try{
-            ms.sendResetEmail(userDao.getUserById(userId).get(),hash);
-        } catch(MessagingException e){
-            throw new RuntimeException();
-        }
+        ms.sendResetEmail(userDao.getUserById(userId).get(), hash);
     }
 
     private static int hashTo6Digits(Object obj1, Object obj2) {
@@ -96,13 +90,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createSecureToken(Integer userId) {
         Integer tokenValue = userDao.createSecureToken(userId,hashTo6Digits(LocalDateTime.now(),userId.toString()));
-
-        try{
-            ms.sendSecureTokenEmail(userDao.getUserById(userId).orElseThrow(UserNotFoundException::new), tokenValue);
-        } catch(MessagingException e){
-            throw new RuntimeException();
-        }
-
+        ms.sendSecureTokenEmail(userDao.getUserById(userId).orElseThrow(UserNotFoundException::new), tokenValue);
     }
 
     @Transactional

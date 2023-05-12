@@ -83,11 +83,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         else
             uid = trip.getProviderId();
 
-        try{
-            ms.sendProposalEmail(userDao.getUserById(uid).orElseThrow(NoSuchElementException::new), proposal);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        ms.sendProposalEmail(userDao.getUserById(uid).orElseThrow(NoSuchElementException::new), proposal);
         return proposal;
     }
 
@@ -103,15 +99,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
         User trucker = userDao.getUserById(trip.getTruckerId()).orElseThrow(ProposalNotFoundException::new);
         User provider = userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
 
-        try{ms.sendTripEmail(trucker, provider,trip);}
-        catch(MessagingException e){
-            throw new RuntimeException();
-        }
-        try{ms.sendTripEmail(provider, trucker,trip);}
-        catch(MessagingException e){
-            throw new RuntimeException();
-        }
-
+        ms.sendTripEmail(trucker, provider,trip);
+        ms.sendTripEmail(provider, trucker,trip);
     }
 
     @Transactional(readOnly = true)
