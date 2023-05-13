@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -24,20 +25,25 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private TemplateEngine templateEngine;
 
-
     private String generateEmailConfirmation(User confirmed) {
         Context context = new Context();
         context.setVariable("user", confirmed);
         return templateEngine.process("emailconfirmation.html", context);
     }
-
-    public void sendConfirmationEmail(User user) throws MessagingException {
+    @Async
+    @Override
+    public void sendConfirmationEmail(User user){
         String htmlContent = generateEmailConfirmation(user);
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.getEmail());
-        helper.setSubject("Account Confirmation");
-        helper.setText(htmlContent, true);
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Account Confirmation");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
     private String generateTripConfirmation(User user,User user2, Trip confirmed) {
@@ -48,33 +54,57 @@ public class MailServiceImpl implements MailService {
         context.setVariable("trip", confirmed);
         return templateEngine.process("tripconfirmation.html", context);
     }
-
-    public void sendTripEmail(User user,User user2,Trip trip) throws MessagingException {
+    @Async
+    @Override
+    public void sendTripEmail(User user,User user2,Trip trip){
         String htmlContent = generateTripConfirmation(user,user2,trip);
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.getEmail());
-        helper.setSubject("Trip confirmation");
-        helper.setText(htmlContent, true);
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip confirmation");
+            helper.setText(htmlContent, true);
+        }catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
-    private String generateRequestConfirmation(User user, User user2, Request confirmed) {
+    private String generateRequestConfirmation(User user, User user2, Trip confirmed) {
         Context context = new Context();
         context.setVariable("user", user);
-        context.setVariable("user2", user);
+        context.setVariable("user2", user2);
         context.setVariable("request", confirmed);
         return templateEngine.process("requestconfirmation.html", context);
     }
-
-    public void sendRequestEmail(User user,User user2,Request request) throws MessagingException {
+    @Async
+    @Override
+    public void sendRequestEmail(User user,User user2,Trip request){
         String htmlContent = generateRequestConfirmation(user,user2,request);
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.getEmail());
-        helper.setSubject("Request confirmation");
-        helper.setText(htmlContent, true);
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Request confirmation");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
+
+    @Async
+    @Override
+    public void sendSecureTokenEmail(User user, Integer tokenValue) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(user.getEmail());
+        message.setSubject("Secure Token");
+        message.setText("Your secure token is: " + tokenValue);
+        mailSender.send(message);
+    }
+
     private String generateProposal(User user, Proposal proposal) {
         Context context = new Context();
         context.setVariable("user", user);
@@ -82,29 +112,44 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("proposal.html", context);
     }
 
-    public void sendProposalEmail(User user,Proposal proposal) throws MessagingException {
+    @Async
+    @Override
+    public void sendProposalEmail(User user,Proposal proposal) {
         String htmlContent = generateProposal(user,proposal);
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.getEmail());
-        helper.setSubject("Trip Proposal!");
-        helper.setText(htmlContent, true);
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip Proposal!");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
-    private String generateProposalRequest(User user, ProposalRequest proposal) {
+    private String generateProposalRequest(User user, Proposal proposal) {
         Context context = new Context();
         context.setVariable("user", user);
         context.setVariable("proposal", proposal);
         return templateEngine.process("proposal.html", context);
     }
 
-    public void sendProposalRequestEmail(User user, ProposalRequest proposal) throws MessagingException {
+    @Async
+    @Override
+    public void sendProposalRequestEmail(User user, Proposal proposal){
         String htmlContent = generateProposalRequest(user,proposal);
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.getEmail());
-        helper.setSubject("Trip Proposal!");
-        helper.setText(htmlContent, true);
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip Proposal!");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
 
@@ -115,13 +160,21 @@ public class MailServiceImpl implements MailService {
         return templateEngine.process("resetpassword.html", context);
     }
 
-    public void sendResetEmail(User user,Integer hash) throws MessagingException {
-        String htmlContent = generateReset(user,hash);
+    @Async
+    @Override
+    public void sendResetEmail(User user,Integer hash){
+        String htmlContent = generateReset(user, hash);
         MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-        helper.setTo(user.getEmail());
-        helper.setSubject("Password Reset");
-        helper.setText(htmlContent, true);
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Password Reset");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e){
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
 

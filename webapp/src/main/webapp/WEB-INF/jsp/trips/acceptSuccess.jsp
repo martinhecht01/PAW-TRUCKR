@@ -47,11 +47,11 @@
             </tr>
             <tr>
                 <td><b><spring:message code="AvailableVolume"/></b></td>
-                <td><c:out value="${trip.availableVolume}"/> m3</td>
+                <td><c:out value="${trip.volume}"/> m3</td>
             </tr>
             <tr>
                 <td><b><spring:message code="AvailableWeight"/></b></td>
-                <td><c:out value="${trip.availableWeight}"/> kg</td>
+                <td><c:out value="${trip.weight}"/> kg</td>
             </tr>
             <tr>
                 <td><b><spring:message code="Price"/></b></td>

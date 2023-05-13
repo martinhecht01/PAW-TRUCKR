@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
 import ar.edu.itba.paw.models.Reset;
+import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface UserDao {
     void completeReset(Integer hash);
     Optional<User> findById(String id);
     public boolean existsUser(String cuit);
+
+    Integer createSecureToken(Integer userId, int token);
+
+    Optional<SecureToken> getSecureTokenByValue(Integer tokenValue);
+
+    void verifyAccount(Integer tokenValue);
 }
