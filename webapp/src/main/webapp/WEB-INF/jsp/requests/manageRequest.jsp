@@ -164,7 +164,9 @@
         <form:form action="${postPath}?proposalid=${offer.proposalid}&requestid=${offer.requestid}" method="post">
           <div class="card p-3" style="width: 18rem;">
             <div class="ca rd-body">
+              <a href="<c:url value="/profile?id=${offer.userId}"/>">
               <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+              </a>
               <p class="card-text"><c:out value="${offer.description}"/></p>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
               <input type="submit" class="btn btn-color" value="${reserve}"/>
