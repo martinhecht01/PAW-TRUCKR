@@ -59,4 +59,8 @@ public interface TripServiceV2 {
     Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
+
+    void updateTripPicture(Integer userId, Integer imageId);
+
+    byte[] getTripPicture(Integer userId);
 }

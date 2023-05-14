@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS users (
         role VARCHAR(255),
         password VARCHAR(255),
         accountverified BOOLEAN,
-        imageid int
+        imageid int references images(imageid)
 );
 
 CREATE TABLE IF NOT EXISTS passwordresets(
@@ -42,7 +42,8 @@ CREATE TABLE IF NOT EXISTS trips (
         price INT,
         trucker_confirmation BOOLEAN DEFAULT FALSE,
         provider_confirmation BOOLEAN DEFAULT FALSE,
-        confirmation_date TIMESTAMP
+        confirmation_date TIMESTAMP,
+        imageid INT references images(imageid)
 );
 
 CREATE TABLE IF NOT EXISTS proposals (

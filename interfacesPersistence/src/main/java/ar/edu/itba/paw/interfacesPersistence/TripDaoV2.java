@@ -59,4 +59,8 @@ public interface TripDaoV2 {
     Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
+
+    void setImageId(int tripId, int imageId);
+
+    int getImageId(int tripId);
 }

@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.models;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class Trip {
     private final int tripId;
@@ -22,6 +21,8 @@ public class Trip {
     private final Boolean provider_confirmation;
     private final LocalDateTime confirmation_date;
     private Integer proposalCount;
+
+    private final Integer imageId;
     public Trip(int tripId,
                 Integer truckerId,
                 Integer providerId,
@@ -37,7 +38,7 @@ public class Trip {
                 Boolean sender_confirmation,
                 Boolean receiver_confirmation,
                 LocalDateTime confirmation_date,
-                Integer proposalCount) {
+                Integer proposalCount, Integer imageId) {
         this.tripId = tripId;
         this.truckerId = truckerId;
         this.providerId = providerId;
@@ -54,6 +55,7 @@ public class Trip {
         this.provider_confirmation = receiver_confirmation;
         this.confirmation_date = confirmation_date;
         this.proposalCount = proposalCount;
+        this.imageId = imageId;
     }
 
     public void setProposalCount(Integer proposalCount) {

@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfacesPersistence.ImageDao;
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
@@ -23,12 +24,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     private final UserDao userDao;
 
+    private final ImageDao imageDao;
+
     private final MailService ms;
 
     @Autowired
-    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, MailService ms){
+    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, ImageDao imageDao, MailService ms){
         this.tripDaoV2 = tripDaoV2;
         this.userDao = userDao;
+        this.imageDao = imageDao;
         this.ms = ms;
     }
 
@@ -171,6 +175,16 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid){
         return tripDaoV2.getTripOrRequestByIdAndUserId(id, userid);
+    }
+
+    @Override
+    public void updateTripPicture(Integer userId, Integer imageId) {
+        tripDaoV2.setImageId(userId, imageId);
+    }
+
+    @Override
+    public byte[] getTripPicture(Integer userId) {
+        return imageDao.getImage(tripDaoV2.getImageId(userId)).get().getImage();
     }
 
 //    @Async

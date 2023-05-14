@@ -11,6 +11,7 @@ import ar.edu.itba.paw.webapp.form.TripForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,13 +31,16 @@ public class TripController {
     private final UserService us;
     private final CityService cs;
 
+    private final ImageService is;
+
     private final static Logger LOGGER = LoggerFactory.getLogger(TripController.class);
 
     @Autowired
-    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs){
+    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs, ImageService is){
         this.ts = ts;
         this.us = us;
         this.cs = cs;
+        this.is = is;
     }
 
     @RequestMapping("/trips/browse")
@@ -241,5 +245,13 @@ public class TripController {
         }
         return null;
     }
+
+    @RequestMapping( value = "/trips/{tripId}/tripPicture", method = {RequestMethod.GET},
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    @ResponseBody
+    public byte[] profilePicture(@PathVariable(value = "tripId") int tripId){
+        return ts.getTripPicture(tripId);
+    }
+
 
 }

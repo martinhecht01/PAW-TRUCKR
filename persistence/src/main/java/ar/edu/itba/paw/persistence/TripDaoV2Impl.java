@@ -43,8 +43,8 @@ public class TripDaoV2Impl implements TripDaoV2 {
                 rs.getBoolean("trucker_confirmation"),
                 rs.getBoolean("provider_confirmation"),
                 confirmation,
-                0
-        );
+                0,
+                rs.getInt("imageid"));
     };
     private final static RowMapper<Trip> ACTIVE_TRIP_COUNT_MAPPER = (resultSet, i) -> {
         Trip trip = TRIP_ROW_MAPPER.mapRow(resultSet, i);
@@ -101,9 +101,10 @@ public class TripDaoV2Impl implements TripDaoV2 {
         data.put("price", price);
         data.put("trucker_confirmation", false);
         data.put("provider_confirmation", false);
+        data.put("imageid", null);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, truckerId, null, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null, 0);
+        return new Trip(tripId, truckerId, null, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null, 0, null);
     }
 
     @Override
@@ -134,7 +135,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
         data.put("provider_confirmation", false);
 
         int tripId = jdbcTripInsert.executeAndReturnKey(data).intValue();
-        return new Trip(tripId, null, providerId, null, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null, 0);
+        return new Trip(tripId, null, providerId, null, weight, volume, departureDate, arrivalDate, origin, destination, type, price, null, false,  null, 0, null);
     }
 
     @Override
@@ -359,5 +360,17 @@ public class TripDaoV2Impl implements TripDaoV2 {
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid){
         return getTripOrRequestById(id).filter(trip -> trip.getTruckerId() == userid || trip.getProviderId() == userid);
+    }
+
+    @Override
+    public void setImageId(int tripId, int imageId){
+        String sql = "UPDATE trips SET image_id = ? WHERE trip_id = ?";
+        jdbcTemplate.update(sql, imageId, tripId);
+    }
+
+    @Override
+    public int getImageId(int tripId){
+        String sql = "SELECT image_id FROM trips WHERE trip_id = ?";
+        return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("image_id"), tripId).get(0);
     }
 }
