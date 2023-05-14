@@ -1,4 +1,4 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.models.Reset;
@@ -118,14 +118,6 @@ public class UserDaoImpl implements UserDao {
         jdbcTemplate.update(sql, "true", hash);
     }
 
-    @Override
-    public Optional<User> findById(final String id) {
-        final List<User> list = jdbcTemplate.query("SELECT * FROM users WHERE userid = ?", ROW_MAPPER_USER, id);
-        if (list.isEmpty()) {
-            return null;
-        }
-        return Optional.of(list.get(0));
-    }
 
     @Override
     public void resetPassword(Integer hash, String newPassword){

@@ -1,4 +1,4 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.CityDao;
 import ar.edu.itba.paw.models.Trip;

@@ -21,8 +21,11 @@
     <org.hibernate.validator>5.4.3.Final</org.hibernate.validator>
     <javax.mail.version>1.6.2</javax.mail.version>
     <spring-boot-starter-thymeleaf-version>2.3.3.RELEASE</spring-boot-starter-thymeleaf-version>
+    <mockito.version>2.25.1</mockito.version>
+    <org.hsqldb.version>2.5.1</org.hsqldb.version>
     <slf4j.version>1.7.5</slf4j.version>
     <logback.version>1.1.2</logback.version>
+    <junit.version>4.13.2</junit.version>
     <logback-ext-spring.version>0.1.1</logback-ext-spring.version>
   </properties>
 
@@ -57,6 +60,12 @@
         <groupId>org.springframework</groupId>
         <artifactId>spring-jdbc</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-test</artifactId>
+        <version>${spring.version}</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.postgresql</groupId>
@@ -104,7 +113,7 @@
         <artifactId>spring-context-support</artifactId>
         <version>${spring.version}</version>
       </dependency>
-<!--logging-->
+<!--      Logging-->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -131,10 +140,30 @@
         <version>${logback-ext-spring.version}</version>
         <scope>runtime</scope>
       </dependency>
+<!--      AOP-->
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-tx</artifactId>
         <version>${spring.version}</version>
+      </dependency>
+<!--      Testing-->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.hsqldb</groupId>
+        <artifactId>hsqldb</artifactId>
+        <version>${org.hsqldb.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

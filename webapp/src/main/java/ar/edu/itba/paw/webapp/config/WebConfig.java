@@ -41,7 +41,7 @@ import java.util.Properties;
 
 @EnableTransactionManagement
 @EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.persistence"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence"})
 @Configuration
 @EnableScheduling
 @EnableAsync
