@@ -10,13 +10,14 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/css/userControl.css"/>" rel="stylesheet"/>
 
-
+<c:url value="/profile/edit" var="postPath"/>
 <head>
     <title>Truckr</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 <components:navBar/>
 <div class="w-75 m-auto pt-5">
+    <form:form modelAttribute="editUserForm" action="${postPath}" method="post" enctype="multipart/form-data">
     <main class="form-signin m-auto">
         <div class="card">
             <div class="card-header">
@@ -24,28 +25,33 @@
             </div>
             <div class="card-body">
                 <div>
-                    <h5><b><spring:message code="Name"/></b></h5>
-                    <p><c:out value="${currentUser.getName()}"/></p>
+                    <form:label path="profileImage" class="form-label">Upload a profile image:</form:label>
+                    <form:errors cssClass="formError" path="profileImage" element="p"/>
+                    <form:input  path="profileImage" class= "form-control-file" type="file" accept="image/*" />
                 </div>
                 <div>
-                    <h5><b><spring:message code="Cuit"/></b></h5>
+                    <h5><b>Name:</b></h5>
+                    <form:label path="name" class="form-label"><spring:message code="Name"/></form:label>
+                    <form:errors cssClass="formError" path="name" element="p"/>
+                    <form:input type="text" class="form-control" path="name" placeholder="${currentUser.getName()}"/>
+                </div>
+                <div>
+                    <h5><b>Cuit:</b></h5>
                     <p><c:out value="${currentUser.getCuit()}"/></p>
                 </div>
                 <div>
-                    <h5><b><spring:message code="Email"/></b></h5>
+                    <h5><b>Email:</b></h5>
                     <p><c:out value="${currentUser.getEmail()}"/></p>
                 </div>
                 <div>
-                    <h5><b><spring:message code="Role"/></b></h5>
+                    <h5><b>Role:</b></h5>
                     <p><c:out value="${currentRole}"/></p>
                 </div>
-                <div>
-                    <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
-                </div>
             </div>
-
+            <button class="w-100 btn btn-lg btn-color" type="submit">Submit</button>
         </div>
     </main>
+    </form:form>
 </div>
 <components:waveDivider/>
 <components:footer/>

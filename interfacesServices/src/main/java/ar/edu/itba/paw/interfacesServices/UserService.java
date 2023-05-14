@@ -24,4 +24,10 @@ public interface UserService {
 
     Optional<User> getUserById(int id);
     boolean existsUser(String cuit);
+
+    void updateProfilePicture(Integer userId, Integer imageId);
+
+    byte[] getProfilePicture(Integer userId);
+
+    void updateProfileName(Integer userId, String name);
 }

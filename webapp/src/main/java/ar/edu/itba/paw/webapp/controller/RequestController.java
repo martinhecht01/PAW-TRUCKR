@@ -130,15 +130,13 @@ public class RequestController {
     }
 
     @RequestMapping("/requests/details")
-    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve, @ModelAttribute("acceptForm") final AcceptForm formReview) {
+    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve) {
         LOGGER.info("Accessing request details page");
         final ModelAndView mav = new ModelAndView("requests/details");
         LOGGER.info("Accessing request details page with id: {} ", id);
         Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         User user = getUser();
-        if (formReview == null){
-            //Viene de error del accept
-        }
+
 //        if (user != null){
 //            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
 //            mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
@@ -166,7 +164,7 @@ public class RequestController {
     public ModelAndView acceptProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             LOGGER.info("Error in accept form");
-            return requestDetail(id, form,null);
+            return requestDetail(id, form);
         }
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.Optional;
+import java.util.HashMap;
 
 @Repository
 public class ImageDaoImpl implements ImageDao {
@@ -25,13 +26,11 @@ public class ImageDaoImpl implements ImageDao {
             rs.getBytes("image"));
 
     @Override
-    public void uploadImage(final byte[] image, final int userid){
-        final int imageid = jdbcInsert.executeAndReturnKey(
-                new java.util.HashMap<String, Object>() {{
-                    put("image", image);
-                    put("userid", userid);
-                    put("tripid", null);
-                }}).intValue();
+    public int uploadImage(final byte[] image){
+        final HashMap<String, Object> data = new HashMap<>();
+        data.put("image", image);
+
+        return jdbcInsert.executeAndReturnKey(data).intValue();
     }
 
     @Override

@@ -27,4 +27,10 @@ public interface UserDao {
     Optional<SecureToken> getSecureTokenByValue(Integer tokenValue);
 
     void verifyAccount(Integer tokenValue);
+
+    void setImageId(int userId, int imageId);
+
+    int  getImageId(int userId);
+
+    void setUserName(int userId, String name);
 }

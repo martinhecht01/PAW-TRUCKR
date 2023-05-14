@@ -7,5 +7,5 @@ import java.io.IOException;
 public interface ImageService {
     byte[] getImage(int imageid) throws IOException;
 
-    void uploadImage(byte[] image, int userid);
+    int uploadImage(byte[] image);
 }

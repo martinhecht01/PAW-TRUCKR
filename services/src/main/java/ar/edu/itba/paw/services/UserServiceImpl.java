@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.services;
 
+import ar.edu.itba.paw.interfacesPersistence.ImageDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
@@ -10,6 +11,7 @@ import ar.edu.itba.paw.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
@@ -22,14 +24,17 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final MailService ms;
+    private final ImageDao imageDao;
+
     String email;
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, MailService ms, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserDao userDao, MailService ms, ImageDao imageDao, PasswordEncoder passwordEncoder){
         this.userDao = userDao;
         this.ms = ms;
+        this.imageDao = imageDao;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -127,4 +132,18 @@ public class UserServiceImpl implements UserService {
         return userDao.existsUser(cuit);
     }
 
+    @Override
+    public void updateProfilePicture(Integer userId, Integer imageId) {
+    	userDao.setImageId(userId, imageId);
+    }
+
+    @Override
+    public byte[] getProfilePicture(Integer userId) {
+        return imageDao.getImage(userDao.getImageId(userId)).get().getImage();
+    }
+
+    @Override
+    public void updateProfileName(Integer userId, String name) {
+    	userDao.setUserName(userId, name);
+    }
 }
