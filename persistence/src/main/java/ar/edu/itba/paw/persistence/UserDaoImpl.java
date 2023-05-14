@@ -63,27 +63,6 @@ public class UserDaoImpl implements UserDao {
     @Autowired
     public UserDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users (\n" +
-                "  userid SERIAL PRIMARY KEY,\n" +
-                "  cuit VARCHAR(255) UNIQUE,\n" +
-                "  email VARCHAR(255),\n" +
-                "  name VARCHAR(255),\n" +
-                "  role VARCHAR(255),\n" +
-                "  password VARCHAR(255),\n" +
-                "  accountverified BOOLEAN,\n"+
-                "  imageid int\n"+
-                ");");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS passwordresets(\n" +
-                "   userid int REFERENCES users(userid),\n" +
-                "   hash int PRIMARY KEY,\n" +
-                "   createdate TIMESTAMP,\n" +
-                "   completed VARCHAR(20)\n" +
-                ");");
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS securetokens(\n" +
-                "   userid int REFERENCES users(userid),\n" +
-                "   token int PRIMARY KEY,\n" +
-                "   expiredate TIMESTAMP\n" +
-                ");");
         this.jdbcInsertUsers = new SimpleJdbcInsert(ds).withTableName("users").usingGeneratedKeyColumns("userid");
         this.jdbcInsertPasswordResets = new SimpleJdbcInsert(ds).withTableName("passwordresets");
         this.jdbcInsertSecureTokens = new SimpleJdbcInsert(ds).withTableName("securetokens");
