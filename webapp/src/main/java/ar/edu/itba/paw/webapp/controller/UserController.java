@@ -197,7 +197,7 @@ public class UserController {
     @RequestMapping( value = "/user/{userId}/profilePicture", method = {RequestMethod.GET},
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
-    public byte[] profilePicture(@PathVariable(value = "userId") int userId) throws IOException {
+    public byte[] profilePicture(@PathVariable(value = "userId") int userId){
         return us.getProfilePicture(userId);
     }
 
