@@ -2,14 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
-import ar.edu.itba.paw.interfacesServices.exceptions.VerifyErrorException;
+
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+
+import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
 import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
