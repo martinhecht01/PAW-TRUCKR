@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -304,13 +303,6 @@ public class TripDaoV2Impl implements TripDaoV2 {
         Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), builder.getValue().toArray()).get(0);
         return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
     }
-
-    @Override
-    public List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId) {
-        String query = "SELECT * FROM trips WHERE provider_id = ? OR trucker_id = ? AND departure_date >= now()";
-        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userId, userId);
-    }
-
     @Override
     public Optional<Trip> getTripOrRequestById(int tripid){
         List<Trip> trips = jdbcTemplate.query("SELECT * FROM trips WHERE trip_id = ?", TRIP_ROW_MAPPER, tripid);
@@ -339,15 +331,29 @@ public class TripDaoV2Impl implements TripDaoV2 {
         jdbcTemplate.update(sql, proposal.getProposalId(), proposal.getTripId());
     }
     @Override
-    public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid) {
-        String query = "SELECT trips.*, COUNT(proposals.proposal_id) AS proposalcount FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id WHERE (trips.trucker_id = ? AND provider_id IS NULL) OR (trips.provider_id = ? AND trucker_id IS NULL) GROUP BY trips.trip_id";
-        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid, userid);
+    public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid, Integer pag) {
+        String query = "SELECT trips.*, COUNT(proposals.proposal_id) AS proposalcount FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id WHERE (trips.trucker_id = ? AND provider_id IS NULL) OR (trips.provider_id = ? AND trucker_id IS NULL) GROUP BY trips.trip_id LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid, userid, ITEMS_PER_PAGE, (pag - 1) * ITEMS_PER_PAGE);
     }
 
     @Override
-    public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid) {
-        String query = "SELECT * FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL)";
-        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid, userid);
+    public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag) {
+        String query = "SELECT * FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL) LIMIT ? OFFSET ?";
+        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid, userid, ITEMS_PER_PAGE, (pag - 1) * ITEMS_PER_PAGE);
+    }
+
+    @Override
+    public Integer getTotalPagesActiveTripsOrRequests(Integer userid) {
+        String query = "SELECT count(*) as total FROM trips WHERE (trucker_id = ? AND provider_id IS NULL) OR (provider_id = ? AND trucker_id IS NULL)";
+        Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), userid, userid).get(0);
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+    }
+
+    @Override
+    public Integer getTotalPagesAcceptedTripsAndRequests(Integer userid) {
+        String query = "SELECT count(*) as total FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL)";
+        Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), userid, userid).get(0);
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
     }
 
     @Override

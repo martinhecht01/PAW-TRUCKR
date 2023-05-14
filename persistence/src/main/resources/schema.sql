@@ -5,7 +5,8 @@ CREATE TABLE IF NOT EXISTS users (
         name VARCHAR(255),
         role VARCHAR(255),
         password VARCHAR(255),
-        accountverified BOOLEAN
+        accountverified BOOLEAN,
+        imageid int
 );
 
 CREATE TABLE IF NOT EXISTS passwordresets(

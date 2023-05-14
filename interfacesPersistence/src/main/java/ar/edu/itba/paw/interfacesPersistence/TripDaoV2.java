@@ -46,15 +46,17 @@ public interface TripDaoV2 {
 
     List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
 
-    List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId);
-
     Optional<Trip> getTripOrRequestById(int tripid);
 
     void acceptProposal(Proposal proposal);
 
-    List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid);
+    List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid, Integer pag);
 
-    List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid);
+    List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag);
+
+    Integer getTotalPagesActiveTripsOrRequests(Integer userid);
+
+    Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
 }

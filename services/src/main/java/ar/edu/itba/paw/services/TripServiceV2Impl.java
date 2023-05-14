@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
-import ar.edu.itba.paw.models.Pair;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -141,26 +139,32 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId) {
-        return tripDaoV2.getAllActiveTripsAndRequestsByUserId(userId);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public Optional<Trip> getTripOrRequestById(int tripId) {
         return tripDaoV2.getTripOrRequestById(tripId);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId){
-        return tripDaoV2.getAllActiveTripsOrRequestAndProposalsCount(userId);
+    public List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId, Integer pag){
+        return tripDaoV2.getAllActiveTripsOrRequestAndProposalsCount(userId, pag);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId){
-        return tripDaoV2.getAllAcceptedTripsAndRequestsByUserId(userId);
+    public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId, Integer pag){
+        return tripDaoV2.getAllAcceptedTripsAndRequestsByUserId(userId, pag);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesActiveTripsOrRequests(Integer userid) {
+        return tripDaoV2.getTotalPagesActiveTripsOrRequests(userid);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesAcceptedTripsAndRequests(Integer userid) {
+        return tripDaoV2.getTotalPagesAcceptedTripsAndRequests(userid);
     }
 
     @Transactional(readOnly = true)

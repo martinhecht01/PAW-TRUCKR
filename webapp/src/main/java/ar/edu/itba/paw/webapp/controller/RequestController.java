@@ -207,12 +207,30 @@ public class RequestController {
     }
 
     @RequestMapping("/requests/myRequests")
-    public ModelAndView myRequests(){
+    public ModelAndView myRequests(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage){
         User user = getUser();
         LOGGER.info("User: {} accessing my requests page", user.getCuit());
+
+        Integer maxActivePage = ts.getTotalPagesActiveTripsOrRequests(user.getUserId());
+        Integer maxAcceptPage = ts.getTotalPagesAcceptedTripsAndRequests(user.getUserId());
+
+        if(activePage > maxActivePage || activePage < 1){
+            maxActivePage = 1;
+        }
+
+        if(acceptPage > maxAcceptPage || acceptPage < 1){
+            maxAcceptPage = 1;
+        }
+
         final ModelAndView mav = new ModelAndView("requests/myRequests");
-        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
-        mav.addObject("activeTripsAndRequest", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
+        mav.addObject("currentPageActive", activePage);
+        mav.addObject("maxActivePage", maxActivePage);
+
+        mav.addObject("currentPageAccepted", acceptPage);
+        mav.addObject("maxAcceptedPage", maxAcceptPage);
+
+        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId(), acceptPage));
+        mav.addObject("activeTripsAndRequest", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId(), activePage));
         return mav;
     }
 
