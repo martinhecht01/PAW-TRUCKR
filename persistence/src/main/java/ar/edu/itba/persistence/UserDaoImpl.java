@@ -30,7 +30,8 @@ public class UserDaoImpl implements UserDao {
                     rs.getString("cuit"),
                     rs.getString("role"),
                     rs.getString("password"),
-                    rs.getBoolean("accountverified"));
+                    rs.getBoolean("accountverified"),
+                    rs.getInt("imageid"));
         }
     };
 
@@ -69,7 +70,8 @@ public class UserDaoImpl implements UserDao {
                 "  name VARCHAR(255),\n" +
                 "  role VARCHAR(255),\n" +
                 "  password VARCHAR(255),\n" +
-                "  accountverified BOOLEAN\n"+
+                "  accountverified BOOLEAN,\n"+
+                "  imageid int\n"+
                 ");");
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS passwordresets(\n" +
                 "   userid int REFERENCES users(userid),\n" +
@@ -163,8 +165,9 @@ public class UserDaoImpl implements UserDao {
         data.put("role", role);
         data.put("password", password);
         data.put("accountverified", "false");
+        data.put("imageid", null);
         int userId = jdbcInsertUsers.executeAndReturnKey(data).intValue();
-        return new User( userId, email, name, cuit, role, password, false);
+        return new User( userId, email, name, cuit, role, password, false,null);
     }
 
     @Override
@@ -190,5 +193,23 @@ public class UserDaoImpl implements UserDao {
         String sql = "SELECT COUNT(*) FROM users WHERE cuit = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, cuit);
         return count > 0;
+    }
+
+    @Override
+    public void setImageId(int userId, int imageId){
+        String sql = "UPDATE users SET imageid = ? WHERE userid = ?";
+        jdbcTemplate.update(sql, imageId, userId);
+    }
+
+    @Override
+    public int getImageId(int userId){
+        String sql = "SELECT imageid FROM users WHERE userid = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    }
+
+    @Override
+    public void setUserName(int userId, String name){
+        String sql = "UPDATE users SET name = ? WHERE userid = ?";
+        jdbcTemplate.update(sql, name, userId);
     }
 }

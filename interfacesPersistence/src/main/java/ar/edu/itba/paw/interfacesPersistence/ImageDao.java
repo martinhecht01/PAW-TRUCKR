@@ -5,7 +5,7 @@ import ar.edu.itba.paw.models.Image;
 import java.util.Optional;
 
 public interface ImageDao {
-    void uploadImage(byte[] image, int userid);
+    int uploadImage(byte[] image);
 
     Optional<Image> getImage(int imageid);
 

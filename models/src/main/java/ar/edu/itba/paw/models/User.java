@@ -9,10 +9,12 @@ public class User {
     private final String password;
     private final int userId;
 
+    private final Integer imageId;
+
     private final boolean accountVerified;
 
 
-    public User(final int userId, final String email, final String name, final String cuit, final String role, String password, boolean accountVerified){
+    public User(final int userId, final String email, final String name, final String cuit, final String role, String password, boolean accountVerified, Integer imageId){
         this.userId = userId;
         this.email = email;
         this.name = name;
@@ -20,6 +22,7 @@ public class User {
         this.role = role;
         this.password = password;
         this.accountVerified = accountVerified;
+        this.imageId = imageId;
     }
 
     public String getEmail() {
@@ -43,6 +46,10 @@ public class User {
     }
 
     public String getRole() {return role;}
+
+    public Integer getImageId() {return imageId;}
+
+    public boolean hasImage() {return imageId != null;}
 
     public Boolean getAccountVerified(){return accountVerified;};
 }

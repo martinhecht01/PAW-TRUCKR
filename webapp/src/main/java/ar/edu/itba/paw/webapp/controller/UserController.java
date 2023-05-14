@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserExistsException;
@@ -9,29 +10,31 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
 import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Controller
 public class UserController {
 
     private final UserService us;
+    private final ImageService is;
 
     @Autowired
-    public UserController(final UserService us){
+    public UserController(final UserService us, ImageService is){
         this.us = us;
+        this.is = is;
     }
 
 
@@ -161,5 +164,33 @@ public class UserController {
         }
         return null;
     }
+
+    @RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
+    public ModelAndView editUserView(@ModelAttribute("editUserForm") final EditUserForm form){
+        return new ModelAndView("user/editProfile");
+    }
+
+    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
+    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form,final BindingResult errors){
+        if (errors.hasErrors()) {
+            return editUserView(form);
+        }
+
+        int imgId = is.uploadImage(form.getProfileImage().getBytes());
+
+        us.updateProfilePicture(getCurrentUser().getUserId(), imgId);
+        us.updateProfileName(getCurrentUser().getUserId(), form.getName());
+
+
+        return new ModelAndView("redirect:/profile");
+    }
+
+    @RequestMapping( value = "/user/{userId}/profilePicture", method = {RequestMethod.GET},
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    @ResponseBody
+    public byte[] profilePicture(@PathVariable(value = "userId") int userId) throws IOException {
+        return us.getProfilePicture(userId);
+    }
+
 
 }
