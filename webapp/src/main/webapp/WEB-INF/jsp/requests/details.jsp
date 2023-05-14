@@ -107,6 +107,7 @@
         </c:if>
         <c:if test="${request.acceptUserId == userId}">
             <div class="justify-content-top align-items-top px-5" >
+                <a href="<c:url value="/profile?id=${request.userId}"/>">
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
                         <h4><spring:message code="Driver"/>:</h4>
@@ -116,6 +117,7 @@
                         <p class="card-text"><c:out value="${user.email.toLowerCase()}"/></p>
                     </div>
                 </div>
+                </a>
                 <div class="card mt-4" style="width: 18rem;">
                     <div class="card-header">
                         <h4><spring:message code="Status"/>: </h4>

@@ -77,11 +77,21 @@ public class UserController {
 
 
     @RequestMapping("/profile")
-    public ModelAndView profile() {
+    public ModelAndView profile(@RequestParam(required = false) Integer id) {
         final ModelAndView mav = new ModelAndView("user/profile");
 
-        mav.addObject("userRating", revs.getUserRating(getCurrentUser().getUserId()));
-        mav.addObject("userReviews", revs.getUserReviews(getCurrentUser().getUserId()));
+        if (id == null){
+            mav.addObject("userRating", revs.getUserRating(getCurrentUser().getUserId()));
+            mav.addObject("userReviews", revs.getUserReviews(getCurrentUser().getUserId()));
+            mav.addObject("currUser", getCurrentUser());
+        }
+        else{
+            User currUser = us.getUserById(id).orElseThrow(UserNotFoundException::new);
+            mav.addObject("userRating", revs.getUserRating(currUser.getUserId()));
+            mav.addObject("userReviews", revs.getUserReviews(currUser.getUserId()));
+            mav.addObject("currUser", currUser);
+        }
+
 
 
         return mav;
