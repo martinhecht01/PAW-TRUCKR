@@ -42,13 +42,17 @@ public interface TripServiceV2 {
 
     List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag);
 
+    Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate);
+
+    Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate);
+
     List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId);
 
     Optional<Trip> getTripOrRequestById(int tripid);
 
     void acceptProposal(int proposalId);
 
-    List<Pair<Trip, Integer>> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId);
+    List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId);
 
     List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId);
 

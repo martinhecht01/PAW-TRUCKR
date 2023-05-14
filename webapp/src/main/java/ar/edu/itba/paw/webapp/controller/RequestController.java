@@ -1,14 +1,15 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +30,8 @@ public class RequestController {
     private final CityService cs;
 
     private final UserService us;
+
+    private final static Logger LOGGER = LoggerFactory.getLogger(RequestController.class);
 
     @Autowired
     public RequestController(final TripServiceV2 ts, CityService cs, UserService us) {
@@ -52,13 +54,15 @@ public class RequestController {
                                     @RequestParam(required = false) String departureDate,
                                     @RequestParam(required = false) String arrivalDate)
     {
-        //Integer maxPages = rs.getTotalPages(origin, destination,minAvailableVolume,maxAvailableVolume, minAvailableWeight, maxAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
-        Integer maxPages = 10;
+        LOGGER.info("Accessing browse requests page");
+        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
         Integer currPage = Integer.parseInt(page);
         if(currPage < 1 || currPage > maxPages ){
             page = "1";
         }
 
+
+        LOGGER.debug("MAX PAGES = {}", maxPages);
 
         final ModelAndView view = new ModelAndView("requests/browse");
 
@@ -74,7 +78,8 @@ public class RequestController {
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
         List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
-        System.out.println("ACTIVE REQUESTS SIZE: "+trips.size());
+
+        LOGGER.debug("ACTIVE REQUESTS SIZE: {}  ",trips.size());
         view.addObject("offers", trips);
         return view;
     }
@@ -82,6 +87,7 @@ public class RequestController {
 
     @RequestMapping("/requests/create")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
+        LOGGER.info("Accessing create requests page");
         final ModelAndView view = new ModelAndView("requests/create");
         return view;
     }
@@ -95,6 +101,7 @@ public class RequestController {
     @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
     public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
+            LOGGER.info("Error in create request form");
             return createRequest(form);
         }
 
@@ -116,18 +123,20 @@ public class RequestController {
                 Integer.parseInt(form.getMaxPrice())
         );
 
+        LOGGER.info("Request created successfully");
+
         ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getTripId());
         return view;
     }
 
     @RequestMapping("/requests/details")
-    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve, @ModelAttribute("acceptForm") final AcceptForm formReview) {
+    public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve) {
+        LOGGER.info("Accessing request details page");
         final ModelAndView mav = new ModelAndView("requests/details");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
+        LOGGER.info("Accessing request details page with id: {} ", id);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         User user = getUser();
-        if (formReview == null){
-            //Viene de error del accept
-        }
+
 //        if (user != null){
 //            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
 //            mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
@@ -136,26 +145,33 @@ public class RequestController {
         mav.addObject("request", request);
         return mav;
     }
+
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
         ts.confirmTrip(requestId, user.getUserId());
-        if (Objects.equals(user.getRole(), "PROVIDER"))
+        if (Objects.equals(user.getRole(), "PROVIDER")) {
+            LOGGER.info("Request with Id: {} confirmed successfully by provider", requestId);
             return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);
-        else
-            return new ModelAndView("redirect:/requests/details?id="+ requestId);
+        }
+        else {
+            LOGGER.info("Request with Id: {} confirmed successfully by trucker", requestId);
+            return new ModelAndView("redirect:/requests/details?id=" + requestId);
+        }
     }
 
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
-            return requestDetail(id, form,null);
+            LOGGER.info("Error in accept form");
+            return requestDetail(id, form);
         }
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
         ts.createProposal(id, user.getUserId(), form.getDescription());
+        LOGGER.info("Proposal created successfully");
         ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 
         mav.addObject("id",id);
@@ -163,19 +179,19 @@ public class RequestController {
     }
     @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
-        System.out.println("accepting proposal ID = " + proposalId);
         ts.acceptProposal(proposalId);
-
+        LOGGER.info("Proposal with proposal ID: {}, accepted successfully by request Id: {}", proposalId, requestId);
 
         final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
-        Trip request = ts.getTripOrRequestById(requestId).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(requestId).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
+        LOGGER.info("Accessing request success page");
         final ModelAndView mav = new ModelAndView("requests/success");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -183,8 +199,9 @@ public class RequestController {
 
     @RequestMapping("/requests/reserveSuccess")
     public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
+        LOGGER.info("Accessing request reserve success page");
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -192,9 +209,8 @@ public class RequestController {
     @RequestMapping("/requests/myRequests")
     public ModelAndView myRequests(){
         User user = getUser();
+        LOGGER.info("User: {} accessing my requests page", user.getCuit());
         final ModelAndView mav = new ModelAndView("requests/myRequests");
-        System.out.println("ACCEPTED SIZE = " + ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()).size());
-        System.out.println("ACTIVE SIZE = " + ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()).size());
         mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
         mav.addObject("activeTripsAndRequest", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
         return mav;
@@ -202,9 +218,10 @@ public class RequestController {
 
     @RequestMapping("/requests/manageRequest")
     public ModelAndView manageRequest(@RequestParam("requestId") int requestId, @ModelAttribute("acceptForm") final AcceptForm form ) {
+        LOGGER.info("Accessing manage request page with request Id: {} ", requestId);
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = getUser().getUserId();
-        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(RequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(TripOrRequestNotFoundException::new);
 
         if(request.getTruckerId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));

@@ -19,13 +19,7 @@ public class ImageDaoImpl implements ImageDao {
     @Autowired
     public ImageDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS images (\n" +
-                "  imageid SERIAL PRIMARY KEY,\n" +
-                "  image BYTEA NOT NULL\n"+
-                ");");
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("images").usingGeneratedKeyColumns("imageid");
-
-
     }
     private final static RowMapper<Image> IMAGE_ROW_MAPPER = (rs, rowNum) -> new Image(
             rs.getInt("imageid"),

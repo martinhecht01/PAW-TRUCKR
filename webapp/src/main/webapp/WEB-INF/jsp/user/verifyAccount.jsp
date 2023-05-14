@@ -23,7 +23,7 @@
             <div class="card-body">
                 <form:form modelAttribute="verifyAccountForm" action="${verifyAccount}" method="post">
                     <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
-                    <h1 class="h3 mb-3 text-center"><spring:message code="ResetPassword" /></h1>
+                    <h1 class="h3 mb-3 text-center"><spring:message code="VerifyAccount" /></h1>
                     <input hidden="hidden" value="${hash}" name="hash">
                     <div class="mb-3">
                         <form:label path="token" class="form-label">Token</form:label>

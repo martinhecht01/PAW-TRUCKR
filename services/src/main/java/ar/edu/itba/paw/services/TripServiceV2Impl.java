@@ -8,9 +8,10 @@ import ar.edu.itba.paw.models.Pair;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.services.Exceptions.ProposalNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.time.LocalDateTime;
@@ -33,6 +34,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         this.ms = ms;
     }
 
+    @Transactional
     @Override
     public Trip createTrip(int truckerId,
                            String licensePlate,
@@ -47,6 +49,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.createTrip(truckerId, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
     }
 
+    @Transactional
     @Override
     public Trip createRequest(int providerId,
                               int weight,
@@ -60,12 +63,14 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.createRequest(providerId, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
     }
 
+    @Transactional
     @Override
     public void confirmTrip(int tripId, int userId) {
         tripDaoV2.confirmTrip(tripId, userId);
         //TODO: ENVIAR EMAIL A AMBOS CON EL NUEVO STATUS DEL VIAJE
     }
 
+    @Transactional
     @Override
     public Proposal createProposal(int tripId, int userId, String description) {
         Proposal proposal = tripDaoV2.createProposal(tripId, userId, description);
@@ -78,14 +83,11 @@ public class TripServiceV2Impl implements TripServiceV2 {
         else
             uid = trip.getProviderId();
 
-        try{
-            ms.sendProposalEmail(userDao.getUserById(uid).orElseThrow(NoSuchElementException::new), proposal);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+        ms.sendProposalEmail(userDao.getUserById(uid).orElseThrow(NoSuchElementException::new), proposal);
         return proposal;
     }
 
+    @Transactional
     @Override
     public void acceptProposal(int proposalId) {
         //TODO: AGARRAR EXCEPTION EN EL CONTROLLER.
@@ -97,57 +99,71 @@ public class TripServiceV2Impl implements TripServiceV2 {
         User trucker = userDao.getUserById(trip.getTruckerId()).orElseThrow(ProposalNotFoundException::new);
         User provider = userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
 
-        try{ms.sendTripEmail(trucker, provider,trip);}
-        catch(MessagingException e){
-            throw new RuntimeException();
-        }
-        try{ms.sendTripEmail(provider, trucker,trip);}
-        catch(MessagingException e){
-            throw new RuntimeException();
-        }
-
+        ms.sendTripEmail(trucker, provider,trip);
+        ms.sendTripEmail(provider, trucker,trip);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Proposal> getAllProposalsForTripId(int tripId) {
         return tripDaoV2.getAllProposalsForTripId(tripId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Proposal> getProposalById(int proposalId) {
         return tripDaoV2.getProposalById(proposalId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
         return tripDaoV2.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
         return tripDaoV2.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate) {
+        return tripDaoV2.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate) {
+        return tripDaoV2.getActiveRequestsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId) {
         return tripDaoV2.getAllActiveTripsAndRequestsByUserId(userId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Trip> getTripOrRequestById(int tripId) {
         return tripDaoV2.getTripOrRequestById(tripId);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public List<Pair<Trip, Integer>> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId){
+    public List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId){
         return tripDaoV2.getAllActiveTripsOrRequestAndProposalsCount(userId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId){
         return tripDaoV2.getAllAcceptedTripsAndRequestsByUserId(userId);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid){
         return tripDaoV2.getTripOrRequestByIdAndUserId(id, userid);

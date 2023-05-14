@@ -1,13 +1,29 @@
+CREATE TABLE IF NOT EXISTS users (
+        userid SERIAL PRIMARY KEY,
+        cuit VARCHAR(255) UNIQUE,
+        email VARCHAR(255),
+        name VARCHAR(255),
+        role VARCHAR(255),
+        password VARCHAR(255),
+        accountverified BOOLEAN
+);
+
+CREATE TABLE IF NOT EXISTS passwordresets(
+        userid INT REFERENCES users(userid),
+        hash INT PRIMARY KEY,
+        createdate TIMESTAMP,
+        completed VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS securetokens(
+        userid INT REFERENCES users(userid),
+        token INT PRIMARY KEY,
+        expiredate TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS cities (
         id SERIAL PRIMARY KEY,
         name TEXT UNIQUE
-);
-
-CREATE TABLE IF NOT EXISTS users (
-        userid SERIAL PRIMARY KEY,
-        cuit VARCHAR(255) UNIQUE NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS trips (
@@ -33,6 +49,11 @@ CREATE TABLE IF NOT EXISTS proposals (
         trip_id INT NOT NULL REFERENCES trips(trip_id),
         user_id INT NOT NULL REFERENCES users(userid),
         description VARCHAR(300)
+);
+
+CREATE TABLE IF NOT EXISTS images (
+        imageid SERIAL PRIMARY KEY,
+        image BYTEA NOT NULL
 );
 
 -- INSERT INTO cities (name) VALUES
