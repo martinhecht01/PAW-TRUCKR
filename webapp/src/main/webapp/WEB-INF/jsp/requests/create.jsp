@@ -25,7 +25,13 @@
             <h4 class="card-title"><b><spring:message code="CreateRequest"/></b></h4>
         </div>
         <div class="card-body">
+            <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
             <form:errors cssClass="formError"/>
+            <div>
+                <form:label path="tripImage" class="form-label">Upload a trip image:</form:label>
+                <form:errors cssClass="formError" path="tripImage" element="p"/>
+                <form:input  path="tripImage" class= "form-control-file" type="file" accept="image/png, image/jpeg" onchange="previewImage()"/>
+            </div>
             <div class="inlineFormInputContainer">
 
                 <div class="mb-3 inlineFormInput">
@@ -108,15 +114,19 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <form:label path="tripImage" class="form-label">Upload a profile image:</form:label>
-                <form:errors cssClass="formError" path="tripImage" element="p"/>
-                <form:input  path="tripImage" class= "form-control-file" type="file" accept="image/png, image/jpeg" />
-            </div>
-            <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton"/>
+            <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton" />
         </div>
     </div>
 </form:form>
+<script>
+    function previewImage() {
+        let output = document.getElementById('imagePreview');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+            URL.revokeObjectURL(output.src)
+        }
+    }
+</script>
 <div style="margin-top: auto">
     <components:waveDivider/>
     <components:footer/>

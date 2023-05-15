@@ -61,11 +61,11 @@
     </form:form>
 </div>
 <script>
-function previewImage() {
-let output = document.getElementById('imagePreview');
-output.src = URL.createObjectURL(event.target.files[0]);
-output.onload = function() {
-URL.revokeObjectURL(output.src)
+    function previewImage() {
+        let output = document.getElementById('imagePreview');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+        URL.revokeObjectURL(output.src)
 }
 }
 </script>
