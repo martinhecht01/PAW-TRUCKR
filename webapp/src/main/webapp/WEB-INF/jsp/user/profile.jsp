@@ -28,7 +28,10 @@
         </div>
         <div class="card-body">
             <div class="text-center my-3">
-                <img id="imagePreview" src="<c:url value="/user/${currentUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
+
+                    <img id="imagePreview" src="<c:url value="/user/${currUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
+
+
             </div>
             <div>
                 <h5><b><spring:message code="Name"/></b></h5>
