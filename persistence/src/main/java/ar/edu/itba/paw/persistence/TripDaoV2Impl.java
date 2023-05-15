@@ -368,14 +368,14 @@ public class TripDaoV2Impl implements TripDaoV2 {
 
     @Override
     public void setImageId(int tripId, int imageId){
-        String sql = "UPDATE trips SET image_id = ? WHERE trip_id = ?";
+        String sql = "UPDATE trips SET imageid = ? WHERE trip_id = ?";
         jdbcTemplate.update(sql, imageId, tripId);
     }
 
     @Override
     public int getImageId(int tripId){
-        String sql = "SELECT image_id FROM trips WHERE trip_id = ?";
-        return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("image_id"), tripId).get(0);
+        String sql = "SELECT imageid FROM trips WHERE trip_id = ?";
+        return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("imageid"), tripId).get(0);
     }
 
     @Override

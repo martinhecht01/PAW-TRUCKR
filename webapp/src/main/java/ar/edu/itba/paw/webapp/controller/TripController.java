@@ -92,7 +92,7 @@ public class TripController {
 
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() || form.getTripImage().isEmpty()) {
             LOGGER.info("Error creating trip");
             return createTrip(form);
         }
@@ -114,6 +114,8 @@ public class TripController {
                 form.getCargoType(),
                 Integer.parseInt(form.getPrice())
         );
+        int imageid=is.uploadImage(form.getTripImage().getBytes());
+        ts.updateTripPicture(trip.getTripId(),imageid);
         LOGGER.info("Trip created successfully");
         return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
     }
