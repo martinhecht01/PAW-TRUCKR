@@ -157,7 +157,7 @@ public class UserController {
         }
         us.resetPassword(hash, form.getPassword());
         LOGGER.info("Password reset");
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("user/resetPasswordSuccess");
     }
 
     @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.POST)
@@ -178,7 +178,6 @@ public class UserController {
         mv.addObject("error", Boolean.parseBoolean(error));
         return mv;
     }
-
     @ModelAttribute("currentUser")
     public User getCurrentUser(){
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
