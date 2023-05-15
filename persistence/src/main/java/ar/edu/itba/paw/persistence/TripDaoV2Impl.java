@@ -148,6 +148,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
                             "UPDATE trips " +
                                     "SET trucker_confirmation = CASE " +
                                     "    WHEN trucker_confirmation = FALSE AND trucker_id = ? THEN TRUE " +
+                                    "    WHEN trucker_confirmation = FALSE AND provider_id = ? THEN TRUE " +
                                     "    ELSE trucker_confirmation " +
                                     "END, " +
                                     "provider_confirmation = CASE " +
@@ -159,8 +160,9 @@ public class TripDaoV2Impl implements TripDaoV2 {
                                     "(trucker_confirmation = FALSE OR provider_confirmation = FALSE)");
                     ps.setInt(1, userId);
                     ps.setInt(2, userId);
-                    ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-                    ps.setInt(4, tripId);
+                    ps.setInt(3, userId);
+                    ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setInt(5, tripId);
                     return ps;
                 },
                 (PreparedStatement ps) -> ps.executeUpdate()
