@@ -95,13 +95,26 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 
+    private String generateSecureTokenEmail(User user, Integer tokenValue){
+        Context context = new Context();
+        context.setVariable("user", user);
+        context.setVariable("tokenValue", tokenValue);
+        return templateEngine.process("securetoken.html", context);
+    }
     @Async
     @Override
     public void sendSecureTokenEmail(User user, Integer tokenValue) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(user.getEmail());
-        message.setSubject("Secure Token");
-        message.setText("Your secure token is: " + tokenValue);
+        String htmlContent= generateSecureTokenEmail(user,tokenValue);
+        MimeMessage message = mailSender.createMimeMessage();
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Verify Account");
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
         mailSender.send(message);
     }
 

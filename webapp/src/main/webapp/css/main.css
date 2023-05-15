@@ -182,3 +182,11 @@ footer{
 .rating input[type="radio"]:checked + label::before {
     content: "\2605";
 }
+
+.profileImage {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 10000px;
+    border:3px solid #385170;
+}

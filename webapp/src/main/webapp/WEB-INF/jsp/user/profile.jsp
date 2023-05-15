@@ -28,6 +28,9 @@
                 <h4 class="card-title"><b><spring:message code="Profile"/></b></h4>
             </div>
             <div class="card-body">
+                <div class="text-center">
+                    <img id="imagePreview" src="<c:url value="/user/${currentUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
+                </div>
                 <div>
                     <h5><b><spring:message code="Name"/></b></h5>
                     <p><c:out value="${currUser.getName()}"/></p>

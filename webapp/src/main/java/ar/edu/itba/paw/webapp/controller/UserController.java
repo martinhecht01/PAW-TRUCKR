@@ -199,10 +199,10 @@ public class UserController {
         if (errors.hasErrors()) {
             return editUserView(form);
         }
-
-        int imgId = is.uploadImage(form.getProfileImage().getBytes());
-
-        us.updateProfilePicture(getCurrentUser().getUserId(), imgId);
+        if(!form.getProfileImage().isEmpty()) {
+            int imgId = is.uploadImage(form.getProfileImage().getBytes());
+            us.updateProfilePicture(getCurrentUser().getUserId(), imgId);
+        }
         us.updateProfileName(getCurrentUser().getUserId(), form.getName());
 
 
