@@ -60,7 +60,7 @@ public class TripDaoImplTest {
         Trip trip = tripDao.createTrip(1, LICENSE_PLATE_NEW, WEIGHT, VOLUME, depDate,arrDate,  ORIGIN, DESTINATION, "Refrigerated", 200);
 
         //3 Postcondiciones
-        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "trips"));
+        Assert.assertEquals(6, JdbcTestUtils.countRowsInTable(jdbcTemplate, "trips"));
         Assert.assertEquals(LICENSE_PLATE_NEW, trip.getLicensePlate());
         Assert.assertEquals(WEIGHT, trip.getWeight());
         Assert.assertEquals(VOLUME, trip.getVolume());
@@ -84,7 +84,7 @@ public class TripDaoImplTest {
         Trip trip = tripDao.createRequest(1, WEIGHT, VOLUME, depDate,arrDate, ORIGIN, DESTINATION, TYPE, 200);
 
         //3 Postcondiciones
-        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "trips"));
+        Assert.assertEquals(6, JdbcTestUtils.countRowsInTable(jdbcTemplate, "trips"));
         Assert.assertNull(trip.getLicensePlate());
         Assert.assertEquals(WEIGHT, trip.getWeight());
         Assert.assertEquals(VOLUME, trip.getVolume());

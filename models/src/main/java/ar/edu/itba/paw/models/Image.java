@@ -12,4 +12,9 @@ public class Image {
     public byte[] getImage() {
         return image;
     }
+
+    public int getImageid() {
+        return imageid;
+    }
 }
+

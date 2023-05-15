@@ -1,3 +1,4 @@
+
 INSERT INTO users(userid, cuit, email, name, role, password, accountverified, imageid)
 VALUES (1, '20-12345678-9', 'martinh563@email.com' , 'Testing Testalez', 'PROVIDER','1234567890', false, null);
 
@@ -27,6 +28,9 @@ INSERT INTO reviews(userid, tripid, rating, review)
 VALUES (1,3,1,'No cumplio con su palabra.');
 INSERT INTO reviews(userid, tripid, rating, review)
 VALUES (1,4,2,'Mediocre trabajo. No llego a tiempo.');
+
+INSERT INTO images(imageid, image)
+VALUES(1, '');
 
 
 
