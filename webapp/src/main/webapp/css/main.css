@@ -152,12 +152,10 @@ footer{
     color: #385170;
 }
 
+
 .rating {
     display: inline-block;
-}
-
-.rating input[type="radio"] {
-    display: none;
+    direction: rtl;
 }
 
 .rating label {
@@ -165,6 +163,7 @@ footer{
     height: 1em;
     margin-right: 0.25em;
     display: inline-block;
+    cursor: pointer;
 }
 
 .rating label::before {
@@ -176,7 +175,11 @@ footer{
     display: block;
 }
 
-.rating input[type="radio"]:checked + label::before {
+.rating input[type="radio"] {
+    display: none;
+}
+
+.rating input[type="radio"]:checked ~ label::before {
     content: "\2605";
 }
 
