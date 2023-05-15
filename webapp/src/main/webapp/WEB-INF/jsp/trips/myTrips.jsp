@@ -102,6 +102,33 @@
                 </a>
             </c:forEach>
         </div>
+        <c:if test="${activeTripsAndRequests.size() != 0}">
+            <ul class="pagination justify-content-center pt-3">
+                <c:if test="${currentPageActive > 2}">
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                    </li>
+                </c:if>
+                <c:if test="${currentPageActive != 1}">
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
+                    </li>
+                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
+                </c:if>
+                <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
+                <c:if test="${currentPageActive < maxActivePage}">
+                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                    </li>
+                </c:if>
+                <c:if test="${currentPageActive < maxActivePage - 1}">
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                    </li>
+                </c:if>
+            </ul>
+        </c:if>
         <c:if test="${acceptedTripsAndRequests.size()>0}">
             <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedTrips"/></h3>
             <div class="w-100 d-flex justify-content-center">
@@ -148,6 +175,33 @@
                 </a>
             </c:forEach>
         </div>
+        <c:if test="${acceptedTripsAndRequests.size() != 0}">
+            <ul class="pagination justify-content-center pt-3">
+                <c:if test="${currentPageAccepted > 2}">
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                    </li>
+                </c:if>
+                <c:if test="${currentPageAccepted != 1}">
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">Previous</button>
+                    </li>
+                    <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">${currentPageAccepted-1}</button></li>
+                </c:if>
+                <li class="page-item disabled"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted}">${currentPageAccepted}</button></li>
+                <c:if test="${currentPageAccepted < maxAcceptedPage}">
+                    <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted + 1}">${currentPageAccepted + 1}</button></li>
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted+1}">Next</button>
+                    </li>
+                </c:if>
+                <c:if test="${currentPageAccepted < maxAcceptedPage - 1}">
+                    <li class="page-item">
+                        <button type="submit" class="page-link" name="acceptPage" value="${maxAcceptedPage}">Last</button>
+                    </li>
+                </c:if>
+            </ul>
+        </c:if>
     </div>
 
     <%--  <script>--%>

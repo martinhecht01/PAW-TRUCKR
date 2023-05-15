@@ -11,6 +11,7 @@ import ar.edu.itba.paw.webapp.form.TripForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -30,13 +31,19 @@ public class TripController {
     private final UserService us;
     private final CityService cs;
 
+    private final ImageService is;
+
     private final static Logger LOGGER = LoggerFactory.getLogger(TripController.class);
 
+    private final ReviewService revs;
+
     @Autowired
-    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs){
+    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs, ImageService is, ReviewService revs){
         this.ts = ts;
         this.us = us;
         this.cs = cs;
+        this.is = is;
+        this.revs = revs;
     }
 
     @RequestMapping("/trips/browse")
@@ -125,8 +132,9 @@ public class TripController {
         Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         User user = getUser();
-        if (user != null){
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+        if (user != null ){
+            if (trip.getProviderId() > 0)
+                mav.addObject("reviewed", revs.getReviewByTripAndUserId(id, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
             mav.addObject("userId", getUser().getUserId());
             mav.addObject("user", us.getUserById(trip.getTruckerId()).orElseThrow(UserNotFoundException :: new));
         }
@@ -148,6 +156,21 @@ public class TripController {
         mav.addObject("id", id);
         return mav;
     }
+
+    @RequestMapping(value="/trips/sendReview", method = { RequestMethod.POST })
+    public ModelAndView sendReview(@RequestParam("tripid") int tripid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
+        User user = getUser();
+        if (user == null){
+            return new ModelAndView("redirect:/login");
+        }
+        revs.createReview(tripid, userid, rating, comment);
+        if (Objects.equals(user.getRole(), "TRUCKER"))
+            return new ModelAndView("redirect:/trips/manageTrip?tripId="+ tripid);
+        else
+            return new ModelAndView("redirect:/trips/details?id="+ tripid);
+    }
+
+
 
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalid, @RequestParam("tripid") int tripid) {
@@ -178,12 +201,29 @@ public class TripController {
     }
 
     @RequestMapping("/trips/myTrips")
-    public ModelAndView myTrips(){
+    public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage){
         User user = getUser();
         LOGGER.info("User with id: {} accessing my trips page", user.getUserId());
+
+        Integer maxActivePage = ts.getTotalPagesActiveTripsOrRequests(user.getUserId());
+        Integer maxAcceptPage = ts.getTotalPagesAcceptedTripsAndRequests(user.getUserId());
+
+        if(activePage > maxActivePage || activePage < 1){
+            maxActivePage = 1;
+        }
+
+        if(acceptPage > maxAcceptPage || acceptPage < 1){
+            maxAcceptPage = 1;
+        }
+
         final ModelAndView mav = new ModelAndView("trips/myTrips");
-        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId()));
-        mav.addObject("activeTripsAndRequests", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId()));
+        mav.addObject("currentPageActive", activePage);
+        mav.addObject("maxActivePage", maxActivePage);
+
+        mav.addObject("currentPageAccepted", acceptPage);
+        mav.addObject("maxAcceptedPage", maxAcceptPage);
+        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId(), acceptPage));
+        mav.addObject("activeTripsAndRequests", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId(), activePage));
         return mav;
     }
 
@@ -195,9 +235,10 @@ public class TripController {
         Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
         if(trip.getProviderId() > 0) {
             mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
         }
-        mav.addObject("trip", trip);
+            mav.addObject("trip", trip);
+        mav.addObject("userId", userId);
         mav.addObject("offers", ts.getAllProposalsForTripId(trip.getTripId()));
         return mav;
     }
@@ -224,5 +265,13 @@ public class TripController {
         }
         return null;
     }
+
+    @RequestMapping( value = "/trips/{tripId}/tripPicture", method = {RequestMethod.GET},
+            produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    @ResponseBody
+    public byte[] profilePicture(@PathVariable(value = "tripId") int tripId){
+        return ts.getTripPicture(tripId);
+    }
+
 
 }

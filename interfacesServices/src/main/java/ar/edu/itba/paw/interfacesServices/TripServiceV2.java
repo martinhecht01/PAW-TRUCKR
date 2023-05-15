@@ -46,15 +46,21 @@ public interface TripServiceV2 {
 
     Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate);
 
-    List<Trip> getAllActiveTripsAndRequestsByUserId(Integer userId);
-
     Optional<Trip> getTripOrRequestById(int tripid);
 
     void acceptProposal(int proposalId);
 
-    List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId);
+    List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId, Integer pag);
 
-    List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId);
+    List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userId, Integer pag);
+
+    Integer getTotalPagesActiveTripsOrRequests(Integer userid);
+
+    Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
+
+    void updateTripPicture(Integer userId, Integer imageId);
+
+    byte[] getTripPicture(Integer userId);
 }
