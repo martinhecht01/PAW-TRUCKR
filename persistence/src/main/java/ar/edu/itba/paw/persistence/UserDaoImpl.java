@@ -79,6 +79,7 @@ public class UserDaoImpl implements UserDao {
         return Optional.of(hash);
     }
 
+    @Override
     public Integer createSecureToken(Integer userId, int token){
         HashMap<String, Object> data = new HashMap<>();
         data.put("userid", userId);

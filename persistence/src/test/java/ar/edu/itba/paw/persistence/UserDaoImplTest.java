@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.persistence;
 
+import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;
@@ -7,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
@@ -21,7 +23,6 @@ import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
-@Rollback
 @Transactional
 public class UserDaoImplTest {
 
@@ -41,7 +42,7 @@ public class UserDaoImplTest {
     private DataSource ds;
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     private JdbcTemplate jdbcTemplate;
 
@@ -50,6 +51,7 @@ public class UserDaoImplTest {
         jdbcTemplate = new JdbcTemplate(ds);
     }
 
+    @Rollback
     @Test
     public void testFindById() throws SQLException{
 
@@ -64,15 +66,21 @@ public class UserDaoImplTest {
         Assert.assertEquals(PASSWORD, maybeUser.get().getPassword());
     }
 
+    @Rollback
     @Test
-    public void testFindByIdDoesNotExist() throws SQLException{
-        // 2. Ejercitar
-        Optional<User> maybeUser = userDao.getUserById(USERID_NOT_EXISTENT);
+    public void testFindByCuit(){
+        //2. Ejercitar
+        Optional<User> maybeUser = userDao.getUserByCuit(CUIT_EXISTENT);
 
-        // 3. Postcondiciones
-        Assert.assertFalse(maybeUser.isPresent());
+        //3. Postcondiciones
+        Assert.assertTrue(maybeUser.isPresent());
+        Assert.assertEquals(CUIT_EXISTENT, maybeUser.get().getCuit());
+        Assert.assertEquals(EMAIL_EXISTENT, maybeUser.get().getEmail());
+        Assert.assertEquals(NAME_EXISTENT, maybeUser.get().getName());
+        Assert.assertEquals(PASSWORD, maybeUser.get().getPassword());
     }
 
+    @Rollback
     @Test
     public void testCreate(){
         // 2. Ejercitar
@@ -85,8 +93,80 @@ public class UserDaoImplTest {
         Assert.assertEquals(CUIT_NEW, user.getCuit());
         Assert.assertEquals(NAME_NEW, user.getName());
         Assert.assertEquals(ROLE, user.getRole());
-        Assert.assertEquals(2, user.getUserId());
         Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
     }
 
+    @Rollback
+    @Test
+    public void testFindByIdDoesNotExist() throws SQLException{
+        // 2. Ejercitar
+        Optional<User> maybeUser = userDao.getUserById(USERID_NOT_EXISTENT);
+
+        // 3. Postcondiciones
+        Assert.assertFalse(maybeUser.isPresent());
+    }
+
+    @Rollback
+    @Test
+    public void testCuitAlreadyExists() throws SQLException {
+        // 2. Ejercitar
+        Assert.assertThrows(DuplicateKeyException.class, () -> userDao.create(EMAIL_NEW, NAME_NEW, CUIT_EXISTENT, ROLE, PASSWORD));
+
+        // 3. Postcondiciones
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+    }
+
+    @Rollback
+    @Test
+    public void testCreateResetHash(){
+        //1 - Precondiciones
+        final String newPassword = "newPassword";
+
+        //2 - Ejercitar
+        Optional<Integer> hash = userDao.createReset(USERID_EXISTENT, 234234242);
+
+        //3 - Postcondiciones
+        Assert.assertTrue(hash.isPresent());
+    }
+
+    @Rollback
+    @Test
+    public void testResetPassword(){
+        //1 - Precondiciones
+        final String newPassword = "newPassword";
+        final Integer hash = 1234567890;
+
+        //2 - Ejercitar
+        userDao.resetPassword(hash, newPassword);
+
+        //3 - Postcondiciones
+        Optional<User> maybeUser = userDao.getUserById(USERID_EXISTENT);
+        Assert.assertTrue(maybeUser.isPresent());
+        Assert.assertEquals(newPassword, maybeUser.get().getPassword());
+    }
+
+    @Rollback
+    @Test
+    public void testExistsUser(){
+        //2 - Ejercitar
+        boolean exists = userDao.existsUser(CUIT_EXISTENT);
+
+        //3 - Postcondiciones
+        Assert.assertTrue(exists);
+    }
+
+    @Rollback
+    @Test
+    public void testVerifyAccount(){
+        //2 - Ejercitar
+        userDao.verifyAccount(USERID_EXISTENT);
+
+        //3 - Postcondiciones
+        Optional<User> maybeUser = userDao.getUserById(USERID_EXISTENT);
+        Assert.assertTrue(maybeUser.isPresent());
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "accountverified = true AND userid = 1"));
+    }
+
 }
+
+

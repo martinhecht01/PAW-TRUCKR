@@ -1,2 +1,5 @@
 INSERT INTO users(userid, cuit, email, name, role, password, accountverified, imageid)
 VALUES (1, '20-12345678-9', 'martinh563@email.com' , 'Testing Testalez', 'PROVIDER','1234567890', false, null);
+
+INSERT INTO passwordresets(userid, hash, createdate, completed)
+VALUES (1, '1234567890', CURRENT_TIMESTAMP , false);
