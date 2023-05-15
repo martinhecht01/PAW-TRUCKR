@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
 
-        ms.sendConfirmationEmail(us);
+
         createSecureToken(us.getUserId());
 
         return us;
@@ -104,8 +104,10 @@ public class UserServiceImpl implements UserService {
         Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
         if(!token.isPresent() || token.get().isExpired())
             return false;
-        else
+        else {
             userDao.verifyAccount(token.get().getUserId());
+            ms.sendConfirmationEmail(userDao.getUserById(token.get().getUserId()).get());
+        }
         return true;
     }
 
