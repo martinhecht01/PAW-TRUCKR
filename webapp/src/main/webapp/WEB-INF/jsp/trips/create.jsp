@@ -19,12 +19,15 @@
 
 <components:navBar/>
 <%--Formulario--%>
-<form:form modelAttribute="tripForm" action="${postPath}" method="post">
+<form:form modelAttribute="tripForm" action="${postPath}" method="post" enctype="multipart/form-data">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
         </div>
         <div class="card-body">
+            <form:label path="tripImage" class="form-label">Upload an image:</form:label>
+            <form:errors cssClass="formError" path="tripImage" element="p"/>
+            <form:input  path="tripImage" class= "form-control-file" type="file" accept="image/png, image/jpeg" />
             <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">

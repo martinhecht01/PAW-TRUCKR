@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
-import ar.edu.itba.paw.interfacesServices.*;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
@@ -29,6 +28,8 @@ import java.util.Objects;
 public class RequestController {
     private final TripServiceV2 ts;
 
+    private final ImageService is;
+
     private final CityService cs;
 
     private final UserService us;
@@ -38,8 +39,9 @@ public class RequestController {
     private final ReviewService revs;
 
     @Autowired
-    public RequestController(final TripServiceV2 ts, CityService cs, UserService us, ReviewService revs) {
+    public RequestController(final TripServiceV2 ts, ImageService is, CityService cs, UserService us, ReviewService revs) {
         this.ts = ts;
+        this.is = is;
         this.cs = cs;
         this.us = us;
         this.revs = revs;
@@ -105,7 +107,7 @@ public class RequestController {
 
     @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
     public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() || form.getTripImage().isEmpty()) {
             LOGGER.info("Error in create request form");
             return createRequest(form);
         }
@@ -127,6 +129,8 @@ public class RequestController {
                 form.getCargoType(),
                 Integer.parseInt(form.getMaxPrice())
         );
+        int imageid=is.uploadImage(form.getTripImage().getBytes());
+        ts.updateTripPicture(request.getTripId(),imageid);
 
         LOGGER.info("Request created successfully");
 

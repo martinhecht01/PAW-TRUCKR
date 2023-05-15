@@ -2,6 +2,11 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.annotations.DateValidation;
 import ar.edu.itba.paw.webapp.annotations.PreventPast;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import javax.validation.constraints.*;
 
 
@@ -33,6 +38,20 @@ public class RequestForm {
 
     @Size(min = 1, max = 100)
     private String destination;
+
+    @MaxFileSize(8)
+    @ImageType(types = {"image/jpeg", "image/png"})
+    //@RequireImage
+    @NotNull
+    private CommonsMultipartFile tripImage;
+
+    public CommonsMultipartFile getTripImage() {
+        return tripImage;
+    }
+
+    public void setTripImage(CommonsMultipartFile tripImage) {
+        this.tripImage = tripImage;
+    }
 
 
     public void setRequestedWeight(String availableWeight) {

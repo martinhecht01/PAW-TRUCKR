@@ -19,7 +19,7 @@
 
 <components:navBar/>
 <%--Formulario--%>
-<form:form modelAttribute="requestForm" action="${postPath}" method="post">
+<form:form modelAttribute="requestForm" action="${postPath}" method="post" enctype="multipart/form-data">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="CreateRequest"/></b></h4>
@@ -39,6 +39,7 @@
                     </form:select>
                 </div>
             </div>
+
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
@@ -107,7 +108,11 @@
                     </div>
                 </div>
             </div>
-
+            <div>
+                <form:label path="tripImage" class="form-label">Upload a profile image:</form:label>
+                <form:errors cssClass="formError" path="tripImage" element="p"/>
+                <form:input  path="tripImage" class= "form-control-file" type="file" accept="image/png, image/jpeg" />
+            </div>
             <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton"/>
         </div>
     </div>

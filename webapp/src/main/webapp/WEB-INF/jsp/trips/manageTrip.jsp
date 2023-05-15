@@ -90,7 +90,7 @@
                             <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
                         </c:if>
                         <c:if test="${!trip.trucker_confirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/>HOLA COMO ESTAS</p>
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
                         </c:if>
                         <c:if test="${trip.provider_confirmation && !trip.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
@@ -118,7 +118,7 @@
                 <c:if test="${trip.trucker_confirmation && trip.provider_confirmation }">
                     <c:if test="${reviewed == null}">
                         <c:url value="/trips/sendReview" var="reviewPath"/>
-                        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${acceptUser.userId}&rating=4">
+                        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${acceptUser.userId}">
                         <div class="card mt-4" style="width: 18rem;">
                             <div class="card-header">
                                 <h4>
@@ -126,29 +126,18 @@
                                 </h4>
                             </div>
                             <div class="card-body p-3">
-<%--                                <div id="starsAndButtons">--%>
-<%--                                    <c:set var="selectedStars" value="0" />--%>
-<%--                                    <button type="button" onclick="updateStars(-1)" class="btn-color btn mr-2">-</button>--%>
-<%--                                    <c:forEach begin="0" step="1" end="${selectedStars}">--%>
-<%--                                        <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>--%>
-<%--                                    </c:forEach>--%>
-<%--                                    <c:forEach begin="0" step="1" end="${4-selectedStars}">--%>
-<%--                                        <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>--%>
-<%--                                    </c:forEach>--%>
-<%--                                    <button type="button" onclick="updateStars(1)" class="btn-color btn ml-2">+</button>--%>
-<%--                                </div>--%>
-    <div class="rating">
-        <input type="radio" name="rating" id="star5" value="5" />
-        <label for="star5"></label>
-        <input type="radio" name="rating" id="star4" value="4" />
-        <label for="star4"></label>
-        <input type="radio" name="rating" id="star3" value="3" />
-        <label for="star3"></label>
-        <input type="radio" name="rating" id="star2" value="2" />
-        <label for="star2"></label>
-        <input type="radio" name="rating" id="star1" value="1" />
-        <label for="star1"></label>
-    </div>
+                                <div class="rating">
+                                    <input type="radio" id="star5" name="rating" value="5">
+                                    <label for="star5" title="5 stars"></label>
+                                    <input type="radio" id="star4" name="rating" value="4">
+                                    <label for="star4" title="4 stars"></label>
+                                    <input type="radio" id="star3" name="rating" value="3">
+                                    <label for="star3" title="3 stars"></label>
+                                    <input type="radio" id="star2" name="rating" value="2">
+                                    <label for="star2" title="2 stars"></label>
+                                    <input type="radio" id="star1" name="rating" value="1">
+                                    <label for="star1" title="1 star"></label>
+                                </div>
 
                                 <div class="mt-2">
                                     <spring:message var="writeReview" code="WriteReview"/>

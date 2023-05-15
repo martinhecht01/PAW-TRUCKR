@@ -146,6 +146,7 @@ public class TripDaoV2Impl implements TripDaoV2 {
                             "UPDATE trips " +
                                     "SET trucker_confirmation = CASE " +
                                     "    WHEN trucker_confirmation = FALSE AND trucker_id = ? THEN TRUE " +
+                                    "    WHEN trucker_confirmation = FALSE AND provider_id = ? THEN TRUE " +
                                     "    ELSE trucker_confirmation " +
                                     "END, " +
                                     "provider_confirmation = CASE " +
@@ -157,8 +158,9 @@ public class TripDaoV2Impl implements TripDaoV2 {
                                     "(trucker_confirmation = FALSE OR provider_confirmation = FALSE)");
                     ps.setInt(1, userId);
                     ps.setInt(2, userId);
-                    ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-                    ps.setInt(4, tripId);
+                    ps.setInt(3, userId);
+                    ps.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                    ps.setInt(5, tripId);
                     return ps;
                 },
                 (PreparedStatement ps) -> ps.executeUpdate()
@@ -364,14 +366,14 @@ public class TripDaoV2Impl implements TripDaoV2 {
 
     @Override
     public void setImageId(int tripId, int imageId){
-        String sql = "UPDATE trips SET image_id = ? WHERE trip_id = ?";
+        String sql = "UPDATE trips SET imageid = ? WHERE trip_id = ?";
         jdbcTemplate.update(sql, imageId, tripId);
     }
 
     @Override
     public int getImageId(int tripId){
-        String sql = "SELECT image_id FROM trips WHERE trip_id = ?";
-        return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("image_id"), tripId).get(0);
+        String sql = "SELECT imageid FROM trips WHERE trip_id = ?";
+        return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("imageid"), tripId).get(0);
     }
 
     @Override

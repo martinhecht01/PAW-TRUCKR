@@ -152,34 +152,34 @@ footer{
     color: #385170;
 }
 
+
 .rating {
     display: inline-block;
-}
-
-.rating input[type="radio"] {
-    display: none;
+    direction: rtl;
 }
 
 .rating label {
-    cursor: pointer;
     width: 1em;
     height: 1em;
     margin-right: 0.25em;
-    background-color: #ccc;
-    border-radius: 50%;
     display: inline-block;
+    cursor: pointer;
 }
 
 .rating label::before {
     content: "\2606";
-    color: #fff;
+    color: #142D4C;
     font-size: 1.5em;
     line-height: 1em;
     text-align: center;
     display: block;
 }
 
-.rating input[type="radio"]:checked + label::before {
+.rating input[type="radio"] {
+    display: none;
+}
+
+.rating input[type="radio"]:checked ~ label::before {
     content: "\2605";
 }
 
@@ -189,4 +189,11 @@ footer{
     object-fit: cover;
     border-radius: 10000px;
     border:3px solid #385170;
+}
+
+.profileImageNavbar {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+    border-radius: 10000px;
 }
