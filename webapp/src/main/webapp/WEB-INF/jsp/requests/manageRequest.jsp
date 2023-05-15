@@ -66,6 +66,7 @@
     </div>
     <c:if test="${request.truckerId > 0}">
       <div class="justify-content-top align-items-top px-5" >
+        <a href="<c:url value="/profile?id=${acceptUser.userId}"/>">
         <div class="card" style="width: 18rem;">
           <div class="card-header">
             <h4><spring:message code="Driver"/>:</h4>
@@ -75,6 +76,7 @@
             <p class="card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
           </div>
         </div>
+        </a>
         <div class="card mt-4" style="width: 18rem;">
           <div class="card-header">
             <h4><spring:message code="Status"/>:</h4>
@@ -109,12 +111,11 @@
             <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
           </form:form>
         </c:if>
-      </div>
     </c:if>
     <c:if test="${request.trucker_confirmation && request.provider_confirmation }">
-      <c:if test="${!reviewed}">
+      <c:if test="${reviewed == null}">
         <c:url value="/requests/sendReview" var="reviewPath"/>
-        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&reviewsenid=${userId}&reviewrecid=${acceptUser}">
+        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestId}&userid=${acceptUser.userId}&rating=4">
           <div class="card mt-4" style="width: 18rem;">
             <div class="card-header">
               <h4>
@@ -147,8 +148,12 @@
           <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
         </form:form>
       </c:if>
-      <c:if test="${reviewed}">
-        <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+      <c:if test="${reviewed != null}">
+        <div class="card mt-4" style="width: 18rem;">
+          <div class="card-body p-3">
+            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+          </div>
+        </div>
       </c:if>
     </c:if>
   <c:if test="${request.truckerId <= 0}">
@@ -158,7 +163,9 @@
         <form:form action="${acceptPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">
           <div class="card p-3" style="width: 18rem;">
             <div class="ca rd-body">
+              <a href="<c:url value="/profile?id=${offer.userId}"/>">
               <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+              </a>
               <p class="card-text"><c:out value="${offer.description}"/></p>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
               <input type="submit" class="btn btn-color" value="${reserve}"/>
@@ -168,6 +175,7 @@
       </c:forEach>
     </div>
   </c:if>
+  </div>
   </div>
 </div>
 <div style="margin-top: auto">

@@ -1,10 +1,15 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
+import ar.edu.itba.paw.models.Request;
+import ar.edu.itba.paw.interfacesServices.*;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
+import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
+import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
+import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
@@ -33,11 +38,14 @@ public class RequestController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(RequestController.class);
 
+    private final ReviewService revs;
+
     @Autowired
-    public RequestController(final TripServiceV2 ts, CityService cs, UserService us) {
+    public RequestController(final TripServiceV2 ts, CityService cs, UserService us, ReviewService revs) {
         this.ts = ts;
         this.cs = cs;
         this.us = us;
+        this.revs = revs;
     }
 
     @RequestMapping("/requests/browse")
@@ -146,6 +154,19 @@ public class RequestController {
         return mav;
     }
 
+    @RequestMapping(value="/requests/sendReview", method = { RequestMethod.POST })
+    public ModelAndView sendReview(@RequestParam("requestid") int requestid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
+        User user = getUser();
+        if (user == null){
+            return new ModelAndView("redirect:/login");
+        }
+        revs.createReview(requestid, userid, rating, comment);
+        if (Objects.equals(user.getRole(), "PROVIDER"))
+            return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestid);
+        else
+            return new ModelAndView("redirect:/requests/details?id="+ requestid);
+    }
+
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
@@ -243,7 +264,7 @@ public class RequestController {
 
         if(request.getTruckerId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, request.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
         }
 
         mav.addObject("request", request);
