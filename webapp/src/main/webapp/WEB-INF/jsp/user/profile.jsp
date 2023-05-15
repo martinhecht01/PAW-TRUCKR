@@ -22,7 +22,7 @@
 <body class="bodyContent">
 <components:navBar/>
 <div class="m-auto w-50">
-    <div class="card">
+    <div class="card mt-5">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="Profile"/></b></h4>
         </div>
@@ -57,19 +57,6 @@
                     </div>
                 </c:if>
             </div>
-            <div>
-                <h5><b><spring:message code="Email"/></b></h5>
-                <p><c:out value="${currUser.getEmail()}"/></p>
-            </div>
-            <div>
-                <h5><b><spring:message code="Role"/></b></h5>
-                <p><c:out value="${currUser.getRole()}"/></p>
-            </div>
-            <c:if test="${currUser.cuit == currentUser.cuit}">
-                <div>
-                    <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
-                </div>
-            </c:if>
         </div>
     </div>
     <div class="card mt-5">
