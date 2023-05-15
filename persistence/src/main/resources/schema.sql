@@ -1,3 +1,9 @@
+CREATE TABLE IF NOT EXISTS images (
+                                          imageid SERIAL PRIMARY KEY,
+                                          image BYTEA NOT NULL
+);
+
+
 CREATE TABLE IF NOT EXISTS users (
         userid SERIAL PRIMARY KEY,
         cuit VARCHAR(255) UNIQUE,
@@ -53,10 +59,7 @@ CREATE TABLE IF NOT EXISTS proposals (
         description VARCHAR(300)
 );
 
-CREATE TABLE IF NOT EXISTS images (
-        imageid SERIAL PRIMARY KEY,
-        image BYTEA NOT NULL
-);
+
 
 
 CREATE TABLE IF NOT EXISTS reviews (
