@@ -29,9 +29,9 @@
                         <img id="imagePreview" src="<c:url value="/user/${currentUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
                     </div>
                     <div>
-                        <form:label path="profileImage" class="form-label">Upload a profile image:</form:label>
+                        <form:label path="profileImage" class="form-label"><spring:message code="uploadProfile"/></form:label>
                         <form:errors cssClass="formError" path="profileImage" element="p"/>
-                        <form:input  path="profileImage" class= "form-control-file" type="file" accept="image/png, image/jpeg" onchange="previewImage()" />
+                        <form:input  path="profileImage" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()" />
                     </div>
                 </div>
                 <div>
@@ -61,11 +61,11 @@
     </form:form>
 </div>
 <script>
-function previewImage() {
-let output = document.getElementById('imagePreview');
-output.src = URL.createObjectURL(event.target.files[0]);
-output.onload = function() {
-URL.revokeObjectURL(output.src)
+    function previewImage() {
+        let output = document.getElementById('imagePreview');
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function() {
+        URL.revokeObjectURL(output.src)
 }
 }
 </script>
