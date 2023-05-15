@@ -151,3 +151,11 @@ footer{
 .star {
     color: #385170;
 }
+
+.profileImage {
+    height: 200px;
+    width: 200px;
+    object-fit: cover;
+    border-radius: 10000px;
+    border:3px solid black;
+}
