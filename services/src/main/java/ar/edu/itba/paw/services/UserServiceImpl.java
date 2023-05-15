@@ -8,6 +8,8 @@ import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,8 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
     private final UserDao userDao;
     private final MailService ms;
     private final ImageDao imageDao;
@@ -48,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
 
-        ms.sendConfirmationEmail(us);
+
         createSecureToken(us.getUserId());
 
         return us;
@@ -104,8 +108,10 @@ public class UserServiceImpl implements UserService {
         Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
         if(!token.isPresent() || token.get().isExpired())
             return false;
-        else
+        else {
             userDao.verifyAccount(token.get().getUserId());
+            ms.sendConfirmationEmail(userDao.getUserById(token.get().getUserId()).get());
+        }
         return true;
     }
 

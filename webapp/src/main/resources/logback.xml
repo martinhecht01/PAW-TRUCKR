@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Este archivo es encontrado por logback automaticamente para autoconfigurarse -->
 
-<!--
-    Logging circular: la idea es que pongamos una cantidad fija de tamaño de disco que usan los logs. De esta forma
-    sabemos que no van a explotar los logs en tamaño, cosa que podría dejarnos sin disco y por ende romper la bd.
-    A medida que se escriben logs nuevos entonces, se van borrando los viejos. Para usar esto conviene usar un
-    nivel de logging bajo, como WARN o ERROR, ya que DEBUG printea una cantidad insólita de cosas.
-    También, debemos logear no a la consola, sino a un archivo.
- -->
 <!--Consignas:
     usar multiples niveles de login
     en las excepciones usar el parametro final new RuntimeException() para que imprima el stack trace

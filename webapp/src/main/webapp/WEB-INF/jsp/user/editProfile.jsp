@@ -35,21 +35,20 @@
                     </div>
                 </div>
                 <div>
-                    <h5><b>Name:</b></h5>
-                    <form:label path="name" class="form-label"><spring:message code="Name"/></form:label>
+                    <h5><b><spring:message code="Name"/>:</b></h5>
                     <form:errors cssClass="formError" path="name" element="p"/>
                     <form:input type="text" class="form-control" path="name" placeholder="${currentUser.getName()}"/>
                 </div>
                 <div>
-                    <h5><b>Cuit:</b></h5>
+                    <h5><b><spring:message code="Cuit"/>:</b></h5>
                     <p><c:out value="${currentUser.getCuit()}"/></p>
                 </div>
                 <div>
-                    <h5><b>Email:</b></h5>
+                    <h5><b><spring:message code="Email"/></b></h5>
                     <p><c:out value="${currentUser.getEmail()}"/></p>
                 </div>
                 <div>
-                    <h5><b>Role:</b></h5>
+                    <h5><b><spring:message code="Role"/></b></h5>
                     <p><c:out value="${currentRole}"/></p>
                 </div>
                 <div>
