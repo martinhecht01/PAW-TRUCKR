@@ -52,8 +52,11 @@
                     <h5><b>Role:</b></h5>
                     <p><c:out value="${currentRole}"/></p>
                 </div>
+                <div>
+                    <button class="w-100 btn btn-lg btn-color" type="submit">Submit</button>
+                </div>
             </div>
-            <button class="w-100 btn btn-lg btn-color" type="submit">Submit</button>
+
         </div>
     </main>
     </form:form>
