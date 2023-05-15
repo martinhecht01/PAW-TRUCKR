@@ -115,16 +115,11 @@
     <c:if test="${request.trucker_confirmation && request.provider_confirmation }">
       <c:if test="${reviewed == null}">
         <c:url value="/requests/sendReview" var="reviewPath"/>
-        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.requestId}&userid=${acceptUser.userId}&rating=4">
+        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${acceptUser.userId}&rating=4">
           <div class="card mt-4" style="width: 18rem;">
             <div class="card-header">
               <h4>
-                <c:if test="${currentRole == 'TRUCKER'}">
-                  <spring:message code="ReviewProvider"/>
-                </c:if>
-                <c:if test="${currentRole == 'PROVIDER'}">
-                  <spring:message code="ReviewTrucker"/>
-                </c:if>
+                  <spring:message code="Review"/>
               </h4>
             </div>
             <div class="card-body p-3">

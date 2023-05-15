@@ -44,9 +44,11 @@
                     <h5><b><spring:message code="Role"/></b></h5>
                     <p><c:out value="${currUser.getRole()}"/></p>
                 </div>
-                <div>
-                    <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
-                </div>
+                <c:if test="${currUser.cuit == currentUser.cuit}">
+                    <div>
+                        <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
+                    </div>
+                </c:if>
             </div>
         </div>
         <div class="card">

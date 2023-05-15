@@ -90,7 +90,7 @@
                             <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
                         </c:if>
                         <c:if test="${!trip.trucker_confirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
+                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/>HOLA COMO ESTAS</p>
                         </c:if>
                         <c:if test="${trip.provider_confirmation && !trip.trucker_confirmation}">
                             <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
@@ -115,19 +115,14 @@
                         <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
                     </form:form>
                 </c:if>
-                <c:if test="${trip.senderConfirmation && trip.receiverConfirmation }">
+                <c:if test="${trip.trucker_confirmation && trip.provider_confirmation }">
                     <c:if test="${reviewed == null}">
                         <c:url value="/trips/sendReview" var="reviewPath"/>
                         <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${acceptUser.userId}&rating=4">
                         <div class="card mt-4" style="width: 18rem;">
                             <div class="card-header">
                                 <h4>
-                                    <c:if test="${currentRole == 'TRUCKER'}">
-                                        <spring:message code="ReviewProvider"/>
-                                    </c:if>
-                                    <c:if test="${currentRole == 'PROVIDER'}">
-                                        <spring:message code="ReviewTrucker"/>
-                                    </c:if>
+                                        <spring:message code="Review"/>
                                 </h4>
                             </div>
                             <div class="card-body p-3">
@@ -182,7 +177,7 @@
                 <form:form action="${postPath}?proposalid=${offer.proposalId}&tripid=${offer.tripId}" method="post">
                 <div class="card p-3" style="width: 18rem;">
                     <div class="card-body">
-                        <a href="<c:url value="/profile?id=${offer.userid}"/>">
+                        <a href="<c:url value="/profile?id=${offer.userId}"/>">
                         <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
                         </a>
                         <p class="card-text"><c:out value="${offer.description}"/></p>

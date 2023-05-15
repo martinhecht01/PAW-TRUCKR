@@ -1,4 +1,4 @@
-package ar.edu.itba.persistence;
+package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
 import ar.edu.itba.paw.models.Review;
@@ -32,15 +32,6 @@ public class ReviewDaoImpl implements ReviewDao {
     @Autowired
     public ReviewDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
-        jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS reviews (\n" +
-                "  userid INT ,\n" +
-                "  tripid INT ,\n" +
-                "  rating FLOAT CHECK(rating<=5 AND rating>=0),\n" +
-                "  review VARCHAR(400),\n" +
-                "  PRIMARY KEY(userid,tripid),\n" +
-                "  FOREIGN KEY (userid) REFERENCES users(userid),\n" +
-                "  FOREIGN KEY (tripid) REFERENCES trips(tripid)\n" +
-                ");");
         this.jdbcInsertReviews = new SimpleJdbcInsert(ds).withTableName("reviews").usingColumns("userid","tripid","rating","review");
     }
 

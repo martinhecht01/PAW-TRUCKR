@@ -133,8 +133,8 @@ public class TripController {
         mav.addObject("trip", trip);
         User user = getUser();
         if (user != null ){
-            if (trip.getAcceptUserId() > 0)
-                mav.addObject("reviewed", revs.getReviewByTripAndUserId(id, trip.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
+            if (trip.getProviderId() > 0)
+                mav.addObject("reviewed", revs.getReviewByTripAndUserId(id, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
             mav.addObject("userId", getUser().getUserId());
             mav.addObject("user", us.getUserById(trip.getTruckerId()).orElseThrow(UserNotFoundException :: new));
         }
@@ -235,7 +235,7 @@ public class TripController {
         Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
         if(trip.getProviderId() > 0) {
             mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
+            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
         }
             mav.addObject("trip", trip);
         mav.addObject("userId", userId);

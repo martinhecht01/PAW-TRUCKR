@@ -1,15 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
-import ar.edu.itba.paw.models.Request;
 import ar.edu.itba.paw.interfacesServices.*;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.exception.RequestNotFoundException;
-import ar.edu.itba.paw.webapp.exception.TripNotFoundException;
-import ar.edu.itba.paw.webapp.exception.UserNotFoundException;
+
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
@@ -264,7 +261,7 @@ public class RequestController {
 
         if(request.getTruckerId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, request.getAcceptUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, request.getTruckerId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
         }
 
         mav.addObject("request", request);
