@@ -161,18 +161,15 @@ footer{
 }
 
 .rating label {
-    cursor: pointer;
     width: 1em;
     height: 1em;
     margin-right: 0.25em;
-    background-color: #ccc;
-    border-radius: 50%;
     display: inline-block;
 }
 
 .rating label::before {
     content: "\2606";
-    color: #fff;
+    color: #142D4C;
     font-size: 1.5em;
     line-height: 1em;
     text-align: center;
