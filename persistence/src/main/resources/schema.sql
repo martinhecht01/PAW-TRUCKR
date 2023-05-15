@@ -1,3 +1,8 @@
+CREATE TABLE IF NOT EXISTS images (
+        imageid SERIAL PRIMARY KEY,
+        image BYTEA NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS users (
         userid SERIAL PRIMARY KEY,
         cuit VARCHAR(255) UNIQUE,
@@ -6,7 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
         role VARCHAR(255),
         password VARCHAR(255),
         accountverified BOOLEAN,
-        imageid int references images(imageid)
+        imageid INT REFERENCES images(imageid)
 );
 
 CREATE TABLE IF NOT EXISTS passwordresets(
@@ -53,20 +58,15 @@ CREATE TABLE IF NOT EXISTS proposals (
         description VARCHAR(300)
 );
 
-CREATE TABLE IF NOT EXISTS images (
-        imageid SERIAL PRIMARY KEY,
-        image BYTEA NOT NULL
-);
-
 
 CREATE TABLE IF NOT EXISTS reviews (
-                                           userid INT ,
-                                           tripid INT ,
-                                           rating FLOAT CHECK(rating<=5 AND rating>=0),
-                                           review VARCHAR(400),
-                                           PRIMARY KEY(userid,tripid),
-                                           FOREIGN KEY (userid) REFERENCES users(userid),
-                                           FOREIGN KEY (tripid) REFERENCES trips(trip_id)
+        userid INT ,
+        tripid INT ,
+        rating FLOAT CHECK(rating<=5 AND rating>=0),
+        review VARCHAR(400),
+        PRIMARY KEY(userid,tripid),
+        FOREIGN KEY (userid) REFERENCES users(userid),
+        FOREIGN KEY (tripid) REFERENCES trips(trip_id)
 );
 
 CREATE TABLE IF NOT EXISTS cities(

@@ -4,8 +4,6 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
-import com.sun.org.slf4j.internal.Logger;
-import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -62,10 +60,10 @@ public class TripDaoV2Impl implements TripDaoV2 {
     );
 
 
-    private static Integer ITEMS_PER_PAGE = 12;
+    private static final Integer ITEMS_PER_PAGE = 12;
 
-    private static String TRIP_TYPE = "TRIP";
-    private static String REQUEST_TYPE = "REQUEST";
+    private static final String TRIP_TYPE = "TRIP";
+    private static final String REQUEST_TYPE = "REQUEST";
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcTripInsert;
     private final SimpleJdbcInsert jdbcProposalInsert;

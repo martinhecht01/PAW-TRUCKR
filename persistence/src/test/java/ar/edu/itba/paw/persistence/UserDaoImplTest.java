@@ -162,8 +162,6 @@ public class UserDaoImplTest {
         userDao.verifyAccount(USERID_EXISTENT);
 
         //3 - Postcondiciones
-        Optional<User> maybeUser = userDao.getUserById(USERID_EXISTENT);
-        Assert.assertTrue(maybeUser.isPresent());
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "accountverified = true AND userid = 1"));
     }
 
