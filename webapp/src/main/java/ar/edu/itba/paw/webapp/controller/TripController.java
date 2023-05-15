@@ -35,12 +35,15 @@ public class TripController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TripController.class);
 
+    private final ReviewService revs;
+
     @Autowired
-    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs, ImageService is){
+    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs, ImageService is, ReviewService revs){
         this.ts = ts;
         this.us = us;
         this.cs = cs;
         this.is = is;
+        this.revs = revs;
     }
 
     @RequestMapping("/trips/browse")
@@ -129,8 +132,9 @@ public class TripController {
         Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         User user = getUser();
-        if (user != null){
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+        if (user != null ){
+            if (trip.getProviderId() > 0)
+                mav.addObject("reviewed", revs.getReviewByTripAndUserId(id, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
             mav.addObject("userId", getUser().getUserId());
             mav.addObject("user", us.getUserById(trip.getTruckerId()).orElseThrow(UserNotFoundException :: new));
         }
@@ -152,6 +156,21 @@ public class TripController {
         mav.addObject("id", id);
         return mav;
     }
+
+    @RequestMapping(value="/trips/sendReview", method = { RequestMethod.POST })
+    public ModelAndView sendReview(@RequestParam("tripid") int tripid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
+        User user = getUser();
+        if (user == null){
+            return new ModelAndView("redirect:/login");
+        }
+        revs.createReview(tripid, userid, rating, comment);
+        if (Objects.equals(user.getRole(), "TRUCKER"))
+            return new ModelAndView("redirect:/trips/manageTrip?tripId="+ tripid);
+        else
+            return new ModelAndView("redirect:/trips/details?id="+ tripid);
+    }
+
+
 
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalid, @RequestParam("tripid") int tripid) {
@@ -216,9 +235,10 @@ public class TripController {
         Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
         if(trip.getProviderId() > 0) {
             mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este trip de este usuario
+            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
         }
-        mav.addObject("trip", trip);
+            mav.addObject("trip", trip);
+        mav.addObject("userId", userId);
         mav.addObject("offers", ts.getAllProposalsForTripId(trip.getTripId()));
         return mav;
     }

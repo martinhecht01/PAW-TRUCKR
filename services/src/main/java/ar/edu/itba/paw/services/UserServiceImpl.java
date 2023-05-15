@@ -132,6 +132,7 @@ public class UserServiceImpl implements UserService {
         return userDao.existsUser(cuit);
     }
 
+
     @Override
     public void updateProfilePicture(Integer userId, Integer imageId) {
     	userDao.setImageId(userId, imageId);

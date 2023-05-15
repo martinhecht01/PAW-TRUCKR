@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.ImageService;
+import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
@@ -33,11 +34,13 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService us;
     private final ImageService is;
+    private final ReviewService revs;
 
     @Autowired
-    public UserController(final UserService us, ImageService is){
+    public UserController(final UserService us, ImageService is, ReviewService revs){
         this.us = us;
         this.is = is;
+        this.revs = revs;
     }
 
 
@@ -92,11 +95,23 @@ public class UserController {
 
 
     @RequestMapping("/profile")
-    public ModelAndView profile() {
+    public ModelAndView profile(@RequestParam(required = false) Integer id) {
         LOGGER.info("Accessing profile page");
         final ModelAndView mav = new ModelAndView("user/profile");
 
-       // mav.addObject("user", us.findById(userId).orElseThrow(UserNotFoundException::new));
+        if (id == null){
+            mav.addObject("userRating", revs.getUserRating(getCurrentUser().getUserId()));
+            mav.addObject("userReviews", revs.getUserReviews(getCurrentUser().getUserId()));
+            mav.addObject("currUser", getCurrentUser());
+        }
+        else{
+            User currUser = us.getUserById(id).orElseThrow(UserNotFoundException::new);
+            mav.addObject("userRating", revs.getUserRating(currUser.getUserId()));
+            mav.addObject("userReviews", revs.getUserReviews(currUser.getUserId()));
+            mav.addObject("currUser", currUser);
+        }
+
+
 
         return mav;
     }

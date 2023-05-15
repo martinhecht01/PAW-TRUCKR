@@ -76,7 +76,7 @@
                 <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
                     <div class="card browseCards" style="width: 20rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="Reserve"/></b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
@@ -85,7 +85,13 @@
                             </div>
                             <div>
                                 <spring:message code="Reserve" var="reserve"/>
-                                <input type="submit" class="btn btn-color" value="${reserve}"/>
+
+                                <c:if test="${currentRole == ''}">
+                                    <a href="/login" class="btn btn-color">${reserve}</a>
+                                </c:if>
+                                <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
+                                    <input type="submit" class="btn btn-color" value="${reserve}"/>
+                                </c:if>
                             </div>
                         </div>
                     </div>

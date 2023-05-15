@@ -10,14 +10,19 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/css/userControl.css"/>" rel="stylesheet"/>
 
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+    <symbol id="star-fill" viewBox="0 0 16 16">
+        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+    </symbol>
+</svg>
 
 <head>
     <title>Truckr</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body class="bodyContent">
 <components:navBar/>
-<div class="w-75 m-auto pt-5">
-    <main class="form-signin m-auto">
+<div class="m-auto pt-5">
+    <main class="form-signin m-auto" style="display: flex;gap: 15%;">
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title"><b><spring:message code="Profile"/></b></h4>
@@ -28,25 +33,48 @@
                 </div>
                 <div>
                     <h5><b><spring:message code="Name"/></b></h5>
-                    <p><c:out value="${currentUser.getName()}"/></p>
+                    <p><c:out value="${currUser.getName()}"/></p>
                 </div>
                 <div>
                     <h5><b><spring:message code="Cuit"/></b></h5>
-                    <p><c:out value="${currentUser.getCuit()}"/></p>
+                    <p><c:out value="${currUser.getCuit()}"/></p>
                 </div>
                 <div>
                     <h5><b><spring:message code="Email"/></b></h5>
-                    <p><c:out value="${currentUser.getEmail()}"/></p>
+                    <p><c:out value="${currUser.getEmail()}"/></p>
                 </div>
                 <div>
                     <h5><b><spring:message code="Role"/></b></h5>
-                    <p><c:out value="${currentRole}"/></p>
+                    <p><c:out value="${currUser.getRole()}"/></p>
                 </div>
-                <div>
-                    <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
-                </div>
+                <c:if test="${currUser.cuit == currentUser.cuit}">
+                    <div>
+                        <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
+                    </div>
+                </c:if>
             </div>
-
+        </div>
+        <div class="card">
+            <div class="card-header" style="display: inline-flex">
+                <h4 class="card-title"><b><c:out value="${currUser.getName()}"/> </b></h4>
+                <h4><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:out value="${userRating}"/></h4>
+            </div>
+            <div class="card-body">
+                <c:if test="${userReviews.size() == 0}">
+                    <p><b><spring:message code="NoReviewsYet"/></b></p>
+                </c:if>
+                <ul class="list-group list-group-flush">
+                <c:forEach items="${userReviews}" var="review">
+                    <li class="list-group-item">
+                        <h5><b><c:out value="${review.rating}"/> <svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                        </b></h5>
+                        <c:if test="${review.review != ''}">
+                            <p><c:out value="${review.review}"/></p>
+                        </c:if>
+                    </li>
+                </c:forEach>
+                </ul>
+            </div>
         </div>
     </main>
 </div>

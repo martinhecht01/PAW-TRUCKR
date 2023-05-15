@@ -4,6 +4,8 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.Pair;
+import com.sun.org.slf4j.internal.Logger;
+import com.sun.org.slf4j.internal.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -373,4 +375,20 @@ public class TripDaoV2Impl implements TripDaoV2 {
         String sql = "SELECT image_id FROM trips WHERE trip_id = ?";
         return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("image_id"), tripId).get(0);
     }
+
+    @Override
+    public void cleanExpiredTripsAndItsProposals(){
+        String sql1 = "DELETE FROM proposals WHERE trip_id IN (SELECT trip_id FROM trips WHERE departure_date < now() AND trucker_id IS NULL OR provider_id IS NULL)";
+        Integer proposalsDeleted = jdbcTemplate.update(sql1);
+        String sql2 = "DELETE FROM trips WHERE departure_date < now() AND trucker_id IS NULL OR provider_id IS NULL";
+        Integer tripsDeleted = jdbcTemplate.update(sql2);
+        //TODO: LOG THIS
+    }
+
+    @Override
+    public List<Trip> getTripsWithPendingProviderConfirmation(){
+        String sql = "SELECT * FROM TRIPS WHERE trucker_confirmation = true AND provider_confirmation = false";
+        return jdbcTemplate.query(sql, TRIP_ROW_MAPPER);
+    }
+
 }

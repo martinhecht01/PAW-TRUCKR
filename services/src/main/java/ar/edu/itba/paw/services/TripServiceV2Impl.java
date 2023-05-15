@@ -10,9 +10,12 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,7 +32,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
     private final MailService ms;
 
     @Autowired
-    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, ImageDao imageDao, MailService ms){
+    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, ImageDao imageDao, MailService ms) {
         this.tripDaoV2 = tripDaoV2;
         this.userDao = userDao;
         this.imageDao = imageDao;
@@ -189,10 +192,25 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
 //    @Async
 //    @Scheduled(cron = "0 0 0 * * ?") // runs every day
-//    protected void cleanTrips(){
-//        System.out.println("Cleaning Trips");
+//    protected void cleanExpiredTrips(){
+//        System.out.println("CLEANING EXPIRED TRIPS");
 //        tripDaoV2.cleanExpiredTripsAndItsProposals();
-//        System.out.println("Cleaning Finished");
+//        System.out.println("CLEANING FINISHED");
+//    }
+//
+//
+//    @Async
+//    @Scheduled(cron = "0 0 0 * * ?") // runs every day
+//    protected void confirmTripsWithoutProviderConfirmation(){
+//        System.out.println("CONFIRMING TRIPS WITHOUT PROVIDER CONFIRMATION");
+//
+//        List<Trip> trips = tripDaoV2.getTripsWithPendingProviderConfirmation();
+//
+//        for(Trip trip : trips)
+//            if(Duration.between(trip.getConfirmation_date(), LocalDateTime.now()).toDays() >= 10)
+//                tripDaoV2.confirmTrip(trip.getTripId(), trip.getProviderId());
+//
+//        System.out.println("CONFIRMATION FINISHED");
 //    }
 
 }

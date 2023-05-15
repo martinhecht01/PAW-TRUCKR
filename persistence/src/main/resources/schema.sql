@@ -58,6 +58,22 @@ CREATE TABLE IF NOT EXISTS images (
         image BYTEA NOT NULL
 );
 
+
+CREATE TABLE IF NOT EXISTS reviews (
+                                           userid INT ,
+                                           tripid INT ,
+                                           rating FLOAT CHECK(rating<=5 AND rating>=0),
+                                           review VARCHAR(400),
+                                           PRIMARY KEY(userid,tripid),
+                                           FOREIGN KEY (userid) REFERENCES users(userid),
+                                           FOREIGN KEY (tripid) REFERENCES trips(trip_id)
+);
+
+CREATE TABLE IF NOT EXISTS cities(
+        id SERIAL PRIMARY KEY,
+        name TEXT UNIQUE
+);
+
 -- INSERT INTO cities (name) VALUES
 --     ('Azul'),
 --     ('Bahía Blanca'),
