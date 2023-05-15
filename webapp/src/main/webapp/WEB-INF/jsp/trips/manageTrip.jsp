@@ -76,6 +76,7 @@
         </div>
         <c:if test="${trip.acceptUserId > 0}">
             <div class="justify-content-top align-items-top px-5" >
+                <a href="<c:url value="/profile?id=${acceptUser.userId}"/>">
                 <div class="card" style="width: 18rem;">
                     <div class="card-header">
                         <h4><spring:message code="AcceptedBy"/>: </h4>
@@ -85,6 +86,7 @@
                         <p class="card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
                     </div>
                 </div>
+                </a>
                 <div class="card mt-4" style="width: 18rem;">
                     <div class="card-header">
                         <h4><spring:message code="Status"/>:</h4>
@@ -130,17 +132,29 @@
                                 </h4>
                             </div>
                             <div class="card-body p-3">
-                                <div id="starsAndButtons">
-                                    <c:set var="selectedStars" value="0" />
-                                    <button type="button" onclick="updateStars(-1)" class="btn-color btn mr-2">-</button>
-                                    <c:forEach begin="0" step="1" end="${selectedStars}">
-                                        <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>
-                                    </c:forEach>
-                                    <c:forEach begin="0" step="1" end="${4-selectedStars}">
-                                        <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>
-                                    </c:forEach>
-                                    <button type="button" onclick="updateStars(1)" class="btn-color btn ml-2">+</button>
-                                </div>
+<%--                                <div id="starsAndButtons">--%>
+<%--                                    <c:set var="selectedStars" value="0" />--%>
+<%--                                    <button type="button" onclick="updateStars(-1)" class="btn-color btn mr-2">-</button>--%>
+<%--                                    <c:forEach begin="0" step="1" end="${selectedStars}">--%>
+<%--                                        <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star-fill"></use></svg>--%>
+<%--                                    </c:forEach>--%>
+<%--                                    <c:forEach begin="0" step="1" end="${4-selectedStars}">--%>
+<%--                                        <svg width="1em" height="1em" class="rating-stars"><use class="star" xlink:href="#star"></use></svg>--%>
+<%--                                    </c:forEach>--%>
+<%--                                    <button type="button" onclick="updateStars(1)" class="btn-color btn ml-2">+</button>--%>
+<%--                                </div>--%>
+    <div class="rating">
+        <input type="radio" name="rating" id="star5" value="5" />
+        <label for="star5"></label>
+        <input type="radio" name="rating" id="star4" value="4" />
+        <label for="star4"></label>
+        <input type="radio" name="rating" id="star3" value="3" />
+        <label for="star3"></label>
+        <input type="radio" name="rating" id="star2" value="2" />
+        <label for="star2"></label>
+        <input type="radio" name="rating" id="star1" value="1" />
+        <label for="star1"></label>
+    </div>
 
                                 <div class="mt-2">
                                     <spring:message var="writeReview" code="WriteReview"/>
@@ -169,7 +183,9 @@
                 <form:form action="${postPath}?proposalid=${offer.proposalid}&tripid=${offer.tripid}" method="post">
                 <div class="card p-3" style="width: 18rem;">
                     <div class="card-body">
+                        <a href="<c:url value="/profile?id=${offer.userid}"/>">
                         <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+                        </a>
                         <p class="card-text"><c:out value="${offer.description}"/></p>
                         <spring:message code="Trips.AcceptProposal" var="reserve"/>
                         <input type="submit" class="btn btn-color" value="${reserve}"/>
@@ -190,16 +206,12 @@
 </html>
 
 <script>
-    function updateStars(change) {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                document.getElementById('starsAndButtons').innerHTML = xhr.responseText;
-            }
-        };
-        xhr.open('GET', 'updateStars.jsp?change=' + change, true);
-        xhr.send();
-    }
+    $(function() {
+        $('.rating input[type="radio"]').on('change', function() {
+            var rating = $(this).val();
+            $('input[name="rating_value"]').val(rating);
+        });
+    });
 </script>
 
 

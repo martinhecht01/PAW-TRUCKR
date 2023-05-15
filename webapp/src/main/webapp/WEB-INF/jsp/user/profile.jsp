@@ -30,25 +30,25 @@
             <div class="card-body">
                 <div>
                     <h5><b>Name:</b></h5>
-                    <p><c:out value="${currentUser.getName()}"/></p>
+                    <p><c:out value="${currUser.getName()}"/></p>
                 </div>
                 <div>
                     <h5><b>Cuit:</b></h5>
-                    <p><c:out value="${currentUser.getCuit()}"/></p>
+                    <p><c:out value="${currUser.getCuit()}"/></p>
                 </div>
                 <div>
                     <h5><b>Email:</b></h5>
-                    <p><c:out value="${currentUser.getEmail()}"/></p>
+                    <p><c:out value="${currUser.getEmail()}"/></p>
                 </div>
                 <div>
                     <h5><b>Role:</b></h5>
-                    <p><c:out value="${currentRole}"/></p>
+                    <p><c:out value="${currUser.getRole()}"/></p>
                 </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header" style="display: inline-flex">
-                <h4 class="card-title"><b><c:out value="${currentUser.name}"/> </b></h4>
+                <h4 class="card-title"><b><c:out value="${currUser.getName()}"/> </b></h4>
                 <h4><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:out value="${userRating}"/></h4>
             </div>
             <div class="card-body">

@@ -72,6 +72,7 @@
     </div>
     <c:if test="${request.acceptUserId > 0}">
       <div class="justify-content-top align-items-top px-5" >
+        <a href="<c:url value="/profile?id=${acceptUser.userId}"/>">
         <div class="card" style="width: 18rem;">
           <div class="card-header">
             <h4><spring:message code="Driver"/>:</h4>
@@ -81,6 +82,7 @@
             <p class="card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
           </div>
         </div>
+        </a>
         <div class="card mt-4" style="width: 18rem;">
           <div class="card-header">
             <h4><spring:message code="Status"/>:</h4>
@@ -162,7 +164,9 @@
         <form:form action="${postPath}?proposalid=${offer.proposalid}&requestid=${offer.requestid}" method="post">
           <div class="card p-3" style="width: 18rem;">
             <div class="ca rd-body">
+              <a href="<c:url value="/profile?id=${offer.userId}"/>">
               <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+              </a>
               <p class="card-text"><c:out value="${offer.description}"/></p>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
               <input type="submit" class="btn btn-color" value="${reserve}"/>
