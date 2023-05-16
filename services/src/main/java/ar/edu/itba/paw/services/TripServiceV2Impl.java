@@ -9,6 +9,8 @@ import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,6 +25,9 @@ import java.util.Optional;
 
 @Service
 public class TripServiceV2Impl implements TripServiceV2 {
+
+    Logger LOGGER = LoggerFactory.getLogger(TripServiceV2Impl.class);
+
     private final TripDaoV2 tripDaoV2;
 
     private final UserDao userDao;
@@ -80,7 +85,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
     public Proposal createProposal(int tripId, int userId, String description) {
         Proposal proposal = tripDaoV2.createProposal(tripId, userId, description);
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        System.out.println("LLEGUE ACA 1");
+        LOGGER.debug("Trip: " + trip.toString() +", Proposal: " + proposal.toString());
 
         Integer uid;
         if(trip.getTruckerId() > 0)
