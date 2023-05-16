@@ -67,4 +67,6 @@ public interface TripDaoV2 {
     void cleanExpiredTripsAndItsProposals();
 
     List<Trip> getTripsWithPendingProviderConfirmation();
+
+//    boolean existsTrip(int tripId);
 }

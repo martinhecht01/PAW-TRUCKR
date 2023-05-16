@@ -388,4 +388,11 @@ public class TripDaoV2Impl implements TripDaoV2 {
         return jdbcTemplate.query(sql, TRIP_ROW_MAPPER);
     }
 
+//    @Override
+//    public boolean existsTrip(int tripId) {
+//        String sql = "SELECT COUNT(*) FROM trips WHERE trip_id = ?";
+//        int count = jdbcTemplate.queryForObject(sql, Integer.class, tripId);
+//        return count > 0;
+//    }
+
 }
