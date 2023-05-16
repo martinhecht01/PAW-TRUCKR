@@ -95,9 +95,9 @@ public class MailServiceImpl implements MailService {
             helper.setSubject("Trip completed");
             helper.setText(htmlContent, true);
         }catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending completion email to: " + user.getEmail());
         }
-
+        LOGGER.info("Sending completion email to: " + user.getEmail());
         mailSender.send(message);
     }
     private String generateTripStatus(User user, Trip completed) {
@@ -107,7 +107,6 @@ public class MailServiceImpl implements MailService {
         context.setVariable("trip", completed);
         return templateEngine.process("statusupdate.html", context);
     }
-    //@Async
     @Override
     @Async
     public void sendStatusEmail(User user, Trip trip){
@@ -120,10 +119,10 @@ public class MailServiceImpl implements MailService {
             helper.setSubject("Trip Status Changed");
             helper.setText(htmlContent, true);
         }catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending status email to: " + user.getEmail());
         }
 
-        LOGGER.info("Sending trip email to: " + user.getEmail());
+        LOGGER.info("Sending status email to: " + user.getEmail());
         mailSender.send(message);
     }
 
