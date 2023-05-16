@@ -65,7 +65,7 @@
                   </span>
               </h5>
             </c:if>
-            <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img-top" alt="...">
+            <img src="<c:url value="/trips/${object.tripId}/tripPicture"/>" class="card-img-top" alt="...">
             <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${object.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${object.type}"></use></svg><spring:message code="${object.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
@@ -138,7 +138,7 @@
       <c:forEach var="object" items="${acceptedTripsAndRequests}">
         <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${object.tripId}"/>">
           <div class="card m-3" style="width: 25rem;">
-            <img src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img-top" alt="...">
+            <img src="<c:url value="/trips/${object.tripId}/tripPicture"/>" class="card-img-top" alt="...">
             <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${object.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${object.type}"></use></svg><spring:message code="${object.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">

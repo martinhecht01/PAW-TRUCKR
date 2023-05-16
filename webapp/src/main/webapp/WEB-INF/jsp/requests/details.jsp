@@ -35,7 +35,7 @@
                 <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
             </div>
             <div class="card-body">
-                <img src="https://s3-eu-central-1.amazonaws.com/eurosender-blog/wp-content/uploads/2019/09/11094537/pallets-min.jpg" class="card-img rounded-start p-3"  alt="TruckImg">
+                <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-srequested">
                     <tr>
                         <td><b><spring:message code="Driver"/></b></td>
