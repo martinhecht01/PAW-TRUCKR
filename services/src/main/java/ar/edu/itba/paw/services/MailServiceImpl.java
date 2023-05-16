@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.models.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -14,7 +13,6 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.time.LocalDateTime;
 
 
 @Service
@@ -64,6 +62,55 @@ public class MailServiceImpl implements MailService {
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Trip confirmation");
+            helper.setText(htmlContent, true);
+        }catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
+        mailSender.send(message);
+    }
+    private String generateTripCompletion(User user, Trip completed) {
+        Context context = new Context();
+        context.setVariable("user", user);
+
+        context.setVariable("trip", completed);
+        return templateEngine.process("tripcomplete.html", context);
+    }
+    //@Async
+    @Override
+    public void sendCompletionEmail(User user, Trip trip){
+        String htmlContent = generateTripCompletion(user,trip);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip completed");
+            helper.setText(htmlContent, true);
+        }catch (MessagingException e) {
+            //TODO: LOG DEL ERROR
+        }
+
+        mailSender.send(message);
+    }
+    private String generateTripStatus(User user, Trip completed) {
+        Context context = new Context();
+        context.setVariable("user", user);
+
+        context.setVariable("trip", completed);
+        return templateEngine.process("statusupdate.html", context);
+    }
+    //@Async
+    @Override
+    @Async
+    public void sendStatusEmail(User user, Trip trip){
+        String htmlContent = generateTripStatus(user,trip);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip Status Changed");
             helper.setText(htmlContent, true);
         }catch (MessagingException e) {
             //TODO: LOG DEL ERROR

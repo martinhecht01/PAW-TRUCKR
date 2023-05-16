@@ -72,7 +72,16 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Override
     public void confirmTrip(int tripId, int userId) {
         tripDaoV2.confirmTrip(tripId, userId);
-        //TODO: ENVIAR EMAIL A AMBOS CON EL NUEVO STATUS DEL VIAJE
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        User trucker = userDao.getUserById(trip.getTruckerId()).orElseThrow(NoSuchElementException::new);
+        User provider = userDao.getUserById(trip.getProviderId()).orElseThrow(NoSuchElementException::new);
+        if(trip.getProvider_confirmation()){
+            ms.sendCompletionEmail(trucker, trip);
+            ms.sendCompletionEmail(provider,trip);
+        }else{
+            ms.sendStatusEmail(trucker, trip);
+            ms.sendStatusEmail(provider,trip);
+        }
     }
 
     @Transactional
@@ -83,6 +92,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         System.out.println("LLEGUE ACA 1");
 
         Integer uid;
+        System.out.println(trip.getTruckerId());
         if(trip.getTruckerId() > 0)
             uid = trip.getTruckerId();
         else
