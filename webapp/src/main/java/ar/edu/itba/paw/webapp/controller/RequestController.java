@@ -144,13 +144,9 @@ public class RequestController {
         final ModelAndView mav = new ModelAndView("requests/details");
         LOGGER.info("Accessing request details page with id: {} ", id);
         Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
-        User user = getUser();
 
-//        if (user != null){
-//            mav.addObject("reviewed", false); //TODO: fijarse si existe una review para este request de este usuario
-//            mav.addObject("user", us.getUserById(request.getUserId()).orElseThrow(UserNotFoundException :: new));
-//            mav.addObject("userId", getUser().getUserId());
-//        }
+        mav.addObject("provider", us.getUserById(request.getProviderId()).orElseThrow(UserNotFoundException :: new));
+
         mav.addObject("request", request);
         return mav;
     }

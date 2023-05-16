@@ -133,13 +133,9 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/details");
         Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
-        User user = getUser();
-        if (user != null ){
-            if (trip.getProviderId() > 0)
-                mav.addObject("reviewed", revs.getReviewByTripAndUserId(id, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
-            mav.addObject("userId", getUser().getUserId());
-            mav.addObject("user", us.getUserById(trip.getTruckerId()).orElseThrow(UserNotFoundException :: new));
-        }
+
+        mav.addObject("trucker", us.getUserById(trip.getTruckerId()).orElseThrow(UserNotFoundException :: new));
+
         return mav;
     }
 
