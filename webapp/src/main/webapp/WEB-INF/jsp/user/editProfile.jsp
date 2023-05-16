@@ -13,7 +13,9 @@
 <c:url value="/profile/edit" var="postPath"/>
 <head>
     <title>Truckr</title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
+
 <body class="bodyContent">
 <components:navBar/>
 <div class="w-75 m-auto pt-5">
@@ -28,31 +30,32 @@
                     <div class="text-center">
                         <img id="imagePreview" src="<c:url value="/user/${currentUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
                     </div>
-                    <div>
-                        <form:label path="profileImage" class="form-label"><spring:message code="uploadProfile"/></form:label>
-                        <form:errors cssClass="formError" path="profileImage" element="p"/>
-                        <form:input  path="profileImage" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()" />
-                    </div>
+
                 </div>
-                <div>
+                <div class="my-4">
+                    <h5><b><spring:message code="uploadProfile"/>:</b></h5>
+                    <form:errors cssClass="formError" path="profileImage" element="p"/>
+                    <form:input  path="profileImage" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()" />
+                </div>
+                <div class="my-4">
                     <h5><b><spring:message code="Name"/>:</b></h5>
                     <form:errors cssClass="formError" path="name" element="p"/>
-                    <form:input type="text" class="form-control" path="name" placeholder="${currentUser.getName()}"/>
+                    <form:input type="text" class="form-control" path="name" value="${currentUser.name}" placeholder="${currentUser.name}"/>
                 </div>
-                <div>
+                <div class="my-4">
                     <h5><b><spring:message code="Cuit"/>:</b></h5>
                     <p><c:out value="${currentUser.getCuit()}"/></p>
                 </div>
-                <div>
+                <div class="my-4">
                     <h5><b><spring:message code="Email"/></b></h5>
                     <p><c:out value="${currentUser.getEmail()}"/></p>
                 </div>
-                <div>
+                <div class="my-4">
                     <h5><b><spring:message code="Role"/></b></h5>
                     <p><c:out value="${currentRole}"/></p>
                 </div>
                 <div>
-                    <button class="w-100 btn btn-lg btn-color" type="submit">Submit</button>
+                    <button class="w-100 btn btn-lg btn-color" type="submit"><spring:message code="saveEdits"/></button>
                 </div>
             </div>
 

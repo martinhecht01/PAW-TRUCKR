@@ -12,6 +12,12 @@ public interface MailService {
     void sendConfirmationEmail(User user);
     void sendResetEmail(User user,Integer hash);
     void sendProposalRequestEmail(User user, Proposal proposal);
-    void sendRequestEmail(User user,User user2, Trip request);
+
+    void sendCompletionEmail(User user, Trip trip);
+
+
+    void sendStatusEmail(User user, Trip trip);
+
+    void sendRequestEmail(User user, User user2, Trip request);
     void sendSecureTokenEmail(User user, Integer tokenValue);
 }

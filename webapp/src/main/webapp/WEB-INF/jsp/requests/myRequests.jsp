@@ -14,7 +14,8 @@
 
 <head>
   <title><spring:message code="Explore"/></title>
-  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent" style="height: 100%">
 <components:navBar/>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -101,7 +102,7 @@
         </a>
       </c:forEach>
     </div>
-    <c:if test="${activeTripsAndRequests.size() != 0}">
+    <c:if test="${activeTripsAndRequests.size() > 0}">
       <ul class="pagination justify-content-center pt-3">
         <c:if test="${currentPageActive > 2}">
           <li class="page-item">
@@ -174,7 +175,7 @@
         </a>
       </c:forEach>
     </div>
-    <c:if test="${acceptedTripsAndRequests.size() != 0}">
+    <c:if test="${acceptedTripsAndRequests.size() > 0}">
       <ul class="pagination justify-content-center pt-3">
         <c:if test="${currentPageAccepted > 2}">
           <li class="page-item">

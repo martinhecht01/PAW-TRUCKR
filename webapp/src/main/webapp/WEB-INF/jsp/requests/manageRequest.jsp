@@ -11,7 +11,8 @@
 
 <head>
   <title><spring:message code="TripDetails"/></title>
-  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent">
 
 
@@ -66,17 +67,17 @@
     </div>
     <c:if test="${request.truckerId > 0}">
       <div class="justify-content-top align-items-top px-5" >
-        <a href="<c:url value="/profile?id=${acceptUser.userId}"/>">
         <div class="card" style="width: 18rem;">
           <div class="card-header">
             <h4><spring:message code="Driver"/>:</h4>
           </div>
           <div class="card-body p-3">
-            <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/></h5>
-            <p class="card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
+            <a  class="text-decoration-none" href="<c:url value="/profile?id=${acceptUser.userId}"/>">
+              <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/></h5>
+              <p class="text-dark card-text text-decoration-none"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
+            </a>
           </div>
         </div>
-        </a>
         <div class="card mt-4" style="width: 18rem;">
           <div class="card-header">
             <h4><spring:message code="Status"/>:</h4>
@@ -97,9 +98,9 @@
             <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
               <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
             </c:if>
-            <c:if test="${trip.confirmation_date != null}">
+            <c:if test="${request.confirmation_date != null}">
               <div class="pt-2 pb-0 w-100 text-center">
-                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmation_date.dayOfMonth}/${trip.confirmation_date.monthValue}/${trip.confirmation_date.year}</span>
+                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmation_date.dayOfMonth}/${request.confirmation_date.monthValue}/${request.confirmation_date.year}</span>
               </div>
             </c:if>
           </div>
@@ -148,13 +149,20 @@
       <c:if test="${reviewed != null}">
         <div class="card mt-4" style="width: 18rem;">
           <div class="card-body p-3">
-            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+            <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>
           </div>
         </div>
       </c:if>
     </c:if>
   <c:if test="${request.truckerId <= 0}">
     <div class="justify-content-top align-items-top px-5" >
+      <c:if test="${offers.size() == 0}">
+        <div class="card p-3" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title"><spring:message code="NoProposalsYet"/></h5>
+          </div>
+        </div>
+      </c:if>
       <c:forEach var="offer" items="${offers}">
         <c:url value="/requests/acceptProposal" var="acceptPath"/>
         <form:form action="${acceptPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">

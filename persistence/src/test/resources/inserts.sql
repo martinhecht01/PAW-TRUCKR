@@ -30,7 +30,7 @@ INSERT INTO reviews(userid, tripid, rating, review)
 VALUES (1,4,2,'Mediocre trabajo. No llego a tiempo.');
 
 INSERT INTO images(imageid, image)
-VALUES(1, '');
+VALUES(1, X'A0010203040506');
 
 
 

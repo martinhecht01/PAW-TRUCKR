@@ -13,7 +13,8 @@
 
 <head>
     <title><spring:message code="CreateRequest"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent">
 <c:url value="/requests/create" var="postPath"/>
 
@@ -26,15 +27,7 @@
         </div>
         <div class="card-body">
             <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
-            <form:errors cssClass="formError"/>
-            <div><form:label path="tripImage" class="form-label"><spring:message code="uploadTrip"/></form:label></div>
-            <div  class="input-group mb-3">
-
-                <form:errors cssClass="formError" path="tripImage" element="p"/>
-                <form:input  path="tripImage" id="inputGroupFile01" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()"/>
-            </div>
             <div class="inlineFormInputContainer">
-
                 <div class="mb-3 inlineFormInput">
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
@@ -44,6 +37,15 @@
                         <form:option value="Hazardous"><spring:message code="CreateTripCargoTypeHazardous"/></form:option>
                         <form:option value="Normal"><spring:message code="CreateTripCargoTypeNormal"/></form:option>
                     </form:select>
+                </div>
+                <div class="mb-3 inlineFormInput">
+                    <form:errors cssClass="formError"/>
+                    <form:label path="tripImage" class="form-label"><spring:message code="uploadTrip"/></form:label><br>
+
+                    <div  class="input-group">
+                        <form:errors cssClass="formError" path="tripImage" element="p"/>
+                        <form:input  path="tripImage" id="inputGroupFile01" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()"/>
+                    </div>
                 </div>
             </div>
 

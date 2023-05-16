@@ -13,7 +13,9 @@
 
 <head>
   <title>Truckr</title>
-  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+  <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
+
 <body class="bodyContent">
 <components:navBar/>
 <div class="w-75 m-auto">

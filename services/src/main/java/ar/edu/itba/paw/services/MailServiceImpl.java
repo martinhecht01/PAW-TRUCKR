@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -16,7 +15,6 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.time.LocalDateTime;
 
 
 @Service
@@ -76,7 +74,55 @@ public class MailServiceImpl implements MailService {
             LOGGER.error("Error while sending trip email to: " + user.getEmail());
         }
 
-        LOGGER.info("Sending trip email to: " + user.getEmail());
+        mailSender.send(message);
+    }
+    private String generateTripCompletion(User user, Trip completed) {
+        Context context = new Context();
+        context.setVariable("user", user);
+
+        context.setVariable("trip", completed);
+        return templateEngine.process("tripcomplete.html", context);
+    }
+    //@Async
+    @Override
+    public void sendCompletionEmail(User user, Trip trip){
+        String htmlContent = generateTripCompletion(user,trip);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip completed");
+            helper.setText(htmlContent, true);
+        }catch (MessagingException e) {
+            LOGGER.error("Error while sending completion email to: " + user.getEmail());
+        }
+        LOGGER.info("Sending completion email to: " + user.getEmail());
+        mailSender.send(message);
+    }
+    private String generateTripStatus(User user, Trip completed) {
+        Context context = new Context();
+        context.setVariable("user", user);
+
+        context.setVariable("trip", completed);
+        return templateEngine.process("statusupdate.html", context);
+    }
+    @Override
+    @Async
+    public void sendStatusEmail(User user, Trip trip){
+        String htmlContent = generateTripStatus(user,trip);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try{
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            helper.setSubject("Trip Status Changed");
+            helper.setText(htmlContent, true);
+        }catch (MessagingException e) {
+            LOGGER.error("Error while sending status email to: " + user.getEmail());
+        }
+
+        LOGGER.info("Sending status email to: " + user.getEmail());
         mailSender.send(message);
     }
 
@@ -205,7 +251,7 @@ public class MailServiceImpl implements MailService {
         } catch (MessagingException e) {
             LOGGER.error("Error while sending reset email to: " + user.getEmail());
         }
-        
+
         LOGGER.info("Sending reset email to: " + user.getEmail());
         mailSender.send(message);
     }

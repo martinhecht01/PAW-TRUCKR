@@ -18,7 +18,9 @@
 
 <head>
     <title>Truckr</title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
+
 <body class="bodyContent">
 <components:navBar/>
 <div class="m-auto w-50">
@@ -32,10 +34,6 @@
                     <img id="imagePreview" src="<c:url value="/user/${currUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
 
 
-            </div>
-            <div>
-                <h5><b><spring:message code="Name"/></b></h5>
-                <p><c:out value="${currUser.getName()}"/></p>
             </div>
             <div>
                 <h5><b><spring:message code="Name"/></b></h5>

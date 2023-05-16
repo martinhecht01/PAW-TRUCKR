@@ -41,10 +41,9 @@ public class TripForm {
     @Size(min = 1, max = 100)
     private String destination;
 
+    @RequireImage
     @MaxFileSize(8)
     @ImageType(types = {"image/jpeg", "image/png"})
-    //@RequireImage
-    @NotNull
     private CommonsMultipartFile tripImage;
 
     public CommonsMultipartFile getTripImage() {
