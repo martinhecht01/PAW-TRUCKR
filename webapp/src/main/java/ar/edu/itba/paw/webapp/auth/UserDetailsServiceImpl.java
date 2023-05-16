@@ -31,10 +31,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         final Collection<GrantedAuthority> authorities = new HashSet<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
-        return new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), authorities);
+        return new AuthUserDetailsImpl(user.getCuit(),
+                user.getPassword(),
+                user.getAccountVerified(),
+                true,
+                true,
+                true,
+                authorities);
     }
-
-
 
 }
 

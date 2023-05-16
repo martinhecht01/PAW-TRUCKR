@@ -23,7 +23,6 @@
   <main class="form-signin m-auto">
     <div class="card py-1 mt-5">
       <div class="card-body">
-          <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
           <c:if test="${!emailSent}">
             <h1 class="h3 mb-3 text-center"><spring:message code="ResetPassword" /></h1>
             <form:form action="${resetPassword}" method="post">

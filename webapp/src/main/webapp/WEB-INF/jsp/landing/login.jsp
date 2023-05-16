@@ -28,7 +28,7 @@
                     <p class="text-center"><spring:message code="NewToTruckr"/> <a href="<c:url value="/register"/>"><spring:message code="SignUpNow"/></a></p>
                     <div class="mb-3">
                         <c:if test="${error}">
-                            <p class="formError mb-3"><spring:message code="LoginError"/></p>
+                            <p class="formError mb-3"><spring:message code="${errorCode}"/></p>
                         </c:if>
                         <label class="form-label" for="cuit">Cuit</label>
                         <input type="text" class="form-control" id="cuit" maxlength="13" name="cuit" placeholder="00-00000000-0"/>

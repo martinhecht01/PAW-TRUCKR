@@ -39,10 +39,6 @@
                 <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-srequested">
                     <tr>
-                        <td><b><spring:message code="Driver"/></b></td>
-                        <td><c:out value="${user.name.toUpperCase()}"/></td>
-                    </tr>
-                    <tr>
                         <td><b><spring:message code="CargoType"/></b></td>
                         <td><spring:message code="${request.type}" htmlEscape="true" /></td>
                     </tr>
@@ -73,9 +69,20 @@
 
         </div>
         <c:if test="${request.truckerId <= 0}">
-            <div class="inlineFormInputContainer justify-content-top align-items-top" >
+            <div class="justify-content-top align-items-top" >
+                <div class="card mx-4" style="width: 20rem;">
+                    <div class="card-header">
+                        <h4><spring:message code="Provider"/>:</h4>
+                    </div>
+                    <div class="card-body p-3">
+                        <a  class="text-decoration-none" href="<c:url value="/profile?id=${provider.userId}"/>">
+                            <h5 class="card-title"><c:out value="${provider.name.toUpperCase()}"/></h5>
+                            <p class="text-dark card-text text-decoration-none"><c:out value="${provider.email.toLowerCase()}"/></p>
+                        </a>
+                    </div>
+                </div>
                 <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
-                    <div class="card browseCards" style="width: 20rem;">
+                    <div class="card mx-4 mt-4" style="width: 20rem;">
                         <div class="card-header">
                             <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
                         </div>

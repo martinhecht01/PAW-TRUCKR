@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 
@@ -16,7 +15,6 @@ import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,8 +23,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.validation.Valid;
-import java.io.IOException;
+import java.util.Objects;
 
 @Controller
 public class UserController {
@@ -55,16 +54,15 @@ public class UserController {
     public ModelAndView login(@RequestParam(value = "error", required = false) final String error){
         LOGGER.info("Accessing login page");
         ModelAndView mav = new ModelAndView("landing/login");
-        mav.addObject("error", error != null);
+
+        if(error != null && (Objects.equals(error, "InvalidCredentials") || Objects.equals(error, "UserNotVerified"))){
+            mav.addObject("errorCode", error);
+            mav.addObject("error", true);
+        } else{
+            mav.addObject("error", false);
+        }
         return mav;
     }
-
-// TODO revisar este metodo
-
-//    @RequestMapping(value = "/createUser", method = { RequestMethod.GET })
-//    public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form) {
-//        return new ModelAndView("redirect:/explore");
-//    }
 
     @RequestMapping("/register")
     public ModelAndView register(@RequestParam(value = "success", required = false) boolean success, @RequestParam(value = "email", required = false) String email, @ModelAttribute("userForm") final UserForm form) {
