@@ -23,9 +23,8 @@ import java.util.Optional;
 @ContextConfiguration(classes = TestConfig.class)
 @Transactional
 public class ImageDaoImplTest {
-    private static final byte[] IMAGE_EXISTENT = new byte[0];
-    private static final byte[] IMAGE_NOT_EXISTENT = new byte[10];
-
+    private static final byte[] IMAGE_EXISTENT = new byte[] {(byte) 0xa0,0x01, 0x02, 0x03, 0x04, 0x05, 0x06};
+    private static final byte[] IMAGE_NOT_EXISTENT = new byte[] {(byte) 0xa0,0x01, (byte) 0xb7, 0x56, (byte) 0x90, (byte) 0xbd, 0x08,0x78, (byte) 0x93};
 
     private static final int IMAGEID_NOT_EXISTENT = 2;
 
@@ -58,13 +57,34 @@ public class ImageDaoImplTest {
         Assert.assertEquals(IMAGEID_NOT_EXISTENT, newImageId);
     }
 
-//    @Rollback
-//    @Test
-//    public void testGetImage(){
-//        Optional<Image> image = imageDao.getImage(IMAGEID_EXISTENT);
-//
-//        Assert.assertTrue(image.isPresent());
-//
-//        Assert.assertArrayEquals(IMAGE_EXISTENT, image);
-//    }
+    @Rollback
+    @Test
+    public void testGetImage(){
+        Optional<Image> image = imageDao.getImage(IMAGEID_EXISTENT);
+
+        Assert.assertTrue(image.isPresent());
+
+        Assert.assertArrayEquals(jdbcTemplate.queryForObject("SELECT image FROM images WHERE imageid = ?", byte[].class, IMAGEID_EXISTENT), image.get().getImage());
+    }
+
+    @Rollback
+    @Test
+    public void testUpdateImage(){
+        imageDao.updateImage(IMAGE_NOT_EXISTENT, IMAGEID_EXISTENT);
+
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "images", "imageid = " + IMAGEID_EXISTENT));
+
+        byte[] maybeImage = jdbcTemplate.queryForObject("SELECT image FROM images WHERE imageid = ?", byte[].class, IMAGEID_EXISTENT);
+
+        Assert.assertArrayEquals(IMAGE_NOT_EXISTENT, maybeImage);
+    }
+
+    @Rollback
+    @Test
+    public void testGetImageFailed(){
+
+        Optional<Image> image = imageDao.getImage(IMAGEID_NOT_EXISTENT);
+
+        Assert.assertFalse(image.isPresent());
+    }
 }

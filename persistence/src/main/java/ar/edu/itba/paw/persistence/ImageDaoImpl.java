@@ -9,6 +9,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.HashMap;
 
@@ -35,7 +37,10 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public Optional<Image> getImage(final int imageid){
-        return Optional.ofNullable(jdbcTemplate.queryForObject("SELECT * FROM images WHERE imageid = ?", IMAGE_ROW_MAPPER, imageid));
+        List<Image> maybeList = jdbcTemplate.query("SELECT * FROM images WHERE imageid = ?", IMAGE_ROW_MAPPER, imageid);
+        if (!maybeList.isEmpty())
+            return Optional.of(maybeList.get(0));
+        return Optional.empty();
     }
 
     @Override
