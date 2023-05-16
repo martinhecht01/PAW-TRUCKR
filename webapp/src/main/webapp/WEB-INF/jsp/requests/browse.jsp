@@ -36,7 +36,8 @@
 
 <head>
     <title><spring:message code="Explore"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent h-100">
 <components:navBar/>
 <form:form method="get">
@@ -51,14 +52,24 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="origin"><spring:message code="Origin"/>:</label>
-                                <input type="text" class="form-control" name="origin" id="origin" <c:if test="${origin != null && origin != ''}">value="${origin}"</c:if> placeholder="CABA"/>
+                                <select class="form-select" name="origin" id="origin">
+                                    <option value="" selected="true">-</option>
+                                    <c:forEach items="${cities}" var="city">
+                                        <option value="${city}" <c:if test="${origin == city}">selected="true"</c:if> >${city}</option>
+                                    </c:forEach>
+                                </select>
+
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="destination"><spring:message code="Destination"/>:</label>
-                                <input type="text" class="form-control" name="destination" id="destination"
-                                       <c:if test="${destination != null && destination != ''}">value="${destination}"</c:if> placeholder="CBA"/>
+                                <select class="form-select" name="destination" id="destination">
+                                    <option value="" selected="true">-</option>
+                                    <c:forEach items="${cities}" var="city">
+                                        <option value="${city}" <c:if test="${destination == city}">selected="true"</c:if> >${city}</option>
+                                    </c:forEach>
+                                </select>
                             </div>
                         </div>
                     </div>
