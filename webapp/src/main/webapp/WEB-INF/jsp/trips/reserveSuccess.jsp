@@ -5,7 +5,7 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="success" viewBox="0 0 16 16">
-        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
     </symbol>
 </svg>
 
@@ -16,7 +16,8 @@
 
 <head>
     <title><spring:message code="TripDetails"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent">
 <components:navBar/>
 <div class="m-auto text-center mt-5">
@@ -60,7 +61,7 @@
         </table>
     </div>
 </div>
-<a href="<c:url value="/explore"/>"><button value="<spring:message code="GoBack"/>" class="btn btn-color mt-3 formButton"></button></a>
+<a href="<c:url value='/explore'/>" class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
 <div style="margin-top: auto">
     <components:waveDivider/>
     <components:footer/>

@@ -2,6 +2,8 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.ImageDao;
 import ar.edu.itba.paw.models.Image;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,13 +18,18 @@ import java.util.HashMap;
 
 @Repository
 public class ImageDaoImpl implements ImageDao {
+
+    Logger LOGGER = LoggerFactory.getLogger(ImageDaoImpl.class);
+
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;
+
     @Autowired
     public ImageDaoImpl(final DataSource ds) {
         jdbcTemplate = new JdbcTemplate(ds);
         this.jdbcInsert = new SimpleJdbcInsert(ds).withTableName("images").usingGeneratedKeyColumns("imageid");
     }
+
     private final static RowMapper<Image> IMAGE_ROW_MAPPER = (rs, rowNum) -> new Image(
             rs.getInt("imageid"),
             rs.getBytes("image"));
@@ -31,7 +38,7 @@ public class ImageDaoImpl implements ImageDao {
     public int uploadImage(final byte[] image){
         final HashMap<String, Object> data = new HashMap<>();
         data.put("image", image);
-
+        LOGGER.info("Uploading image");
         return jdbcInsert.executeAndReturnKey(data).intValue();
     }
 
@@ -45,6 +52,7 @@ public class ImageDaoImpl implements ImageDao {
 
     @Override
     public void updateImage(final byte[] image, final int imageid){
+        LOGGER.info("Updating image. ImageID: {}", imageid);
         jdbcTemplate.update("UPDATE images SET image = ? WHERE imageid = ?", image, imageid);
     }
 

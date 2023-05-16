@@ -16,7 +16,7 @@
 
 <head>
     <title><spring:message code="TripDetails"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 <body class="bodyContent">
 <components:navBar/>
 <div class="m-auto text-center mt-5">
