@@ -19,6 +19,9 @@ public class RequireImageValidator implements ConstraintValidator<RequireImage, 
 
     @Override
     public boolean isValid(CommonsMultipartFile image, ConstraintValidatorContext constraintValidatorContext) {
-        return !image.isEmpty();
+        if(image==null)
+            return false;
+        else
+            return !image.isEmpty();
     }
 }
