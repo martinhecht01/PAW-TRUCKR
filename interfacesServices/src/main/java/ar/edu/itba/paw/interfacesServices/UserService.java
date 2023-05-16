@@ -17,12 +17,12 @@ public interface UserService {
 
    void createSecureToken(Integer userId);
 
-
     boolean verifyAccount(Integer tokenValue);
 
     Optional<User> getUserByCuit(String cuit);
 
     Optional<User> getUserById(int id);
+
     boolean existsUser(String cuit);
 
     void updateProfilePicture(Integer userId, Integer imageId);

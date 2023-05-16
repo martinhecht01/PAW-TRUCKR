@@ -34,6 +34,7 @@ public class TripDaoImplTest {
 
     private static final int TRIP_ID_EXISTENT = 1;
     private static final int TRIP_ID_NOT_EXISTENT = 100;
+    private static final String MESSAGE = "I would like to accept your trip";
 
     @Autowired
     private DataSource ds;
@@ -115,5 +116,37 @@ public class TripDaoImplTest {
         // 3 Postcondiciones
         Assert.assertFalse(trip.isPresent());
     }
+
+    @Rollback
+    @Test
+    public void testConfirmTrip(){
+        // 2 Ejercitar
+        tripDao.confirmTrip(TRIP_ID_EXISTENT, 1);
+
+        // 3 Postcondiciones
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_confirmation = true" ));
+    }
+
+    @Rollback
+    @Test
+    public void testConfirmTripNotExistent(){
+        //2 Ejercitar
+        tripDao.confirmTrip(TRIP_ID_NOT_EXISTENT, 1);
+
+        //3 Postcondiciones
+        Assert.assertEquals(0, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_confirmation = true" ));
+    }
+
+    @Rollback
+    @Test
+    public void testCreateProposal(){
+        //2 Ejercitar
+        tripDao.createProposal(TRIP_ID_EXISTENT, 1, MESSAGE);
+
+        //3 Postcondiciones
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "proposals"));
+    }
+
+
 
 }
