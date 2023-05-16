@@ -144,6 +144,25 @@ footer{
     display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 
+.image-wrapper-create {
+    max-width: 800px;
+    max-height: 600px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-wrapper-create img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .rating-stars {
     cursor: pointer;
 }

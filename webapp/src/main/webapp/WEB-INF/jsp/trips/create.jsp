@@ -25,7 +25,9 @@
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
         </div>
         <div class="card-body">
-            <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
+
+            <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="image-wrapper-create rounded-start p-3"  alt="TruckImg">
+
             <form:errors cssClass="formError"/>
             <div><form:label path="tripImage" class="form-label"><spring:message code="uploadTrip"/></form:label></div>
             <div  class="input-group mb-3">

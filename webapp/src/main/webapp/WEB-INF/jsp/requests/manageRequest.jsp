@@ -35,7 +35,7 @@
         <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
       </div>
       <div class="card-body">
-        <img src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
+        <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
         <table class="table table-striped">
           <tr>
             <td><b><spring:message code="CargoType"/></b></td>
@@ -97,9 +97,9 @@
             <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
               <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
             </c:if>
-            <c:if test="${trip.confirmation_date != null}">
+            <c:if test="${request.confirmation_date != null}">
               <div class="pt-2 pb-0 w-100 text-center">
-                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmation_date.dayOfMonth}/${trip.confirmation_date.monthValue}/${trip.confirmation_date.year}</span>
+                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmation_date.dayOfMonth}/${request.confirmation_date.monthValue}/${request.confirmation_date.year}</span>
               </div>
             </c:if>
           </div>
@@ -148,7 +148,7 @@
       <c:if test="${reviewed != null}">
         <div class="card mt-4" style="width: 18rem;">
           <div class="card-body p-3">
-            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+            <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>
           </div>
         </div>
       </c:if>

@@ -120,7 +120,7 @@
         <c:forEach var="trip" items="${offers}">
           <a class="text-decoration-none" href="<c:url value="/trips/details?id=${trip.tripId}"/>">
             <div class="card m-3" style="width: 25rem;">
-              <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img-top" alt="...">
+              <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img-top" alt="...">
               <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
               <div class="card-body">
                 <div class="w-100 d-flex space-apart">

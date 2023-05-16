@@ -25,7 +25,7 @@
         <div class="card-body">
             <c:if test="${!success}">
                 <h1 class="h3 my-3 text-center"><spring:message code="Register"/></h1>
-                <p class="text-center"><spring:message code="AlreadyUser"/><a href="<c:url value="/login"/>"><spring:message code="Login"/></a></p>
+                <p class="text-center"><spring:message code="AlreadyUser"/> <a href="<c:url value="/login"/>"><spring:message code="Login"/></a></p>
                 <form:form modelAttribute="userForm" action="${postPath}" method="post">
                     <div class="mb-3">
                         <form:label path="cuit" class="form-label" ><spring:message code="Cuit"/></form:label>
@@ -67,7 +67,7 @@
                         <form:input type="password" class="form-control" path="repeatPassword" placeholder="********"/>
                         <form:errors cssClass="formError"/>
                     </div>
-                    <button class="w-100 btn btn-lg btn-color" type="submit">Register</button>
+                    <button class="w-100 btn btn-lg btn-color" type="submit"><spring:message code="Register"/></button>
                 </form:form>
             </c:if>
             <c:if test="${success}">
