@@ -152,7 +152,7 @@
                     <c:if test="${reviewed != null}">
                         <div class="card mt-4" style="width: 18rem;">
                             <div class="card-body p-3">
-                                <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h4>
+                                <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>
                             </div>
                         </div>
                     </c:if>
