@@ -36,7 +36,7 @@
                 <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
             </div>
             <div class="card-body">
-                <img src="http://t2.gstatic.com/licensed-image?q=tbn:ANd9GcQNxLs9ztCGoYOAq9Lg-J6eEHaNgm1trwlfXEhXnKlvzgcztA7wunvdwbsd2vHmnORyvAYbsrpONdQxM2o96Ho" class="card-img rounded-start p-3"  alt="TruckImg">
+                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-striped">
                     <tr>
                         <td><b><spring:message code="Driver"/></b></td>
