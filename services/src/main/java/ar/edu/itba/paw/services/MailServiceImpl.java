@@ -2,6 +2,8 @@ package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.models.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.mail.javamail.JavaMailSender;
@@ -17,6 +19,8 @@ import javax.mail.internet.MimeMessage;
 
 @Service
 public class MailServiceImpl implements MailService {
+
+    Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
 
     @Autowired
     private JavaMailSender mailSender;
@@ -34,24 +38,26 @@ public class MailServiceImpl implements MailService {
         String htmlContent = generateEmailConfirmation(user);
         MimeMessage message = mailSender.createMimeMessage();
         try {
+            LOGGER.info("Preparing confirmation email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Account Confirmation");
             helper.setText(htmlContent, true);
         } catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending confirmation email to: " + user.getEmail());
         }
 
+        LOGGER.info("Sending confirmation email to: " + user.getEmail());
         mailSender.send(message);
     }
     private String generateTripConfirmation(User user,User user2, Trip confirmed) {
         Context context = new Context();
         context.setVariable("user", user);
         context.setVariable("user2", user2);
-
         context.setVariable("trip", confirmed);
         return templateEngine.process("tripconfirmation.html", context);
     }
+
     @Async
     @Override
     public void sendTripEmail(User user,User user2,Trip trip){
@@ -59,12 +65,13 @@ public class MailServiceImpl implements MailService {
         MimeMessage message = mailSender.createMimeMessage();
 
         try{
+            LOGGER.info("Preparing trip email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Trip confirmation");
             helper.setText(htmlContent, true);
         }catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending trip email to: " + user.getEmail());
         }
 
         mailSender.send(message);
@@ -116,8 +123,10 @@ public class MailServiceImpl implements MailService {
             //TODO: LOG DEL ERROR
         }
 
+        LOGGER.info("Sending trip email to: " + user.getEmail());
         mailSender.send(message);
     }
+
     private String generateRequestConfirmation(User user, User user2, Trip confirmed) {
         Context context = new Context();
         context.setVariable("user", user);
@@ -131,14 +140,16 @@ public class MailServiceImpl implements MailService {
         String htmlContent = generateRequestConfirmation(user,user2,request);
         MimeMessage message = mailSender.createMimeMessage();
         try{
+            LOGGER.info("Preparing request email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Request confirmation");
             helper.setText(htmlContent, true);
         } catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending request email to: " + user.getEmail());
         }
 
+        LOGGER.info("Sending request email to: " + user.getEmail());
         mailSender.send(message);
     }
 
@@ -154,14 +165,16 @@ public class MailServiceImpl implements MailService {
         String htmlContent= generateSecureTokenEmail(user,tokenValue);
         MimeMessage message = mailSender.createMimeMessage();
         try{
+            LOGGER.info("Preparing secure token email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Verify Account");
             helper.setText(htmlContent, true);
         } catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending secure token email to: " + user.getEmail());
         }
 
+        LOGGER.info("Sending secure token email to: " + user.getEmail());
         mailSender.send(message);
     }
 
@@ -178,16 +191,19 @@ public class MailServiceImpl implements MailService {
         String htmlContent = generateProposal(user,proposal);
         MimeMessage message = mailSender.createMimeMessage();
         try{
+            LOGGER.info("Preparing proposal email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Trip Proposal!");
             helper.setText(htmlContent, true);
         } catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending proposal email to: " + user.getEmail());
         }
 
+        LOGGER.info("Sending proposal email to: " + user.getEmail());
         mailSender.send(message);
     }
+
     private String generateProposalRequest(User user, Proposal proposal) {
         Context context = new Context();
         context.setVariable("user", user);
@@ -200,16 +216,17 @@ public class MailServiceImpl implements MailService {
     public void sendProposalRequestEmail(User user, Proposal proposal){
         String htmlContent = generateProposalRequest(user,proposal);
         MimeMessage message = mailSender.createMimeMessage();
-
         try{
+            LOGGER.info("Preparing proposal request email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Trip Proposal!");
             helper.setText(htmlContent, true);
         } catch (MessagingException e) {
-            //TODO: LOG DEL ERROR
+            LOGGER.error("Error while sending proposal request email to: " + user.getEmail());
         }
 
+        LOGGER.info("Sending proposal request email to: " + user.getEmail());
         mailSender.send(message);
     }
 
@@ -227,14 +244,16 @@ public class MailServiceImpl implements MailService {
         MimeMessage message = mailSender.createMimeMessage();
 
         try{
+            LOGGER.info("Preparing reset email");
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setTo(user.getEmail());
             helper.setSubject("Password Reset");
             helper.setText(htmlContent, true);
-        } catch (MessagingException e){
-            //TODO: LOG DEL ERROR
+        } catch (MessagingException e) {
+            LOGGER.error("Error while sending reset email to: " + user.getEmail());
         }
 
+        LOGGER.info("Sending reset email to: " + user.getEmail());
         mailSender.send(message);
     }
 

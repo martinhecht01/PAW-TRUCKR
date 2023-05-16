@@ -47,11 +47,17 @@ public class UserServiceImpl implements UserService {
     public User createUser(String email, String name, String id, String role, String password){
         this.email = email;
 
-        if(id == null || userDao.existsUser(id))
+        if(id == null) {
+            LOGGER.warn("User could not be created: id is null");
             return null;
+        }
+
+        if( userDao.existsUser(id)){
+            LOGGER.warn("User could not be created: id already exists, ID: {}", id);
+            return null;
+        }
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
-
 
         createSecureToken(us.getUserId());
 
@@ -106,8 +112,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean verifyAccount(Integer tokenValue){
         Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
-        if(!token.isPresent() || token.get().isExpired())
+        if(!token.isPresent()) {
+            LOGGER.warn("Account not verified. Token missing.");
             return false;
+        }
+
+        if(token.get().isExpired()){
+            LOGGER.warn("Account not verified. Token expired. Token: {}", tokenValue);
+            return false;
+        }
         else {
             userDao.verifyAccount(token.get().getUserId());
             ms.sendConfirmationEmail(userDao.getUserById(token.get().getUserId()).get());

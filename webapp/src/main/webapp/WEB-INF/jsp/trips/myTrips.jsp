@@ -102,7 +102,7 @@
                 </a>
             </c:forEach>
         </div>
-        <c:if test="${activeTripsAndRequests.size() != 0}">
+        <c:if test="${activeTripsAndRequests.size() > 0}">
             <ul class="pagination justify-content-center pt-3">
                 <c:if test="${currentPageActive > 2}">
                     <li class="page-item">
@@ -175,7 +175,7 @@
                 </a>
             </c:forEach>
         </div>
-        <c:if test="${acceptedTripsAndRequests.size() != 0}">
+        <c:if test="${acceptedTripsAndRequests.size() > 0}">
             <ul class="pagination justify-content-center pt-3">
                 <c:if test="${currentPageAccepted > 2}">
                     <li class="page-item">

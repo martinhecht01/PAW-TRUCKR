@@ -38,10 +38,6 @@
                 <p><c:out value="${currUser.getName()}"/></p>
             </div>
             <div>
-                <h5><b><spring:message code="Name"/></b></h5>
-                <p><c:out value="${currUser.getName()}"/></p>
-            </div>
-            <div>
                 <h5><b><spring:message code="Cuit"/></b></h5>
                 <p><c:out value="${currUser.getCuit()}"/></p>
             </div>
