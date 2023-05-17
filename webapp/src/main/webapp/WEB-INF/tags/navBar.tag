@@ -68,7 +68,7 @@
                         </a>
                     </div>
                     <ul class="navbar-nav">
-                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><img class="profileImageNavbar"  src="/user/${currentUser.getUserId()}/profilePicture"></a>
+                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><img class="profileImageNavbar" src="<c:url value="/user/${currentUser.getUserId()}/profilePicture"/>" /></a>
                     </ul>
 
                     <ul class="navbar-nav">
