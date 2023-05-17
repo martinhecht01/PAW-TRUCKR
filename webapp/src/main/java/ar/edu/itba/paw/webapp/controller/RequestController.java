@@ -144,6 +144,7 @@ public class RequestController {
         final ModelAndView mav = new ModelAndView("requests/details");
         LOGGER.info("Accessing request details page with id: {} ", id);
         Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        mav.addObject("userRating", revs.getUserRating(request.getProviderId()));
 
         mav.addObject("provider", us.getUserById(request.getProviderId()).orElseThrow(UserNotFoundException :: new));
 
@@ -262,6 +263,7 @@ public class RequestController {
         if(request.getTruckerId() > 0) {
             mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
             mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, request.getTruckerId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("userRating", revs.getUserRating(request.getTruckerId()));
         }
 
         mav.addObject("request", request);
