@@ -39,16 +39,13 @@
                     </form:select>
                 </div>
                 <div class="mb-3 inlineFormInput">
-                    <form:errors cssClass="formError"/>
                     <form:label path="tripImage" class="form-label"><spring:message code="uploadTrip"/></form:label><br>
-
+                    <form:errors cssClass="formError" path="tripImage" element="p"/>
                     <div  class="input-group">
-                        <form:errors cssClass="formError" path="tripImage" element="p"/>
                         <form:input  path="tripImage" id="inputGroupFile01" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()"/>
                     </div>
                 </div>
             </div>
-
 
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
@@ -69,6 +66,7 @@
                 </div>
             </div>
 
+            <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label for="minDepartureDate" path="minDepartureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
