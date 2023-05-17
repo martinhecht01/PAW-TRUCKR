@@ -75,6 +75,7 @@
                 <h3 class="my-3 text-center"><spring:message code="RegisterSuccess"/></h3>
                 <h5 class="text-center fw-normal my-3"><spring:message code="CheckEmailVerification"/></h5>
                 <h5 class="text-center my-3"><c:out value="${email}"/></h5>
+                <a href="<c:url value="/verifyAccount"/>" class="w-100 btn btn-lg btn-color"><spring:message code="VerifyAccount"/></a>
             </c:if>
         </div>
     </div>

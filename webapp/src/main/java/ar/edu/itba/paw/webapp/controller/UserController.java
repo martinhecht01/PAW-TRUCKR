@@ -129,7 +129,7 @@ public class UserController {
         boolean success = us.verifyAccount(Integer.parseInt(form.getToken()));
         if(!success){
             LOGGER.info("Incorrect token");
-            errors.rejectValue("token", "incorrect");
+            errors.rejectValue("token", "IncorrectToken");
             return verifyAccountView(form);
         }
         LOGGER.info("Account verified for token {}", form.getToken());
