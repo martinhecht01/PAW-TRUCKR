@@ -1,4 +1,5 @@
 package ar.edu.itba.paw.webapp.controller;
+import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import org.slf4j.Logger;
@@ -22,6 +23,17 @@ public class ExceptionController {
         final ModelAndView view = new ModelAndView("landing/error");
         view.addObject("errorCode", 404);
         view.addObject("errorMsgCode", "404TripRequestMsg");
+        view.setViewName("landing/error");
+        return view;
+    }
+
+    @ExceptionHandler(ProposalNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView noSuchProposal() {
+        LOGGER.info("Handling ProposalNotFoundException");
+        final ModelAndView view = new ModelAndView("landing/error");
+        view.addObject("errorCode", 404);
+        view.addObject("errorMsgCode", "404ProposalMsg");
         view.setViewName("landing/error");
         return view;
     }
