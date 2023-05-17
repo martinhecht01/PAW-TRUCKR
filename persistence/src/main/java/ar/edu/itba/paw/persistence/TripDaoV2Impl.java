@@ -264,13 +264,13 @@ public class TripDaoV2Impl implements TripDaoV2 {
             LOGGER.debug("Adding sort order: {} to query", sortOrder);
             //sort order asc and desc
             if (sortOrder.equals("departureDate ASC")) {
-                query = query + " ORDER BY departuredate ASC";
+                query = query + " ORDER BY departure_date ASC";
             } else if (sortOrder.equals("departureDate DESC")) {
-                query = query + " ORDER BY departuredate DESC";
+                query = query + " ORDER BY departure_date DESC";
             } else if(sortOrder.equals("arrivalDate ASC")) {
-                query = query + " ORDER BY arrivaldate ASC";
+                query = query + " ORDER BY arrival_date ASC";
             } else if(sortOrder.equals("arrivalDate DESC")) {
-                query = query + " ORDER BY arrivaldate DESC";
+                query = query + " ORDER BY arrival_date DESC";
             } else if(sortOrder.equals("price ASC")) {
                 query = query + " ORDER BY price ASC";
             } else if(sortOrder.equals("price DESC")) {

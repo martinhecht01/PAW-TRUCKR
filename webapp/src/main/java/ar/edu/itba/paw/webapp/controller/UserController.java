@@ -121,6 +121,7 @@ public class UserController {
 
     @RequestMapping(value = "/verifyAccount", method = RequestMethod.POST)
     public ModelAndView verifyAccount(@Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,final BindingResult errors){
+
         if (errors.hasErrors()) {
             LOGGER.info("Error in verify account form");
             return verifyAccountView(form);
