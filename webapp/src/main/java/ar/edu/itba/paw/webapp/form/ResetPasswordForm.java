@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.annotations.ConfirmPasswordValidation;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.ConfirmPasswordValidation;
 
 import javax.validation.constraints.Size;
 

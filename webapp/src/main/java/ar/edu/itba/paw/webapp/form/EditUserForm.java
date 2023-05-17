@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class EditUserForm {
 
     @Size(min = 6, max = 100)
-    @Pattern(regexp = "^[A-Z][a-z]*\\s[A-Z][a-z]*$")
+    @Pattern(regexp = "^[A-Za-z]+(\\s[A-Za-z]*)+$")
     private String name;
 
     @MaxFileSize(8)

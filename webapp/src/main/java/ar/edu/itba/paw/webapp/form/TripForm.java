@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.annotations.DateValidation;
-import ar.edu.itba.paw.webapp.annotations.PreventPast;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.DateValidation;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.PreventPast;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
