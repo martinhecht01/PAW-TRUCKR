@@ -10,11 +10,13 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/css/userControl.css"/>" rel="stylesheet"/>
 
-<c:url value="/profile/edit" var="postPath"/>
+
 <head>
     <title>Truckr</title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
+
+<c:url value="/profile/edit" var="postPath"/>
 
 <body class="bodyContent">
 <components:navBar/>
