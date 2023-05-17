@@ -139,17 +139,17 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User create(final String email, final String name, final String cuit, final String role, final String password) {
-        HashMap<String, String> data = new HashMap<>();
+        HashMap<String, Object> data = new HashMap<>();
         data.put("cuit", cuit);
         data.put("email", email);
         data.put("name", name);
         data.put("role", role);
         data.put("password", password);
-        data.put("accountverified", "false");
-        data.put("imageid", null);
+        data.put("accountverified", false);
+        data.put("imageid", 1);
         LOGGER.info("Creating user. CUIT: {}, EMAIL: {}, NAME: {}",cuit, email, name);
         int userId = jdbcInsertUsers.executeAndReturnKey(data).intValue();
-        return new User( userId, email, name, cuit, role, password, false,null);
+        return new User( userId, email, name, cuit, role, password, false,1);
     }
 
     @Override
