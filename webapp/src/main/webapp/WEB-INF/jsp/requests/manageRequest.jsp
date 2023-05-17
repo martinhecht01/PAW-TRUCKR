@@ -37,7 +37,7 @@
       </div>
       <div class="card-body">
         <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
-        <table class="table table-striped">
+        <table class="table">
           <tr>
             <td><b><spring:message code="CargoType"/></b></td>
             <td><spring:message code="${request.type}" htmlEscape="true" /></td>

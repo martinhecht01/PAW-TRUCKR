@@ -37,11 +37,7 @@
             </div>
             <div class="card-body">
                 <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
-                <table class="table table-striped">
-                    <tr>
-                        <td><b><spring:message code="Driver"/></b></td>
-                        <td><c:out value="${user.name.toUpperCase()}"/></td>
-                    </tr>
+                <table class="table">
                     <tr>
                         <td><b><spring:message code="CargoType"/></b></td>
                         <td><spring:message code="${trip.type}" htmlEscape="true" /></td>
@@ -74,9 +70,20 @@
             </div>
         </div>
         <c:if test="${trip.providerId <= 0}">
-            <div class="inlineFormInputContainer justify-content-top align-items-top" >
+            <div class="justify-content-top align-items-top" >
+                <div class="card mx-4" style="width: 20rem;">
+                    <div class="card-header">
+                        <h4><spring:message code="Driver"/>:</h4>
+                    </div>
+                    <div class="card-body p-3">
+                        <a  class="text-decoration-none" href="<c:url value="/profile?id=${trucker.userId}"/>">
+                            <h5 class="card-title"><c:out value="${trucker.name.toUpperCase()}"/></h5>
+                            <p class="text-dark card-text text-decoration-none"><c:out value="${trucker.email.toLowerCase()}"/></p>
+                        </a>
+                    </div>
+                </div>
                 <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
-                    <div class="card browseCards" style="width: 20rem;">
+                    <div class="card mx-4 mt-4" style="width: 20rem;">
                         <div class="card-header">
                             <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
                         </div>

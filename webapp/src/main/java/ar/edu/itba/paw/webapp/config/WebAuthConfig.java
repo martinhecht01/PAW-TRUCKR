@@ -61,7 +61,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/requests/create", "/requests/myRequests" ).hasRole("PROVIDER")
                     .antMatchers("/trips/create", "/trips/myTrips").hasRole("TRUCKER")
-                    .antMatchers("/","/requests/browse","/trips/browse","/trips/details","/requests/details","/explore").permitAll()
+                    .antMatchers("/",
+                            "/requests/browse",
+                            "/trips/browse",
+                            "/trips/details",
+                            "/requests/details",
+                            "/explore",
+                            "/trips/{tripId}/tripPicture").permitAll()
                     .antMatchers("/**").authenticated()
                 .and().formLogin()
                     .usernameParameter("cuit")

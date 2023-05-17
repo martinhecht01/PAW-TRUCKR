@@ -2,6 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;
@@ -33,8 +34,14 @@ public class TripDaoImplTest {
     private static final String TYPE = "Refrigerated";
 
     private static final int TRIP_ID_EXISTENT = 1;
+    private static final int TRIP4_ID_EXISTENT = 4;
     private static final int TRIP_ID_NOT_EXISTENT = 100;
     private static final String MESSAGE = "I would like to accept your trip";
+
+    private static final int PROPOSAL_ID_EXISTENT = 1;
+    private static final int PROPOSAL_ID_NOT_EXISTENT = 2;
+
+    public static final String PROPOSALDESC_EXISTENT = "Quiero que lleves mi carga.";
 
     @Autowired
     private DataSource ds;
@@ -144,7 +151,17 @@ public class TripDaoImplTest {
         tripDao.createProposal(TRIP_ID_EXISTENT, 1, MESSAGE);
 
         //3 Postcondiciones
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "proposals"));
+        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "proposals"));
+    }
+
+    @Rollback
+    @Test
+    public void testAcceptProposal(){
+
+        tripDao.acceptProposal(new Proposal(PROPOSAL_ID_EXISTENT, TRIP4_ID_EXISTENT, 1, PROPOSALDESC_EXISTENT,""));
+
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_id IS NOT NULL AND trucker_id IS NOT NULL AND trip_id = " + TRIP4_ID_EXISTENT));
+
     }
 
 

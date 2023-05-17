@@ -32,7 +32,7 @@ public class TripServiceV2ImplTest {
 
     private static final String TRUCKERNAME_NOT_EXISTENT = "Julian Marenco";
 
-    private static final int PROVIDERID_NOT_EXISTENT = 1;
+    private static final int PROVIDERID_NOT_EXISTENT = 2;
 
     private static final String LICENSEPLATE_NOT_EXISTENT = "AHU123";
     private static final int WEIGHT_NOT_EXISTENT = 100;
@@ -54,7 +54,9 @@ public class TripServiceV2ImplTest {
 
     private static final String EMAIL = "testing@gmail.com";
     private static final String NAME = "Testing Testington";
-    private static final String ROLE = "PROVIDER";
+    private static final String ROLE_PROVIDER = "PROVIDER";
+
+    private static final String ROLE_TRUCKER="TRUCKER";
     private static final String PASSWORD = "password";
     private static final String CUIT = "20-12345678-9";
     private static final int USERID = 1;
@@ -103,7 +105,7 @@ public class TripServiceV2ImplTest {
     public void testCreateRequest() {
         // 1 Precondiciones
 
-        when(tripDao.createRequest(eq(PROVIDERID_NOT_EXISTENT), eq(WEIGHT_NOT_EXISTENT), eq(VOLUME_NOT_EXISTENT), eq(DEPARTUREDATE_NOT_EXISTENT), eq(ARRIVALDATE_NOT_EXISTENT), eq(ORIGIN_NOT_EXISTENT), eq(DESTINATION_NOT_EXISTENT), eq(TYPE_NOT_EXISTENT), eq(PRICE_NOT_EXISTENT))).
+        when(tripDao.createRequest(eq(TRUCKERID_NOT_EXISTENT), eq(WEIGHT_NOT_EXISTENT), eq(VOLUME_NOT_EXISTENT), eq(DEPARTUREDATE_NOT_EXISTENT), eq(ARRIVALDATE_NOT_EXISTENT), eq(ORIGIN_NOT_EXISTENT), eq(DESTINATION_NOT_EXISTENT), eq(TYPE_NOT_EXISTENT), eq(PRICE_NOT_EXISTENT))).
                 thenReturn( new Trip(TRIPID_NOT_EXISTENT, null,PROVIDERID_NOT_EXISTENT, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT, null,null,null,null,null));
 
         //2 Ejercitar
@@ -125,41 +127,29 @@ public class TripServiceV2ImplTest {
 
     }
 
-//    @Test
-//    public void testCreateProposal(){
-//        // 1 Precondiciones
-//
-//        when(tripDao.createProposal(eq(TRIPID_NOT_EXISTENT), eq(TRUCKERID_NOT_EXISTENT), eq(PROPOSAL_DESCRIPTION))).
-//                thenReturn( new Proposal(PROPOSALID_NOT_EXISTENT, TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION, TRUCKERNAME_NOT_EXISTENT));
-//
-//        when(tripDao.getTripOrRequestById(TRIPID_NOT_EXISTENT))
-//                .thenReturn(Optional.of(new Trip(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, null, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT, null, null, null, null, null)));
-//
-//        when(userDao.getUserById(anyInt()))
-//                .thenReturn(Optional.of(new User(USERID, EMAIL, NAME, CUIT, ROLE, PASSWORD, false, null)));
-//
-////        when(ms.sendProposalEmail(eq(new User(USERID, EMAIL, NAME, CUIT, ROLE, PASSWORD, false, null)),eq(new Proposal(PROPOSALID_NOT_EXISTENT, TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION, TRUCKERNAME_NOT_EXISTENT)))).thenReturn(void);
-//        when(new User(anyInt(),anyString(),anyString(),anyString(),anyString(),anyString(),anyBoolean(),any()).getEmail()).thenReturn("MOCK@EMAIL.com");
-//
-//        //2 Ejercitar
-//        Proposal proposal = tripService.createProposal(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION);
-//
-//        //3 Postcondiciones
-//        Assert.assertNotNull(proposal);
-//        Assert.assertEquals(TRIPID_NOT_EXISTENT, proposal.getTripId());
-//        Assert.assertEquals(TRUCKERID_NOT_EXISTENT, proposal.getUserId());
-//        Assert.assertEquals(PROPOSAL_DESCRIPTION, proposal.getDescription());
-//        Assert.assertEquals(TRUCKERNAME_NOT_EXISTENT, proposal.getUserName());
-//    }
+    @Test
+    public void testCreateProposal(){
+        // 1 Precondiciones
 
-//    @Test
-//    public void acceptProposal(){
-//        // 1 Precondiciones
-//
-//        when(tripDao.getTripOrRequestById(TRIPID_NOT_EXISTENT))
-//                .thenReturn(Optional.of(new Trip(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, null, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT, null, null, null, null, null)));
-//
-//    }
+        when(tripDao.createProposal(eq(TRIPID_NOT_EXISTENT), eq(TRUCKERID_NOT_EXISTENT), eq(PROPOSAL_DESCRIPTION))).
+                thenReturn( new Proposal(PROPOSALID_NOT_EXISTENT, TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION, TRUCKERNAME_NOT_EXISTENT));
 
+        when(tripDao.getTripOrRequestById(TRIPID_NOT_EXISTENT))
+                .thenReturn(Optional.of(new Trip(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, null, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT, null, null, null, null, null)));
+
+        when(userDao.getUserById(anyInt()))
+                .thenReturn(Optional.of(new User(USERID, EMAIL, NAME, CUIT, ROLE_PROVIDER, PASSWORD, false, null)));
+
+
+        //2 Ejercitar
+        Proposal proposal = tripService.createProposal(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION);
+
+        //3 Postcondiciones
+        Assert.assertNotNull(proposal);
+        Assert.assertEquals(TRIPID_NOT_EXISTENT, proposal.getTripId());
+        Assert.assertEquals(TRUCKERID_NOT_EXISTENT, proposal.getUserId());
+        Assert.assertEquals(PROPOSAL_DESCRIPTION, proposal.getDescription());
+        Assert.assertEquals(TRUCKERNAME_NOT_EXISTENT, proposal.getUserName());
+    }
 
 }
