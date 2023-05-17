@@ -20,7 +20,7 @@ import java.util.Optional;
 @Repository
 public class ReviewDaoImpl implements ReviewDao {
 
-    Logger LOGGER = LoggerFactory.getLogger(ReviewDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewDaoImpl.class);
 
     private final static RowMapper<Review> ROW_MAPPER_REVIEW = new RowMapper<Review>() {
         @Override

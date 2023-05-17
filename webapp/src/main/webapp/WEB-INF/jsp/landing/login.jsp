@@ -23,7 +23,6 @@
         <div class="card py-2">
             <div class="card-body">
                 <form:form action="${loginUrl}" method="post">
-                           <%--    <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">--%>
                     <h1 class="h3 my-3 text-center"><spring:message code="Login"/></h1>
                     <p class="text-center"><spring:message code="NewToTruckr"/> <a href="<c:url value="/register"/>"><spring:message code="SignUpNow"/></a></p>
                     <div class="mb-3">

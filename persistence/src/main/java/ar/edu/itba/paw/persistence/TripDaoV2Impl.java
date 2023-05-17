@@ -21,7 +21,7 @@ import java.util.*;
 @Repository
 public class TripDaoV2Impl implements TripDaoV2 {
 
-    Logger LOGGER = LoggerFactory.getLogger(TripDaoV2Impl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TripDaoV2Impl.class);
 
     private final static RowMapper<Trip> TRIP_ROW_MAPPER = (rs, rowNum) -> {
         LocalDateTime departure = rs.getTimestamp("departure_date").toLocalDateTime();
@@ -172,10 +172,6 @@ public class TripDaoV2Impl implements TripDaoV2 {
         );
     }
 
-//    @Override
-//    public void confirmTrip(int tripId){
-//        jdbcTemplate.update("UPDATE trips SET sender_confirmation = TRUE, receiver_confirmation = TRUE, confirmation_date = ? WHERE tripid = ?", Timestamp.valueOf(LocalDateTime.now()), tripId);
-//    }
 
     @Override
     public Proposal createProposal(int tripId, int userId, String description){
@@ -393,11 +389,5 @@ public class TripDaoV2Impl implements TripDaoV2 {
         return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("imageid"), tripId).get(0);
     }
 
-//    @Override
-//    public boolean existsTrip(int tripId) {
-//        String sql = "SELECT COUNT(*) FROM trips WHERE trip_id = ?";
-//        int count = jdbcTemplate.queryForObject(sql, Integer.class, tripId);
-//        return count > 0;
-//    }
 
 }

@@ -125,19 +125,11 @@
     <dependency>
       <groupId>commons-fileupload</groupId>
       <artifactId>commons-fileupload</artifactId>
-      <version>1.4</version>
+      <version>${commons-fileupload.version}</version>
     </dependency>
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/main/resources</directory>
-        <includes>
-          <include>**/*.properties</include>
-        </includes>
-      </resource>
-    </resources>
     <finalName>webapp</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
@@ -161,9 +153,6 @@
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <version>3.2.2</version>
-<!--          <configuration>-->
-<!--            <packagingExcludes>**/logback-test.xml</packagingExcludes>-->
-<!--          </configuration>-->
         </plugin>
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
@@ -175,15 +164,5 @@
         </plugin>
       </plugins>
     </pluginManagement>
-<!--      <plugins>-->
-<!--          <plugin>-->
-<!--              <groupId>org.apache.maven.plugins</groupId>-->
-<!--              <artifactId>maven-compiler-plugin</artifactId>-->
-<!--              <configuration>-->
-<!--                  <source>11</source>-->
-<!--                  <target>11</target>-->
-<!--              </configuration>-->
-<!--          </plugin>-->
-<!--      </plugins>-->
   </build>
 </project>

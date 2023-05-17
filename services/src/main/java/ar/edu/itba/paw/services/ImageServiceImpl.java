@@ -17,15 +17,15 @@ import java.util.Optional;
 @Service
 public class ImageServiceImpl implements ImageService {
 
-    Logger LOGGER = LoggerFactory.getLogger(ImageServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     private final ImageDao imageDao;
-    private final UserDao userDao;
+
 
     @Autowired
-    public ImageServiceImpl(ImageDao imageDao, UserDao userDao) {
+    public ImageServiceImpl(ImageDao imageDao) {
         this.imageDao = imageDao;
-        this.userDao = userDao;
+
     }
 
     @Transactional(readOnly = true)

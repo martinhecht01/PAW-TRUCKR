@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.HashMap;
@@ -19,7 +18,7 @@ import java.util.HashMap;
 @Repository
 public class ImageDaoImpl implements ImageDao {
 
-    Logger LOGGER = LoggerFactory.getLogger(ImageDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ImageDaoImpl.class);
 
     private final JdbcTemplate jdbcTemplate;
     private final SimpleJdbcInsert jdbcInsert;

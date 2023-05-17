@@ -23,7 +23,7 @@ import java.util.Optional;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
 
     private final static RowMapper<User> ROW_MAPPER_USER = new RowMapper<User>() {
         @Override

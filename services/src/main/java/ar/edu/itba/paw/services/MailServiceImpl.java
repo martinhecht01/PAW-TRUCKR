@@ -20,7 +20,7 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailServiceImpl implements MailService {
 
-    Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailServiceImpl.class);
 
     @Autowired
     private JavaMailSender mailSender;
@@ -83,7 +83,7 @@ public class MailServiceImpl implements MailService {
         context.setVariable("trip", completed);
         return templateEngine.process("tripcomplete.html", context);
     }
-    //@Async
+
     @Override
     @Async
     public void sendCompletionEmail(User user, Trip trip){
@@ -133,24 +133,6 @@ public class MailServiceImpl implements MailService {
         context.setVariable("user2", user2);
         context.setVariable("request", confirmed);
         return templateEngine.process("requestconfirmation.html", context);
-    }
-    @Async
-    @Override
-    public void sendRequestEmail(User user,User user2,Trip request){
-        String htmlContent = generateRequestConfirmation(user,user2,request);
-        MimeMessage message = mailSender.createMimeMessage();
-        try{
-            LOGGER.info("Preparing request email");
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(user.getEmail());
-            helper.setSubject("Request confirmation");
-            helper.setText(htmlContent, true);
-        } catch (MessagingException e) {
-            LOGGER.error("Error while sending request email to: " + user.getEmail());
-        }
-
-        LOGGER.info("Sending request email to: " + user.getEmail());
-        mailSender.send(message);
     }
 
     private String generateSecureTokenEmail(User user, Integer tokenValue){
@@ -209,25 +191,6 @@ public class MailServiceImpl implements MailService {
         context.setVariable("user", user);
         context.setVariable("proposal", proposal);
         return templateEngine.process("proposal.html", context);
-    }
-
-    @Async
-    @Override
-    public void sendProposalRequestEmail(User user, Proposal proposal){
-        String htmlContent = generateProposalRequest(user,proposal);
-        MimeMessage message = mailSender.createMimeMessage();
-        try{
-            LOGGER.info("Preparing proposal request email");
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            helper.setTo(user.getEmail());
-            helper.setSubject("Trip Proposal!");
-            helper.setText(htmlContent, true);
-        } catch (MessagingException e) {
-            LOGGER.error("Error while sending proposal request email to: " + user.getEmail());
-        }
-
-        LOGGER.info("Sending proposal request email to: " + user.getEmail());
-        mailSender.send(message);
     }
 
     private String generateReset(User user, Integer hash) {

@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.mail.MessagingException;
 import java.util.Optional;
 
 @Service
@@ -89,7 +88,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void createReset(Integer userId){
-        //TODO corregir errors
+
         Integer hash = userDao.createReset(userId, Objects.hash(LocalDateTime.now() + userId.toString()) ).get();
         ms.sendResetEmail(userDao.getUserById(userId).get(), hash);
     }
@@ -143,12 +142,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String toString(){
         return this.email;
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public boolean existsUser(String cuit) {
-        return userDao.existsUser(cuit);
     }
 
 

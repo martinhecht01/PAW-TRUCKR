@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
-import ar.edu.itba.paw.models.Pair;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 

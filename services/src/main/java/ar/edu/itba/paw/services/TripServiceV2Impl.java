@@ -12,12 +12,9 @@ import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,7 +23,7 @@ import java.util.Optional;
 @Service
 public class TripServiceV2Impl implements TripServiceV2 {
 
-    Logger LOGGER = LoggerFactory.getLogger(TripServiceV2Impl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TripServiceV2Impl.class);
 
     private final TripDaoV2 tripDaoV2;
 
@@ -110,7 +107,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional
     @Override
     public void acceptProposal(int proposalId) {
-        //TODO: AGARRAR EXCEPTION EN EL CONTROLLER.
+
         Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(ProposalNotFoundException::new);
         tripDaoV2.acceptProposal(proposal);
 
@@ -204,28 +201,5 @@ public class TripServiceV2Impl implements TripServiceV2 {
     public byte[] getTripPicture(Integer userId) {
         return imageDao.getImage(tripDaoV2.getImageId(userId)).get().getImage();
     }
-
-//    @Async
-//    @Scheduled(cron = "0 0 0 * * ?") // runs every day
-//    protected void cleanExpiredTrips(){
-//        System.out.println("CLEANING EXPIRED TRIPS");
-//        tripDaoV2.cleanExpiredTripsAndItsProposals();
-//        System.out.println("CLEANING FINISHED");
-//    }
-//
-//
-//    @Async
-//    @Scheduled(cron = "0 0 0 * * ?") // runs every day
-//    protected void confirmTripsWithoutProviderConfirmation(){
-//        System.out.println("CONFIRMING TRIPS WITHOUT PROVIDER CONFIRMATION");
-//
-//        List<Trip> trips = tripDaoV2.getTripsWithPendingProviderConfirmation();
-//
-//        for(Trip trip : trips)
-//            if(Duration.between(trip.getConfirmation_date(), LocalDateTime.now()).toDays() >= 10)
-//                tripDaoV2.confirmTrip(trip.getTripId(), trip.getProviderId());
-//
-//        System.out.println("CONFIRMATION FINISHED");
-//    }
 
 }

@@ -200,13 +200,7 @@
   </div>
 </div>
 
-<%--  <script>--%>
-<%--    function filterApply() {--%>
-<%--      currentPage = 1;--%>
-<%--      form.submit();--%>
 
-<%--    }--%>
-<%--  </script>--%>
 </form:form>
 <div style="margin-top: auto">
   <components:waveDivider/>
