@@ -85,6 +85,7 @@ public class MailServiceImpl implements MailService {
     }
     //@Async
     @Override
+    @Async
     public void sendCompletionEmail(User user, Trip trip){
         String htmlContent = generateTripCompletion(user,trip);
         MimeMessage message = mailSender.createMimeMessage();
