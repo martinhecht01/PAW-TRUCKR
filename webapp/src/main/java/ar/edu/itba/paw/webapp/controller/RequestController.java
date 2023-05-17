@@ -107,7 +107,7 @@ public class RequestController {
 
     @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
     public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
-        if (errors.hasErrors() || form.getTripImage().isEmpty()) {
+        if (errors.hasErrors()) {
             LOGGER.info("Error in create request form");
             return createRequest(form);
         }

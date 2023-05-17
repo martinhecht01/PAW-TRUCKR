@@ -92,7 +92,7 @@ public class TripController {
 
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
-        if (errors.hasErrors() || form.getTripImage().isEmpty()) {
+        if (errors.hasErrors()) {
             LOGGER.info("Error creating trip");
             return createTrip(form);
         }

@@ -41,8 +41,7 @@ public class RequestForm {
 
     @MaxFileSize(8)
     @ImageType(types = {"image/jpeg", "image/png"})
-    //@RequireImage
-    @NotNull
+    @RequireImage
     private CommonsMultipartFile tripImage;
 
     public CommonsMultipartFile getTripImage() {
