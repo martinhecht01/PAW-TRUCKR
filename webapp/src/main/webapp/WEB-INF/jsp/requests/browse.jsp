@@ -10,7 +10,12 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet">
 <link href="<c:url value="/css/tripTypes.css"/>" rel="stylesheet">
+<link rel="shortcut icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 
+<head>
+    <title><spring:message code="Explore"/></title>
+</head>
+<body class="bodyContent h-100">
 
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="volume" viewBox="0 0 16 16">
@@ -34,11 +39,6 @@
     </symbol>
 </svg>
 
-<head>
-    <title><spring:message code="Explore"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
-</head>
-<body class="bodyContent h-100">
 <components:navBar/>
 <form:form method="get">
     <div class="d-flex pt-5" style="width: 100%; padding: 10% 10% ">

@@ -11,7 +11,8 @@
 
 <head>
     <title><spring:message code="TripDetails"/></title>
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
+</head>
 <body class="bodyContent">
 
 <svg  xmlns="http://www.w3.org/2000/svg" style="display: none;">
