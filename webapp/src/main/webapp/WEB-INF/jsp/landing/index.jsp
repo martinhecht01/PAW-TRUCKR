@@ -18,11 +18,11 @@
     <div class="container">
         <div class="row p-4 pt-5 pb-0 pe-lg-0 align-items-center rounded-3">
             <div class="col-lg-7 p-3 p-lg-5">
-                <h1 class="display-4 mb-2 fw-bold lh-1"><spring:message code="LandingMainMessage"/></h1>
-                <p class="lead mt-3 light"><spring:message code="LandingMainSubMessage"/></p>
+                <h1 class="display-1 mb-2 fw-bolder lh-1"><spring:message code="Truckr"/></h1>
+                <h1 class="display-6 mb-2 fw-medium lh-1"><spring:message code="LandingMainMessage"/></h1>
+                <p class="lead mt-3 light" ><spring:message code="LandingMainSubMessage"/></p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-<%--                    <button type="button" class="btn btn-primary btn-lg px-4 me-md-2 fw-bold">Explorar viajes</button>--%>
-<%--                    <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>--%>
+                    <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
                 </div>
             </div>
             <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
