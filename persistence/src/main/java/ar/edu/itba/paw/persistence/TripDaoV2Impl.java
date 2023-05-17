@@ -393,21 +393,6 @@ public class TripDaoV2Impl implements TripDaoV2 {
         return jdbcTemplate.query(sql, (rs, row) -> rs.getInt("imageid"), tripId).get(0);
     }
 
-    @Override
-    public void cleanExpiredTripsAndItsProposals(){
-        String sql1 = "DELETE FROM proposals WHERE trip_id IN (SELECT trip_id FROM trips WHERE departure_date < now() AND trucker_id IS NULL OR provider_id IS NULL)";
-        Integer proposalsDeleted = jdbcTemplate.update(sql1);
-        String sql2 = "DELETE FROM trips WHERE departure_date < now() AND trucker_id IS NULL OR provider_id IS NULL";
-        Integer tripsDeleted = jdbcTemplate.update(sql2);
-        LOGGER.info("Cleaning expired trips and proposals");
-    }
-
-    @Override
-    public List<Trip> getTripsWithPendingProviderConfirmation(){
-        String sql = "SELECT * FROM TRIPS WHERE trucker_confirmation = true AND provider_confirmation = false";
-        return jdbcTemplate.query(sql, TRIP_ROW_MAPPER);
-    }
-
 //    @Override
 //    public boolean existsTrip(int tripId) {
 //        String sql = "SELECT COUNT(*) FROM trips WHERE trip_id = ?";

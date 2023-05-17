@@ -63,10 +63,4 @@ public interface TripDaoV2 {
     void setImageId(int tripId, int imageId);
 
     int getImageId(int tripId);
-
-    void cleanExpiredTripsAndItsProposals();
-
-    List<Trip> getTripsWithPendingProviderConfirmation();
-
-//    boolean existsTrip(int tripId);
 }
