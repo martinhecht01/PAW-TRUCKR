@@ -47,14 +47,15 @@ public class ExceptionController {
 
         return mv;
     }
-//    @ExceptionHandler({RuntimeException.class, NullPointerException.class})
-//    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ModelAndView internalServerError(){
-//        ModelAndView mv = new ModelAndView();
-//        mv.addObject("errorCode", 500);
-//        mv.addObject("errorMsgCode", "500ErrorCode");
-//        mv.setViewName("landing/error");
-//        return mv;
-//    }
+
+    @ExceptionHandler({RuntimeException.class, NullPointerException.class})
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView internalServerError(){
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("errorCode", 500);
+        mv.addObject("errorMsgCode", "500ErrorCode");
+        mv.setViewName("landing/error");
+        return mv;
+    }
 
 }
