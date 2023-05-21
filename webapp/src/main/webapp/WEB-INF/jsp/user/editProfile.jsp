@@ -54,7 +54,7 @@
                 </div>
                 <div class="my-4">
                     <h5><b><spring:message code="Role"/></b></h5>
-                    <p><c:out value="${currentRole}"/></p>
+                    <p><spring:message code="${currentRole}" htmlEscape="true"/></p>
                 </div>
                 <div>
                     <button class="w-100 btn btn-lg btn-color" type="submit"><spring:message code="saveEdits"/></button>

@@ -90,13 +90,14 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                                <form:textarea type="text" class="form-control" id="description" path="description" placeholder="Write a description"/>
+                                <spring:message var="writeDescription" code="WriteDescription"/>
+                                <form:textarea type="text" class="form-control" id="description" path="description" placeholder="${writeDesctiption}"/>
                             </div>
                             <div>
                                 <spring:message code="Reserve" var="reserve"/>
 
                                 <c:if test="${currentRole == ''}">
-                                    <a href="/login" class="btn btn-color">${reserve}</a>
+                                    <a href="<c:url value ="/login" />" class="btn btn-color">${reserve}</a>
                                 </c:if>
                                 <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
                                     <input type="submit" class="btn btn-color" value="${reserve}"/>

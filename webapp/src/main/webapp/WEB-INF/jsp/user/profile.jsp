@@ -51,7 +51,7 @@
             </div>
             <div>
                 <h5><b><spring:message code="Role"/></b></h5>
-                <p><c:out value="${currUser.getRole()}"/></p>
+                <p><spring:message code="${currentRole}" htmlEscape="true"/></p>
             </div>
             <c:if test="${currUser.cuit == currentUser.cuit}">
                 <div>

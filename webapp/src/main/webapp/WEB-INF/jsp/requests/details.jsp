@@ -51,11 +51,11 @@
                         <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="AvailableVolume"/></b></td>
+                        <td><b><spring:message code="NecessaryVolume"/></b></td>
                         <td><c:out value="${request.volume}"/> m3</td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="AvailableWeight"/></b></td>
+                        <td><b><spring:message code="NecessaryWeight"/></b></td>
                         <td><c:out value="${request.weight}"/> kg</td>
                     </tr>
                     <tr>
@@ -84,18 +84,19 @@
                 <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
                     <div class="card mx-4 mt-4" style="width: 20rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveRequest"/></b></h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
                                 <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                                <form:textarea type="text" id="description" class="form-control" path="description" placeholder="Write a description"/>
+                                <spring:message var="writeDescription" code="WriteDescription"/>
+                                <form:textarea type="text" id="description" class="form-control" path="description" placeholder="${writeDescription}"/>
                             </div>
                             <div>
                                 <spring:message code="Reserve" var="reserve"/>
 
                                 <c:if test="${currentRole == ''}">
-                                    <a href="/login" class="btn btn-color">${reserve}</a>
+                                    <a href=" <c:url value="/login" />" class="btn btn-color">${reserve}</a>
                                 </c:if>
                                 <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
                                     <input type="submit" class="btn btn-color" value="${reserve}"/>
