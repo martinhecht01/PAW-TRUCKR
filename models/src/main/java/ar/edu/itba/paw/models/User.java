@@ -39,6 +39,43 @@ public class User {
         // Default constructor required by Hibernate
     }
 
+    public User(Integer userId,
+                String email,
+                String name,
+                String cuit,
+                String role,
+                String password,
+                Boolean accountVerified,
+                Image image) {
+        this.userId = userId;
+        this.cuit = cuit;
+        this.email = email;
+        this.name = name;
+        this.role = role;
+        this.password = password;
+        this.accountVerified = accountVerified;
+        this.image = image;
+    }
+
+    public User(String email,
+                String name,
+                String cuit,
+                String role,
+                String password,
+                Boolean accountVerified,
+                Image image) {
+        this.userId = null;
+        this.cuit = cuit;
+        this.email = email;
+        this.name = name;
+        this.role = role;
+        this.password = password;
+        this.accountVerified = accountVerified;
+        this.image = image;
+    }
+
+
+
     // Getters and setters
 
     public Integer getUserId() {

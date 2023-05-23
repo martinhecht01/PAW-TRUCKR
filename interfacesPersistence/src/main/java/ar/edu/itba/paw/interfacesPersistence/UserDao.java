@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
@@ -22,15 +23,15 @@ public interface UserDao {
 
     boolean existsUser(String cuit);
 
-    Integer createSecureToken(Integer userId, int token);
+    Integer createSecureToken(User user, int token);
 
     Optional<SecureToken> getSecureTokenByValue(Integer tokenValue);
 
     void verifyAccount(Integer tokenValue);
 
-    void setImageId(int userId, int imageId);
+    void setImage(int userId, Image image);
 
-    int  getImageId(int userId);
+    Image getImage(int userId);
 
     void setUserName(int userId, String name);
 }
