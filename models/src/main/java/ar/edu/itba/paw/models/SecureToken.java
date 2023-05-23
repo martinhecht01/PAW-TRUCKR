@@ -34,4 +34,17 @@ public class SecureToken {
     public boolean isExpired(){
         	return LocalDateTime.now().isAfter(expireAt);
     }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

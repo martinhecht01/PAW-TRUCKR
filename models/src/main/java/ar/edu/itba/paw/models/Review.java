@@ -44,6 +44,15 @@ public class Review {
         return tripId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+
     public int getUserId() {
         return userId;
     }
