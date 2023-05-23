@@ -36,6 +36,8 @@ public class Review {
         this.userId = userId;
         this.rating = rating;
         this.review = review;
+        this.user = user;
+        this.trip = trip;
     }
 
     public int getTripId() {
