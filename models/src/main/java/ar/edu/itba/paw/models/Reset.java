@@ -1,36 +1,67 @@
 package ar.edu.itba.paw.models;
 
-import java.time.LocalDateTime;
+import ar.edu.itba.paw.models.User;
 
+import javax.persistence.*;
+import java.sql.Time;
+import java.sql.Timestamp;
+
+@Entity
+@Table(name = "passwordresets")
 public class Reset {
-    private final int userId;
 
-    private final String hash;
+    @Id
+    @Column(name = "hash")
+    private int hash;
 
-    private final LocalDateTime createDate;
+    @ManyToOne
+    @JoinColumn(name = "userid")
+    private User user;
 
-    private final boolean completed;
+    @Column(name = "createdate")
+    private Timestamp createDate;
 
-    public Reset(int userId, String hash, LocalDateTime createDate, boolean completed) {
-        this.userId = userId;
+    @Column(name = "completed")
+    private Boolean completed;
+
+    // Constructors, getters, and setters
+
+    public Reset(User user, int hash, Timestamp createDate, boolean completed) {
+        this.user = user;
         this.hash = hash;
         this.createDate = createDate;
         this.completed = completed;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public String getHash() {
+    public int getHash() {
         return hash;
     }
 
-    public LocalDateTime getCreateDate() {
+    public void setHash(int hash) {
+        this.hash = hash;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Timestamp getCreateDate() {
         return createDate;
     }
 
-    public boolean isCompleted() {
+    public void setCreateDate(Timestamp createDate) {
+        this.createDate = createDate;
+    }
+
+    public Boolean getCompleted() {
         return completed;
+    }
+
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 }
