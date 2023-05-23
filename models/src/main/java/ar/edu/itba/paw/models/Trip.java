@@ -2,46 +2,75 @@ package ar.edu.itba.paw.models;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "trips")
 public class Trip {
-    private final int tripId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trips_trip_id_seq")
+    @SequenceGenerator(sequenceName="trips_trip_id_seq", name = "trips_trip_id_seq", allocationSize = 1)
+    @Column(name = "trip_id")
+    private int tripId;
 
-    private final Integer truckerId; //Linked to User.userId
-    private final Integer providerId; //Linked to User.userId
-    private final String licensePlate; //Linked to Truck.licensePlate
-    private final Number weight;
-    private final Number volume;
-    private final LocalDateTime departureDate;
-    private final LocalDateTime arrivalDate;
-    private final String origin;
-    private final String destination;
-    private final String type;
-    private final Number price;
+    @ManyToOne
+    @JoinColumn(name = "provider_id")
+    private User provider;
 
-    private final Boolean trucker_confirmation;
-    private final Boolean provider_confirmation;
-    private final LocalDateTime confirmation_date;
-    private Integer proposalCount;
+    @ManyToOne
+    @JoinColumn(name = "trucker_id")
+    private User trucker;
 
-    private final Integer imageId;
-    public Trip(int tripId,
-                Integer truckerId,
-                Integer providerId,
-                String licensePlate,
-                Number weight,
-                Number volume,
-                LocalDateTime departureDate,
-                LocalDateTime arrivalDate,
-                String origin,
-                String destination,
-                String type,
-                Number price,
-                Boolean sender_confirmation,
-                Boolean receiver_confirmation,
-                LocalDateTime confirmation_date,
-                Integer proposalCount, Integer imageId) {
+    @Column(name = "licenseplate", length = 30)
+    private String licensePlate;
+
+    @Column(name = "weight")
+    private Number weight;
+
+    @Column(name = "volume")
+    private Number volume;
+
+    @Column(name = "departure_date")
+    private LocalDateTime departureDate;
+
+    @Column(name = "arrival_date")
+    private LocalDateTime arrivalDate;
+
+    @Column(name = "origin", length = 50)
+    private String origin;
+
+    @Column(name = "destination", length = 50)
+    private String destination;
+
+    @Column(name = "type", length = 50)
+    private String type;
+
+    @Column(name = "price")
+    private Number price;
+
+    @Column(name = "trucker_confirmation")
+    private Boolean truckerConfirmation;
+
+    @Column(name = "provider_confirmation")
+    private Boolean providerConfirmation;
+
+    @Column(name = "confirmation_date")
+    private LocalDateTime confirmationDate;
+
+    @ManyToOne
+    @JoinColumn(name = "imageid")
+    private Image image;
+
+    @Transient
+    private int proposalCount;
+    // Constructors, getters, and setters
+
+
+    public Trip(int tripId, User provider, User trucker, String licensePlate, Number weight, Number volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
+                Number price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, int proposalCount) {
         this.tripId = tripId;
-        this.truckerId = truckerId;
-        this.providerId = providerId;
+        this.provider = provider;
+        this.trucker = trucker;
         this.licensePlate = licensePlate;
         this.weight = weight;
         this.volume = volume;
@@ -51,77 +80,153 @@ public class Trip {
         this.destination = destination;
         this.type = type;
         this.price = price;
-        this.trucker_confirmation = sender_confirmation;
-        this.provider_confirmation = receiver_confirmation;
-        this.confirmation_date = confirmation_date;
-        this.proposalCount = proposalCount;
-        this.imageId = imageId;
-    }
-
-    public void setProposalCount(Integer proposalCount) {
+        this.truckerConfirmation = truckerConfirmation;
+        this.providerConfirmation = providerConfirmation;
+        this.confirmationDate = confirmationDate;
         this.proposalCount = proposalCount;
     }
 
-    public Integer getProposalCount() {
-        return proposalCount;
+    public Trip() {
+        // Default constructor required by Hibernate
     }
+
+    // Getters and setters
+
     public int getTripId() {
         return tripId;
     }
 
-    public Integer getTruckerId() {
-        return truckerId;
+    public void setTripId(int tripId) {
+        this.tripId = tripId;
     }
 
-    public Integer getProviderId() {
-        return providerId;
+    public User getProvider() {
+        return provider;
+    }
+
+    public void setProvider(User provider) {
+        this.provider = provider;
+    }
+
+    public User getTrucker() {
+        return trucker;
+    }
+
+    public void setTrucker(User trucker) {
+        this.trucker = trucker;
     }
 
     public String getLicensePlate() {
         return licensePlate;
     }
 
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
+    }
+
     public Number getWeight() {
         return weight;
+    }
+
+    public void setWeight(Number weight) {
+        this.weight = weight;
     }
 
     public Number getVolume() {
         return volume;
     }
 
+    public void setVolume(Number volume) {
+        this.volume = volume;
+    }
+
     public LocalDateTime getDepartureDate() {
         return departureDate;
+    }
+
+    public void setDepartureDate(LocalDateTime departureDate) {
+        this.departureDate = departureDate;
     }
 
     public LocalDateTime getArrivalDate() {
         return arrivalDate;
     }
 
+    public void setArrivalDate(LocalDateTime arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
     public String getOrigin() {
         return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
     }
 
     public String getDestination() {
         return destination;
     }
 
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Number getPrice() {
         return price;
     }
 
-    public Boolean getTrucker_confirmation() {
-        return trucker_confirmation;
+    public void setPrice(Number price) {
+        this.price = price;
     }
 
-    public Boolean getProvider_confirmation() {
-        return provider_confirmation;
+    public Boolean getTruckerConfirmation() {
+        return truckerConfirmation;
     }
 
-    public LocalDateTime getConfirmation_date() {
-        return confirmation_date;
+    public void setTruckerConfirmation(Boolean truckerConfirmation) {
+        this.truckerConfirmation = truckerConfirmation;
     }
+
+    public Boolean getProviderConfirmation() {
+        return providerConfirmation;
+    }
+
+    public void setProviderConfirmation(Boolean providerConfirmation) {
+        this.providerConfirmation = providerConfirmation;
+    }
+
+    public LocalDateTime getConfirmationDate() {
+        return confirmationDate;
+    }
+
+    public void setConfirmationDate(LocalDateTime confirmationDate) {
+        this.confirmationDate = confirmationDate;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    public Integer getProposalCount() {
+        return proposalCount;
+    }
+
+    public void setProposalCount(Integer proposalCount) {
+        this.proposalCount = proposalCount;
+    }
+
+
 }
