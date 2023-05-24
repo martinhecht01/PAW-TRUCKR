@@ -21,7 +21,7 @@ import java.util.Optional;
 public class ReviewDaoJPA implements ReviewDao {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewDaoJPA.class);
 
     @PersistenceContext
     private EntityManager entityManager;

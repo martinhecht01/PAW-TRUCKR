@@ -7,7 +7,6 @@ import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,15 +15,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 @Transactional
-public class UserDaoJpa implements UserDao {
+public class UserDaoJPA implements UserDao {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserDaoJPA.class);
 
     @PersistenceContext
     private EntityManager entityManager;
