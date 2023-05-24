@@ -11,7 +11,7 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "trips_trip_id_seq")
     @SequenceGenerator(sequenceName="trips_trip_id_seq", name = "trips_trip_id_seq", allocationSize = 1)
     @Column(name = "trip_id")
-    private int tripId;
+    private Integer tripId;
 
     @ManyToOne
     @JoinColumn(name = "provider_id")
@@ -69,6 +69,26 @@ public class Trip {
     public Trip(int tripId, User provider, User trucker, String licensePlate, Number weight, Number volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
                 Number price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, int proposalCount) {
         this.tripId = tripId;
+        this.provider = provider;
+        this.trucker = trucker;
+        this.licensePlate = licensePlate;
+        this.weight = weight;
+        this.volume = volume;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.origin = origin;
+        this.destination = destination;
+        this.type = type;
+        this.price = price;
+        this.truckerConfirmation = truckerConfirmation;
+        this.providerConfirmation = providerConfirmation;
+        this.confirmationDate = confirmationDate;
+        this.proposalCount = proposalCount;
+    }
+
+    public Trip(User provider, User trucker, String licensePlate, Number weight, Number volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
+                Number price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, int proposalCount) {
+        this.tripId = null;
         this.provider = provider;
         this.trucker = trucker;
         this.licensePlate = licensePlate;
@@ -227,6 +247,5 @@ public class Trip {
     public void setProposalCount(Integer proposalCount) {
         this.proposalCount = proposalCount;
     }
-
 
 }
