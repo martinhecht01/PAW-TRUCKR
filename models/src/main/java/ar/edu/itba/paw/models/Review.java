@@ -6,34 +6,26 @@ import javax.persistence.*;
 @Table(name = "reviews")
 public class Review {
 
-    @Id
-    @Column(name = "tripid", nullable = false)
-    private int tripId;
-
-    @Id
-    @Column(name = "userid", nullable = false)
-    private int userId;
-
     @Column(name = "rating")
     private float rating;
 
     @Column(name = "review", length = 400)
     private String review;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "userid", nullable = false)
     private User user;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "tripid")
+    @JoinColumn(name = "tripid", nullable = false)
     private Trip trip;
 
     // Constructors, getters, and setters
 
 
-    public Review(int tripId, int userId, float rating, String review, User user, Trip trip) {
-        this.tripId = tripId;
-        this.userId = userId;
+    public Review(Trip trip, User user, float rating, String review) {
         this.rating = rating;
         this.review = review;
         this.user = user;
@@ -41,7 +33,7 @@ public class Review {
     }
 
     public int getTripId() {
-        return tripId;
+        return trip.getTripId();
     }
 
     public User getUser() {
@@ -54,7 +46,7 @@ public class Review {
 
 
     public int getUserId() {
-        return userId;
+        return user.getUserId();
     }
 
     public String getReview() {
