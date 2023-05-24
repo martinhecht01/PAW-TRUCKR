@@ -33,6 +33,7 @@ public class ReviewDaoJPA implements ReviewDao {
                 .setParameter("trip", trip)
                 .setParameter("user", user)
                 .getSingleResult();
+        LOGGER.info("Creating review token for user {} in trip {}", user.getUserId(), trip.getTripId());
         return Optional.of(review);
     }
 
