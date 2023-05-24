@@ -35,23 +35,41 @@ public class TripDaoJPA implements TripDaoV2 {
                            final int price) {
 
         Trip trip = new Trip(trucker, null, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
-        return null;
+        entityManager.persist(trip);
+    LOGGER.info("Creating trip with id {} for user {}", trip.getTripId(), trucker.getUserId());
+        return trip;
+
     }
 
 
     @Override
-    public Trip createRequest(int providerId, int weight, int volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type, int price) {
-        return null;
+    public Trip createRequest(final User provider,
+                              final int weight,
+                              final int volume,
+                              final Timestamp departureDate,
+                              final Timestamp arrivalDate,
+                              final String origin,
+                              final String destination,
+                              final String type,
+                              final int price) {
+        Trip trip = new Trip(null, provider, null, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
+        entityManager.persist(trip);
+        LOGGER.info("Creating request with id {} for user {}", trip.getTripId(), provider.getUserId());
+        return trip;
     }
 
     @Override
     public void confirmTrip(int tripId, int userId) {
 
+
     }
 
     @Override
-    public Proposal createProposal(int tripId, int userId, String description) {
-        return null;
+    public Proposal createProposal(Trip trip, User user, String description) {
+        Proposal proposal = new Proposal(trip, user, description);
+        entityManager.persist(proposal);
+        LOGGER.info("Creating proposal with id {} for user {}", proposal.getProposalId(), user.getUserId());
+        return proposal;
     }
 
     @Override

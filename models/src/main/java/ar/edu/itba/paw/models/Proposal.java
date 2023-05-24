@@ -9,7 +9,7 @@ package ar.edu.itba.paw.models;
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "proposal_id")
-        private int proposalId;
+        private Integer proposalId;
 
         @ManyToOne
         @JoinColumn(name = "trip_id")
@@ -38,6 +38,13 @@ package ar.edu.itba.paw.models;
             this.user = user;
             this.description = description;
             this.userName = userName;
+        }
+        public Proposal(Trip trip, User user, String description) {
+            this.proposalId = null;
+            this.trip = trip;
+            this.user = user;
+            this.description = description;
+            this.userName = null;
         }
 
         public int getProposalId() {

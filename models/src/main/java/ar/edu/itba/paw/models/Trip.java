@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 import javax.persistence.*;
 
@@ -31,10 +31,10 @@ public class Trip {
     private Number volume;
 
     @Column(name = "departure_date")
-    private LocalDateTime departureDate;
+    private Timestamp departureDate;
 
     @Column(name = "arrival_date")
-    private LocalDateTime arrivalDate;
+    private Timestamp arrivalDate;
 
     @Column(name = "origin", length = 50)
     private String origin;
@@ -55,7 +55,7 @@ public class Trip {
     private Boolean providerConfirmation;
 
     @Column(name = "confirmation_date")
-    private LocalDateTime confirmationDate;
+    private Timestamp confirmationDate;
 
     @ManyToOne
     @JoinColumn(name = "imageid")
@@ -65,9 +65,9 @@ public class Trip {
     private int proposalCount;
     // Constructors, getters, and setters
 
-
-    public Trip(int tripId, User provider, User trucker, String licensePlate, Number weight, Number volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
-                Number price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, int proposalCount) {
+    //constructor default
+    public Trip(int tripId, User trucker, User provider, String licensePlate, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
+                Number price, Boolean truckerConfirmation, Boolean providerConfirmation, Timestamp confirmationDate, Image image, int proposalCount) {
         this.tripId = tripId;
         this.provider = provider;
         this.trucker = trucker;
@@ -84,10 +84,12 @@ public class Trip {
         this.providerConfirmation = providerConfirmation;
         this.confirmationDate = confirmationDate;
         this.proposalCount = proposalCount;
+        this.image= image;
     }
 
-    public Trip(User provider, User trucker, String licensePlate, Number weight, Number volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
-                Number price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, int proposalCount) {
+    //constructor para el trucker
+    public Trip(User trucker, User provider, String licensePlate, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
+                Number price) {
         this.tripId = null;
         this.provider = provider;
         this.trucker = trucker;
@@ -100,10 +102,33 @@ public class Trip {
         this.destination = destination;
         this.type = type;
         this.price = price;
-        this.truckerConfirmation = truckerConfirmation;
-        this.providerConfirmation = providerConfirmation;
-        this.confirmationDate = confirmationDate;
-        this.proposalCount = proposalCount;
+        this.truckerConfirmation = false;
+        this.providerConfirmation = false;
+        this.confirmationDate = null;
+        this.proposalCount = 0;
+        this.image =null;
+    }
+
+    //constructor para el provider
+    public Trip(User trucker, User provider, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
+                Number price) {
+        this.tripId = null;
+        this.provider = provider;
+        this.trucker = trucker;
+        this.licensePlate = null;
+        this.weight = weight;
+        this.volume = volume;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+        this.origin = origin;
+        this.destination = destination;
+        this.type = type;
+        this.price = price;
+        this.truckerConfirmation = false;
+        this.providerConfirmation = false;
+        this.confirmationDate = null;
+        this.proposalCount = 0;
+        this.image =null;
     }
 
     public Trip() {
@@ -160,19 +185,19 @@ public class Trip {
         this.volume = volume;
     }
 
-    public LocalDateTime getDepartureDate() {
+    public Timestamp getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(LocalDateTime departureDate) {
+    public void setDepartureDate(Timestamp departureDate) {
         this.departureDate = departureDate;
     }
 
-    public LocalDateTime getArrivalDate() {
+    public Timestamp getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(LocalDateTime arrivalDate) {
+    public void setArrivalDate(Timestamp arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -224,11 +249,11 @@ public class Trip {
         this.providerConfirmation = providerConfirmation;
     }
 
-    public LocalDateTime getConfirmationDate() {
+    public Timestamp getConfirmationDate() {
         return confirmationDate;
     }
 
-    public void setConfirmationDate(LocalDateTime confirmationDate) {
+    public void setConfirmationDate(Timestamp confirmationDate) {
         this.confirmationDate = confirmationDate;
     }
 
