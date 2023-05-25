@@ -61,9 +61,8 @@ public class UserDaoJPA implements UserDao {
     }
 
     @Override
-    public void verifyAccount(Integer userId) {
-        LOGGER.info("Verifying account for user: {}", userId);
-        User user = entityManager.find(User.class, userId);
+    public void verifyAccount(User user) {
+        LOGGER.info("Verifying account for user: {}", user.getUserId());
         user.setAccountVerified(true);
     }
 

@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -32,6 +34,17 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "imageid")
     private Image image;
+
+    @OneToMany(mappedBy = "user")
+    private List<Proposal> proposals;
+
+//    @OneToMany(mappedBy = "trucker")
+//    private List<Trip> truckerTrips;
+//
+//    @OneToMany(mappedBy = "provider")
+//    private List<Trip> providerTrips;
+
+
 
     // Constructors, getters, and setters
 
@@ -74,9 +87,20 @@ public class User {
         this.image = image;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(userId, user.userId);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
+    }
 
-    // Getters and setters
+// Getters and setters
 
     public Integer getUserId() {
         return userId;
@@ -141,4 +165,14 @@ public class User {
     public void setImage(Image image) {
         this.image = image;
     }
+
+    public List<Proposal> getProposals() {
+        return proposals;
+    }
+
+    public void setProposals(List<Proposal> proposals) {
+        this.proposals = proposals;
+    }
+
+
 }

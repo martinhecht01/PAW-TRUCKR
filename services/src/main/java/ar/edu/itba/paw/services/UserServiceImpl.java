@@ -103,7 +103,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void createSecureToken(Integer userId) {
-        Integer tokenValue = userDao.createSecureToken(userId,hashTo6Digits(LocalDateTime.now(),userId.toString()));
+        User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        Integer tokenValue = userDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),userId.toString()));
         ms.sendSecureTokenEmail(userDao.getUserById(userId).orElseThrow(UserNotFoundException::new), tokenValue);
     }
 
@@ -121,8 +122,8 @@ public class UserServiceImpl implements UserService {
             return false;
         }
         else {
-            userDao.verifyAccount(token.get().getUserId());
-            ms.sendConfirmationEmail(userDao.getUserById(token.get().getUserId()).get());
+            userDao.verifyAccount(token.get().getUser());
+            ms.sendConfirmationEmail(token.get().getUser());
         }
         return true;
     }

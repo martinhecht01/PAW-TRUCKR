@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.*;
 
@@ -13,11 +15,11 @@ public class Trip {
     @Column(name = "trip_id")
     private Integer tripId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "provider_id")
     private User provider;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "trucker_id")
     private User trucker;
 
@@ -61,11 +63,14 @@ public class Trip {
     @JoinColumn(name = "imageid")
     private Image image;
 
+    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY)
+    private List<Proposal> proposals;
+
     @Transient
     private int proposalCount;
     // Constructors, getters, and setters
 
-    //constructor default
+    //constructor completo
     public Trip(int tripId, User trucker, User provider, String licensePlate, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
                 Number price, Boolean truckerConfirmation, Boolean providerConfirmation, Timestamp confirmationDate, Image image, int proposalCount) {
         this.tripId = tripId;
@@ -88,7 +93,16 @@ public class Trip {
     }
 
     //constructor para el trucker
-    public Trip(User trucker, User provider, String licensePlate, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
+    public Trip(User trucker,
+                User provider,
+                String licensePlate,
+                Number weight,
+                Number volume,
+                Timestamp departureDate,
+                Timestamp arrivalDate,
+                String origin,
+                String destination,
+                String type,
                 Number price) {
         this.tripId = null;
         this.provider = provider;
@@ -110,7 +124,15 @@ public class Trip {
     }
 
     //constructor para el provider
-    public Trip(User trucker, User provider, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
+    public Trip(User trucker,
+                User provider,
+                Number weight,
+                Number volume,
+                Timestamp departureDate,
+                Timestamp arrivalDate,
+                String origin,
+                String destination,
+                String type,
                 Number price) {
         this.tripId = null;
         this.provider = provider;
@@ -133,6 +155,19 @@ public class Trip {
 
     public Trip() {
         // Default constructor required by Hibernate
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Trip trip = (Trip) o;
+        return Objects.equals(tripId, trip.tripId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(tripId);
     }
 
     // Getters and setters
@@ -273,4 +308,19 @@ public class Trip {
         this.proposalCount = proposalCount;
     }
 
+    public void setTripId(Integer tripId) {
+        this.tripId = tripId;
+    }
+
+    public List<Proposal> getProposals() {
+        return proposals;
+    }
+
+    public void setProposals(List<Proposal> proposals) {
+        this.proposals = proposals;
+    }
+
+    public void setProposalCount(int proposalCount) {
+        this.proposalCount = proposalCount;
+    }
 }
