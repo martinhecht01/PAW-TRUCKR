@@ -49,15 +49,20 @@ public class UserDaoJPA implements UserDao {
 
     @Override
     public Optional<SecureToken> getSecureTokenByValue(Integer tokenValue) {
-        TypedQuery<SecureToken> query = entityManager.createQuery(
-                "SELECT t FROM SecureToken t WHERE t.token = :token", SecureToken.class);
-        query.setParameter("token", tokenValue);
-        List<SecureToken> tokens = query.getResultList();
-        if (tokens.isEmpty()) {
+//        TypedQuery<SecureToken> query = entityManager.createQuery("SELECT t FROM SecureToken t WHERE t.token = :token", SecureToken.class);
+//        query.setParameter("token", tokenValue);
+//        List<SecureToken> tokens = query.getResultList();
+//        if (tokens.isEmpty()) {
+//            LOGGER.info("Token not found. Token: {}", tokenValue);
+//            return Optional.empty();
+//        }
+//        return tokens.stream().findFirst();
+        SecureToken token = entityManager.find(SecureToken.class, tokenValue);
+        if(token == null){
             LOGGER.info("Token not found. Token: {}", tokenValue);
             return Optional.empty();
         }
-        return Optional.of(tokens.get(0));
+        return Optional.of(token);
     }
 
     @Override
@@ -68,15 +73,20 @@ public class UserDaoJPA implements UserDao {
 
     @Override
     public Optional<Reset> getResetByHash(Integer hash) {
-        TypedQuery<Reset> query = entityManager.createQuery(
-                "SELECT r FROM Reset r WHERE r.hash = :hash", Reset.class);
-        query.setParameter("hash", hash);
-        List<Reset> resets = query.getResultList();
-        if (resets.isEmpty()) {
+//        TypedQuery<Reset> query = entityManager.createQuery("SELECT r FROM Reset r WHERE r.hash = :hash", Reset.class);
+//        query.setParameter("hash", hash);
+//        List<Reset> resets = query.getResultList();
+//        if (resets.isEmpty()) {
+//            LOGGER.warn("Reset not found. Hash: {}", hash);
+//            return Optional.empty();
+//        }
+//        return resets.stream().findFirst();
+        Reset reset = entityManager.find(Reset.class, hash);
+        if(reset == null){
             LOGGER.warn("Reset not found. Hash: {}", hash);
             return Optional.empty();
         }
-        return Optional.of(resets.get(0));
+        return Optional.of(reset);
     }
 
     @Override
@@ -105,15 +115,14 @@ public class UserDaoJPA implements UserDao {
 
     @Override
     public Optional<User> getUserByCuit(String userCuit) {
-        TypedQuery<User> query = entityManager.createQuery(
-                "SELECT u FROM User u WHERE u.cuit = :cuit", User.class);
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.cuit = :cuit", User.class);
         query.setParameter("cuit", userCuit);
         List<User> users = query.getResultList();
         if (users.isEmpty()) {
             LOGGER.warn("User not found. CUIT: {}", userCuit);
             return Optional.empty();
         }
-        return Optional.of(users.get(0));
+        return users.stream().findFirst();
     }
 
     @Override
@@ -136,6 +145,7 @@ public class UserDaoJPA implements UserDao {
     }
 
 //cambio imageId a Image
+    //me suena a que esta funcion es inutil ahora, hago get de user y set de image
     @Override
     public void setImage(int userId, Image image) {
         User user = entityManager.find(User.class, userId);
@@ -144,12 +154,14 @@ public class UserDaoJPA implements UserDao {
     }
 
 //    cambio de getImageId a getImage
+    //esta tambien inutil
     @Override
     public Image getImage(int userId) {
         User user = entityManager.find(User.class, userId);
         return user.getImage();
     }
 
+    //y esta tambien inutil
     @Override
     public void setUserName(int userId, String name) {
         LOGGER.info("Updating user name. UserID: {}, Name: {}", userId, name);
