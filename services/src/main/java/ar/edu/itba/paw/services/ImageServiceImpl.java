@@ -7,6 +7,7 @@ import ar.edu.itba.paw.models.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,8 @@ public class ImageServiceImpl implements ImageService {
 
 
     @Autowired
-    public ImageServiceImpl(ImageDao imageDao) {
+    public ImageServiceImpl(@Qualifier("imageDaoJPA") ImageDao imageDao) {
         this.imageDao = imageDao;
-
     }
 
     @Transactional(readOnly = true)
