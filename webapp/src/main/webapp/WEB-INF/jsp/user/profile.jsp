@@ -26,43 +26,52 @@
 
 <components:navBar/>
 <div class="m-auto w-50">
-    <div class="card mt-5">
-        <div class="card-header">
-            <h4 class="card-title"><b><spring:message code="Profile"/></b></h4>
-        </div>
-        <div class="card-body">
-            <div class="text-center my-3">
-
+    <div class="d-flex justify-content-center mt-5">
+        <div class="card w-50 mx-3">
+            <div class="card-header">
+                <h4 class="card-title"><b><spring:message code="Profile"/></b></h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center my-3">
                     <img id="imagePreview" src="<c:url value="/user/${currUser.userId}/profilePicture"/>" class="profileImage" alt="Profile Picture"/>
-
-
-            </div>
-            <div>
-                <h5><b><spring:message code="Name"/></b></h5>
-                <p><c:out value="${currUser.getName()}"/></p>
-            </div>
-            <div>
-                <h5><b><spring:message code="Cuit"/></b></h5>
-                <p><c:out value="${currUser.getCuit()}"/></p>
-            </div>
-            <div>
-                <h5><b><spring:message code="Email"/></b></h5>
-                <p><c:out value="${currUser.getEmail()}"/></p>
-            </div>
-            <div>
-                <h5><b><spring:message code="Role"/></b></h5>
-                <p><spring:message code="${currentRole}" htmlEscape="true"/></p>
-            </div>
-            <c:if test="${currUser.cuit == currentUser.cuit}">
-                <div>
-                    <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
                 </div>
-            </c:if>
+                <div>
+                    <h5><b><spring:message code="Name"/></b></h5>
+                    <p><c:out value="${currUser.getName()}"/></p>
+                </div>
+                <div>
+                    <h5><b><spring:message code="Cuit"/></b></h5>
+                    <p><c:out value="${currUser.getCuit()}"/></p>
+                </div>
+                <div>
+                    <h5><b><spring:message code="Email"/></b></h5>
+                    <p><c:out value="${currUser.getEmail()}"/></p>
+                </div>
+<%--                <div>--%>
+<%--                    <h5><b><spring:message code="Role"/></b></h5>--%>
+<%--                    <p><spring:message code="${currentRole}" htmlEscape="true"/></p>--%>
+<%--                </div>--%>
+                <c:if test="${currUser.cuit == currentUser.cuit}">
+                    <div>
+                        <a href="<c:url value="/profile/edit"/>" class="w-100 btn btn-lg btn-color"><spring:message code="editProfile"/></a>
+                    </div>
+                </c:if>
+            </div>
+        </div>
+        <div class="mx-3 w-25 h-25">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title"><b>Trips Completed</b></h5>
+                </div>
+                <div class="card-body flex-grow-1">
+                    <h1 class="text-center">10</h1>
+                </div>
+            </div>
         </div>
     </div>
     <div class="card mt-5">
         <div class="card-header" style="display: inline-flex">
-            <h4><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:out value="${userRating}"/></h4>
+            <h4><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:out value="${userRating}"/> (${userReviews.size()})</h4>
         </div>
         <div class="card-body">
             <c:if test="${userReviews.size() == 0}">

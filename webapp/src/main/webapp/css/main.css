@@ -163,6 +163,12 @@ footer{
     left: 0;
 }
 
+.browseImg{
+    width: 25rem;
+    height: 20rem;
+    object-fit: cover;
+}
+
 .rating-stars {
     cursor: pointer;
 }

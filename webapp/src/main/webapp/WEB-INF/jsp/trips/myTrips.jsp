@@ -46,166 +46,173 @@
 </svg>
 
 <form:form method="get">
-    <div class="pt-5 w-100">
-        <c:if test="${activeTripsAndRequests.size()>0}">
-            <h3 class="mt-3 mb-2 text-center"><spring:message code="ActiveTrips"/></h3>
-            <div class="w-100 d-flex justify-content-center">
-                <hr class="w-50">
-            </div>
-        </c:if>
-        <div class="tripCards w-75 justify-content-center m-auto">
-            <c:if test="${activeTripsAndRequests.size() == 0 && acceptedTripsAndRequests.size() == 0}">
-                <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
-            </c:if>
-            <c:forEach var="trip" items="${activeTripsAndRequests}">
-                <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
-                    <div class="card m-3" style="width: 25rem;">
-                        <c:if test="${trip.proposalCount > 0}">
-                            <h5 class="position-absolute top-0 end-0 M-3 ">
+    <div class="w-100 d-flex justify-content-end pt-5 pb-2 px-5">
+        <a class="btn btn-lg btn-color btn-outline-primary" href="<c:url value="/trips/create"/>">Crear Publicacion</a>
+    </div>
+    <div class="px-5 w-100 text-center">
+        <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
+            <li class="nav-item mx-2" role="presentation">
+                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Publicaciones Activas</button>
+            </li>
+            <li class="nav-item mx-2" role="presentation">
+                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Publicaciones Expiradas</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                <!-- Content for Tab 1 goes here -->
+                <div class="tripCards w-100 px-5 justify-content-center m-auto">
+                    <c:if test="${activeTripsAndRequests.size() == 0}">
+                        <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
+                    </c:if>
+                    <c:forEach var="trip" items="${activeTripsAndRequests}">
+                        <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
+                            <div class="card m-3" style="width: 25rem;">
+                                <c:if test="${trip.proposalCount > 0}">
+                                    <h5 class="position-absolute top-0 end-0 M-3 ">
                                 <span class="badge rounded-pill bg-danger">
                                     ${trip.proposalCount} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
                                 <span class="visually-hidden">unread messages</span>
                             </span>
-                            </h5>
+                                    </h5>
+                                </c:if>
+                                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img-top" alt="...">
+                                <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
+                                <div class="card-body">
+                                    <div class="w-100 d-flex space-apart">
+                                        <div class="text-truncate text-center" style="width: 35%">
+                                            <h5><c:out value="${trip.origin}"/></h5>
+                                            <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
+                                        </div>
+
+                                        <div style="width: 30%">
+                                            <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                        </div>
+
+                                        <div class="text-truncate text-center" style="width: 35%">
+                                            <h5><c:out value="${trip.destination}"/></h5>
+                                            <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                                        <div class="text-center">
+                                            <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
+                                            <p><spring:message code="AvailableWeight"/></p>
+                                        </div>
+                                        <div class="text-center">
+                                            <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
+                                            <p><spring:message code="AvailableVolume"/></p>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
+                                </ul>
+                            </div>
+                        </a>
+                    </c:forEach>
+                </div>
+                <c:if test="${activeTripsAndRequests.size() > 0}">
+                    <ul class="pagination justify-content-center pt-3">
+                        <c:if test="${currentPageActive > 2}">
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                            </li>
                         </c:if>
-                        <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img-top" alt="...">
-                        <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
-                        <div class="card-body">
-                            <div class="w-100 d-flex space-apart">
-                                <div class="text-truncate text-center" style="width: 35%">
-                                    <h5><c:out value="${trip.origin}"/></h5>
-                                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
-                                </div>
-
-                                <div style="width: 30%">
-                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                </div>
-
-                                <div class="text-truncate text-center" style="width: 35%">
-                                    <h5><c:out value="${trip.destination}"/></h5>
-                                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
-                                </div>
-                            </div>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
-                                <div class="text-center">
-                                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
-                                    <p><spring:message code="AvailableWeight"/></p>
-                                </div>
-                                <div class="text-center">
-                                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
-                                    <p><spring:message code="AvailableVolume"/></p>
-                                </div>
+                        <c:if test="${currentPageActive != 1}">
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
                             </li>
-                            <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
-                        </ul>
-                    </div>
-                </a>
-            </c:forEach>
-        </div>
-        <c:if test="${activeTripsAndRequests.size() > 0}">
-            <ul class="pagination justify-content-center pt-3">
-                <c:if test="${currentPageActive > 2}">
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="page" value="${1}">First</button>
-                    </li>
+                            <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
+                        </c:if>
+                        <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
+                        <c:if test="${currentPageActive < maxActivePage}">
+                            <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPageActive < maxActivePage - 1}">
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                            </li>
+                        </c:if>
+                    </ul>
                 </c:if>
-                <c:if test="${currentPageActive != 1}">
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
-                    </li>
-                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
-                </c:if>
-                <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
-                <c:if test="${currentPageActive < maxActivePage}">
-                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
-                    </li>
-                </c:if>
-                <c:if test="${currentPageActive < maxActivePage - 1}">
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
-                    </li>
-                </c:if>
-            </ul>
-        </c:if>
-        <c:if test="${acceptedTripsAndRequests.size()>0}">
-            <h3 class="mt-5 mb-2 text-center"><spring:message code="AcceptedTrips"/></h3>
-            <div class="w-100 d-flex justify-content-center">
-                <hr class="w-50">
             </div>
-        </c:if>
-        <div class="tripCards w-75 justify-content-center m-auto">
-            <c:forEach var="trip" items="${acceptedTripsAndRequests}">
-                <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
-                    <div class="card m-3" style="width: 25rem;">
-                        <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img-top" alt="...">
-                        <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
-                        <div class="card-body">
-                            <div class="w-100 d-flex space-apart">
-                                <div class="text-truncate text-center" style="width: 35%">
-                                    <h5><c:out value="${trip.origin}"/></h5>
-                                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
-                                </div>
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                <!-- Content for Tab 2 goes here -->
+                <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
+                    <c:forEach var="trip" items="${acceptedTripsAndRequests}">
+                        <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
+                            <div class="card m-3" style="width: 25rem;">
+                                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img-top" alt="...">
+                                <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
+                                <div class="card-body">
+                                    <div class="w-100 d-flex space-apart">
+                                        <div class="text-truncate text-center" style="width: 35%">
+                                            <h5><c:out value="${trip.origin}"/></h5>
+                                            <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
+                                        </div>
 
-                                <div style="width: 30%">
-                                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                </div>
+                                        <div style="width: 30%">
+                                            <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                        </div>
 
-                                <div class="text-truncate text-center" style="width: 35%">
-                                    <h5><c:out value="${trip.destination}"/></h5>
-                                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                                        <div class="text-truncate text-center" style="width: 35%">
+                                            <h5><c:out value="${trip.destination}"/></h5>
+                                            <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                                        </div>
+                                    </div>
                                 </div>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                                        <div class="text-center">
+                                            <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
+                                            <p><spring:message code="AvailableWeight"/></p>
+                                        </div>
+                                        <div class="text-center">
+                                            <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
+                                            <p><spring:message code="AvailableVolume"/></p>
+                                        </div>
+                                    </li>
+                                    <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
+                                </ul>
                             </div>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
-                                <div class="text-center">
-                                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
-                                    <p><spring:message code="AvailableWeight"/></p>
-                                </div>
-                                <div class="text-center">
-                                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
-                                    <p><spring:message code="AvailableVolume"/></p>
-                                </div>
+                        </a>
+                    </c:forEach>
+                </div>
+                <c:if test="${acceptedTripsAndRequests.size() > 0}">
+                    <ul class="pagination justify-content-center pt-3">
+                        <c:if test="${currentPageAccepted > 2}">
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="page" value="${1}">First</button>
                             </li>
-                            <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
-                        </ul>
-                    </div>
-                </a>
-            </c:forEach>
+                        </c:if>
+                        <c:if test="${currentPageAccepted != 1}">
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">Previous</button>
+                            </li>
+                            <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">${currentPageAccepted-1}</button></li>
+                        </c:if>
+                        <li class="page-item disabled"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted}">${currentPageAccepted}</button></li>
+                        <c:if test="${currentPageAccepted < maxAcceptedPage}">
+                            <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted + 1}">${currentPageAccepted + 1}</button></li>
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted+1}">Next</button>
+                            </li>
+                        </c:if>
+                        <c:if test="${currentPageAccepted < maxAcceptedPage - 1}">
+                            <li class="page-item">
+                                <button type="submit" class="page-link" name="acceptPage" value="${maxAcceptedPage}">Last</button>
+                            </li>
+                        </c:if>
+                    </ul>
+                </c:if>
+            </div>
         </div>
-        <c:if test="${acceptedTripsAndRequests.size() > 0}">
-            <ul class="pagination justify-content-center pt-3">
-                <c:if test="${currentPageAccepted > 2}">
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="page" value="${1}">First</button>
-                    </li>
-                </c:if>
-                <c:if test="${currentPageAccepted != 1}">
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">Previous</button>
-                    </li>
-                    <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">${currentPageAccepted-1}</button></li>
-                </c:if>
-                <li class="page-item disabled"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted}">${currentPageAccepted}</button></li>
-                <c:if test="${currentPageAccepted < maxAcceptedPage}">
-                    <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted + 1}">${currentPageAccepted + 1}</button></li>
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted+1}">Next</button>
-                    </li>
-                </c:if>
-                <c:if test="${currentPageAccepted < maxAcceptedPage - 1}">
-                    <li class="page-item">
-                        <button type="submit" class="page-link" name="acceptPage" value="${maxAcceptedPage}">Last</button>
-                    </li>
-                </c:if>
-            </ul>
-        </c:if>
     </div>
-
 
 </form:form>
 <div style="margin-top: auto">

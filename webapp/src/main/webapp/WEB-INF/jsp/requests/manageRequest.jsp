@@ -78,39 +78,41 @@
             </a>
           </div>
         </div>
-        <div class="card mt-4" style="width: 18rem;">
-          <div class="card-header">
-            <h4><spring:message code="Status"/>:</h4>
+        <c:if test="${request.departureDate.isBefore(now)}">
+          <div class="card mt-4" style="width: 18rem;">
+            <div class="card-header">
+              <h4><spring:message code="Status"/>:</h4>
+            </div>
+            <div class="card-body p-3">
+              <c:if test="${request.provider_confirmation && !request.trucker_confirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
+              </c:if>
+              <c:if test="${!request.provider_confirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
+              </c:if>
+              <c:if test="${request.trucker_confirmation && !request.provider_confirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
+              </c:if>
+              <c:if test="${!request.trucker_confirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
+              </c:if>
+              <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
+                <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
+              </c:if>
+              <c:if test="${request.confirmation_date != null}">
+                <div class="pt-2 pb-0 w-100 text-center">
+                  <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmation_date.dayOfMonth}/${request.confirmation_date.monthValue}/${request.confirmation_date.year}</span>
+                </div>
+              </c:if>
+            </div>
           </div>
-          <div class="card-body p-3">
-            <c:if test="${request.provider_confirmation && !request.trucker_confirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
-            </c:if>
-            <c:if test="${!request.provider_confirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
-            </c:if>
-            <c:if test="${request.trucker_confirmation && !request.provider_confirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
-            </c:if>
-            <c:if test="${!request.trucker_confirmation}">
-              <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
-            </c:if>
-            <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
-              <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
-            </c:if>
-            <c:if test="${request.confirmation_date != null}">
-              <div class="pt-2 pb-0 w-100 text-center">
-                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmation_date.dayOfMonth}/${request.confirmation_date.monthValue}/${request.confirmation_date.year}</span>
-              </div>
-            </c:if>
-          </div>
-        </div>
-        <c:if test="${!request.provider_confirmation }">
-          <c:url value="/requests/confirmRequest" var="confirmPath"/>
-          <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
-            <spring:message var="received" code="IReceivedCargo"/>
-            <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
-          </form:form>
+          <c:if test="${!request.provider_confirmation}">
+            <c:url value="/requests/confirmRequest" var="confirmPath"/>
+            <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
+              <spring:message var="received" code="IReceivedCargo"/>
+              <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
+            </form:form>
+          </c:if>
         </c:if>
     </c:if>
     <c:if test="${request.trucker_confirmation && request.provider_confirmation }">
@@ -166,14 +168,20 @@
       <c:forEach var="offer" items="${offers}">
         <c:url value="/requests/acceptProposal" var="acceptPath"/>
         <form:form action="${acceptPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">
-          <div class="card p-3" style="width: 18rem;">
-            <div class="ca rd-body">
+          <div class="card p-2" style="width: 18rem;">
+            <div class="card-body">
               <a href="<c:url value="/profile?id=${offer.userId}"/>">
-              <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+                  <img class="profileImageNavbar" src="<c:url value="/user/${offer.userId}/profilePicture"/>"/>
+                </div>
               </a>
               <p class="card-text"><c:out value="${offer.description}"/></p>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
-              <input type="submit" class="btn btn-color" value="${reserve}"/>
+              <div class="d-flex justify-content-between">
+                <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+              </div>
             </div>
           </div>
         </form:form>

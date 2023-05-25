@@ -82,39 +82,41 @@
                         </a>
                     </div>
                 </div>
-                <div class="card mt-4" style="width: 18rem;">
-                    <div class="card-header">
-                        <h4><spring:message code="Status"/>:</h4>
+                <c:if test="${trip.departureDate.isBefore(now)}">
+                    <div class="card mt-4" style="width: 18rem;">
+                        <div class="card-header">
+                            <h4><spring:message code="Status"/>:</h4>
+                        </div>
+                        <div class="card-body p-3">
+                            <c:if test="${trip.trucker_confirmation && !trip.provider_confirmation}">
+                                <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
+                            </c:if>
+                            <c:if test="${!trip.trucker_confirmation}">
+                                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
+                            </c:if>
+                            <c:if test="${trip.provider_confirmation && !trip.trucker_confirmation}">
+                                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
+                            </c:if>
+                            <c:if test="${!trip.provider_confirmation}">
+                                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="ProviderDidntReceiveCargo"/></p>
+                            </c:if>
+                            <c:if test="${trip.provider_confirmation && trip.trucker_confirmation}">
+                                <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
+                            </c:if>
+                            <c:if test="${trip.confirmation_date != null}">
+                                <div class="pt-2 pb-0 w-100 text-center">
+                                    <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmation_date.dayOfMonth}/${trip.confirmation_date.monthValue}/${trip.confirmation_date.year}</span>
+                                </div>
+                            </c:if>
+                        </div>
                     </div>
-                    <div class="card-body p-3">
-                        <c:if test="${trip.trucker_confirmation && !trip.provider_confirmation}">
-                            <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
-                        </c:if>
-                        <c:if test="${!trip.trucker_confirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
-                        </c:if>
-                        <c:if test="${trip.provider_confirmation && !trip.trucker_confirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
-                        </c:if>
-                        <c:if test="${!trip.provider_confirmation}">
-                            <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="ProviderDidntReceiveCargo"/></p>
-                        </c:if>
-                        <c:if test="${trip.provider_confirmation && trip.trucker_confirmation}">
-                            <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
-                        </c:if>
-                        <c:if test="${trip.confirmation_date != null}">
-                            <div class="pt-2 pb-0 w-100 text-center">
-                                <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmation_date.dayOfMonth}/${trip.confirmation_date.monthValue}/${trip.confirmation_date.year}</span>
-                            </div>
-                        </c:if>
-                    </div>
-                </div>
-                <c:if test="${!trip.trucker_confirmation}">
-                    <c:url value="/trips/confirmTrip" var="confirmPath"/>
-                    <form:form method="post" action="${confirmPath}?id=${trip.tripId}">
-                        <spring:message var="finished" code="IFinishedTrip"/>
-                        <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
-                    </form:form>
+                    <c:if test="${!trip.trucker_confirmation}">
+                        <c:url value="/trips/confirmTrip" var="confirmPath"/>
+                        <form:form method="post" action="${confirmPath}?id=${trip.tripId}">
+                            <spring:message var="finished" code="IFinishedTrip"/>
+                            <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
+                        </form:form>
+                    </c:if>
                 </c:if>
                 <c:if test="${trip.trucker_confirmation && trip.provider_confirmation }">
                     <c:if test="${reviewed == null}">
@@ -172,14 +174,20 @@
             <c:forEach var="offer" items="${offers}">
                 <c:url value="/trips/acceptProposal" var="postPath"/>
                 <form:form action="${postPath}?proposalid=${offer.proposalId}&tripid=${offer.tripId}" method="post">
-                <div class="card p-3" style="width: 18rem;">
+                <div class="card p-2" style="width: 18rem;">
                     <div class="card-body">
                         <a href="<c:url value="/profile?id=${offer.userId}"/>">
-                        <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
+                                <img class="profileImageNavbar" src="<c:url value="/user/${offer.userId}/profilePicture"/>"/>
+                            </div>
                         </a>
                         <p class="card-text"><c:out value="${offer.description}"/></p>
                         <spring:message code="Trips.AcceptProposal" var="reserve"/>
-                        <input type="submit" class="btn btn-color" value="${reserve}"/>
+                        <div class="d-flex justify-content-between">
+                            <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                            <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                        </div>
                     </div>
                 </div>
                 </form:form>

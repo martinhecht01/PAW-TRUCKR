@@ -57,13 +57,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .invalidSessionUrl("/login")
                 .and().authorizeRequests()
-                    .antMatchers("/login", "/register", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()
+                    .antMatchers("/login", "/register", "/trips/browse", "/requests/browse", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()
                     .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/requests/create", "/requests/myRequests" ).hasRole("PROVIDER")
                     .antMatchers("/trips/create", "/trips/myTrips").hasRole("TRUCKER")
                     .antMatchers("/",
-                            "/requests/browse",
-                            "/trips/browse",
                             "/trips/details",
                             "/requests/details",
                             "/explore",
@@ -72,7 +70,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin()
                     .usernameParameter("cuit")
                     .passwordParameter("password")
-                    .defaultSuccessUrl("/", false)
+                    .defaultSuccessUrl("/explore", false)
                     .loginPage("/login")
                     .failureHandler(authenticationFailureHandler())
                 .and().rememberMe()

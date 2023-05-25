@@ -113,6 +113,21 @@ public class UserController {
 
         return mav;
     }
+
+    @RequestMapping("/myItinerary")
+    public ModelAndView dashboard() {
+        LOGGER.info("Accessing dashboard page");
+        final ModelAndView mav = new ModelAndView("user/myItinerary");
+        return mav;
+    }
+
+    @RequestMapping("/myOffers")
+    public ModelAndView myOffers() {
+        LOGGER.info("Accessing myOffers page");
+        final ModelAndView mav = new ModelAndView("user/myOffers");
+        return mav;
+    }
+
     @RequestMapping(value = "/verifyAccount", method = RequestMethod.GET)
     public ModelAndView verifyAccountView(@ModelAttribute("verifyAccountForm") final VerifyAccountForm form){
         LOGGER.info("Accessing verify account page");

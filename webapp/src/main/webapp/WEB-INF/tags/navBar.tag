@@ -24,11 +24,11 @@
         </button>
         <div class="collapse navbar-collapse d-flex" id="navbarNav">
             <c:if test="${currentUser == null}">
-                <ul class="navbar-nav justify-content-center">
-                    <li class="nav-item ml-5" style="margin-right: 10px">
+                <ul class="navbar-nav nav-underline justify-content-center">
+                    <li class="nav-item mx-5" style="margin-right: 10px">
                         <a class="nav-link" href="<c:url value="/trips/browse"/>"><spring:message code="ExploreTrips"/></a>
                     </li>
-                    <li class="nav-item ml-5" style="margin-right: 10px">
+                    <li class="nav-item mx-5" style="margin-right: 10px">
                         <a class="nav-link" href="<c:url value="/requests/browse"/>"><spring:message code="ExploreRequests"/></a>
                     </li>
                 </ul>
@@ -36,20 +36,27 @@
 
             <c:if test="${currentUser != null}">
 
-                <ul class="navbar-nav justify-content-center">
+                <ul class="navbar-nav nav-underline justify-content-center">
+                    <li class="nav-item mr-5" style="margin-right: 10px">
+                        <a class="nav-link" id="explore" href="<c:url value="/explore"/>">Buscar Carga</a>
+                    </li>
+                    <div class="vr mx-5"></div>
                     <li class="nav-item ml-5" style="margin-right: 10px">
-                        <a class="nav-link" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
+                        <a class="nav-link" id="dashboard" href="<c:url value="/myItinerary"/>">Mi Itinerario</a>
                     </li>
-                    <li class="nav-item ml-5">
-                        <a class="nav-link" href="<c:url value="/create"/>"><spring:message code="Create"/></a>
-                    </li>
-                    <li class="nav-item ml-5">
+<%--                    <li class="nav-item ml-5">--%>
+<%--                        <a class="nav-link" id="create" href="<c:url value="/create"/>"><spring:message code="Create"/></a>--%>
+<%--                    </li>--%>
+                    <li class="nav-item mx-5">
                         <c:if test="${currentRole == 'TRUCKER'}">
-                            <a class="nav-link" href="<c:url value="/trips/myTrips"/>"><spring:message code="MyTrips"/></a>
+                            <a class="nav-link" id="myTrips" href="<c:url value="/trips/myTrips"/>">Mis Publicaciones</a>
                         </c:if>
                         <c:if test="${currentRole == 'PROVIDER'}">
-                            <a class="nav-link" href="<c:url value="/requests/myRequests"/>"><spring:message code="MyRequests"/></a>
+                            <a class="nav-link" id="myRequests" href="<c:url value="/requests/myRequests"/>"><spring:message code="MyRequests"/></a>
                         </c:if>
+                    </li>
+                    <li class="nav-item ml-5" style="margin-right: 10px">
+                        <a class="nav-link" id="offers" href="<c:url value="/myOffers"/>">Mis Ofertas</a>
                     </li>
                 </ul>
             </c:if>
@@ -60,23 +67,59 @@
                     </ul>
                 </c:if>
                 <c:if test="${currentUser != null}">
-                <div class="" style="margin: auto 0 auto auto; display: flex; flex-direction: row">
-                    <div class="userDetailsNavBar">
-                        <a class="nav-link m-auto" href="<c:url value="/profile"/>">
-                            <h6 style="margin-bottom: 0.25rem; text-align: center;margin-top: 0.25rem;margin-right: 0.3rem"><b>${currentUser.getName()}</b></h6>
-                            <p style="margin:0 0.25rem 0 0;font-size: x-small; text-align: center;"><c:if test="${currentRole == 'TRUCKER'}"><spring:message code="Trucker"/></c:if><c:if test="${currentRole == 'PROVIDER'}"><spring:message code="Provider"/></c:if></p>
-                        </a>
-                    </div>
-                    <ul class="navbar-nav">
-                        <a class="nav-link m-auto" href="<c:url value="/profile"/>"><img class="profileImageNavbar" src="<c:url value="/user/${currentUser.getUserId()}/profilePicture"/>" /></a>
-                    </ul>
+                    <div class="" style="margin: auto 0 auto auto; display: flex; flex-direction: row">
+                        <div class="userDetailsNavBar">
+                            <a class="nav-link m-auto" href="<c:url value="/profile"/>">
+                                <h6 style="margin-bottom: 0.25rem; text-align: center;margin-top: 0.25rem;margin-right: 0.3rem"><b>${currentUser.getName()}</b></h6>
+                                <p style="margin:0 0.25rem 0 0;font-size: x-small; text-align: center;"><c:if test="${currentRole == 'TRUCKER'}"><spring:message code="Trucker"/></c:if><c:if test="${currentRole == 'PROVIDER'}"><spring:message code="Provider"/></c:if></p>
+                            </a>
+                        </div>
+                        <ul class="navbar-nav">
+                            <a class="nav-link m-auto" href="<c:url value="/profile"/>"><img class="profileImageNavbar" src="<c:url value="/user/${currentUser.getUserId()}/profilePicture"/>" /></a>
+                        </ul>
 
-                    <ul class="navbar-nav">
-                        <a class="nav-link m-auto" href="<c:url value="/logout"/>"><svg width="2em" height="2em"><use xlink:href="#logout"></use></svg></a>
-                    </ul>
+                        <ul class="navbar-nav">
+                            <a class="nav-link m-auto" href="<c:url value="/logout"/>"><svg width="2em" height="2em"><use xlink:href="#logout"></use></svg></a>
+                        </ul>
+                    </div>
                 </c:if>
             </div>
         </div>
     </div>
 </nav>
+
+<script>
+    var path = window.location.pathname;
+
+    // Select the navbar links and add the "active" class to the appropriate link
+    var exploreTripsLink = document.getElementById('explore');
+    if (exploreTripsLink && exploreTripsLink.getAttribute('href') === path) {
+        exploreTripsLink.classList.add('active');
+    }
+
+    var createTripsLink = document.getElementById('create');
+    if (createTripsLink && createTripsLink.getAttribute('href') === path) {
+        createTripsLink.classList.add('active');
+    }
+
+    var myTripsLink = document.getElementById('myTrips');
+    if (myTripsLink && myTripsLink.getAttribute('href') === path) {
+        myTripsLink.classList.add('active');
+    }
+
+    var myRequestsLink = document.getElementById('myRequests');
+    if (myRequestsLink && myRequestsLink.getAttribute('href') === path) {
+        myRequestsLink.classList.add('active');
+    }
+
+    var dashboardLink = document.getElementById('dashboard');
+    if (dashboardLink && dashboardLink.getAttribute('href') === path) {
+        dashboardLink.classList.add('active');
+    }
+
+    var myOffersLink = document.getElementById('offers');
+    if (myOffersLink && myOffersLink.getAttribute('href') === path) {
+        myOffersLink.classList.add('active');
+    }
+</script>
 

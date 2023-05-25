@@ -111,9 +111,9 @@
                         <label for="sortOrder"><spring:message code="FiltersSortBy"/>:</label>
                         <select class="form-control" name="sortOrder" id="sortOrder">
                             <option value="" disabled <c:if test="${sortOrder == null || sortOrder == ''}">selected</c:if>><spring:message code="Select"/></option>
-                            <option value="departureDate ASC" <c:if test="${sortOrder == 'departureDate ASC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateAsc"/></option>
+                            <option value="departureDate ASC" <c:if test="${sortOrder == 'departureDate ASC'}">selected</c:if>><spring:message code="FiltersSortDepartureDateAsc"/></option>
                             <option value="departureDate DESC" <c:if test="${sortOrder == 'departureDate DESC'}">selected</c:if>><spring:message code="FiltersSortDepartureDateDesc"/></option>
-                            <option value="arrivalDate ASC" <c:if test="${sortOrder == 'arrivalDate ASC'}">selected</c:if>><spring:message code="FiltersSortPriceAsc"/></option>
+                            <option value="arrivalDate ASC" <c:if test="${sortOrder == 'arrivalDate ASC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateAsc"/></option>
                             <option value="arrivalDate DESC" <c:if test="${sortOrder == 'arrivalDate DESC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateDesc"/></option>
                             <option value="price ASC" <c:if test="${sortOrder == 'price ASC'}">selected</c:if>><spring:message code="FiltersSortPriceAsc"/></option>
                             <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>><spring:message code="FiltersSortPriceDesc"/></option>
@@ -131,8 +131,8 @@
                     </c:if>
                     <c:forEach var="trip" items="${offers}">
                         <a class="text-decoration-none" href="<c:url value="/requests/details?id=${trip.tripId}"/>">
-                            <div class="card m-3" style="width: 25rem;">
-                                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img-top" alt="cargo image">
+                            <div class="card m-3" style="width: 25rem; overflow: hidden">
+                                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="browseImg" alt="cargo image">
                                 <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
                                 <div class="card-body">
                                     <div class="w-100 d-flex space-apart">

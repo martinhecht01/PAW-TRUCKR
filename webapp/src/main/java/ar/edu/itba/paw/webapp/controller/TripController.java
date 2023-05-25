@@ -236,6 +236,7 @@ public class TripController {
             mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
             mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
             mav.addObject("userRating", revs.getUserRating(trip.getProviderId()));
+            mav.addObject("now", LocalDateTime.now());
         }
             mav.addObject("trip", trip);
         mav.addObject("userId", userId);

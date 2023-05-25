@@ -264,6 +264,7 @@ public class RequestController {
             mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
             mav.addObject("reviewed", revs.getReviewByRequestAndUserId(requestId, request.getTruckerId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
             mav.addObject("userRating", revs.getUserRating(request.getTruckerId()));
+            mav.addObject("now", LocalDateTime.now());
         }
 
         mav.addObject("request", request);
