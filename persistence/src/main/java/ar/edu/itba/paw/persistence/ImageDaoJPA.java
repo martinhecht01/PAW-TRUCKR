@@ -36,13 +36,8 @@ public class ImageDaoJPA implements ImageDao {
     }
 
     @Override
-    public void updateImage(byte[] image, int imageid) {
-        Image imageToUpdate = entityManager.find(Image.class, imageid);
-
-        imageToUpdate.setImage(image);
-
-        entityManager.getTransaction().begin();
-        entityManager.merge(imageToUpdate);
-        entityManager.getTransaction().commit();
+    public void updateImage(byte[] newImage, Image image) {
+        image.setImage(newImage);
+        LOGGER.info("Updating image with imageId {}", image.getImageid());
     }
 }

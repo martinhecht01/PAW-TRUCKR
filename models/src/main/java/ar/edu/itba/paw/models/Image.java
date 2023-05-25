@@ -20,6 +20,10 @@ public class Image {
         // Default constructor required by Hibernate
     }
 
+    public Image(byte[] image){
+        this.image = image;
+    }
+
     public Image(int imageid, byte[] image) {
         this.imageid = imageid;
         this.image = image;
