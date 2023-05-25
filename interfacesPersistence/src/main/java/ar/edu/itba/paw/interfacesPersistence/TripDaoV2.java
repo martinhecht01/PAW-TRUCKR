@@ -1,39 +1,42 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 public interface TripDaoV2 {
-    Trip createTrip(int truckerId,
+    Trip createTrip(User trucker,
                     String licensePlate,
                     int weight,
                     int volume,
-                    LocalDateTime departureDate,
-                    LocalDateTime arrivalDate,
+                    Timestamp departureDate,
+                    Timestamp arrivalDate,
                     String origin,
                     String destination,
                     String type,
                     int price);
 
-    Trip createRequest(int providerId,
+    Trip createRequest(User provider,
                        int weight,
                        int volume,
-                       LocalDateTime departureDate,
-                       LocalDateTime arrivalDate,
+                       Timestamp departureDate,
+                       Timestamp arrivalDate,
                        String origin,
                        String destination,
                        String type,
                        int price);
 
-    void confirmTrip(int tripId, int userId);
+    void confirmTrip(Trip trip, User user);
 
-    Proposal createProposal(int tripId, int userId, String description);
+    Proposal createProposal(Trip trip, User user, String description);
 
-    List<Proposal> getAllProposalsForTripId(int tripId);
+   // List<Proposal> getAllProposalsForTripId(int tripId);
 
     Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate);
 
@@ -59,7 +62,7 @@ public interface TripDaoV2 {
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
 
-    void setImageId(int tripId, int imageId);
+    void setImage(Trip trip, Image image);
 
-    int getImageId(int tripId);
+    Image getImage(int tripId);
 }
