@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -53,7 +55,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
                            String destination,
                            String type,
                            int price) {
-        return tripDaoV2.createTrip(truckerId, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
+        User user = userDao.getUserById(truckerId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.createTrip(user, licensePlate, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
     }
 
     @Transactional
@@ -67,17 +70,20 @@ public class TripServiceV2Impl implements TripServiceV2 {
                               String destination,
                               String type,
                               int price) {
-        return tripDaoV2.createRequest(providerId, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
+        User user = userDao.getUserById(providerId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.createRequest(user, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
     }
 
     @Transactional
     @Override
     public void confirmTrip(int tripId, int userId) {
-        tripDaoV2.confirmTrip(tripId, userId);
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        User trucker = userDao.getUserById(trip.getTruckerId()).orElseThrow(NoSuchElementException::new);
-        User provider = userDao.getUserById(trip.getProviderId()).orElseThrow(NoSuchElementException::new);
-        if(trip.getProvider_confirmation()){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.confirmTrip(trip, user);
+        //Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        User trucker = trip.getTrucker();
+        User provider = trip.getProvider();
+        if(trip.getProviderConfirmation()){
             ms.sendCompletionEmail(trucker, trip);
             ms.sendCompletionEmail(provider,trip);
         }else{
@@ -89,18 +95,19 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional
     @Override
     public Proposal createProposal(int tripId, int userId, String description) {
-        Proposal proposal = tripDaoV2.createProposal(tripId, userId, description);
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        Proposal proposal = tripDaoV2.createProposal(trip, user, description);
+        //Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         LOGGER.debug("Trip: " + trip.toString() +", Proposal: " + proposal.toString());
 
-        Integer uid;
-        System.out.println(trip.getTruckerId());
-        if(trip.getTruckerId() > 0)
-            uid = trip.getTruckerId();
+        //User user;
+        if(trip.getTrucker().getUserId() > 0)
+            user = trip.getTrucker();
         else
-            uid = trip.getProviderId();
+            user = trip.getProvider();
 
-        ms.sendProposalEmail(userDao.getUserById(uid).orElseThrow(NoSuchElementException::new), proposal);
+        ms.sendProposalEmail(user, proposal);
         return proposal;
     }
 
@@ -111,10 +118,13 @@ public class TripServiceV2Impl implements TripServiceV2 {
         Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(ProposalNotFoundException::new);
         tripDaoV2.acceptProposal(proposal);
 
-        Trip trip = tripDaoV2.getTripOrRequestById(proposal.getTripId()).orElseThrow(ProposalNotFoundException::new);
+        Trip trip = proposal.getTrip();
+        // tripDaoV2.getTripOrRequestById(proposal.getTripId()).orElseThrow(ProposalNotFoundException::new);
 
-        User trucker = userDao.getUserById(trip.getTruckerId()).orElseThrow(ProposalNotFoundException::new);
-        User provider = userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
+        User trucker = trip.getTrucker();
+                //userDao.getUserById(trip.getTruckerId()).orElseThrow(ProposalNotFoundException::new);
+        User provider = trip.getProvider();
+                //userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
 
         ms.sendTripEmail(trucker, provider,trip);
         ms.sendTripEmail(provider, trucker,trip);
@@ -123,7 +133,9 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional(readOnly = true)
     @Override
     public List<Proposal> getAllProposalsForTripId(int tripId) {
-        return tripDaoV2.getAllProposalsForTripId(tripId);
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        return trip.getProposals();
+        //return tripDaoV2.getAllProposalsForTripId(tripId);
     }
 
     @Transactional(readOnly = true)
@@ -192,14 +204,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.getTripOrRequestByIdAndUserId(id, userid);
     }
 
+    @Transactional
     @Override
-    public void updateTripPicture(Integer userId, Integer imageId) {
-        tripDaoV2.setImageId(userId, imageId);
+    public void updateTripPicture(Integer tripId, Integer imageId) {
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        Image image = imageDao.getImage(imageId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.setImage(trip, image);
     }
 
     @Override
-    public byte[] getTripPicture(Integer userId) {
-        return imageDao.getImage(tripDaoV2.getImageId(userId)).get().getImage();
+    public byte[] getTripPicture(Integer tripId) {
+        return imageDao.getImage(tripId).get().getImage();
     }
 
 }
