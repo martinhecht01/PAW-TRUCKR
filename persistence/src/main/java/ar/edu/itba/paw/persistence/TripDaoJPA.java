@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.models.*;
 import org.hibernate.Criteria;
+import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -18,6 +19,7 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional
@@ -251,21 +253,25 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
-        Pair<String, List<Object>> builder = buildQuery(true, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        //t.provider is null porque no me deja hacer t.provider.userId
-        String query = "SELECT t FROM Trip t WHERE t.provider IS NULL AND t.departureDate >= CURRENT_TIMESTAMP";
-        query += builder.getKey();
-        List<Object> params = builder.getValue();
 
-        LOGGER.debug("Getting all active trips");
-        TypedQuery<Trip> typedQuery = entityManager.createQuery(query, Trip.class);
 
-        // Set query parameters
-        for (int i = 0; i < params.size(); i++) {
-            typedQuery.setParameter(i + 1, params.get(i));
+        String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        Pair<String, List<Object>> builder2 = buildQuery(false, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
+        Query nativeQuery = entityManager.createNativeQuery(query);
+        List<Object> params2 = builder2.getValue();
+        for (int i = 0; i < params2.size(); i++) {
+            nativeQuery.setParameter(i + 1, params2.get(i));
         }
+        nativeQuery.setMaxResults(ITEMS_PER_PAGE);
+        nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE); //el 12 es el tamano de la pagina
 
-        return typedQuery.getResultList();
+        final List<Long> idList = (List<Long>) nativeQuery.getResultList()
+                .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
+
+        final TypedQuery<Trip> query3 = entityManager.createQuery("SELECT  t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
+        query3.setParameter("ids", idList);
+
+        return query3.getResultList();
     }
 
     @Override
