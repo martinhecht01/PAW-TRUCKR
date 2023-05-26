@@ -167,105 +167,103 @@ public class TripDaoJPA implements TripDaoV2 {
         return Optional.of(trip);
     }
 
-    private Pair<String, List<Object>> buildQuery(Boolean pagination, String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
+    private Query buildQuery(String baseQuery, String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
+
         LOGGER.debug("Building query for trips");
-        String query = "";
+        StringBuilder query = new StringBuilder();
+        final Map<String, Object> params = new HashMap<>();
+        query.append(baseQuery);
 
-        if(pag < 1)
-            pag = 1;
-
-        List<Object> params = new ArrayList<>();
-        Integer offset = (pag-1)*ITEMS_PER_PAGE;
 
         if (origin != null && !origin.equals("")){
             LOGGER.debug("Adding origin: {} to query", origin);
-            query = query + " AND origin = ?";
-            params.add(origin);
+            query.append(" AND origin = :origin");
+            params.put("origin", origin);
         }
 
         if (destination != null && !destination.equals("")){
             LOGGER.debug("Adding destination: {} to query", destination);
-            query = query + " AND destination = ?";
-            params.add(destination);
+            query.append(" AND destination = destination");
+            params.put("destination",destination);
         }
 
         if (minAvailableVolume != null){
             LOGGER.debug("Adding minAvailableVolume: {} to query", minAvailableVolume);
-            query = query + " AND volume >= ?";
-            params.add(minAvailableVolume);
+            query.append(" AND volume >= :minAvailableVolume");
+            params.put("minAvailableVolume", minAvailableVolume);
         }
 
         if (minAvailableWeight != null){
             LOGGER.debug("Adding minAvailableWeight: {} to query", minAvailableWeight);
-            query = query + " AND weight >= ?";
-            params.add(minAvailableWeight);
+            query.append(" AND weight >= :minAvailableWeight");
+            params.put("minAvailableWeight", minAvailableWeight);
         }
 
         if (minPrice != null){
             LOGGER.debug("Adding minPrice: {} to query", minPrice);
-            query = query + " AND price >= ?";
-            params.add(minPrice);
+            query.append(" AND price >= :minPrice");
+            params.put("minPrice",minPrice);
         }
 
         if (maxPrice != null){
             LOGGER.debug("Adding maxPrice: {} to query", maxPrice);
-            query = query + " AND price <= ?";
-            params.add(maxPrice);
+            query.append(" AND price <= :maxPrice");
+            params.put("maxPrice",maxPrice);
         }
 
+        //ESTAS DOS SON RARAS, REVISAR
         if (departureDate != null && !departureDate.equals("")){
             LOGGER.debug("Adding departureDate: {} to query", departureDate);
-            query = query + " AND DATE(departure_date) = CAST(? AS DATE)";
-            params.add("'" + departureDate + "'");
+            query.append(" AND DATE(departure_date) = CAST(:departureDate AS DATE)");
+            params.put("departureDate", "'" + departureDate + "'");
+
         }
 
         if (arrivalDate != null && !arrivalDate.equals("")){
             LOGGER.debug("Adding arrivalDate: {} to query", arrivalDate);
-            query = query + " AND DATE(arrival_date) = CAST(? AS DATE)";
-            params.add("'" + arrivalDate + "'");
+            query.append(" AND DATE(arrival_date) = CAST(:arrivalDate AS DATE)");
+            params.put(arrivalDate, "'" + arrivalDate + "'");
         }
 
         if(sortOrder != null && !sortOrder.isEmpty()) {
             LOGGER.debug("Adding sort order: {} to query", sortOrder);
             //sort order asc and desc
             if (sortOrder.equals("departureDate ASC")) {
-                query = query + " ORDER BY departure_date ASC";
+                query.append(" ORDER BY departure_date ASC");
             } else if (sortOrder.equals("departureDate DESC")) {
-                query = query + " ORDER BY departure_date DESC";
+                query.append(" ORDER BY departure_date DESC");
             } else if(sortOrder.equals("arrivalDate ASC")) {
-                query = query + " ORDER BY arrival_date ASC";
+                query.append(" ORDER BY arrival_date ASC");
             } else if(sortOrder.equals("arrivalDate DESC")) {
-                query = query + " ORDER BY arrival_date DESC";
+                query.append(" ORDER BY arrival_date DESC");
             } else if(sortOrder.equals("price ASC")) {
-                query = query + " ORDER BY price ASC";
+                query.append(" ORDER BY price ASC");
             } else if(sortOrder.equals("price DESC")) {
-                query = query + " ORDER BY price DESC";
+                query.append(" ORDER BY price DESC");
             }
         }
-        if(pagination){
-            query = query + " LIMIT ? OFFSET ?";
-            params.add(ITEMS_PER_PAGE);
-            params.add(offset);
-        }
-        return new Pair<>(query, params);
+
+        final Query nativeQuery = entityManager.createNativeQuery(query.toString());
+        params.forEach(nativeQuery::setParameter);
+        return nativeQuery;
 
     }
 
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
 
-
         String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
-        Pair<String, List<Object>> builder2 = buildQuery(false, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        query+=builder2.getKey();
-        List<Object> params2 = builder2.getValue();
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        for (int i = 0; i < params2.size(); i++) {
-            nativeQuery.setParameter(i + 1, params2.get(i));
-        }
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
+        //query += builder2.getKey();
+//        List<Object> params2 = builder2.getValue();
+//        Query nativeQuery = entityManager.createNativeQuery(query);
+//        for (int i = 0; i < params2.size(); i++) {
+//            nativeQuery.setParameter(i + 1, params2.get(i));
+//        }
+
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
-        nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE); //el 12 es el tamano de la pagina
+        nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
 
         final List<Long> idList = (List<Long>) nativeQuery.getResultList()
                 .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
@@ -278,21 +276,19 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
-        Pair<String, List<Object>> builder = buildQuery(true, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        //t.trucker is null porque no me deja hacer t.trucker.userId
-        String query = "SELECT t FROM Trip t WHERE t.trucker IS NULL AND t.departureDate >= CURRENT_TIMESTAMP";
-        query += builder.getKey();
-        List<Object> params = builder.getValue();
+        String query = "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
 
-        LOGGER.debug("Getting all active requests");
-        TypedQuery<Trip> typedQuery = entityManager.createQuery(query, Trip.class);
+        nativeQuery.setMaxResults(ITEMS_PER_PAGE);
+        nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
 
-        // Set query parameters
-        for (int i = 0; i < params.size(); i++) {
-            typedQuery.setParameter(i + 1, params.get(i));
-        }
+        final List<Long> idList = (List<Long>) nativeQuery.getResultList()
+                .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
 
-        return typedQuery.getResultList();
+        final TypedQuery<Trip> query3 = entityManager.createQuery("SELECT t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
+        query3.setParameter("ids", idList);
+
+        return query3.getResultList();
     }
 
 
@@ -334,6 +330,7 @@ public class TripDaoJPA implements TripDaoV2 {
 //PAGINACION
     @Override
     public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid, Integer pag) {
+
     return null;
     }
 
@@ -354,8 +351,14 @@ public class TripDaoJPA implements TripDaoV2 {
     //PAGINACION
     @Override
     public Integer getTotalPagesAcceptedTripsAndRequests(Integer userid) {
-        return null;
+        //String query = "SELECT COUNT(*) as total FROM Trip t WHERE (t.trucker.userId = :userid AND t.provider.useriD IS NOT NULL) OR (t.provider.userId = :userid AND t.trucker.userId IS NOT NULL)";
+//        TypedQuery<Long> typedQuery = entityManager.createQuery("SELECT COUNT(ALL) as total FROM Trip t WHERE (t.trucker.userId = :userid AND t.provider.useriD IS NOT NULL) OR (t.provider.userId = :userid AND t.trucker.userId IS NOT NULL)", Long.class);
+//        typedQuery.setParameter("userid", userid);
+//
+//        Long total = typedQuery.getSingleResult();
+//        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
     }
+
 
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid) {
@@ -368,7 +371,8 @@ public class TripDaoJPA implements TripDaoV2 {
     public void setImage(Trip trip, Image image) {
         LOGGER.info("Setting image id: {} for trip: {}", image.getImageid(), trip.getTripId());
         trip.setImage(image);
-        //revisar si tengo que persistir aca
+        entityManager.persist(trip);
+        //revisar si tengo que persistir o no aca
     }
 
     @Override
