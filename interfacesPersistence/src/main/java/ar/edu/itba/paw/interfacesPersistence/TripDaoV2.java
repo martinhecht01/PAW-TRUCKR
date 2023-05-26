@@ -36,7 +36,7 @@ public interface TripDaoV2 {
 
     Proposal createProposal(Trip trip, User user, String description);
 
-   // List<Proposal> getAllProposalsForTripId(int tripId);
+   List<Proposal> getAllProposalsForTripId(int tripId, int pag);
 
     Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate);
 
