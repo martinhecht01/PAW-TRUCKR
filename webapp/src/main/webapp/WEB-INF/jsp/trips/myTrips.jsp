@@ -47,15 +47,17 @@
 
 <form:form method="get">
     <div class="w-100 d-flex justify-content-end pt-5 pb-2 px-5">
-        <a class="btn btn-lg btn-color btn-outline-primary" href="<c:url value="/trips/create"/>">Crear Publicacion</a>
+        <c:if test="${activeTripsAndRequests.size() > 0}">
+            <a class="btn btn-lg btn-color btn-outline-primary" href="<c:url value="/trips/create"/>"><spring:message code="CreatePublication"/></a>
+        </c:if>
     </div>
     <div class="px-5 w-100 text-center">
         <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
             <li class="nav-item mx-2" role="presentation">
-                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">Publicaciones Activas</button>
+                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true"><spring:message code="ActivePublications"/></button>
             </li>
             <li class="nav-item mx-2" role="presentation">
-                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">Publicaciones Expiradas</button>
+                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false"><spring:message code="ExpiredPublications"/></button>
             </li>
         </ul>
 
@@ -64,7 +66,10 @@
                 <!-- Content for Tab 1 goes here -->
                 <div class="tripCards w-100 px-5 justify-content-center m-auto">
                     <c:if test="${activeTripsAndRequests.size() == 0}">
-                        <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoTripsAvailable"/></h2>
+                        <div>
+                            <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoActivePublications"/></h3>
+                            <a class="mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/trips/create"/>"><spring:message code="CreatePublication"/></a>
+                        </div>
                     </c:if>
                     <c:forEach var="trip" items="${activeTripsAndRequests}">
                         <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
@@ -144,6 +149,11 @@
             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                 <!-- Content for Tab 2 goes here -->
                 <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
+                    <c:if test="${acceptedTripsAndRequests.size() == 0}">
+                        <div>
+                            <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoExpiredPublications"/></h3>
+                        </div>
+                    </c:if>
                     <c:forEach var="trip" items="${acceptedTripsAndRequests}">
                         <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                             <div class="card m-3" style="width: 25rem;">

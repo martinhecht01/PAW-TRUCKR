@@ -34,7 +34,7 @@
 <div class="w-100 px-5 d-flex justify-content-center">
     <div class="mt-5 w-75 card">
         <div class="card-header">
-            <h3>Offers sent</h3>
+            <h3><spring:message code="OffersSent"/></h3>
         </div>
         <div class="card-body">
             <div class="d-flex align-items-center justify-content-between">
@@ -72,7 +72,8 @@
                         <h4>$1000</h4>
                     </div>
                     <div class="text-center align-items-center">
-                        <input type="submit" class="btn btn-outline-danger mx-2" value="Cancelar"/>
+                        <spring:message code="Cancel" var="Cancel"/>
+                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
                     </div>
                 </div>
             </div>

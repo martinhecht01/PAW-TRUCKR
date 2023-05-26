@@ -31,14 +31,14 @@
 
 <components:navBar/>
 <div class="w-100 px-5 mt-5 mb-2 d-flex justify-content-end">
-    <a class="btn btn-outline-secondary mx-3 mb-2" href="<c:url value="/pastTrips"/>">View Past Trips</a>
+    <a class="btn btn-outline-secondary mx-3 mb-2" href="<c:url value="/pastTrips"/>"><spring:message code="ViewPastTrips"/></a>
 </div>
 <div class="w-100 px-5">
     <div class="row">
         <div class="col-lg">
             <div class="my-3 mx-3 card">
                 <div class="card-header">
-                    <h3>Ongoing Trips (2)</h3>
+                    <h3><spring:message code="OngoingTrips"/> (AGREGAR CANTIDAD)</h3>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">
@@ -122,7 +122,7 @@
         <div class="col-lg">
             <div class="my-3 mx-3 card">
                 <div class="card-header">
-                    <h3>Future Trips (2)</h3>
+                    <h3><spring:message code="FutureTrips"/> (AGREGAR CANTIDAD)</h3>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center justify-content-between">

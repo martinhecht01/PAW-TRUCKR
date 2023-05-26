@@ -61,7 +61,7 @@
         <div class="mx-3 w-25 h-25">
             <div class="card mb-3">
                 <div class="card-header">
-                    <h5 class="card-title"><b>Trips Completed</b></h5>
+                    <h5 class="card-title"><b><spring:message code="CompletedTrips"/></b></h5>
                 </div>
                 <div class="card-body flex-grow-1">
                     <h1 class="text-center">10</h1>
