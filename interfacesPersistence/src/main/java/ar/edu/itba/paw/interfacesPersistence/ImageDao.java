@@ -9,5 +9,5 @@ public interface ImageDao {
 
     Optional<Image> getImage(int imageid);
 
-    void updateImage(byte[] image, int imageid);
+    void updateImage(byte[] newImage, Image image );
 }
