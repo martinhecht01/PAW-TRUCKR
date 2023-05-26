@@ -257,11 +257,13 @@ public class TripDaoJPA implements TripDaoV2 {
 
         String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
         Pair<String, List<Object>> builder2 = buildQuery(false, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        Query nativeQuery = entityManager.createNativeQuery(query);
+        query+=builder2.getKey();
         List<Object> params2 = builder2.getValue();
+        Query nativeQuery = entityManager.createNativeQuery(query);
         for (int i = 0; i < params2.size(); i++) {
             nativeQuery.setParameter(i + 1, params2.get(i));
         }
+
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
         nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE); //el 12 es el tamano de la pagina
 
