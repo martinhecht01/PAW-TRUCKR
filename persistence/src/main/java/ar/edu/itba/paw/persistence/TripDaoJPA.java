@@ -340,7 +340,8 @@ public class TripDaoJPA implements TripDaoV2 {
 //PAGINACION
     @Override
     public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid, Integer pag) {
-
+//        String query = "SELECT trips.*, COUNT(proposals.proposal_id) AS proposalcount FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id WHERE (trips.trucker_id = ? AND provider_id IS NULL) OR (trips.provider_id = ? AND trucker_id IS NULL) GROUP BY trips.trip_id LIMIT ? OFFSET ?";
+//        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid, userid, ITEMS_PER_PAGE, (pag - 1) * ITEMS_PER_PAGE);
     return null;
     }
 
@@ -348,25 +349,38 @@ public class TripDaoJPA implements TripDaoV2 {
     //PAGINACION
     @Override
     public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag) {
+//        String query = "SELECT * FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL) LIMIT ? OFFSET ?";
+//        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid, userid, ITEMS_PER_PAGE, (pag - 1) * ITEMS_PER_PAGE);
         return null;
     }
 
     //PAGINACION
     @Override
-    public Integer getTotalPagesActiveTripsOrRequests(Integer userid) {
-        return null;
+    public Integer getTotalPagesActiveTripsOrRequests(User user) {
+//        String query = "SELECT count(*) as total FROM trips WHERE (trucker_id = ? AND provider_id IS NULL) OR (provider_id = ? AND trucker_id IS NULL)";
+//        Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), userid, userid).get(0);
+//        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+        long total = user.getTruckerTrips().stream().filter(trip -> trip.getProvider() == null).count();
+        total += user.getProviderTrips().stream().filter(trip -> trip.getTrucker() == null).count();
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+
     }
 
 
     //PAGINACION
     @Override
-    public Integer getTotalPagesAcceptedTripsAndRequests(Integer userid) {
-        //String query = "SELECT COUNT(*) as total FROM Trip t WHERE (t.trucker.userId = :userid AND t.provider.useriD IS NOT NULL) OR (t.provider.userId = :userid AND t.trucker.userId IS NOT NULL)";
-//        TypedQuery<Long> typedQuery = entityManager.createQuery("SELECT COUNT(ALL) as total FROM Trip t WHERE (t.trucker.userId = :userid AND t.provider.useriD IS NOT NULL) OR (t.provider.userId = :userid AND t.trucker.userId IS NOT NULL)", Long.class);
+    public Integer getTotalPagesAcceptedTripsAndRequests(User user) {
+//        String query = "SELECT COUNT(*) as total FROM Trip t WHERE (t.trucker.userId = :userid AND t.provider.useriD IS NOT NULL) OR (t.provider.userId = :userid AND t.trucker.userId IS NOT NULL)";
+//        TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
 //        typedQuery.setParameter("userid", userid);
 //
 //        Long total = typedQuery.getSingleResult();
 //        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+        //User user = userDao.getUserById(userid).orElseThrow(NoSuchElementException::new);
+
+        long total = user.getTruckerTrips().stream().filter(trip -> trip.getProvider() != null).count();
+        total += user.getProviderTrips().stream().filter(trip -> trip.getTrucker() != null).count();
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
     }
 
 

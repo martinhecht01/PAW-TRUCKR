@@ -56,9 +56,9 @@ public interface TripDaoV2 {
 
     List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag);
 
-    Integer getTotalPagesActiveTripsOrRequests(Integer userid);
+    Integer getTotalPagesActiveTripsOrRequests(User user);
 
-    Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
+    Integer getTotalPagesAcceptedTripsAndRequests(User user);
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
 

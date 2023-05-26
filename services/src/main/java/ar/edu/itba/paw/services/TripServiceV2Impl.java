@@ -189,13 +189,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional(readOnly = true)
     @Override
     public Integer getTotalPagesActiveTripsOrRequests(Integer userid) {
-        return tripDaoV2.getTotalPagesActiveTripsOrRequests(userid);
+        User user = userDao.getUserById(userid).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesActiveTripsOrRequests(user);
     }
 
     @Transactional(readOnly = true)
     @Override
     public Integer getTotalPagesAcceptedTripsAndRequests(Integer userid) {
-        return tripDaoV2.getTotalPagesAcceptedTripsAndRequests(userid);
+        User user = userDao.getUserById(userid).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesAcceptedTripsAndRequests(user);
     }
 
     @Transactional(readOnly = true)

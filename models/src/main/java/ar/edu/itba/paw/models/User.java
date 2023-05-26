@@ -38,11 +38,11 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Proposal> proposals;
 
-//    @OneToMany(mappedBy = "trucker")
-//    private List<Trip> truckerTrips;
-//
-//    @OneToMany(mappedBy = "provider")
-//    private List<Trip> providerTrips;
+    @OneToMany(mappedBy = "trucker")
+    private List<Trip> truckerTrips;
+
+    @OneToMany(mappedBy = "provider")
+    private List<Trip> providerTrips;
 
 
 
@@ -174,5 +174,19 @@ public class User {
         this.proposals = proposals;
     }
 
+    public List<Trip> getTruckerTrips() {
+        return truckerTrips;
+    }
 
+    public void setTruckerTrips(List<Trip> truckerTrips) {
+        this.truckerTrips = truckerTrips;
+    }
+
+    public List<Trip> getProviderTrips() {
+        return providerTrips;
+    }
+
+    public void setProviderTrips(List<Trip> providerTrips) {
+        this.providerTrips = providerTrips;
+    }
 }

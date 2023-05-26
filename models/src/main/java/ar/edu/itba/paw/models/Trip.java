@@ -68,6 +68,10 @@ public class Trip {
 
     @Transient
     private int proposalCount;
+
+    public void setTrucker(User trucker) {
+        this.trucker = trucker;
+    }
     // Constructors, getters, and setters
 
     //constructor completo
@@ -190,10 +194,6 @@ public class Trip {
 
     public User getTrucker() {
         return trucker;
-    }
-
-    public void setTrucker(User trucker) {
-        this.trucker = trucker;
     }
 
     public String getLicensePlate() {
