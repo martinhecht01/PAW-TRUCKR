@@ -118,11 +118,21 @@ public class TripDaoJPA implements TripDaoV2 {
         return proposal;
     }
 
-    //hay que hacer Trip.getProposals()
-//    @Override
-//    public List<Proposal> getAllProposalsForTripId(int tripId) {
-//        return null;
-//    }
+    //ejemplo de 1+1 query
+    @Override
+    public List<Proposal> getAllProposalsForTripId(int tripId, int pag){
+        String query = "SELECT proposal_id FROM proposals WHERE trip_id = :tripId";
+        Query q = entityManager.createNativeQuery(query);
+        q.setFirstResult(pag);
+        q.setMaxResults(ITEMS_PER_PAGE);
+        q.setParameter("tripId", tripId);
+        final List<Long> idList = (List<Long>) q.getResultList()
+                .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
+        final TypedQuery<Proposal> typedQuery = entityManager.createQuery("SELECT p FROM Proposal p WHERE p.proposalId IN :idList", Proposal.class);
+        typedQuery.setParameter("idList", idList);
+        return typedQuery.getResultList();
+
+    }
 
 
     //PAGINACION

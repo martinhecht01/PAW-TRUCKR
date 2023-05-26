@@ -3,6 +3,7 @@ package ar.edu.itba.paw.persistence;
 import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.models.Review;
+import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.persistence.config.TestConfig;
 import org.junit.Assert;
@@ -66,7 +67,9 @@ public class ReviewDaoImplTest {
     @Test
     public void testGetReviewByTripAndUserId() {
         // 2. Ejercitar
-        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(TRIPID_EXISTENT, USERID_EXISTENT);
+        String sql1 = "SELECT * FROM trips WHERE tripid = ?";
+        String sql2 = "SELECT * FROM users WHERE userid = ?";
+        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(jdbcTemplate.queryForObject(sql1, Trip.class, TRIPID_EXISTENT), jdbcTemplate.queryForObject(sql2, User.class, USERID_EXISTENT));
 
         // 3. Postcondiciones
         Assert.assertTrue(maybeReview.isPresent());
