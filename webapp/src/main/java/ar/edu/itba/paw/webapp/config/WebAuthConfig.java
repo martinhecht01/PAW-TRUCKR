@@ -65,7 +65,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                             "/trips/details",
                             "/requests/details",
                             "/explore",
-                            "/trips/{tripId}/tripPicture").permitAll()
+                            "/trips/{tripId}/tripPicture",
+                            "/user/{userId}/profilePicture").permitAll()
                     .antMatchers("/**").authenticated()
                 .and().formLogin()
                     .usernameParameter("cuit")

@@ -38,25 +38,52 @@
             <div class="card-body">
                 <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-srequested">
-                    <tr>
-                        <td><b><spring:message code="CargoType"/></b></td>
-                        <td><spring:message code="${request.type}" htmlEscape="true" /></td>
-                    </tr>
+                        <tr>
+                            <td>
+                                <b><spring:message code="CargoType"/></b>
+                            </td>
+                            <td>
+                                <a class="text-decoration-none text-dark" href="<c:out value="/explore?type=${request.type}"/>">
+                                    <spring:message code="${request.type}" htmlEscape="true" />
+                                </a>
+                            </td>
+                        </tr>
+                    </a>
                     <tr>
                         <td><b><spring:message code="Origin"/> - <spring:message code="Destination"/></b></td>
-                        <td><c:out value="${request.origin}-${request.destination}"/></td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href=" <c:out value="/explore?origin=${request.origin}"/> ">
+                                <c:out value="${request.origin}"/>
+                            </a>
+                            -
+                            <a class="text-decoration-none text-dark" href=" <c:out value="/explore?destination=${request.destination}"/> ">
+                                <c:out value="${request.destination}"/>
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                        <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:url value="/explore?departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}"/>">
+                                <c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/>
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="NecessaryVolume"/></b></td>
-                        <td><c:out value="${request.volume}"/> m3</td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:url value="/explore?minAvailableVolume=${request.volume}"/>">
+                                <c:out value="${request.volume}"/> m3
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="NecessaryWeight"/></b></td>
-                        <td><c:out value="${request.weight}"/> kg</td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:url value="/explore?minAvailableWeight=${request.weight}"/>">
+                                <c:out value="${request.weight}"/> kg
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Price"/></b></td>

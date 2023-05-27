@@ -37,30 +37,53 @@
             </div>
             <div class="card-body">
                 <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
-                <table class="table">
+                <table class="table table-srequested">
                     <tr>
-                        <td><b><spring:message code="CargoType"/></b></td>
-                        <td><spring:message code="${trip.type}" htmlEscape="true" /></td>
+                        <td>
+                            <b><spring:message code="CargoType"/></b>
+                        </td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:out value="/explore?type=${trip.type}"/>">
+                                <spring:message code="${trip.type}" htmlEscape="true" />
+                            </a>
+                        </td>
                     </tr>
+                    </a>
                     <tr>
                         <td><b><spring:message code="Origin"/> - <spring:message code="Destination"/></b></td>
-                        <td><c:out value="${trip.origin}-${trip.destination}"/></td>
-                    </tr>
-                    <tr>
-                        <td><b><spring:message code="LicensePlate"/></b></td>
-                        <td><c:out value="${trip.licensePlate}"/></td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href=" <c:out value="/explore?origin=${trip.origin}"/> ">
+                                <c:out value="${trip.origin}"/>
+                            </a>
+                            -
+                            <a class="text-decoration-none text-dark" href=" <c:out value="/explore?destination=${trip.destination}"/> ">
+                                <c:out value="${trip.destination}"/>
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                        <td><c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/></td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:url value="/explore?departureDate=${trip.departureDate}&arrivalDate=${trip.arrivalDate}"/>">
+                                <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="AvailableVolume"/></b></td>
-                        <td><c:out value="${trip.volume}"/> m3</td>
+                        <td><b><spring:message code="NecessaryVolume"/></b></td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:url value="/explore?minAvailableVolume=${trip.volume}"/>">
+                                <c:out value="${trip.volume}"/> m3
+                            </a>
+                        </td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="AvailableWeight"/></b></td>
-                        <td><c:out value="${trip.weight}"/> kg</td>
+                        <td><b><spring:message code="NecessaryWeight"/></b></td>
+                        <td>
+                            <a class="text-decoration-none text-dark" href="<c:url value="/explore?minAvailableWeight=${trip.weight}"/>">
+                                <c:out value="${trip.weight}"/> kg
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="Price"/></b></td>
@@ -78,7 +101,7 @@
                     <div class="card-body p-3">
                         <a  class="text-decoration-none" href="<c:url value="/profile?id=${provider.userId}"/>">
                             <div class="d-flex justify-content-evenly">
-                                <img class="profileImageNavbar" src="/user/${trucker.userId}/profilePicture" alt="ProfilePicture">
+                                <img class="mx-1 profileImageNavbar" src="/user/${trucker.userId}/profilePicture" alt="ProfilePicture">
                                 <div>
                                     <h5 class="card-title"><c:out value="${trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating} </h5>
                                     <p class="text-dark card-text text-decoration-none"><c:out value="${trucker.email.toLowerCase()}"/></p>
