@@ -65,4 +65,8 @@ public interface TripDaoV2 {
     void setImage(Trip trip, Image image);
 
     Image getImage(int tripId);
+
+    void deleteOffer(Proposal proposal);
+
+    List<Proposal> getAllSentOffers(User user);
 }

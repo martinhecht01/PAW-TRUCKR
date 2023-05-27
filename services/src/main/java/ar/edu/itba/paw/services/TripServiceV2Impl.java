@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -13,6 +14,7 @@ import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +38,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
     private final MailService ms;
 
     @Autowired
-    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, ImageDao imageDao, MailService ms) {
+    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, @Qualifier("imageDaoJPA") ImageDao imageDao, MailService ms) {
         this.tripDaoV2 = tripDaoV2;
         this.userDao = userDao;
         this.imageDao = imageDao;
@@ -212,6 +214,25 @@ public class TripServiceV2Impl implements TripServiceV2 {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         Image image = imageDao.getImage(imageId).orElseThrow(NoSuchElementException::new);
         tripDaoV2.setImage(trip, image);
+    }
+    
+    @Transactional
+    @Override
+    public void deleteOffer(int offerId){
+        Optional<Proposal> maybeOffer = tripDaoV2.getProposalById(offerId);
+        if (maybeOffer.isPresent()){
+            tripDaoV2.deleteOffer(maybeOffer.get());
+        }
+        throw new ProposalNotFoundException();
+    }
+
+    @Override
+    public List<Proposal> getAllSentOffers(int userId) {
+        Optional<User> maybeUser = userDao.getUserById(userId);
+        if (maybeUser.isPresent()){
+            return tripDaoV2.getAllSentOffers(maybeUser.get());
+        }
+        throw new UserNotFoundException();
     }
 
     @Override

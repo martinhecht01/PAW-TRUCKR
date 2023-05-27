@@ -62,4 +62,8 @@ public interface TripServiceV2 {
     void updateTripPicture(Integer userId, Integer imageId);
 
     byte[] getTripPicture(Integer userId);
+
+    void deleteOffer(int offerId);
+
+    List<Proposal> getAllSentOffers(int userId);
 }
