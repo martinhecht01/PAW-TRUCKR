@@ -241,6 +241,24 @@ public class TripServiceV2Impl implements TripServiceV2 {
     }
 
     @Override
+    public List<Trip> getAllOngoingTrips(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllOngoingTrips(user);
+    }
+
+    @Override
+    public List<Trip> getAllPastTrips(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllPastTrips(user);
+    }
+
+    @Override
+    public List<Trip> getAllFutureTrips(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllFutureTrips(user);
+    }
+
+    @Override
     public byte[] getTripPicture(Integer tripId) {
         return imageDao.getImage(tripId).get().getImage();
     }

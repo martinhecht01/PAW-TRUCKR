@@ -508,4 +508,28 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         entityManager.remove(offer);
     }
 
+    @Override
+    public List<Trip> getAllOngoingTrips(User user) {
+        String jpql = "SELECT r FROM Trip r WHERE r.user = :user AND r.departureDate < now() AND (r.truckerConfirmation = false OR r.providerConfirmation = false)";
+        return entityManager.createQuery(jpql, Trip.class)
+                .setParameter("user", user)
+                .getResultList();
+    }
+
+    @Override
+    public List<Trip> getAllPastTrips(User user) {
+        String jpql = "SELECT r FROM Trip r WHERE r.user = :user AND r.truckerConfirmation = true AND r.providerConfirmation = true";
+        return entityManager.createQuery(jpql, Trip.class)
+                .setParameter("user", user)
+                .getResultList();
+    }
+
+    @Override
+    public List<Trip> getAllFutureTrips(User user) {
+        String jpql = "SELECT r FROM Trip r WHERE r.user = :user AND r.departureDate > now()";
+        return entityManager.createQuery(jpql, Trip.class)
+                .setParameter("user", user)
+                .getResultList();
+    }
+
 }
