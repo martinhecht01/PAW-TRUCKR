@@ -26,6 +26,10 @@ public class Reset {
 
     // Constructors, getters, and setters
 
+    public Reset(){
+        // Default constructor required by Hibernate
+    }
+
     public Reset(User user, int hash, Timestamp createDate, boolean completed) {
         this.user = user;
         this.hash = hash;

@@ -25,7 +25,9 @@ public class Review {
 
 
     // Constructors, getters, and setters
-
+    public Review() {
+        // Default constructor required by Hibernate
+    }
 
     public Review(Trip trip, User user, float rating, String review) {
         this.rating = rating;
