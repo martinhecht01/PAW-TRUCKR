@@ -166,31 +166,30 @@
                                             ${trip.departureDate}
                                         </div>
 
-                                        <div style="width: 30%">
-                                            <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                        </div>
+                                    <div style="width: 30%">
+                                        <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                    </div>
 
-                                        <div class="text-truncate text-center" style="width: 35%">
-                                            <h5><c:out value="${trip.destination}"/></h5>
-                                            ${trip.arrivalDate}
-                                        </div>
+                                    <div class="text-truncate text-center" style="width: 35%">
+                                        <h5><c:out value="${trip.destination}"/></h5>
+                                        ${trip.arrivalDate}
                                     </div>
                                 </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
-                                        <div class="text-center">
-                                            <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
-                                            <p><spring:message code="AvailableWeight"/></p>
-                                        </div>
-                                        <div class="text-center">
-                                            <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
-                                            <p><spring:message code="AvailableVolume"/></p>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
-                                </ul>
                             </div>
-                        </a>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                                    <div class="text-center">
+                                        <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
+                                        <p><spring:message code="AvailableWeight"/></p>
+                                    </div>
+                                    <div class="text-center">
+                                        <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
+                                        <p><spring:message code="AvailableVolume"/></p>
+                                    </div>
+                                </li>
+                                <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
+                            </ul>
+                        </div>
                     </c:forEach>
                 </div>
                 <c:if test="${expiredPublications.size() > 0}">
