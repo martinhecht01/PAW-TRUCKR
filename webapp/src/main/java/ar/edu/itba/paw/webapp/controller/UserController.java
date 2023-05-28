@@ -125,6 +125,8 @@ public class UserController {
         LOGGER.info("Accessing dashboard page");
         final ModelAndView mav = new ModelAndView("user/myItinerary");
         mav.addObject("currentUser", getCurrentUser());
+        mav.addObject("ongoingTrips", ts.getAllOngoingTrips(getCurrentUser().getUserId()));
+        mav.addObject("futureTrips", ts.getAllFutureTrips(getCurrentUser().getUserId()));
         return mav;
     }
 
