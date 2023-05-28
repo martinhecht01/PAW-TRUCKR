@@ -220,8 +220,8 @@ public class TripController {
 
         mav.addObject("currentPageAccepted", acceptPage);
         mav.addObject("maxAcceptedPage", maxAcceptPage);
-        mav.addObject("acceptedTripsAndRequests",ts.getAllAcceptedTripsAndRequestsByUserId(user.getUserId(), acceptPage));
-        mav.addObject("activeTripsAndRequests", ts.getAllActiveTripsOrRequestsAndProposalsCount(user.getUserId(), activePage));
+        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId()));
+        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId()));
         return mav;
     }
 

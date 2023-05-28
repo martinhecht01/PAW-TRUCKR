@@ -47,7 +47,7 @@
 
 <form:form method="get">
     <div class="w-100 d-flex justify-content-end pt-5 pb-2 px-5">
-        <c:if test="${activeTripsAndRequests.size() > 0}">
+        <c:if test="${activePublications.size() > 0}">
             <a class="btn btn-lg btn-color btn-outline-primary" href="<c:url value="/trips/create"/>"><spring:message code="CreatePublication"/></a>
         </c:if>
     </div>
@@ -65,13 +65,13 @@
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                 <!-- Content for Tab 1 goes here -->
                 <div class="tripCards w-100 px-5 justify-content-center m-auto">
-                    <c:if test="${activeTripsAndRequests.size() == 0}">
+                    <c:if test="${activePublications.size() == 0}">
                         <div>
                             <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoActivePublications"/></h3>
                             <a class="mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/trips/create"/>"><spring:message code="CreatePublication"/></a>
                         </div>
                     </c:if>
-                    <c:forEach var="trip" items="${activeTripsAndRequests}">
+                    <c:forEach var="trip" items="${activePublications}">
                         <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                             <div class="card m-3" style="width: 25rem;">
                                 <c:if test="${trip.proposalCount > 0}">
@@ -118,7 +118,7 @@
                         </a>
                     </c:forEach>
                 </div>
-                <c:if test="${activeTripsAndRequests.size() > 0}">
+                <c:if test="${activePublications.size() > 0}">
                     <ul class="pagination justify-content-center pt-3">
                         <c:if test="${currentPageActive > 2}">
                             <li class="page-item">
@@ -149,12 +149,12 @@
             <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
                 <!-- Content for Tab 2 goes here -->
                 <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
-                    <c:if test="${acceptedTripsAndRequests.size() == 0}">
+                    <c:if test="${expiredPublications.size() == 0}">
                         <div>
                             <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoExpiredPublications"/></h3>
                         </div>
                     </c:if>
-                    <c:forEach var="trip" items="${acceptedTripsAndRequests}">
+                    <c:forEach var="trip" items="${expiredPublications}">
                         <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                             <div class="card m-3" style="width: 25rem;">
                                 <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="browseImg" alt="...">
@@ -193,7 +193,7 @@
                         </a>
                     </c:forEach>
                 </div>
-                <c:if test="${acceptedTripsAndRequests.size() > 0}">
+                <c:if test="${expiredPublications.size() > 0}">
                     <ul class="pagination justify-content-center pt-3">
                         <c:if test="${currentPageAccepted > 2}">
                             <li class="page-item">
