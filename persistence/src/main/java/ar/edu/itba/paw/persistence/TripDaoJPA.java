@@ -193,73 +193,73 @@ public class TripDaoJPA implements TripDaoV2 {
         query.append(baseQuery);
 
 
-//        if (origin != null && !origin.equals("")){
-//            LOGGER.debug("Adding origin: {} to query", origin);
-//            query.append(" AND origin = :origin");
-//            params.put("origin", origin);
-//        }
-//
-//        if (destination != null && !destination.equals("")){
-//            LOGGER.debug("Adding destination: {} to query", destination);
-//            query.append(" AND destination = :destination");
-//            params.put("destination",destination);
-//        }
-//
-//        if (minAvailableVolume != null){
-//            LOGGER.debug("Adding minAvailableVolume: {} to query", minAvailableVolume);
-//            query.append(" AND volume >= :minAvailableVolume");
-//            params.put("minAvailableVolume", minAvailableVolume);
-//        }
-//
-//        if (minAvailableWeight != null){
-//            LOGGER.debug("Adding minAvailableWeight: {} to query", minAvailableWeight);
-//            query.append(" AND weight >= :minAvailableWeight");
-//            params.put("minAvailableWeight", minAvailableWeight);
-//        }
-//
-//        if (minPrice != null){
-//            LOGGER.debug("Adding minPrice: {} to query", minPrice);
-//            query.append(" AND price >= :minPrice");
-//            params.put("minPrice",minPrice);
-//        }
-//
-//        if (maxPrice != null){
-//            LOGGER.debug("Adding maxPrice: {} to query", maxPrice);
-//            query.append(" AND price <= :maxPrice");
-//            params.put("maxPrice",maxPrice);
-//        }
-//
-//        //ESTAS DOS SON RARAS, REVISAR
-//        if (departureDate != null && !departureDate.equals("")){
-//            LOGGER.debug("Adding departureDate: {} to query", departureDate);
-//            query.append(" AND DATE(departure_date) = CAST( :departureDate AS DATE)");
-//            params.put("departureDate", "'" + departureDate + "'");
-//
-//        }
-//
-//        if (arrivalDate != null && !arrivalDate.equals("")){
-//            LOGGER.debug("Adding arrivalDate: {} to query", arrivalDate);
-//            query.append(" AND DATE(arrival_date) = CAST( :arrivalDate AS DATE)");
-//            params.put(arrivalDate, "'" + arrivalDate + "'");
-//        }
-//
-//        if(sortOrder != null && !sortOrder.isEmpty()) {
-//            LOGGER.debug("Adding sort order: {} to query", sortOrder);
-//            //sort order asc and desc
-//            if (sortOrder.equals("departureDate ASC")) {
-//                query.append(" ORDER BY departure_date ASC");
-//            } else if (sortOrder.equals("departureDate DESC")) {
-//                query.append(" ORDER BY departure_date DESC");
-//            } else if(sortOrder.equals("arrivalDate ASC")) {
-//                query.append(" ORDER BY arrival_date ASC");
-//            } else if(sortOrder.equals("arrivalDate DESC")) {
-//                query.append(" ORDER BY arrival_date DESC");
-//            } else if(sortOrder.equals("price ASC")) {
-//                query.append(" ORDER BY price ASC");
-//            } else if(sortOrder.equals("price DESC")) {
-//                query.append(" ORDER BY price DESC");
-//            }
-//        }
+        if (origin != null && !origin.equals("")){
+            LOGGER.debug("Adding origin: {} to query", origin);
+            query.append(" AND origin = :origin");
+            params.put("origin", origin);
+        }
+
+        if (destination != null && !destination.equals("")){
+            LOGGER.debug("Adding destination: {} to query", destination);
+            query.append(" AND destination = :destination");
+            params.put("destination",destination);
+        }
+
+        if (minAvailableVolume != null){
+            LOGGER.debug("Adding minAvailableVolume: {} to query", minAvailableVolume);
+            query.append(" AND volume >= :minAvailableVolume");
+            params.put("minAvailableVolume", minAvailableVolume);
+        }
+
+        if (minAvailableWeight != null){
+            LOGGER.debug("Adding minAvailableWeight: {} to query", minAvailableWeight);
+            query.append(" AND weight >= :minAvailableWeight");
+            params.put("minAvailableWeight", minAvailableWeight);
+        }
+
+        if (minPrice != null){
+            LOGGER.debug("Adding minPrice: {} to query", minPrice);
+            query.append(" AND price >= :minPrice");
+            params.put("minPrice",minPrice);
+        }
+
+        if (maxPrice != null){
+            LOGGER.debug("Adding maxPrice: {} to query", maxPrice);
+            query.append(" AND price <= :maxPrice");
+            params.put("maxPrice",maxPrice);
+        }
+
+        //ESTAS DOS SON RARAS, REVISAR
+        if (departureDate != null && !departureDate.equals("")){
+            LOGGER.debug("Adding departureDate: {} to query", departureDate);
+            query.append(" AND DATE(departure_date) = CAST( :departureDate AS DATE)");
+            params.put("departureDate", "'" + departureDate + "'");
+
+        }
+
+        if (arrivalDate != null && !arrivalDate.equals("")){
+            LOGGER.debug("Adding arrivalDate: {} to query", arrivalDate);
+            query.append(" AND DATE(arrival_date) = CAST( :arrivalDate AS DATE)");
+            params.put(arrivalDate, "'" + arrivalDate + "'");
+        }
+
+        if(sortOrder != null && !sortOrder.isEmpty()) {
+            LOGGER.debug("Adding sort order: {} to query", sortOrder);
+            //sort order asc and desc
+            if (sortOrder.equals("departureDate ASC")) {
+                query.append(" ORDER BY departure_date ASC");
+            } else if (sortOrder.equals("departureDate DESC")) {
+                query.append(" ORDER BY departure_date DESC");
+            } else if(sortOrder.equals("arrivalDate ASC")) {
+                query.append(" ORDER BY arrival_date ASC");
+            } else if(sortOrder.equals("arrivalDate DESC")) {
+                query.append(" ORDER BY arrival_date DESC");
+            } else if(sortOrder.equals("price ASC")) {
+                query.append(" ORDER BY price ASC");
+            } else if(sortOrder.equals("price DESC")) {
+                query.append(" ORDER BY price DESC");
+            }
+        }
 
         final Query nativeQuery = entityManager.createNativeQuery(query.toString());
         params.forEach(nativeQuery::setParameter);
@@ -270,16 +270,8 @@ public class TripDaoJPA implements TripDaoV2 {
     @Override
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
 
-        String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL ";
-        //Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
-        Query nativeQuery = entityManager.createNativeQuery(query);
-        //query += builder2.getKey();
-//        List<Object> params2 = builder2.getValue();
-//        Query nativeQuery = entityManager.createNativeQuery(query);
-//        for (int i = 0; i < params2.size(); i++) {
-//            nativeQuery.setParameter(i + 1, params2.get(i));
-//        }
-
+        String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
         nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
@@ -295,7 +287,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
-        String query = "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        String query = "SELECT trip_id FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
         Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
