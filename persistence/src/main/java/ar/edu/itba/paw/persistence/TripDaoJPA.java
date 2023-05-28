@@ -277,7 +277,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
         final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
         query3.setParameter("ids", idList);
-        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
+        return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
     }
 
     @Override
@@ -295,7 +295,7 @@ public class TripDaoJPA implements TripDaoV2 {
         final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
         query3.setParameter("ids", idList);
 
-        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
+        return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
     }
 
 
@@ -353,7 +353,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
     final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
     tripQuery.setParameter("ids", idList);
-    List<Trip> trips = idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
+    List<Trip> trips = idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
 
     // Fetch the count of proposals for each trip
     for (Trip trip : trips) {
@@ -447,7 +447,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
         query3.setParameter("ids", idList);
 
-        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
+        return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
 
     }
 
