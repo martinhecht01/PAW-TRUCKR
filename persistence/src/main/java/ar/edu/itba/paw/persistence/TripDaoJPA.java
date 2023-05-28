@@ -170,11 +170,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public Optional<Trip> getTripOrRequestById(int tripId) {
-//        String query = "SELECT t FROM Trip t WHERE t.tripId = :tripId";
-//        TypedQuery<Trip> typedQuery = entityManager.createQuery(query, Trip.class);
-//        typedQuery.setParameter("tripId", tripId);
-//        List<Trip> trips = typedQuery.getResultList();
-//        return trips.isEmpty() ? Optional.empty() : Optional.of(trips.get(0));
+
         Trip trip = entityManager.find(Trip.class, tripId);
         if(trip == null) {
             LOGGER.info("Trip with id {} not found", tripId);
@@ -230,14 +226,14 @@ public class TripDaoJPA implements TripDaoV2 {
         //ESTAS DOS SON RARAS, REVISAR
         if (departureDate != null && !departureDate.equals("")){
             LOGGER.debug("Adding departureDate: {} to query", departureDate);
-            query.append(" AND DATE(departure_date) = CAST( :departureDate AS DATE)");
+            query.append(" AND DATE(departure_date) >= CAST( :departureDate AS DATE)");
             params.put("departureDate", "'" + departureDate + "'");
 
         }
 
         if (arrivalDate != null && !arrivalDate.equals("")){
             LOGGER.debug("Adding arrivalDate: {} to query", arrivalDate);
-            query.append(" AND DATE(arrival_date) = CAST( :arrivalDate AS DATE)");
+            query.append(" AND DATE(arrival_date) <= CAST( :arrivalDate AS DATE)");
             params.put(arrivalDate, "'" + arrivalDate + "'");
         }
 
