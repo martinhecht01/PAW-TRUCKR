@@ -286,7 +286,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
         final List<Integer> idList = (List<Integer>) nativeQuery.getResultList()
                 .stream().map(n -> (Integer)((Number)n).intValue()).collect(Collectors.toList());
-        System.out.println(idList + "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        System.out.println(idList + "ID LIST");
 
         final TypedQuery<Trip> query3 = entityManager.createQuery("SELECT  t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
         query3.setParameter("ids", idList);
@@ -305,7 +305,7 @@ public class TripDaoJPA implements TripDaoV2 {
         final List<Long> idList = (List<Long>) nativeQuery.getResultList()
                 .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
 
-        final TypedQuery<Trip> query3 = entityManager.createQuery("SELECT t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
+        final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN :ids", Trip.class);
         query3.setParameter("ids", idList);
 
         return query3.getResultList();
