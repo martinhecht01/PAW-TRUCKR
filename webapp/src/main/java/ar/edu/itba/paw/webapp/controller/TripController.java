@@ -133,9 +133,9 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/details");
         Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
-        mav.addObject("userRating", revs.getUserRating(trip.getTruckerId()));
+        mav.addObject("userRating", revs.getUserRating(trip.getTrucker().getUserId()));
 
-        mav.addObject("trucker", us.getUserById(trip.getTruckerId()).orElseThrow(UserNotFoundException :: new));
+        mav.addObject("trucker", trip.getTrucker());//TODO: fijarse el error que onda
 
         return mav;
     }
@@ -232,10 +232,10 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/manageTrip");
         int userId = Objects.requireNonNull(getUser()).getUserId();
         Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
-        if(trip.getProviderId() > 0) {
-            mav.addObject("acceptUser", us.getUserById(trip.getProviderId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProviderId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
-            mav.addObject("userRating", revs.getUserRating(trip.getProviderId()));
+        if(trip.getProvider().getUserId() > 0) {
+            mav.addObject("acceptUser", us.getUserById(trip.getProvider().getUserId()).orElseThrow(UserNotFoundException::new));
+            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProvider().getUserId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
+            mav.addObject("userRating", revs.getUserRating(trip.getProvider().getUserId()));
             mav.addObject("now", LocalDateTime.now());
         }
             mav.addObject("trip", trip);

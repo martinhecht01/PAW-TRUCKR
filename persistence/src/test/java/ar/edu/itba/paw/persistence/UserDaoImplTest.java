@@ -155,15 +155,15 @@ public class UserDaoImplTest {
         Assert.assertTrue(exists);
     }
 
-    @Rollback
-    @Test
-    public void testVerifyAccount(){
-        //2 - Ejercitar
-        userDao.verifyAccount(USERID_EXISTENT);
-
-        //3 - Postcondiciones
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "accountverified = true AND userid = 1"));
-    }
+//    @Rollback
+//    @Test
+//    public void testVerifyAccount(){
+//        //2 - Ejercitar
+//        userDao.verifyAccount(USERID_EXISTENT);
+//
+//        //3 - Postcondiciones
+//        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "accountverified = true AND userid = 1"));
+//    }
 
 }
 

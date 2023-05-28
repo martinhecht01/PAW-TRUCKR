@@ -1,18 +1,20 @@
 package ar.edu.itba.paw.interfacesPersistence;
 
 import ar.edu.itba.paw.models.Review;
+import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ReviewDao {
 
-    Optional<Review> getReviewByTripAndUserId(int tripId, int userId);
+    Optional<Review> getReviewByTripAndUserId(Trip trip, User user);
 
 
-    void createReview(int tripid, int userid, float rating, String comment);
+    void createReview(Trip trip, User user, float rating, String comment);
 
-    float getUserRating(int userId);
+    Double getUserRating(User user);
 
-    List<Review> getUserReviews(int userId);
+    List<Review> getUserReviews(User user);
 }

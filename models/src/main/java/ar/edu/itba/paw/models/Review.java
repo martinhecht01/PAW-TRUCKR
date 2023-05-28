@@ -1,33 +1,60 @@
 package ar.edu.itba.paw.models;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "reviews")
+@IdClass(ReviewId.class)
 public class Review {
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable = false)
+    private User user;
 
-    private final int tripId;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "tripid", nullable = false)
+    private Trip trip;
 
-    private final int userId;
+    @Column(name = "rating")
+    private float rating;
 
-    private final float rating;
+    @Column(name = "review", length = 400)
+    private String review;
 
-    private final String review;
 
 
-    public int getTripId() {
-        return tripId;
+    // Constructors, getters, and setters
+    public Review() {
+        // Default constructor required by Hibernate
     }
 
+    public Review(Trip trip, User user, float rating, String review) {
+        this.rating = rating;
+        this.review = review;
+        this.user = user;
+        this.trip = trip;
+    }
+
+    public int getTripId() {
+        return trip.getTripId();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+
     public int getUserId() {
-        return userId;
+        return user.getUserId();
     }
 
     public String getReview() {
         return review;
-    }
-
-    public Review(int tripId, int userId, float rating, String review) {
-        this.rating=rating;
-        this.review=review;
-        this.tripId=tripId;
-        this.userId=userId;
     }
 
     public float getRating() {

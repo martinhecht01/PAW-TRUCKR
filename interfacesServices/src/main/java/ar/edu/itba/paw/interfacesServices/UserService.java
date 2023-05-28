@@ -15,7 +15,7 @@ public interface UserService {
 
     void createReset(Integer userId);
 
-   void createSecureToken(Integer userId);
+   void createSecureToken(User user);
 
     boolean verifyAccount(Integer tokenValue);
 

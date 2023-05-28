@@ -1,48 +1,90 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
+import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
+import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.models.Review;
+import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReviewServiceImpl.class);
+
+
     private final ReviewDao reviewDao;
+    private final TripDaoV2 tripDao;
+    private final UserDao userDao;
+
+
 
     @Autowired
-    public ReviewServiceImpl(ReviewDao reviewDao) {
+    public ReviewServiceImpl(@Qualifier("reviewDaoJPA") ReviewDao reviewDao, TripDaoV2 tripDao, @Qualifier("userDaoJPA") UserDao userDao) {
         this.reviewDao = reviewDao;
+        this.tripDao = tripDao;
+        this.userDao = userDao;
     }
 
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Review> getReviewByTripAndUserId(int tripId, int userId) {
+        Optional<User> user = userDao.getUserById(userId);
+        Optional<Trip> trip = tripDao.getTripOrRequestById(tripId);
+        LOGGER.info("Getting review for user {} in trip {}", userId, tripId);
+        if (user.isPresent() && trip.isPresent())
+            return reviewDao.getReviewByTripAndUserId(trip.get() ,user.get());
 
-        return reviewDao.getReviewByTripAndUserId(tripId,userId);
+        return Optional.empty();
     }
 
-    @Override
-    public Optional<Review> getReviewByRequestAndUserId(int requestId, int userId) {
-        return reviewDao.getReviewByTripAndUserId(requestId,userId);
-    }
-
+    @Transactional
     @Override
     public void createReview(int tripid, int userid, float rating, String comment) {
-         reviewDao.createReview(tripid,userid,rating,comment);
+        Optional<User> user = userDao.getUserById(userid);
+        Optional<Trip> trip = tripDao.getTripOrRequestById(tripid);
+        LOGGER.info("Creating review for user {} in trip {}", userid, tripid);
+
+        if (user.isPresent() && trip.isPresent())
+            reviewDao.createReview(trip.get(),user.get(),rating,comment);
+        LOGGER.warn("Trip {} or user {} not present", tripid, userid);
     }
 
+    @Transactional(readOnly = true)
     @Override
-    public float getUserRating(int userId) {
-        return reviewDao.getUserRating(userId);
+    public Double getUserRating(int userId) {
+        Optional<User> user = userDao.getUserById(userId);
+        LOGGER.info("Getting rating for user {}", userId );
+
+        if (user.isPresent())
+            return reviewDao.getUserRating(user.get());
+
+        return (double) 0;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Review> getUserReviews(int userId) {
-        return reviewDao.getUserReviews(userId);
+
+        Optional<User> user = userDao.getUserById(userId);
+
+        LOGGER.info("Getting reviews for user {}", userId);
+
+        if (user.isPresent())
+            return reviewDao.getUserReviews(user.get());
+
+        return new ArrayList<>();
     }
 }

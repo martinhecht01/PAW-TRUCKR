@@ -29,6 +29,8 @@
     <maven-war-plugin.version>2.6</maven-war-plugin.version>
     <org.thymeleaf.version>3.0.11.RELEASE</org.thymeleaf.version>
     <commons-fileupload.version>1.4</commons-fileupload.version>
+    <hibernate-orm.version>5.1.0.Final</hibernate-orm.version>
+    <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
   </properties>
 
   <dependencyManagement>
@@ -94,6 +96,12 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator</artifactId>
         <version>${org.hibernate.validator}</version>
+<!--        <exclusions>-->
+<!--          <exclusion>-->
+<!--            <groupId>org.jboss.logging</groupId>-->
+<!--            <artifactId>jboss-logging</artifactId>-->
+<!--          </exclusion>-->
+<!--        </exclusions>-->
       </dependency>
       <dependency>
         <groupId>com.sun.mail</groupId>
@@ -171,6 +179,32 @@
         <artifactId>hsqldb</artifactId>
         <version>${org.hsqldb.version}</version>
         <scope>test</scope>
+      </dependency>
+<!--      JPA-->
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId>
+        <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-core</artifactId>
+        <version>${hibernate-orm.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>${hibernate-orm.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.1-api</artifactId>
+        <version>${hibernate-jpa.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-java8</artifactId>
+        <version>${hibernate-orm.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
