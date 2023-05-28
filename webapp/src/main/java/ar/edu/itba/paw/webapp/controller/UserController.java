@@ -2,9 +2,11 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
+import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 
@@ -25,7 +27,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -33,13 +40,15 @@ public class UserController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService us;
     private final ImageService is;
+    private final TripServiceV2 ts;
     private final ReviewService revs;
 
     @Autowired
-    public UserController(final UserService us, ImageService is, ReviewService revs){
+    public UserController(final UserService us, ImageService is, ReviewService revs, TripServiceV2 ts){
         this.us = us;
         this.is = is;
         this.revs = revs;
+        this.ts = ts;
     }
 
 
@@ -108,9 +117,6 @@ public class UserController {
             mav.addObject("userReviews", revs.getUserReviews(currUser.getUserId()));
             mav.addObject("currUser", currUser);
         }
-
-
-
         return mav;
     }
 
@@ -118,6 +124,7 @@ public class UserController {
     public ModelAndView dashboard() {
         LOGGER.info("Accessing dashboard page");
         final ModelAndView mav = new ModelAndView("user/myItinerary");
+        mav.addObject("currentUser", getCurrentUser());
         return mav;
     }
 
@@ -125,7 +132,15 @@ public class UserController {
     public ModelAndView myOffers() {
         LOGGER.info("Accessing myOffers page");
         final ModelAndView mav = new ModelAndView("user/myOffers");
+        mav.addObject("offers", getCurrentUser().getProposals());
         return mav;
+    }
+
+    @RequestMapping(value = "/user/cancelOffer", method = RequestMethod.POST)
+    public ModelAndView cancelOffer(@ModelAttribute("offerId") final int offerId) {
+        LOGGER.info("Cancelling offer with id {}", offerId);
+        ts.deleteOffer(offerId);
+        return new ModelAndView("redirect:/myOffers");
     }
 
     @RequestMapping(value = "/verifyAccount", method = RequestMethod.GET)

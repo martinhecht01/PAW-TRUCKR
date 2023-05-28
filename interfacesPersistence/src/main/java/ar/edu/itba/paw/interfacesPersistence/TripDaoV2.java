@@ -74,5 +74,4 @@ public interface TripDaoV2 {
 
     void deleteOffer(Proposal proposal);
 
-    List<Proposal> getAllSentOffers(User user);
 }

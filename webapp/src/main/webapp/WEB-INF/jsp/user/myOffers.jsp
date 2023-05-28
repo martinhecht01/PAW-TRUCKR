@@ -37,46 +37,61 @@
             <h3><spring:message code="OffersSent"/></h3>
         </div>
         <div class="card-body">
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="w-25 d-flex justify-content-center">
-                    <div class="w-50 text-truncate text-center">
-                        <h5>BsAs</h5>
-                        12/12/2021
-                    </div>
+            <c:if test="${offers.size() == 0}">
+                <div class="d-flex justify-content-center align-items-center flex-column">
+                    <h5><spring:message code="NoOffersSent"/></h5>
+                    <a class="w-25 mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/explore"/>"><spring:message code="BrowseCargo"/></a>
+                </div>
+            </c:if>
+            <c:if test="${offers.size() > 0}">
+                <c:forEach var="offer" items="${offers}">
+                    <c:if test="${!offer.equals(offers[0])}">
+                        <hr class="py-2">
+                    </c:if>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="w-25 d-flex justify-content-center">
+                            <div class="w-50 text-truncate text-center">
+                                <h5>${offer.trip.origin}</h5>
+                                ${offer.trip.departureDate}
+                            </div>
 
-                    <div class="w-25 text-center">
-                        <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                    </div>
+                            <div class="w-25 text-center">
+                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
+                            </div>
 
-                    <div class="w-25 text-truncate text-center">
-                        <h5>CBA</h5>
-                        13/12/2021
+                            <div class="w-25 text-truncate text-center">
+                                <h5>${offer.trip.destination}</h5>
+                                ${offer.trip.arrivalDate}
+                            </div>
+                        </div>
+                        <div class="vr"></div>
+                        <div class="w-25 d-flex align-items-center justify-content-evenly">
+                            <div class="text-center align-items-center">
+                                <img src="<c:url value="/user/${currentUser.role == 'TRUCKER' ? offer.trip.provider.userId : offer.trip.trucker.userId}/profilePicture"/> " class="profileImageNavbar"/>
+                            </div>
+                            <div class="mx-3 text-center align-items-center">
+                                <h5>${offer.trip.provider.name}</h5>
+                                <p>Provider</p>
+                            </div>
+                            <div class="text-center align-items-center">
+                                <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>4 (ARREGLAR)</h5>
+                            </div>
+                        </div>
+                        <div class="vr"></div>
+                        <div class="w-25 d-flex align-items-center justify-content-evenly">
+                            <div class="text-center align-items-center">
+                                <h4>$${offer.trip.price}</h4>
+                            </div>
+                            <div class="text-center align-items-center">
+                                <form:form method="post" action="/user/cancelOffer?offerId=${offer.proposalId}">
+                                    <spring:message code="Cancel" var="Cancel"/>
+                                    <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                </form:form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="vr"></div>
-                <div class="w-25 d-flex align-items-center justify-content-evenly">
-                    <div class="text-center align-items-center">
-                        <img src="<c:url value="/user/2/profilePicture"/> " class="profileImageNavbar"/>
-                    </div>
-                    <div class="mx-3 text-center align-items-center">
-                        <h5>Manuel Dithurbide</h5>
-                        <p>Provider</p>
-                    </div>
-                    <div class="text-center align-items-center">
-                        <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>
-                    </div>
-                </div>
-                <div class="vr"></div>
-                <div class="w-25 d-flex align-items-center justify-content-evenly">
-                    <div class="text-center align-items-center">
-                        <h4>$1000</h4>
-                    </div>
-                    <div class="text-center align-items-center">
-                        <spring:message code="Cancel" var="Cancel"/>
-                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                    </div>
-                </div>
-            </div>
+                </c:forEach>
+            </c:if>
         </div>
     </div>
 </div>

@@ -66,13 +66,13 @@
                   </span>
               </h5>
             </c:if>
-            <img src="<c:url value="/trips/${object.tripId}/tripPicture"/>" class="card-img-top" alt="...">
+            <img src="<c:url value="/trips/${object.tripId}/tripPicture"/>" class="browseImg" alt="...">
             <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${object.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${object.type}"></use></svg><spring:message code="${object.type}" htmlEscape="true"/></span></h4>
             <div class="card-body">
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
                   <h5><c:out value="${object.origin}"/></h5>
-                  <c:out value="${object.departureDate.dayOfMonth}/${object.departureDate.monthValue}/${object.departureDate.year}"/>
+                  ${object.departureDate}
                 </div>
 
                 <div style="width: 30%">
@@ -81,7 +81,7 @@
 
                 <div class="text-truncate text-center" style="width: 35%">
                   <h5><c:out value="${object.destination}"/></h5>
-                  <c:out value="${object.arrivalDate.dayOfMonth}/${object.arrivalDate.monthValue}/${object.arrivalDate.year}"/>
+                  ${object.arrivalDate}
                 </div>
               </div>
             </div>
@@ -145,7 +145,7 @@
               <div class="w-100 d-flex space-apart">
                 <div class="text-truncate text-center" style="width: 35%">
                   <h5><c:out value="${object.origin}"/></h5>
-                  <c:out value="${object.departureDate.dayOfMonth}/${object.departureDate.monthValue}/${object.departureDate.year}"/>
+                  ${object.departureDate}
                 </div>
 
                 <div style="width: 30%">
@@ -154,7 +154,7 @@
 
                 <div class="text-truncate text-center" style="width: 35%">
                   <h5><c:out value="${object.destination}"/></h5>
-                  <c:out value="${object.arrivalDate.dayOfMonth}/${object.arrivalDate.monthValue}/${object.arrivalDate.year}"/>
+                  ${object.arrivalDate}
                 </div>
               </div>
             </div>

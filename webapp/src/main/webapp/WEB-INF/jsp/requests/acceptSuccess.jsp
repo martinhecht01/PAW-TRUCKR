@@ -41,7 +41,7 @@
             </tr>
             <tr>
                 <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
+                <td><${request.departureDate} - ${request.arrivalDate}</td>
             </tr>
             <tr>
                 <td><b><spring:message code="AvailableVolume"/></b></td>

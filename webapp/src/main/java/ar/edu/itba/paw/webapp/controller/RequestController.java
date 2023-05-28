@@ -145,9 +145,6 @@ public class RequestController {
         LOGGER.info("Accessing request details page with id: {} ", id);
         Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("userRating", revs.getUserRating(request.getProvider().getUserId()));
-
-        mav.addObject("provider", us.getUserById(request.getProvider().getUserId()).orElseThrow(UserNotFoundException :: new));
-
         mav.addObject("request", request);
         return mav;
     }

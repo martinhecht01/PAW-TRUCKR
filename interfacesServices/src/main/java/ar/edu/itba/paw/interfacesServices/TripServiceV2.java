@@ -74,5 +74,4 @@ public interface TripServiceV2 {
 
     void deleteOffer(int offerId);
 
-    List<Proposal> getAllSentOffers(int userId);
 }

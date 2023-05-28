@@ -65,7 +65,7 @@
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
                         <td>
                             <a class="text-decoration-none text-dark" href="<c:url value="/explore?departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}"/>">
-                                <c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/>
+                                ${request.departureDate} - ${request.arrivalDate}
                             </a>
                         </td>
                     </tr>
@@ -95,19 +95,19 @@
         <div class="inlineFormInputContainer justify-content-top align-items-top" >
 
         </div>
-        <c:if test="${request.truckerId <= 0}">
+        <c:if test="${request.trucker == null}">
             <div class="justify-content-top align-items-top" >
                 <div class="card mx-4" style="width: 20rem;">
                     <div class="card-header">
                         <h4><spring:message code="Provider"/>:</h4>
                     </div>
                     <div class="card-body p-3">
-                        <a  class="text-decoration-none" href="<c:url value="/profile?id=${provider.userId}"/>">
+                        <a  class="text-decoration-none" href="<c:url value="/profile?id=${request.provider.userId}"/>">
                             <div class="d-flex justify-content-evenly">
-                                <img class="profileImageNavbar" src="/user/${provider.userId}/profilePicture" alt="ProfilePicture">
+                                <img class="profileImageNavbar" src="/user/${request.provider.userId}/profilePicture" alt="ProfilePicture">
                                 <div>
-                                    <h5 class="card-title"><c:out value="${provider.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating} </h5>
-                                    <p class="text-dark card-text text-decoration-none"><c:out value="${provider.email.toLowerCase()}"/></p>
+                                    <h5 class="card-title"><c:out value="${request.provider.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating} </h5>
+                                    <p class="text-dark card-text text-decoration-none"><c:out value="${request.provider.email.toLowerCase()}"/></p>
                                 </div>
                             </div>
                         </a>

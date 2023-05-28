@@ -139,7 +139,7 @@
                 <div class="w-100 d-flex space-apart">
                   <div class="text-truncate text-center" style="width: 35%">
                     <h5><c:out value="${trip.origin}"/></h5>
-                    <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year}"/>
+                    ${trip.departureDate}
                   </div>
 
                   <div style="width: 30%">
@@ -148,7 +148,7 @@
 
                   <div class="text-truncate text-center" style="width: 35%">
                     <h5><c:out value="${trip.destination}"/></h5>
-                    <c:out value="${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                    ${trip.arrivalDate}
                   </div>
                 </div>
               </div>

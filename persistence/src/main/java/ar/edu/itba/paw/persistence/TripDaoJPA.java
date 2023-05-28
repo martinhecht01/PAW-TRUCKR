@@ -508,12 +508,4 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         entityManager.remove(offer);
     }
 
-    @Override
-    public List<Proposal> getAllSentOffers(User user) {
-        String jpql = "SELECT r FROM Proposal r WHERE r.user = :user";
-        return entityManager.createQuery(jpql, Proposal.class)
-                .setParameter("user", user)
-                .getResultList();
-    }
-
 }

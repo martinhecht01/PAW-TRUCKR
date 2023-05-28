@@ -65,7 +65,7 @@
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
                         <td>
                             <a class="text-decoration-none text-dark" href="<c:url value="/explore?departureDate=${trip.departureDate}&arrivalDate=${trip.arrivalDate}"/>">
-                                <c:out value="${trip.departureDate.dayOfMonth}/${trip.departureDate.monthValue}/${trip.departureDate.year} - ${trip.arrivalDate.dayOfMonth}/${trip.arrivalDate.monthValue}/${trip.arrivalDate.year}"/>
+                                ${trip.departureDate} - ${trip.arrivalDate}
                             </a>
                         </td>
                     </tr>
@@ -92,19 +92,19 @@
                 </table>
             </div>
         </div>
-        <c:if test="${trip.providerId <= 0}">
+        <c:if test="${trip.provider == null}">
             <div class="justify-content-top align-items-top" >
                 <div class="card mx-4" style="width: 20rem;">
                     <div class="card-header">
                         <h4><spring:message code="Driver"/>:</h4>
                     </div>
                     <div class="card-body p-3">
-                        <a  class="text-decoration-none" href="<c:url value="/profile?id=${provider.userId}"/>">
+                        <a  class="text-decoration-none" href="<c:url value="/profile?id=${trip.trucker.userId}"/>">
                             <div class="d-flex justify-content-evenly">
-                                <img class="mx-1 profileImageNavbar" src="/user/${trucker.userId}/profilePicture" alt="ProfilePicture">
+                                <img class="mx-1 profileImageNavbar" src="/user/${trip.trucker.userId}/profilePicture" alt="ProfilePicture">
                                 <div>
-                                    <h5 class="card-title"><c:out value="${trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating} </h5>
-                                    <p class="text-dark card-text text-decoration-none"><c:out value="${trucker.email.toLowerCase()}"/></p>
+                                    <h5 class="card-title"><c:out value="${trip.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating} </h5>
+                                    <p class="text-dark card-text text-decoration-none"><c:out value="${trip.trucker.email.toLowerCase()}"/></p>
                                 </div>
                             </div>
                         </a>

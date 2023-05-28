@@ -5,7 +5,6 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -104,7 +103,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         LOGGER.debug("Trip: " + trip.toString() +", Proposal: " + proposal.toString());
 
         //User user;
-        if(trip.getTrucker().getUserId() > 0)
+        if(trip.getTrucker() != null)
             user = trip.getTrucker();
         else
             user = trip.getProvider();
@@ -236,20 +235,9 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional
     @Override
     public void deleteOffer(int offerId){
-        Optional<Proposal> maybeOffer = tripDaoV2.getProposalById(offerId);
-        if (maybeOffer.isPresent()){
-            tripDaoV2.deleteOffer(maybeOffer.get());
-        }
-        throw new ProposalNotFoundException();
-    }
-
-    @Override
-    public List<Proposal> getAllSentOffers(int userId) {
-        Optional<User> maybeUser = userDao.getUserById(userId);
-        if (maybeUser.isPresent()){
-            return tripDaoV2.getAllSentOffers(maybeUser.get());
-        }
-        throw new UserNotFoundException();
+        System.out.println("Deleting offer with id: " + offerId);
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(ProposalNotFoundException::new);
+        tripDaoV2.deleteOffer(offer);
     }
 
     @Override

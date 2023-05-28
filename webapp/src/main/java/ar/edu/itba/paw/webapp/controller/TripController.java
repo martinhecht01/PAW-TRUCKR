@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.*;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -134,9 +136,6 @@ public class TripController {
         Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         mav.addObject("userRating", revs.getUserRating(trip.getTrucker().getUserId()));
-
-        mav.addObject("trucker", trip.getTrucker());//TODO: fijarse el error que onda
-
         return mav;
     }
 
@@ -232,16 +231,22 @@ public class TripController {
         final ModelAndView mav = new ModelAndView("trips/manageTrip");
         int userId = Objects.requireNonNull(getUser()).getUserId();
         Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
-        if(trip.getProvider().getUserId() > 0) {
+        if(trip.getProvider() != null){
             mav.addObject("acceptUser", us.getUserById(trip.getProvider().getUserId()).orElseThrow(UserNotFoundException::new));
             mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProvider().getUserId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
             mav.addObject("userRating", revs.getUserRating(trip.getProvider().getUserId()));
-            mav.addObject("now", LocalDateTime.now());
+            mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
         }
-            mav.addObject("trip", trip);
+        mav.addObject("trip", trip);
         mav.addObject("userId", userId);
-        mav.addObject("offers", ts.getAllProposalsForTripId(trip.getTripId()));
         return mav;
+    }
+
+    @RequestMapping(value = "/trip/cancelOffer", method = RequestMethod.POST)
+    public ModelAndView cancelOffer(@ModelAttribute("offerId") final Integer offerId, @ModelAttribute("tripId") final Integer tripId) {
+        LOGGER.info("Cancelling offer with id {}", offerId);
+        ts.deleteOffer(offerId);
+        return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
     }
 
     @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })

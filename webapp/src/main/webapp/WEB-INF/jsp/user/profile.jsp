@@ -64,7 +64,7 @@
                     <h5 class="card-title"><b><spring:message code="CompletedTrips"/></b></h5>
                 </div>
                 <div class="card-body flex-grow-1">
-                    <h1 class="text-center">10</h1>
+                    <h1 class="text-center">${currUser.truckerTrips.stream().filter(trip -> trip.providerConfirmation && trip.truckerConfirmation).count()}</h1>
                 </div>
             </div>
         </div>
