@@ -27,10 +27,10 @@ public class Trip {
     private String licensePlate;
 
     @Column(name = "weight")
-    private Number weight;
+    private Integer weight;
 
     @Column(name = "volume")
-    private Number volume;
+    private Integer volume;
 
     @Column(name = "departure_date")
     private Timestamp departureDate;
@@ -38,17 +38,17 @@ public class Trip {
     @Column(name = "arrival_date")
     private Timestamp arrivalDate;
 
-    @Column(name = "origin", length = 50)
+    @Column(name = "origin", length = 255)
     private String origin;
 
-    @Column(name = "destination", length = 50)
+    @Column(name = "destination", length = 255)
     private String destination;
 
-    @Column(name = "type", length = 50)
+    @Column(name = "type", length = 255)
     private String type;
 
     @Column(name = "price")
-    private Number price;
+    private Integer price;
 
     @Column(name = "trucker_confirmation")
     private Boolean truckerConfirmation;
@@ -75,8 +75,8 @@ public class Trip {
     // Constructors, getters, and setters
 
     //constructor completo
-    public Trip(int tripId, User trucker, User provider, String licensePlate, Number weight, Number volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
-                Number price, Boolean truckerConfirmation, Boolean providerConfirmation, Timestamp confirmationDate, Image image, int proposalCount) {
+    public Trip(int tripId, User trucker, User provider, String licensePlate, Integer weight, Integer volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
+                Integer price, Boolean truckerConfirmation, Boolean providerConfirmation, Timestamp confirmationDate, Image image, int proposalCount) {
         this.tripId = tripId;
         this.provider = provider;
         this.trucker = trucker;
@@ -100,14 +100,14 @@ public class Trip {
     public Trip(User trucker,
                 User provider,
                 String licensePlate,
-                Number weight,
-                Number volume,
+                Integer weight,
+                Integer volume,
                 Timestamp departureDate,
                 Timestamp arrivalDate,
                 String origin,
                 String destination,
                 String type,
-                Number price) {
+                Integer price) {
         this.tripId = null;
         this.provider = provider;
         this.trucker = trucker;
@@ -130,14 +130,14 @@ public class Trip {
     //constructor para el provider
     public Trip(User trucker,
                 User provider,
-                Number weight,
-                Number volume,
+                Integer weight,
+                Integer volume,
                 Timestamp departureDate,
                 Timestamp arrivalDate,
                 String origin,
                 String destination,
                 String type,
-                Number price) {
+                Integer price) {
         this.tripId = null;
         this.provider = provider;
         this.trucker = trucker;
@@ -204,19 +204,19 @@ public class Trip {
         this.licensePlate = licensePlate;
     }
 
-    public Number getWeight() {
+    public Integer getWeight() {
         return weight;
     }
 
-    public void setWeight(Number weight) {
+    public void setWeight(Integer weight) {
         this.weight = weight;
     }
 
-    public Number getVolume() {
+    public Integer getVolume() {
         return volume;
     }
 
-    public void setVolume(Number volume) {
+    public void setVolume(Integer volume) {
         this.volume = volume;
     }
 
@@ -260,11 +260,11 @@ public class Trip {
         this.type = type;
     }
 
-    public Number getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(Number price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

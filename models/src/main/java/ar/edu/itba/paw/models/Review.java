@@ -4,14 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "reviews")
+@IdClass(ReviewId.class)
 public class Review {
-
-    @Column(name = "rating")
-    private float rating;
-
-    @Column(name = "review", length = 400)
-    private String review;
-
     @Id
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
@@ -22,8 +16,18 @@ public class Review {
     @JoinColumn(name = "tripid", nullable = false)
     private Trip trip;
 
-    // Constructors, getters, and setters
+    @Column(name = "rating")
+    private float rating;
 
+    @Column(name = "review", length = 400)
+    private String review;
+
+
+
+    // Constructors, getters, and setters
+    public Review() {
+        // Default constructor required by Hibernate
+    }
 
     public Review(Trip trip, User user, float rating, String review) {
         this.rating = rating;

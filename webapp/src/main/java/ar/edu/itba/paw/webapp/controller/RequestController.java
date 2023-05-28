@@ -144,9 +144,9 @@ public class RequestController {
         final ModelAndView mav = new ModelAndView("requests/details");
         LOGGER.info("Accessing request details page with id: {} ", id);
         Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
-        mav.addObject("userRating", revs.getUserRating(request.getProviderId()));
+        mav.addObject("userRating", revs.getUserRating(request.getProvider().getUserId()));
 
-        mav.addObject("provider", us.getUserById(request.getProviderId()).orElseThrow(UserNotFoundException :: new));
+        mav.addObject("provider", us.getUserById(request.getProvider().getUserId()).orElseThrow(UserNotFoundException :: new));
 
         mav.addObject("request", request);
         return mav;
@@ -260,10 +260,10 @@ public class RequestController {
         int userId = getUser().getUserId();
         Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(TripOrRequestNotFoundException::new);
 
-        if(request.getTruckerId() > 0) {
-            mav.addObject("acceptUser", us.getUserById(request.getTruckerId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByTripAndUserId(requestId, request.getTruckerId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
-            mav.addObject("userRating", revs.getUserRating(request.getTruckerId()));
+        if(request.getTrucker().getUserId() > 0) {
+            mav.addObject("acceptUser", us.getUserById(request.getTrucker().getUserId()).orElseThrow(UserNotFoundException::new));
+            mav.addObject("reviewed", revs.getReviewByTripAndUserId(requestId, request.getTrucker().getUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
+            mav.addObject("userRating", revs.getUserRating(request.getTrucker().getUserId()));//TODO: se puede mejorar, ahora en requests ya tenemos el usuario
         }
 
         mav.addObject("request", request);

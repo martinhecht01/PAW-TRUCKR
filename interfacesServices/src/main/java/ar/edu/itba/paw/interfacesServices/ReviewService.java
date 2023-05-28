@@ -12,7 +12,7 @@ public interface ReviewService {
 
     void createReview(int tripid, int userid, float rating, String comment);
 
-    float getUserRating(int userId);
+    Double getUserRating(int userId);
 
     List<Review> getUserReviews(int userId);
 }

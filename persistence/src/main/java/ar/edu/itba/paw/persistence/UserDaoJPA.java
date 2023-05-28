@@ -41,7 +41,7 @@ public class UserDaoJPA implements UserDao {
     //Decision: userid o user?
     @Override
     public Integer createSecureToken(User user, int token) {
-        SecureToken secureToken = new SecureToken(user,String.valueOf(token), LocalDateTime.now().plusHours(1));
+        SecureToken secureToken = new SecureToken(user,token, LocalDateTime.now().plusHours(1));
         LOGGER.info("Creating secure token for user: {}", user.getUserId());
         entityManager.persist(secureToken);
         return token;
@@ -107,7 +107,7 @@ public class UserDaoJPA implements UserDao {
 
     @Override
     public User create(String email, String name, String cuit, String role, String password) {
-        User user = new User(email, name, cuit, role, password, false, null);
+        User user = new User(email, name, cuit, role, password, false, new Image(1,null));
         LOGGER.info("Creating user. CUIT: {}, EMAIL: {}, NAME: {}", cuit, email, name);
         entityManager.persist(user);
         return user;

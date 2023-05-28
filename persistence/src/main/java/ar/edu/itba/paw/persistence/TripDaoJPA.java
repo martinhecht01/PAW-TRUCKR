@@ -126,8 +126,10 @@ public class TripDaoJPA implements TripDaoV2 {
         q.setFirstResult(pag);
         q.setMaxResults(ITEMS_PER_PAGE);
         q.setParameter("tripId", tripId);
-        final List<Long> idList = (List<Long>) q.getResultList()
-                .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
+
+        @SuppressWarnings("unchecked")
+        final List<Integer> idList = (List<Integer>) q.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
         final TypedQuery<Proposal> typedQuery = entityManager.createQuery("SELECT p FROM Proposal p WHERE p.proposalId IN :idList", Proposal.class);
         typedQuery.setParameter("idList", idList);
         return typedQuery.getResultList();
@@ -138,13 +140,21 @@ public class TripDaoJPA implements TripDaoV2 {
     //PAGINACION
     @Override
     public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate) {
-        return null;
+        String query= "SELECT COUNT(trip_id) FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, departureDate, arrivalDate);
+
+        final int totalItems = ((Number) nativeQuery.getSingleResult()).intValue();
+        return (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
     }
 
     //PAGINACION
     @Override
     public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate) {
-        return null;
+        String query= "SELECT COUNT(trip_id) FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, departureDate, arrivalDate);
+
+        final int totalItems = ((Number) nativeQuery.getSingleResult()).intValue();
+        return (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
     }
 
     @Override
@@ -177,7 +187,7 @@ public class TripDaoJPA implements TripDaoV2 {
         return Optional.of(trip);
     }
 
-    private Query buildQuery(String baseQuery, String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag){
+    private Query buildQuery(String baseQuery, String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate){
 
         LOGGER.debug("Building query for trips");
         StringBuilder query = new StringBuilder();
@@ -193,7 +203,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
         if (destination != null && !destination.equals("")){
             LOGGER.debug("Adding destination: {} to query", destination);
-            query.append(" AND destination = destination");
+            query.append(" AND destination = :destination");
             params.put("destination",destination);
         }
 
@@ -224,14 +234,14 @@ public class TripDaoJPA implements TripDaoV2 {
         //ESTAS DOS SON RARAS, REVISAR
         if (departureDate != null && !departureDate.equals("")){
             LOGGER.debug("Adding departureDate: {} to query", departureDate);
-            query.append(" AND DATE(departure_date) = CAST(:departureDate AS DATE)");
+            query.append(" AND DATE(departure_date) = CAST( :departureDate AS DATE)");
             params.put("departureDate", "'" + departureDate + "'");
 
         }
 
         if (arrivalDate != null && !arrivalDate.equals("")){
             LOGGER.debug("Adding arrivalDate: {} to query", arrivalDate);
-            query.append(" AND DATE(arrival_date) = CAST(:arrivalDate AS DATE)");
+            query.append(" AND DATE(arrival_date) = CAST( :arrivalDate AS DATE)");
             params.put(arrivalDate, "'" + arrivalDate + "'");
         }
 
@@ -263,42 +273,37 @@ public class TripDaoJPA implements TripDaoV2 {
     public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
 
         String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
-        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
-        //query += builder2.getKey();
-//        List<Object> params2 = builder2.getValue();
-//        Query nativeQuery = entityManager.createNativeQuery(query);
-//        for (int i = 0; i < params2.size(); i++) {
-//            nativeQuery.setParameter(i + 1, params2.get(i));
-//        }
-
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
         nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
 
-        final List<Long> idList = (List<Long>) nativeQuery.getResultList()
-                .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
+        @SuppressWarnings("unchecked")
+        final List<Integer> idList = (List<Integer>) nativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+        System.out.println(idList + "ID LIST");
 
-        final TypedQuery<Trip> query3 = entityManager.createQuery("SELECT  t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
+        final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
         query3.setParameter("ids", idList);
-
-        return query3.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
     }
 
     @Override
     public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
-        String query = "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
-        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, pag);
+        String query = "SELECT trip_id FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
         nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
 
-        final List<Long> idList = (List<Long>) nativeQuery.getResultList()
-                .stream().map(n -> (Long)((Number)n).longValue()).collect(Collectors.toList());
+        @SuppressWarnings("unchecked")
+        final List<Integer> idList = (List<Integer>) nativeQuery.getResultList()
+                .stream().map(n -> ((Number) n).intValue()).collect(Collectors.toList());
 
-        final TypedQuery<Trip> query3 = entityManager.createQuery("SELECT t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
+        final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
         query3.setParameter("ids", idList);
 
-        return query3.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
     }
 
 
@@ -338,20 +343,59 @@ public class TripDaoJPA implements TripDaoV2 {
     }
 
 //PAGINACION
-    @Override
-    public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid, Integer pag) {
-//        String query = "SELECT trips.*, COUNT(proposals.proposal_id) AS proposalcount FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id WHERE (trips.trucker_id = ? AND provider_id IS NULL) OR (trips.provider_id = ? AND trucker_id IS NULL) GROUP BY trips.trip_id LIMIT ? OFFSET ?";
-//        return jdbcTemplate.query(query, ACTIVE_TRIP_COUNT_MAPPER, userid, userid, ITEMS_PER_PAGE, (pag - 1) * ITEMS_PER_PAGE);
-    return null;
+@Override
+public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, Integer pag) {
+    String tripIdQuery = "SELECT trips.trip_id " +
+            "FROM trips LEFT JOIN proposals ON trips.trip_id = proposals.trip_id " +
+            "WHERE (trips.trucker_id = :userId AND trips.provider_id IS NULL) OR " +
+            "(trips.provider_id = :userId AND trips.trucker_id IS NULL) " +
+            "GROUP BY trips.trip_id ";
+
+    Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
+    tripIdNativeQuery.setParameter("userId", userId);
+    tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
+    tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+
+    final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
+            .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+    final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
+    tripQuery.setParameter("ids", idList);
+    List<Trip> trips = idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
+
+    // Fetch the count of proposals for each trip
+    for (Trip trip : trips) {
+        String proposalCountQuery = "SELECT COUNT(p) FROM Proposal p WHERE p.trip.tripId = :tripId";
+        TypedQuery<Long> proposalCountTypedQuery = entityManager.createQuery(proposalCountQuery, Long.class);
+        proposalCountTypedQuery.setParameter("tripId", trip.getTripId());
+        Long proposalCount = proposalCountTypedQuery.getSingleResult();
+        trip.setProposalCount(proposalCount.intValue());
     }
+
+    return trips;
+}
+
 
 
     //PAGINACION
     @Override
     public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag) {
-//        String query = "SELECT * FROM trips WHERE (trucker_id = ? AND provider_id IS NOT NULL) OR (provider_id = ? AND trucker_id IS NOT NULL) LIMIT ? OFFSET ?";
-//        return jdbcTemplate.query(query, TRIP_ROW_MAPPER, userid, userid, ITEMS_PER_PAGE, (pag - 1) * ITEMS_PER_PAGE);
-        return null;
+        String query = "SELECT trip_id FROM trips WHERE (trucker_id = :userId AND provider_id IS NOT NULL) OR (provider_id = :userId AND trucker_id IS NOT NULL)";
+        Query nativeQuery = entityManager.createNativeQuery(query, Trip.class);
+        nativeQuery.setParameter("userId", userid);
+
+        nativeQuery.setMaxResults(ITEMS_PER_PAGE);
+        nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+
+        @SuppressWarnings("unchecked")
+        final List<Integer> idList = (List<Integer>) nativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
+        query3.setParameter("ids", idList);
+
+        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
+
     }
 
     //PAGINACION

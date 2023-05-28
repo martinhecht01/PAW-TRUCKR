@@ -64,14 +64,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional(readOnly = true)
     @Override
-    public float getUserRating(int userId) {
+    public Double getUserRating(int userId) {
         Optional<User> user = userDao.getUserById(userId);
         LOGGER.info("Getting rating for user {}", userId );
 
         if (user.isPresent())
             return reviewDao.getUserRating(user.get());
 
-        return 0;
+        return (double) 0;
     }
 
     @Transactional(readOnly = true)
