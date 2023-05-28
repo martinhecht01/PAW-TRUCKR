@@ -45,9 +45,9 @@ public class ReviewDaoJPA implements ReviewDao {
     }
 
     @Override
-    public float getUserRating(User user) {
+    public Double getUserRating(User user) {
         String jpql = "SELECT coalesce(avg(r.rating),0) FROM Review r WHERE r.user = :user";
-        return entityManager.createQuery(jpql, float.class)
+        return entityManager.createQuery(jpql, Double.class)
                 .setParameter("user", user)
                 .getSingleResult();
     }

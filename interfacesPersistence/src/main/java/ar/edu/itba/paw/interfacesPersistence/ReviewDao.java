@@ -14,7 +14,7 @@ public interface ReviewDao {
 
     void createReview(Trip trip, User user, float rating, String comment);
 
-    float getUserRating(User user);
+    Double getUserRating(User user);
 
     List<Review> getUserReviews(User user);
 }

@@ -4,14 +4,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "reviews")
+@IdClass(ReviewId.class)
 public class Review {
-
-    @Column(name = "rating")
-    private float rating;
-
-    @Column(name = "review", length = 400)
-    private String review;
-
     @Id
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
@@ -21,6 +15,14 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "tripid", nullable = false)
     private Trip trip;
+
+    @Column(name = "rating")
+    private float rating;
+
+    @Column(name = "review", length = 400)
+    private String review;
+
+
 
     // Constructors, getters, and setters
 

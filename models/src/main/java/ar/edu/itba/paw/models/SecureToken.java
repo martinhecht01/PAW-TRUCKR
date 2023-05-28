@@ -9,7 +9,7 @@ public class SecureToken {
 
     @Id
     @Column(name = "token")
-    private String token;
+    private Integer token;
 
     @Column(name = "expiredate")
     private LocalDateTime expireAt;
@@ -20,14 +20,16 @@ public class SecureToken {
 
     // Constructors, getters, and setters
 
-
-    public SecureToken(User user, String token, LocalDateTime expireAt) {
+    public SecureToken(){
+        // Default constructor required by Hibernate
+    }
+    public SecureToken(User user, Integer token, LocalDateTime expireAt) {
         this.user = user;
         this.token = token;
         this.expireAt = expireAt;
     }
 
-    public String getToken() {
+    public Integer getToken() {
         return token;
     }
 
@@ -35,7 +37,7 @@ public class SecureToken {
         	return LocalDateTime.now().isAfter(expireAt);
     }
 
-    public void setToken(String token) {
+    public void setToken(Integer token) {
         this.token = token;
     }
 
