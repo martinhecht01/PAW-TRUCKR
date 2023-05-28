@@ -54,6 +54,12 @@ public interface TripDaoV2 {
 
     List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userid, Integer pag);
 
+    List<Trip> getAllActivePublications(Integer userId);
+
+    List<Trip> getAllExpiredPublications(Integer userId);
+
+    List<Trip> getAllOngoingPublications(Integer userId);
+
     List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag);
 
     Integer getTotalPagesActiveTripsOrRequests(User user);

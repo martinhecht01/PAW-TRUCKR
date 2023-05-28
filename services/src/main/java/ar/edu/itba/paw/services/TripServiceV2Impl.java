@@ -207,6 +207,23 @@ public class TripServiceV2Impl implements TripServiceV2 {
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid){
         return tripDaoV2.getTripOrRequestByIdAndUserId(id, userid);
     }
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllActivePublications(Integer userId){
+        return tripDaoV2.getAllActivePublications(userId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllExpiredPublications(Integer userId){
+        return tripDaoV2.getAllExpiredPublications(userId);
+    }
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllOngoingPublications(Integer userId){
+        return tripDaoV2.getAllOngoingPublications(userId);
+    }
+
 
     @Transactional
     @Override

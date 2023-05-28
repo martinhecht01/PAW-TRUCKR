@@ -59,6 +59,15 @@ public interface TripServiceV2 {
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
 
+    @Transactional(readOnly = true)
+    List<Trip> getAllActivePublications(Integer userId);
+
+    @Transactional(readOnly = true)
+    List<Trip> getAllExpiredPublications(Integer userId);
+
+    @Transactional(readOnly = true)
+    List<Trip> getAllOngoingPublications(Integer userId);
+
     void updateTripPicture(Integer userId, Integer imageId);
 
     byte[] getTripPicture(Integer userId);

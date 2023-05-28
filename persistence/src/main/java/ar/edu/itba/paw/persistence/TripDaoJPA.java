@@ -2,7 +2,7 @@ package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.models.*;
-import org.hibernate.Criteria;
+
 import javax.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -374,6 +370,67 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
     return trips;
 }
+    @Override
+    public List<Trip> getAllActivePublications(Integer userId) {
+        String tripIdQuery = "SELECT trip_id " +
+                "FROM trips " +
+                "WHERE ((trucker_id = :userId AND provider_id IS NULL) OR " +
+                "((provider_id = :userId) AND trucker_id IS NULL)) AND departure_date >= now() ";
+
+        Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
+        tripIdNativeQuery.setParameter("userId", userId);
+//        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
+//        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+
+        final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
+        tripQuery.setParameter("ids", idList);
+        return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+
+    }
+
+    @Override
+    public List<Trip> getAllExpiredPublications(Integer userId) {
+        String tripIdQuery = "SELECT trip_id " +
+                "FROM trips " +
+                "WHERE ((trucker_id = :userId AND provider_id IS NULL) OR " +
+                "((provider_id = :userId) AND trucker_id IS NULL)) AND departure_date < now() ";
+
+        Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
+        tripIdNativeQuery.setParameter("userId", userId);
+//        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
+//        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+
+        final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
+        tripQuery.setParameter("ids", idList);
+        return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+    }
+
+    @Override
+    public List<Trip> getAllOngoingPublications(Integer userId){
+        String tripIdQuery = "SELECT trip_id " +
+                "FROM trips " +
+                "WHERE ((trucker_id = :userId AND provider_id IS NOT NULL) OR " +
+                "((provider_id = :userId) AND trucker_id IS NOT NULL)) AND departure_date < now() AND (trucker_confirmation = false OR provider_confirmation = false)";
+
+        Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
+        tripIdNativeQuery.setParameter("userId", userId);
+//        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
+//        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+
+        final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
+        tripQuery.setParameter("ids", idList);
+        return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+
+    }
 
 
 
