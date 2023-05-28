@@ -434,7 +434,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     @Override
     public List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag) {
         String query = "SELECT trip_id FROM trips WHERE (trucker_id = :userId AND provider_id IS NOT NULL) OR (provider_id = :userId AND trucker_id IS NOT NULL)";
-        Query nativeQuery = entityManager.createNativeQuery(query, Trip.class);
+        Query nativeQuery = entityManager.createNativeQuery(query);
         nativeQuery.setParameter("userId", userid);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
@@ -473,7 +473,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 //
 //        Long total = typedQuery.getSingleResult();
 //        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
-        //User user = userDao.getUserById(userid).orElseThrow(NoSuchElementException::new);
+//        User user = userDao.getUserById(userid).orElseThrow(NoSuchElementException::new);
 
         long total = user.getTruckerTrips().stream().filter(trip -> trip.getProvider() != null).count();
         total += user.getProviderTrips().stream().filter(trip -> trip.getTrucker() != null).count();
