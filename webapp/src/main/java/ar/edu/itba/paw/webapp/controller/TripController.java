@@ -271,7 +271,7 @@ public class TripController {
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     @ResponseBody
     public byte[] profilePicture(@PathVariable(value = "tripId") int tripId){
-        return ts.getTripPicture(tripId);
+        return ts.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new).getImage().getImage();
     }
 
 
