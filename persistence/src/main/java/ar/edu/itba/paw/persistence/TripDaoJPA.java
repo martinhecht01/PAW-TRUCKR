@@ -359,9 +359,8 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
             .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
 
-    final TypedQuery<Trip> tripQuery = entityManager.createQuery("SELECT t FROM Trip t WHERE t.tripId IN :ids", Trip.class);
+    final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
     tripQuery.setParameter("ids", idList);
-
     List<Trip> trips = idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
 
     // Fetch the count of proposals for each trip
