@@ -104,7 +104,7 @@
                     <div class="card-body p-3">
                         <a  class="text-decoration-none" href="<c:url value="/profile?id=${request.provider.userId}"/>">
                             <div class="d-flex justify-content-evenly">
-                                <img class="profileImageNavbar" src="/user/${request.provider.userId}/profilePicture" alt="ProfilePicture">
+                                <img class="profileImageNavbar" src="<c:url value="/user/${request.provider.userId}/profilePicture"/>" alt="ProfilePicture">
                                 <div>
                                     <h5 class="card-title"><c:out value="${request.provider.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating} </h5>
                                     <p class="text-dark card-text text-decoration-none"><c:out value="${request.provider.email.toLowerCase()}"/></p>
