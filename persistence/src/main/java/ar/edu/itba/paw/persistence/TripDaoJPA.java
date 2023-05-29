@@ -316,14 +316,16 @@ public class TripDaoJPA implements TripDaoV2 {
         Trip trip = proposal.getTrip();
 
         if(trip.getTrucker() != null) {
-            trip.setTrucker(proposal.getUser());
-        } else {
             trip.setProvider(proposal.getUser());
+        } else {
+            trip.setTrucker(proposal.getUser());
         }
         entityManager.persist(trip);
 
-        entityManager.remove(proposal);
-
+//        entityManager.remove(proposal);
+        for (Proposal p : trip.getProposals()) {
+            entityManager.remove(p);
+        }
 
 //        String sql;
 //        if (trip.getTrucker().getUserId() <= 0) {
