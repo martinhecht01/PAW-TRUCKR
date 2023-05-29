@@ -95,10 +95,10 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public Proposal createProposal(int tripId, int userId, String description) {
+    public Proposal createProposal(int tripId, int userId, String description, int price) {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        Proposal proposal = tripDaoV2.createProposal(trip, user, description);
+        Proposal proposal = tripDaoV2.createProposal(trip, user, description, price);
         //Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         LOGGER.debug("Trip: " + trip.toString() +", Proposal: " + proposal.toString());
 

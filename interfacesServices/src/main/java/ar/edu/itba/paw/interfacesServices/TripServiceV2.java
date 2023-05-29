@@ -32,7 +32,7 @@ public interface TripServiceV2 {
 
     void confirmTrip(int tripId, int userId);
 
-    Proposal createProposal(int tripId, int userId, String description);
+    Proposal createProposal(int tripId, int userId, String description, int price);
 
     List<Proposal> getAllProposalsForTripId(int tripId);
 

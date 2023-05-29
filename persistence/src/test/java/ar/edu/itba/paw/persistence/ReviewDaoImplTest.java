@@ -1,67 +1,67 @@
 package ar.edu.itba.paw.persistence;
-
-import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
-import ar.edu.itba.paw.interfacesPersistence.UserDao;
-import ar.edu.itba.paw.models.Review;
-import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.persistence.config.TestConfig;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.jdbc.JdbcTestUtils;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.sql.DataSource;
-import java.util.List;
-import java.util.Optional;
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
-@Transactional
-public class ReviewDaoImplTest {
-
-    private static final String EMAIL_EXISTENT = "martinh563@email.com";
-    private static final String NAME_EXISTENT = "Testing Testalez";
-    private static final String CUIT_EXISTENT = "20-12345678-9";
-    private static final int TRIPID_EXISTENT = 1;
-    private static final int TRIPID_EXISTENT2 = 2;
-    private static final int TRIPID_EXISTENT3 = 3;
-    private static final int TRIPID_EXISTENT4 = 4;
-    private static final int TRIPID_EXISTENT5 = 5;
-    private static final float RATING_EXISTENT = 5;
-    private static final float RATING_EXISTENT2 = 3;
-    private static final float RATING_EXISTENT3 = 1;
-    private static final float RATING_EXISTENT4 = 2;
-    private static final float RATING_NOT_EXISTENT = 2;
-    private static final String PASSWORD = "1234567890";
-    private static final String REVIEW_EXISTENT = "Excelente viaje, muy recomendable";
-    private static final String REVIEW_EXISTENT2 = "Bien. Cumplio con lo acordado.";
-    private static final String REVIEW_EXISTENT3 = "No cumplio con su palabra.";
-    private static final String REVIEW_EXISTENT4 = "Mediocre trabajo. No llego a tiempo.";
-    private static final String REVIEW_NOT_EXISTENT = "No me gusto el viaje. Tardo mucho en contestar.";
-    private static final String ROLE_EXISTENT = "PROVIDER";
-    private static final int USERID_EXISTENT = 1;
-    private static final int USERID_NOT_EXISTENT = 2;
-
-    @Autowired
-    private DataSource ds;
-
-    @Autowired
-    private ReviewDao reviewDao;
-
-    private JdbcTemplate jdbcTemplate;
-
-    @Before
-    public void setup() {
-        jdbcTemplate = new JdbcTemplate(ds);
-    }
+//
+//import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
+//import ar.edu.itba.paw.interfacesPersistence.UserDao;
+//import ar.edu.itba.paw.models.Review;
+//import ar.edu.itba.paw.models.Trip;
+//import ar.edu.itba.paw.models.User;
+//import ar.edu.itba.paw.persistence.config.TestConfig;
+//import org.junit.Assert;
+//import org.junit.Before;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.jdbc.core.JdbcTemplate;
+//import org.springframework.test.annotation.Rollback;
+//import org.springframework.test.context.ContextConfiguration;
+//import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+//import org.springframework.test.jdbc.JdbcTestUtils;
+//import org.springframework.transaction.annotation.Transactional;
+//
+//import javax.sql.DataSource;
+//import java.util.List;
+//import java.util.Optional;
+//
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = TestConfig.class)
+//@Transactional
+//public class ReviewDaoImplTest {
+//
+//    private static final String EMAIL_EXISTENT = "martinh563@email.com";
+//    private static final String NAME_EXISTENT = "Testing Testalez";
+//    private static final String CUIT_EXISTENT = "20-12345678-9";
+//    private static final int TRIPID_EXISTENT = 1;
+//    private static final int TRIPID_EXISTENT2 = 2;
+//    private static final int TRIPID_EXISTENT3 = 3;
+//    private static final int TRIPID_EXISTENT4 = 4;
+//    private static final int TRIPID_EXISTENT5 = 5;
+//    private static final float RATING_EXISTENT = 5;
+//    private static final float RATING_EXISTENT2 = 3;
+//    private static final float RATING_EXISTENT3 = 1;
+//    private static final float RATING_EXISTENT4 = 2;
+//    private static final float RATING_NOT_EXISTENT = 2;
+//    private static final String PASSWORD = "1234567890";
+//    private static final String REVIEW_EXISTENT = "Excelente viaje, muy recomendable";
+//    private static final String REVIEW_EXISTENT2 = "Bien. Cumplio con lo acordado.";
+//    private static final String REVIEW_EXISTENT3 = "No cumplio con su palabra.";
+//    private static final String REVIEW_EXISTENT4 = "Mediocre trabajo. No llego a tiempo.";
+//    private static final String REVIEW_NOT_EXISTENT = "No me gusto el viaje. Tardo mucho en contestar.";
+//    private static final String ROLE_EXISTENT = "PROVIDER";
+//    private static final int USERID_EXISTENT = 1;
+//    private static final int USERID_NOT_EXISTENT = 2;
+//
+//    @Autowired
+//    private DataSource ds;
+//
+//    @Autowired
+//    private ReviewDao reviewDao;
+//
+//    private JdbcTemplate jdbcTemplate;
+//
+//    @Before
+//    public void setup() {
+//        jdbcTemplate = new JdbcTemplate(ds);
+//    }
 
 //    @Rollback
 //    @Test
@@ -136,4 +136,4 @@ public class ReviewDaoImplTest {
 //        Assert.assertEquals(RATING_EXISTENT4, reviews.get(3).getRating(), 0);
 //    }
 
-}
+//}

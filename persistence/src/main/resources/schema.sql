@@ -55,7 +55,8 @@ CREATE TABLE IF NOT EXISTS proposals (
         proposal_id SERIAL PRIMARY KEY,
         trip_id INT NOT NULL REFERENCES trips(trip_id),
         user_id INT NOT NULL REFERENCES users(userid),
-        description VARCHAR(300)
+        description VARCHAR(300),
+        price INT NOT NULL DEFAULT 0
 );
 
 

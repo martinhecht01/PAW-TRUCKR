@@ -194,7 +194,7 @@ public class RequestController {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
-        ts.createProposal(id, user.getUserId(), form.getDescription());
+        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice());
         LOGGER.info("Proposal created successfully");
         ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 

@@ -107,8 +107,8 @@ public class TripDaoJPA implements TripDaoV2 {
 
 
     @Override
-    public Proposal createProposal(Trip trip, User user, String description) {
-        Proposal proposal = new Proposal(trip, user, description);
+    public Proposal createProposal(Trip trip, User user, String description, Integer price) {
+        Proposal proposal = new Proposal(trip, user, description, price);
         entityManager.persist(proposal);
         LOGGER.info("Creating proposal with id {} for user {}", proposal.getProposalId(), user.getUserId());
         return proposal;

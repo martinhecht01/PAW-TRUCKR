@@ -180,7 +180,7 @@ public class TripController {
         }
 
         User user = getUser();
-        ts.createProposal(id, user.getUserId(), form.getDescription());
+        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice());
         LOGGER.info("Proposal with Id: {} sent successfully", id);
         ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
         mav.addObject("id", id);

@@ -34,7 +34,7 @@ public interface TripDaoV2 {
 
     void confirmTrip(Trip trip, User user);
 
-    Proposal createProposal(Trip trip, User user, String description);
+    Proposal createProposal(Trip trip, User user, String description, Integer price);
 
    List<Proposal> getAllProposalsForTripId(int tripId, int pag);
 
