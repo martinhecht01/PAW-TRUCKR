@@ -83,7 +83,8 @@
                                 <h4>$${offer.trip.price}</h4>
                             </div>
                             <div class="text-center align-items-center">
-                                <form:form method="post" action="/user/cancelOffer?offerId=${offer.proposalId}">
+                                <c:url value="/user/cancelOffer" var="${postPath}"/>
+                                <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">
                                     <spring:message code="Cancel" var="Cancel"/>
                                     <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
                                 </form:form>
