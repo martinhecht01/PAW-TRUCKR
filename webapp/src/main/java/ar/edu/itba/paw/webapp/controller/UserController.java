@@ -121,12 +121,21 @@ public class UserController {
     }
 
     @RequestMapping("/myItinerary")
-    public ModelAndView dashboard() {
-        LOGGER.info("Accessing dashboard page");
+    public ModelAndView myIntinerary() {
+        LOGGER.info("Accessing intinerary page");
         final ModelAndView mav = new ModelAndView("user/myItinerary");
         mav.addObject("currentUser", getCurrentUser());
         mav.addObject("ongoingTrips", ts.getAllOngoingTrips(getCurrentUser().getUserId()));
         mav.addObject("futureTrips", ts.getAllFutureTrips(getCurrentUser().getUserId()));
+        return mav;
+    }
+
+    @RequestMapping("/pastTrips")
+    public ModelAndView pastTrips() {
+        LOGGER.info("Accessing past trips page");
+        final ModelAndView mav = new ModelAndView("user/pastTrips");
+        mav.addObject("currentUser", getCurrentUser());
+        mav.addObject("pastTrips", ts.getAllPastTrips(getCurrentUser().getUserId()));
         return mav;
     }
 

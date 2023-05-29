@@ -105,10 +105,10 @@
                                         </c:if>
                                     </div>
                                 </div>
-                                <div class="vr"></div>
-                                <div>
-                                    <h4 class="mx-3 my-3"><span class="badge rounded-pill bg-primary">in progress</span></h4>
-                                </div>
+<%--                                <div class="vr"></div>--%>
+<%--                                <div>--%>
+<%--                                    <h4 class="mx-3 my-3"><span class="badge rounded-pill bg-primary">in progress</span></h4>--%>
+<%--                                </div>--%>
                             </div>
                         </a>
                     </c:forEach>
