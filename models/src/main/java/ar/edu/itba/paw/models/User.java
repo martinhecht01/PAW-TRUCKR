@@ -38,10 +38,10 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Proposal> proposals;
 
-    @OneToMany(mappedBy = "trucker")
+    @OneToMany(mappedBy = "trucker", fetch = FetchType.EAGER)
     private List<Trip> truckerTrips;
 
-    @OneToMany(mappedBy = "provider")
+    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
     private List<Trip> providerTrips;
 
 

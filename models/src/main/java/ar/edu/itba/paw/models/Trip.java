@@ -63,7 +63,7 @@ public class Trip {
     @JoinColumn(name = "imageid")
     private Image image;
 
-    @OneToMany(mappedBy = "trip", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trip", fetch = FetchType.EAGER)
     private List<Proposal> proposals;
 
     @Transient
