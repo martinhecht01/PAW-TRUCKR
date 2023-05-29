@@ -183,7 +183,7 @@
                 <form:form action="${postPath}?proposalid=${offer.proposalId}&requestid=${offer.trip.tripId}" method="post">
                   <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
                 </form:form>
-                <form:form action="/request/cancelOffer?offerId=${offer.proposalId}&requestId=${offer.trip.tripId}" method="post">
+                <form:form action="/requests/cancelOffer?offerId=${offer.proposalId}&requestId=${offer.trip.tripId}" method="post">
                   <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
                 </form:form>
               </div>

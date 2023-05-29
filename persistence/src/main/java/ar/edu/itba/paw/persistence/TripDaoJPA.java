@@ -305,7 +305,7 @@ public class TripDaoJPA implements TripDaoV2 {
         //Trip trip = getTripOrRequestById(proposal.getTripId()).orElseThrow(NoSuchElementException::new);
         Trip trip = proposal.getTrip();
 
-        if(trip.getTrucker().getUserId() <= 0) {
+        if(trip.getTrucker() != null) {
             trip.setTrucker(proposal.getUser());
         } else {
             trip.setProvider(proposal.getUser());

@@ -74,10 +74,10 @@
           <c:forEach var="request" items="${activePublications}">
             <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.tripId}"/>">
               <div class="card m-3" style="width: 25rem;">
-                <c:if test="${request.proposalCount > 0}">
+                <c:if test="${request.proposals.size() > 0}">
                   <h5 class="position-absolute top-0 end-0 M-3 ">
                                 <span class="badge rounded-pill bg-danger">
-                                    ${request.proposalCount} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                                    ${request.proposals.size()} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
                                 <span class="visually-hidden">unread messages</span>
                             </span>
                   </h5>

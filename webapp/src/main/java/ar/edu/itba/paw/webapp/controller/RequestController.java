@@ -164,7 +164,7 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/requests/cancelOffer", method = RequestMethod.POST)
-    public ModelAndView cancelOffer(@ModelAttribute("offerId") final Integer offerId, @ModelAttribute("tripId") final Integer requestId) {
+    public ModelAndView cancelOffer(@ModelAttribute("offerId") final Integer offerId, @ModelAttribute("requestId") final Integer requestId) {
         LOGGER.info("Cancelling offer with id {}", offerId);
         ts.deleteOffer(offerId);
         return new ModelAndView("redirect:/requests/manageRequest?requestId=" + requestId);
@@ -204,7 +204,7 @@ public class RequestController {
     @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
         ts.acceptProposal(proposalId);
-        ModelAndView mav = new ModelAndView("trips/acceptSuccess");
+        ModelAndView mav = new ModelAndView("requests/acceptSuccess");
 
         Trip request = ts.getTripOrRequestById(requestId).orElseThrow(TripOrRequestNotFoundException::new);
         LOGGER.info("Proposal with Id: {} accepted successfully", proposalId);
