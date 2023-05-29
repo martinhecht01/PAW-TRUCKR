@@ -38,154 +38,142 @@
         <div class="col-lg">
             <div class="my-3 mx-3 card">
                 <div class="card-header">
-                    <h3><spring:message code="OngoingTrips"/> (AGREGAR CANTIDAD)</h3>
+                    <h3><spring:message code="OngoingTrips"/> (${ongoingTrips.size()})</h3>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="w-50 d-flex justify-content-center">
-                            <div class="w-25 text-truncate text-center">
-                                <h5>BsAs</h5>
-                                12/12/2021
-                            </div>
-
-                            <div class="w-25 text-center">
-                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                            </div>
-
-                            <div class="w-25 text-truncate text-center">
-                                <h5>CBA</h5>
-                                13/12/2021
-                            </div>
+                    <c:if test="${ongoingTrips.size() == 0}">
+                        <div class="text-center my-3">
+                            <h5><spring:message code="NoOngoingTrips"/></h5>
                         </div>
-                        <div class="vr"></div>
-                        <div class="w-25 d-flex align-items-center justify-content-center">
-                            <div class="row">
-                                <div class="col-md">
-                                    <div class="text-center mx-2 align-items-center">
-                                        <img src="<c:url value="/user/2/profilePicture"/> " class="profileImageNavbar"/>
+                    </c:if>
+                    <c:forEach var="trip" items="${ongoingTrips}">
+                        <c:if test="${trip != ongoingTrips[0]}">
+                            <hr class="py-2">
+                        </c:if>
+                        <a <c:if test="${currentUser.role == 'TRUCKER'}">
+                                href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
+                            </c:if>
+                            <c:if test="${currentUser.role == 'PROVIDER'}">
+                                href="<c:url value="/request/manageRequest?requestId=${trip.tripId}"/>"
+                            </c:if>
+                        >
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="w-50 d-flex justify-content-center">
+                                    <div class="w-25 text-truncate text-center">
+                                        <h5>${trip.origin}</h5>
+                                            ${trip.departureDate}
+                                    </div>
+
+                                    <div class="w-25 text-center">
+                                        <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                    </div>
+
+                                    <div class="w-25 text-truncate text-center">
+                                        <h5>${trip.destination}</h5>
+                                            ${trip.arrivalDate}
                                     </div>
                                 </div>
-                                <div class="col-md">
-                                    <div class="text-center align-items-center">
-                                        <h5>Manuel Dithurbide</h5>
-                                        <p>Provider</p>
+                                <div class="vr"></div>
+                                <div class="w-25 d-flex align-items-center justify-content-center">
+                                    <div class="row">
+                                        <c:if test="${currentUser.role == 'TRUCKER'}">
+                                            <div class="col-md">
+                                                <div class="text-center mx-2 align-items-center">
+                                                    <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="text-center align-items-center">
+                                                    <h5><c:out value="${trip.provider.name}"/></h5>
+                                                    <p><spring:message code="${trip.provider.role}"/></p>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${currentUser.role == 'PROVIDER'}">
+                                            <div class="col-md">
+                                                <div class="text-center mx-2 align-items-center">
+                                                    <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md">
+                                                <div class="text-center align-items-center">
+                                                    <h5><c:out value="${trip.trucker.name}"/></h5>
+                                                    <p><spring:message code="${trip.trucker.role}"/></p>
+                                                </div>
+                                            </div>
+                                        </c:if>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="vr"></div>
-                        <div>
-                            <h4 class="mx-3 my-3"><span class="badge rounded-pill bg-primary">in progress</span></h4>
-                        </div>
-                    </div>
-                    <hr class="py-2">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="w-50 d-flex justify-content-center">
-                            <div class="w-25 text-truncate text-center">
-                                <h5>BsAs</h5>
-                                12/12/2021
-                            </div>
-
-                            <div class="w-25 text-center">
-                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                            </div>
-
-                            <div class="w-25 text-truncate text-center">
-                                <h5>CBA</h5>
-                                13/12/2021
-                            </div>
-                        </div>
-                        <div class="vr"></div>
-                        <div class="w-25 d-flex align-items-center justify-content-center">
-                                <div class="row">
-                                    <div class="col-md">
-                                        <div class="text-center mx-2 align-items-center">
-                                            <img src="<c:url value="/user/2/profilePicture"/> " class="profileImageNavbar"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-md">
-                                        <div class="text-center align-items-center">
-                                            <h5>Manuel Dithurbide</h5>
-                                            <p>Provider</p>
-                                        </div>
-                                    </div>
+                                <div class="vr"></div>
+                                <div>
+                                    <h4 class="mx-3 my-3"><span class="badge rounded-pill bg-primary">in progress</span></h4>
                                 </div>
-                        </div>
-                        <div class="vr"></div>
-                        <div>
-                            <h4 class="mx-3 my-3"><span class="badge rounded-pill bg-primary">in progress</span></h4>
-                        </div>
-                    </div>
+                            </div>
+                        </a>
+                    </c:forEach>
                 </div>
             </div>
         </div>
         <div class="col-lg">
             <div class="my-3 mx-3 card">
                 <div class="card-header">
-                    <h3><spring:message code="FutureTrips"/> (AGREGAR CANTIDAD)</h3>
+                    <h3><spring:message code="FutureTrips"/> (${futureTrips.size()})</h3>
                 </div>
                 <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="w-50 d-flex justify-content-center">
-                            <div class="w-25 text-truncate text-center">
-                                <h5>BsAs</h5>
-                                12/12/2021
-                            </div>
+                    <c:if test="${futureTrips.size() == 0}">
+                        <div class="text-center my-3">
+                            <h5><spring:message code="NoFutureTrips"/></h5>
+                        </div>
+                    </c:if>
+                    <c:forEach items="${futureTrips}" var="trip">
+                        <c:if test="${trip != futureTrips[0]}">
+                            <hr class="py-2">
+                        </c:if>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div class="w-50 d-flex justify-content-center">
+                                <div class="w-25 text-truncate text-center">
+                                    <h5>${trip.origin}</h5>
+                                    ${trip.departureDate}
+                                </div>
 
-                            <div class="w-25 text-center">
-                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                            </div>
+                                <div class="w-25 text-center">
+                                    <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                </div>
 
-                            <div class="w-25 text-truncate text-center">
-                                <h5>CBA</h5>
-                                13/12/2021
+                                <div class="w-25 text-truncate text-center">
+                                    <h5>${trip.destination}</h5>
+                                    ${trip.arrivalDate}
+                                </div>
+                            </div>
+                            <div class="vr"></div>
+                            <div class="w-50 d-flex align-items-center justify-content-evenly">
+                                <c:if test="${currentUser.role == 'TRUCKER'}">
+                                    <div class="text-center mx-3 align-items-center">
+                                        <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/> " class="profileImageNavbar"/>
+                                    </div>
+                                    <div class="text-center align-items-center">
+                                        <h5><c:out value="${trip.provider.name}"/></h5>
+                                        <p><spring:message code="${trip.provider.role}"/></p>
+                                    </div>
+<%--                                    <div class="mx-3 text-center align-items-center">--%>
+<%--                                        <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>--%>
+<%--                                    </div>--%>
+                                </c:if>
+                                <c:if test="${currentUser.role == 'PROVIDER'}">
+                                    <div class="text-center mx-3 align-items-center">
+                                        <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/> " class="profileImageNavbar"/>
+                                    </div>
+                                    <div class="text-center align-items-center">
+                                        <h5><c:out value="${trip.trucker.name}"/></h5>
+                                        <p><spring:message code="${trip.trucker.role}"/></p>
+                                    </div>
+<%--                                    <div class="mx-3 text-center align-items-center">--%>
+<%--                                        <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>--%>
+<%--                                    </div>--%>
+                                </c:if>
                             </div>
                         </div>
-                        <div class="vr"></div>
-                        <div class="w-50 d-flex align-items-center justify-content-evenly">
-                            <div class="text-center mx-3 align-items-center">
-                                <img src="<c:url value="/user/2/profilePicture"/> " class="profileImageNavbar"/>
-                            </div>
-                            <div class="text-center align-items-center">
-                                <h5>Manuel Dithurbide</h5>
-                                <p>Provider</p>
-                            </div>
-                            <div class="mx-3 text-center align-items-center">
-                                <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="py-2">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <div class="w-50 d-flex justify-content-center">
-                            <div class="w-25 text-truncate text-center">
-                                <h5>BsAs</h5>
-                                12/12/2021
-                            </div>
-
-                            <div class="w-25 text-center">
-                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                            </div>
-
-                            <div class="w-25 text-truncate text-center">
-                                <h5>CBA</h5>
-                                13/12/2021
-                            </div>
-                        </div>
-                        <div class="vr"></div>
-                        <div class="w-50 d-flex align-items-center justify-content-evenly">
-                            <div class="text-center mx-3 align-items-center">
-                                <img src="<c:url value="/user/2/profilePicture"/> " class="profileImageNavbar"/>
-                            </div>
-                            <div class="text-center align-items-center">
-                                <h5>Manuel Dithurbide</h5>
-                                <p>Provider</p>
-                            </div>
-                            <div class="mx-3 text-center align-items-center">
-                                <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>
-                            </div>
-                        </div>
-                    </div>
+                    </c:forEach>
                 </div>
             </div>
         </div>

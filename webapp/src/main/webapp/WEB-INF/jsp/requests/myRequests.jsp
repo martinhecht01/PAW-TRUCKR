@@ -155,7 +155,6 @@
             </div>
           </c:if>
           <c:forEach var="request" items="${expiredPublications}">
-            <a class="text-decoration-none" href="<c:url value="/requests/manageRequest?requestId=${request.tripId}"/>">
               <div class="card m-3" style="width: 25rem;">
                 <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="browseImg" alt="...">
                 <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${request.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${request.type}"></use></svg><spring:message code="${request.type}" htmlEscape="true"/></span></h4>
@@ -190,7 +189,6 @@
                   <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.price}"/></h4></li>
                 </ul>
               </div>
-            </a>
           </c:forEach>
         </div>
         <c:if test="${expiredPublications.size() > 0}">

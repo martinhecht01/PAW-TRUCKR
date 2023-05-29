@@ -74,11 +74,10 @@
                     <c:forEach var="trip" items="${activePublications}">
                         <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                             <div class="card m-3" style="width: 25rem;">
-                                <c:if test="${trip.proposalCount > 0}">
+                                <c:if test="${trip.proposals.size() > 0}">
                                     <h5 class="position-absolute top-0 end-0 M-3 ">
                                 <span class="badge rounded-pill bg-danger">
-                                    ${trip.proposalCount} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
-                                <span class="visually-hidden">unread messages</span>
+                                    ${trip.proposals.size()} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
                             </span>
                                     </h5>
                                 </c:if>
@@ -155,7 +154,6 @@
                         </div>
                     </c:if>
                     <c:forEach var="trip" items="${expiredPublications}">
-                        <a class="text-decoration-none" href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>">
                             <div class="card m-3" style="width: 25rem;">
                                 <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="browseImg" alt="...">
                                 <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>

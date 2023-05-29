@@ -49,8 +49,8 @@
                         <hr class="py-2">
                     </c:if>
                     <div class="d-flex align-items-center justify-content-between">
-                        <div class="w-25 d-flex justify-content-center">
-                            <div class="w-50 text-truncate text-center">
+                        <div class="w-50 d-flex justify-content-center">
+                            <div class="w-25 text-truncate text-center">
                                 <h5>${offer.trip.origin}</h5>
                                 ${offer.trip.departureDate}
                             </div>
@@ -73,9 +73,9 @@
                                 <h5>${offer.trip.provider.name}</h5>
                                 <p>Provider</p>
                             </div>
-                            <div class="text-center align-items-center">
-                                <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>4 (ARREGLAR)</h5>
-                            </div>
+<%--                            <div class="text-center align-items-center">--%>
+<%--                                <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>4 (ARREGLAR)</h5>--%>
+<%--                            </div>--%>
                         </div>
                         <div class="vr"></div>
                         <div class="w-25 d-flex align-items-center justify-content-evenly">
