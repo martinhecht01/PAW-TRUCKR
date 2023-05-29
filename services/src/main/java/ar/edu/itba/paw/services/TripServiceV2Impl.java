@@ -250,24 +250,29 @@ public class TripServiceV2Impl implements TripServiceV2 {
         tripDaoV2.deleteOffer(offer);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllOngoingTrips(Integer userId) {
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         return tripDaoV2.getAllOngoingTrips(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllPastTrips(Integer userId) {
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         return tripDaoV2.getAllPastTrips(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllFutureTrips(Integer userId) {
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         return tripDaoV2.getAllFutureTrips(user);
     }
 
+
+    @Transactional(readOnly = true)
     @Override
     public byte[] getTripPicture(Integer tripId) {
         return imageDao.getImage(tripId).get().getImage();

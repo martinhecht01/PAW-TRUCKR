@@ -47,6 +47,7 @@ public class ImageServiceImpl implements ImageService {
         return imageDao.uploadImage(new Image(image));
     }
 
+    @Transactional
     @Override
     public void updateImage(byte[] newImage, Image image) {
         imageDao.updateImage(newImage, image);
