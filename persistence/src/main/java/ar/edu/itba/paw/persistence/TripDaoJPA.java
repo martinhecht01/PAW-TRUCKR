@@ -367,7 +367,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     return trips;
 }
     @Override
-    public List<Trip> getAllActivePublications(Integer userId) {
+    public List<Trip> getAllActivePublications(Integer userId, Integer pag) {
         String tripIdQuery = "SELECT trip_id " +
                 "FROM trips " +
                 "WHERE ((trucker_id = :userId AND provider_id IS NULL) OR " +
@@ -375,8 +375,8 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
         Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
         tripIdNativeQuery.setParameter("userId", userId);
-//        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
-//        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
+        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
 
         final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
                 .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
@@ -386,9 +386,40 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
 
     }
+    @Override
+    public Integer getTotalPagesExpiredPublications(User user){
+        String tripIdQuery = "SELECT trip_id " +
+                "FROM trips " +
+                "WHERE ((trucker_id = :userId AND provider_id IS NULL) OR " +
+                "((provider_id = :userId) AND trucker_id IS NULL)) AND departure_date < now() ";
+
+        Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
+        tripIdNativeQuery.setParameter("userId", user.getUserId());
+
+        final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        return (int) Math.ceil((double) idList.size() / ITEMS_PER_PAGE);
+
+    }
 
     @Override
-    public List<Trip> getAllExpiredPublications(Integer userId) {
+    public Integer getTotalPagesActivePublications(User user){
+        String tripIdQuery = "SELECT trip_id " +
+                "FROM trips " +
+                "WHERE ((trucker_id = :userId AND provider_id IS NULL) OR " +
+                "((provider_id = :userId) AND trucker_id IS NULL)) AND departure_date >= now() ";
+
+        Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
+        tripIdNativeQuery.setParameter("userId", user.getUserId());
+
+        final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        return (int) Math.ceil((double) idList.size() / ITEMS_PER_PAGE);
+    }
+    @Override
+    public List<Trip> getAllExpiredPublications(Integer userId, Integer pag) {
         String tripIdQuery = "SELECT trip_id " +
                 "FROM trips " +
                 "WHERE ((trucker_id = :userId AND provider_id IS NULL) OR " +
@@ -396,8 +427,8 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
         Query tripIdNativeQuery = entityManager.createNativeQuery(tripIdQuery);
         tripIdNativeQuery.setParameter("userId", userId);
-//        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
-//        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
+        tripIdNativeQuery.setMaxResults(ITEMS_PER_PAGE);
+        tripIdNativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
 
         final List<Integer> idList = (List<Integer>) tripIdNativeQuery.getResultList()
                 .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());

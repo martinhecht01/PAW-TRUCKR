@@ -2,6 +2,7 @@ package ar.edu.itba.paw.interfacesServices;
 
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.models.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -60,11 +61,15 @@ public interface TripServiceV2 {
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
 
 
-    List<Trip> getAllActivePublications(Integer userId);
+    List<Trip> getAllActivePublications(Integer userId, Integer pag);
 
 
-    List<Trip> getAllExpiredPublications(Integer userId);
+    List<Trip> getAllExpiredPublications(Integer userId, Integer pag);
 
+
+    Integer getTotalPagesExpiredPublications(User user);
+
+    Integer getTotalPagesActivePublications(User user);
 
     List<Trip> getAllOngoingPublications(Integer userId);
 

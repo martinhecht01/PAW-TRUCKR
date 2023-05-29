@@ -252,8 +252,8 @@ public class RequestController {
         mav.addObject("currentPageAccepted", acceptPage);
         mav.addObject("maxAcceptedPage", maxAcceptPage);
 
-        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId()));
-        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId()));
+        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId(), acceptPage));
+        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId(), activePage));
         return mav;
     }
 

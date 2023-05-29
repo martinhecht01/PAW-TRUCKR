@@ -208,15 +208,26 @@ public class TripServiceV2Impl implements TripServiceV2 {
     }
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllActivePublications(Integer userId){
-        return tripDaoV2.getAllActivePublications(userId);
+    public List<Trip> getAllActivePublications(Integer userId, Integer pag){
+        return tripDaoV2.getAllActivePublications(userId,pag);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllExpiredPublications(Integer userId){
-        return tripDaoV2.getAllExpiredPublications(userId);
+    public List<Trip> getAllExpiredPublications(Integer userId, Integer pag){
+        return tripDaoV2.getAllExpiredPublications(userId, pag);
     }
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesExpiredPublications(User user){
+        return tripDaoV2.getTotalPagesExpiredPublications(user);
+    }
+    @Transactional
+    @Override
+    public Integer getTotalPagesActivePublications(User user){
+        return tripDaoV2.getTotalPagesActivePublications(user);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllOngoingPublications(Integer userId){

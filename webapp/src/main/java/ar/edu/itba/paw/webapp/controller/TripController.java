@@ -203,8 +203,8 @@ public class TripController {
         User user = getUser();
         LOGGER.info("User with id: {} accessing my trips page", user.getUserId());
 
-        Integer maxActivePage = ts.getTotalPagesActiveTripsOrRequests(user.getUserId());
-        Integer maxAcceptPage = ts.getTotalPagesAcceptedTripsAndRequests(user.getUserId());
+        Integer maxActivePage = ts.getTotalPagesActivePublications(user);
+        Integer maxAcceptPage = ts.getTotalPagesExpiredPublications(user);
 
         if(activePage > maxActivePage || activePage < 1){
             maxActivePage = 1;
@@ -220,8 +220,8 @@ public class TripController {
 
         mav.addObject("currentPageAccepted", acceptPage);
         mav.addObject("maxAcceptedPage", maxAcceptPage);
-        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId()));
-        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId()));
+        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId(), acceptPage));
+        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId(), activePage));
         return mav;
     }
 
