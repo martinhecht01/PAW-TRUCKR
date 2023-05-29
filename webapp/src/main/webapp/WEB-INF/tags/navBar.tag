@@ -15,9 +15,17 @@
 
 <nav class="navbar py-2 navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
-        <a href="<c:url value="/"/>">
-            <img src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" alt="logo" height="40px" style="margin-right: 40px; margin-left: 20px">
-        </a>
+        <c:if test="${currentUser == null}">
+            <a href="<c:url value="/"/>">
+                <img src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" alt="logo" height="40px" style="margin-right: 40px; margin-left: 20px">
+            </a>
+        </c:if>
+        <c:if test="${currentUser != null}">
+            <a href="<c:url value="/myItinerary"/>">
+                <img src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" alt="logo" height="40px" style="margin-right: 40px; margin-left: 20px">
+            </a>
+        </c:if>
+
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
