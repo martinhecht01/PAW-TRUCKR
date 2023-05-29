@@ -108,7 +108,7 @@
           </div>
           <c:if test="${!request.providerConfirmation}">
             <c:url value="/requests/confirmRequest" var="confirmPath"/>
-            <form:form method="post" action="${confirmPath}?id=${request.tripId}">
+            <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
               <spring:message var="finished" code="IFinishedTrip"/>
               <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
             </form:form>

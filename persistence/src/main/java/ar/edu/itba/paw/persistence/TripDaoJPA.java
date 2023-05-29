@@ -525,7 +525,8 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid) {
         return getTripOrRequestById(id)
-                .filter(trip -> trip.getTrucker() != null? trip.getTrucker().getUserId() == userid : trip.getProvider().getUserId() == userid);
+//                .filter(trip -> trip.getTrucker() != null? trip.getTrucker().getUserId() == userid : trip.getProvider().getUserId() == userid);
+                .filter(trip -> (trip.getTrucker() != null && trip.getTrucker().getUserId() == userid) || (trip.getProvider() != null && trip.getProvider().getUserId() == userid));
     }
 
 

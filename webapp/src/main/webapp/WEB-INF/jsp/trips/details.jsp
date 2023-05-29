@@ -113,7 +113,7 @@
                 <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
                     <div class="card mx-4 mt-4" style="width: 20rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveTrip"/></b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="SendOffer"/></b></h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
@@ -122,13 +122,13 @@
                                 <form:textarea type="text" class="form-control" id="description" path="description" placeholder="${writeDesctiption}"/>
                             </div>
                             <div>
-                                <spring:message code="Reserve" var="reserve"/>
+                                <spring:message code="SendOffer" var="sendOffer"/>
 
                                 <c:if test="${currentRole == ''}">
-                                    <a href="<c:url value ="/login" />" class="btn btn-color">${reserve}</a>
+                                    <a href="<c:url value ="/login" />" class="btn btn-color">${sendOffer}</a>
                                 </c:if>
                                 <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
-                                    <input type="submit" class="btn btn-color" value="${reserve}"/>
+                                    <input type="submit" class="btn btn-color" value="${sendOffer}"/>
                                 </c:if>
                             </div>
                         </div>
