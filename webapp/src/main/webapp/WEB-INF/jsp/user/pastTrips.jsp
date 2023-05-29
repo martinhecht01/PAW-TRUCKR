@@ -45,7 +45,7 @@
   <div class="tripCards w-650 px-5 pt-5 justify-content-center m-auto">
     <c:if test="${pastTrips.size() == 0}">
       <div>
-        <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoExpiredPublications"/></h3>
+        <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoPastTrips"/></h3>
       </div>
     </c:if>
     <c:forEach var="trip" items="${pastTrips}">
@@ -79,18 +79,12 @@
             </div>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
-              <div class="text-center">
-                <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${trip.weight}"/> KG </h5>
-                <p><spring:message code="AvailableWeight"/></p>
-              </div>
-              <div class="text-center">
-                <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${trip.volume}"/> M3 </h5>
-                <p><spring:message code="AvailableVolume"/></p>
-              </div>
+            <li class="list-group-item px-5 pt-4 d-flex text-center justify-content-between align-items-center">
+                <span class="text-center align-items-center"><b><spring:message code="LastUpdate"/>:</b> <c:out value="${trip.confirmationDate}"/></span>
             </li>
             <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${trip.price}"/></h4></li>
           </ul>
+
         </div>
       </a>
     </c:forEach>

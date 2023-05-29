@@ -64,7 +64,7 @@
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
                 <!-- Content for Tab 1 goes here -->
-                <div class="tripCards w-100 px-5 justify-content-center m-auto">
+                <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
                     <c:if test="${activePublications.size() == 0}">
                         <div>
                             <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoActivePublications"/></h3>
