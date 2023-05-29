@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -203,10 +204,10 @@ public class RequestController {
     @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
         ts.acceptProposal(proposalId);
-        LOGGER.info("Proposal with proposal ID: {}, accepted successfully by request Id: {}", proposalId, requestId);
+        ModelAndView mav = new ModelAndView("trips/acceptSuccess");
 
-        final ModelAndView mav = new ModelAndView("requests/acceptSuccess");
         Trip request = ts.getTripOrRequestById(requestId).orElseThrow(TripOrRequestNotFoundException::new);
+        LOGGER.info("Proposal with Id: {} accepted successfully", proposalId);
         mav.addObject("request", request);
         return mav;
     }
@@ -261,19 +262,18 @@ public class RequestController {
     public ModelAndView manageRequest(@RequestParam("requestId") int requestId, @ModelAttribute("acceptForm") final AcceptForm form ) {
         LOGGER.info("Accessing manage request page with request Id: {} ", requestId);
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
-        int userId = getUser().getUserId();
+        int userId = Objects.requireNonNull(getUser()).getUserId();
         Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(TripOrRequestNotFoundException::new);
 
-        if(request.getTrucker().getUserId() > 0) {
+        if(request.getTrucker() != null){
             mav.addObject("acceptUser", us.getUserById(request.getTrucker().getUserId()).orElseThrow(UserNotFoundException::new));
             mav.addObject("reviewed", revs.getReviewByTripAndUserId(requestId, request.getTrucker().getUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
             mav.addObject("userRating", revs.getUserRating(request.getTrucker().getUserId()));//TODO: se puede mejorar, ahora en requests ya tenemos el usuario
-            mav.addObject("now", LocalDateTime.now());
+            mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
         }
 
         mav.addObject("request", request);
         mav.addObject("userId", userId);
-        mav.addObject("offers", ts.getAllProposalsForTripId(requestId));
         return mav;
     }
 

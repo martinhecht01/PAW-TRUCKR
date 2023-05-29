@@ -15,7 +15,6 @@
 </head>
 <body class="bodyContent">
 
-
 <svg  xmlns="http://www.w3.org/2000/svg" style="display: none;">
   <symbol id="check" viewBox="0 0 16 16">
     <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
@@ -28,6 +27,7 @@
   </symbol>
 </svg>
 
+<c:url value="/accept" var="postPath"/>
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
   <div class="inlineFormInputContainer">
@@ -40,7 +40,7 @@
         <table class="table">
           <tr>
             <td><b><spring:message code="CargoType"/></b></td>
-            <td><spring:message code="${request.type}" htmlEscape="true" /></td>
+            <td><spring:message code="${request.type}" htmlEscape="true"/></td>
           </tr>
           <tr>
             <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
@@ -48,14 +48,14 @@
           </tr>
           <tr>
             <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-            <td><c:out value="${request.departureDate.dayOfMonth}/${request.departureDate.monthValue}/${request.departureDate.year} - ${request.arrivalDate.dayOfMonth}/${request.arrivalDate.monthValue}/${request.arrivalDate.year}"/></td>
+            <td>${request.departureDate} - ${request.arrivalDate}</td>
           </tr>
           <tr>
-            <td><b><spring:message code="CreateRequestRequestedVolume"/></b></td>
+            <td><b><spring:message code="AvailableVolume"/></b></td>
             <td><c:out value="${request.volume}"/> m3</td>
           </tr>
           <tr>
-            <td><b><spring:message code="CreateRequestRequestedWeight"/></b></td>
+            <td><b><spring:message code="AvailableWeight"/></b></td>
             <td><c:out value="${request.weight}"/> kg</td>
           </tr>
           <tr>
@@ -65,130 +65,134 @@
         </table>
       </div>
     </div>
-    <c:if test="${request.truckerId > 0}">
+    <c:if test="${request.trucker != null}">
       <div class="justify-content-top align-items-top px-5" >
         <div class="card" style="width: 18rem;">
           <div class="card-header">
-            <h4><spring:message code="Driver"/>:</h4>
+            <h4><spring:message code="AcceptedBy"/>: </h4>
           </div>
           <div class="card-body p-3">
-            <a  class="text-decoration-none" href="<c:url value="/profile?id=${acceptUser.userId}"/>">
+            <a class="text-decoration-none" href="<c:url value="/profile?id=${request.trucker.userId}"/>">
               <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating}</h5>
-              <p class="text-dark card-text text-decoration-none"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
+              <p class="text-dark card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
             </a>
           </div>
         </div>
-        <c:if test="${request.departureDate.isBefore(now)}">
+        <c:if test="${request.departureDate.before(now)}">
           <div class="card mt-4" style="width: 18rem;">
             <div class="card-header">
               <h4><spring:message code="Status"/>:</h4>
             </div>
             <div class="card-body p-3">
-              <c:if test="${request.provider_confirmation && !request.trucker_confirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
+              <c:if test="${request.truckerConfirmation && !request.providerConfirmation}">
+                <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
               </c:if>
-              <c:if test="${!request.provider_confirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
+              <c:if test="${!request.truckerConfirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
               </c:if>
-              <c:if test="${request.trucker_confirmation && !request.provider_confirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
+              <c:if test="${request.providerConfirmation && !request.truckerConfirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
               </c:if>
-              <c:if test="${!request.trucker_confirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
+              <c:if test="${!request.providerConfirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="ProviderDidntReceiveCargo"/></p>
               </c:if>
-              <c:if test="${request.provider_confirmation && request.trucker_confirmation}">
+              <c:if test="${request.providerConfirmation && request.truckerConfirmation}">
                 <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
               </c:if>
-              <c:if test="${request.confirmation_date != null}">
+              <c:if test="${request.confirmationDate != null}">
                 <div class="pt-2 pb-0 w-100 text-center">
-                  <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmation_date.dayOfMonth}/${request.confirmation_date.monthValue}/${request.confirmation_date.year}</span>
+                  <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmationDate}</span>
                 </div>
               </c:if>
             </div>
           </div>
-          <c:if test="${!request.provider_confirmation}">
+          <c:if test="${!request.providerConfirmation}">
             <c:url value="/requests/confirmRequest" var="confirmPath"/>
-            <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
-              <spring:message var="received" code="IReceivedCargo"/>
-              <input type="submit" class="btn btn-color mt-3 w-100" value="${received}"/>
+            <form:form method="post" action="${confirmPath}?id=${request.tripId}">
+              <spring:message var="finished" code="IFinishedTrip"/>
+              <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
             </form:form>
           </c:if>
         </c:if>
-    </c:if>
-    <c:if test="${request.trucker_confirmation && request.provider_confirmation }">
-      <c:if test="${reviewed == null}">
-        <c:url value="/requests/sendReview" var="reviewPath"/>
-        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${acceptUser.userId}">
-          <div class="card mt-4" style="width: 18rem;">
-            <div class="card-header">
-              <h4>
-                  <spring:message code="Review"/>
-              </h4>
-            </div>
-            <div class="card-body p-3">
-              <div class="rating">
-                <input type="radio" id="star5" name="rating" value="5">
-                <label for="star5" title="5 stars"></label>
-                <input type="radio" id="star4" name="rating" value="4">
-                <label for="star4" title="4 stars"></label>
-                <input type="radio" id="star3" name="rating" value="3">
-                <label for="star3" title="3 stars"></label>
-                <input type="radio" id="star2" name="rating" value="2">
-                <label for="star2" title="2 stars"></label>
-                <input type="radio" id="star1" name="rating" value="1">
-                <label for="star1" title="1 star"></label>
+        <c:if test="${request.truckerConfirmation && request.providerConfirmation }">
+          <c:if test="${reviewed == null}">
+            <c:url value="/requests/sendReview" var="reviewPath"/>
+            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${acceptUser.userId}">
+              <div class="card mt-4" style="width: 18rem;">
+                <div class="card-header">
+                  <h4>
+                    <spring:message code="Review"/>
+                  </h4>
+                </div>
+                <div class="card-body p-3">
+                  <div class="rating">
+                    <input type="radio" id="star5" name="rating" value="5">
+                    <label for="star5" title="5 stars"></label>
+                    <input type="radio" id="star4" name="rating" value="4">
+                    <label for="star4" title="4 stars"></label>
+                    <input type="radio" id="star3" name="rating" value="3">
+                    <label for="star3" title="3 stars"></label>
+                    <input type="radio" id="star2" name="rating" value="2">
+                    <label for="star2" title="2 stars"></label>
+                    <input type="radio" id="star1" name="rating" value="1">
+                    <label for="star1" title="1 star"></label>
+                  </div>
+
+                  <div class="mt-2">
+                    <spring:message var="writeReview" code="WriteReview"/>
+                    <form:textarea type="text" class="form-control" path="description" placeholder="${writeReview}"/>
+                  </div>
+                </div>
               </div>
-              <div class="mt-2">
-                <spring:message var="writeReview" code="WriteReview"/>
-                <form:textarea type="text" class="form-control" path="description" placeholder="${writeReview}"/>
+              <spring:message var="sendReview" code="SendReview"/>
+              <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
+            </form:form>
+          </c:if>
+          <c:if test="${reviewed != null}">
+            <div class="card mt-4" style="width: 18rem;">
+              <div class="card-body p-3">
+                <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>
               </div>
             </div>
-          </div>
-          <spring:message var="sendReview" code="SendReview"/>
-          <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
-        </form:form>
-      </c:if>
-      <c:if test="${reviewed != null}">
-        <div class="card mt-4" style="width: 18rem;">
-          <div class="card-body p-3">
-            <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>
-          </div>
-        </div>
-      </c:if>
+          </c:if>
+        </c:if>
+      </div>
     </c:if>
-  <c:if test="${request.truckerId <= 0}">
-    <div class="justify-content-top align-items-top px-5" >
-      <c:if test="${offers.size() == 0}">
-        <div class="card p-3" style="width: 18rem;">
-          <div class="card-body">
-            <h5 class="card-title"><spring:message code="NoProposalsYet"/></h5>
+    <c:if test="${request.trucker == null}">
+      <div class="justify-content-top align-items-top px-5" >
+        <c:if test="${request.proposals.size() == 0}">
+          <div class="card p-3" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title"><spring:message code="NoProposalsYet"/></h5>
+            </div>
           </div>
-        </div>
-      </c:if>
-      <c:forEach var="offer" items="${offers}">
-        <c:url value="/requests/acceptProposal" var="acceptPath"/>
-        <form:form action="${acceptPath}?proposalid=${offer.proposalId}&requestid=${offer.tripId}" method="post">
+        </c:if>
+        <c:forEach var="offer" items="${request.proposals}">
           <div class="card p-2" style="width: 18rem;">
             <div class="card-body">
-              <a href="<c:url value="/profile?id=${offer.userId}"/>">
+              <a href="<c:url value="/profile?id=${offer.user.userId}"/>">
                 <div class="d-flex justify-content-between align-items-center">
-                  <h5 class="card-title"><c:out value="${offer.userName.toUpperCase()}"/></h5>
-                  <img class="profileImageNavbar" src="<c:url value="/user/${offer.userId}/profilePicture"/>"/>
+                  <h5 class="card-title"><c:out value="${offer.user.name.toUpperCase()}"/></h5>
+                  <img class="profileImageNavbar" src="<c:url value="/user/${offer.user.userId}/profilePicture"/>"/>
                 </div>
               </a>
               <p class="card-text"><c:out value="${offer.description}"/></p>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
               <div class="d-flex justify-content-between">
-                <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
-                <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                <c:url value="/requests/acceptProposal" var="postPath"/>
+                <form:form action="${postPath}?proposalid=${offer.proposalId}&requestid=${offer.trip.tripId}" method="post">
+                  <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                </form:form>
+                <form:form action="/request/cancelOffer?offerId=${offer.proposalId}&requestId=${offer.trip.tripId}" method="post">
+                  <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                </form:form>
               </div>
             </div>
           </div>
-        </form:form>
-      </c:forEach>
-    </div>
-  </c:if>
-  </div>
+
+        </c:forEach>
+      </div>
+    </c:if>
   </div>
 </div>
 <div style="margin-top: auto">
@@ -206,3 +210,5 @@
     });
   });
 </script>
+
+
