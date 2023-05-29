@@ -66,21 +66,21 @@
                         <c:if test="${currentRole == 'TRUCKER'}">
                             <a class="nav-link" id="myTrips" href="<c:url value="/trips/myTrips"/>">
                                 <spring:message code="MyPublications"/>
-                                <c:if test="${currentUser.truckerTrips.stream().filter(trip -> trip.proposals.size() > 0).count() > 0}">
-                                    <span class="position-absolute translate-middle p-2 bg-danger border border-light rounded-circle">
-                                        <span class="visually-hidden">New alerts</span>
-                                    </span>
-                                </c:if>
+<%--                                <c:if test="${currentUser.truckerTrips.stream().filter(trip -> trip.proposals.size() > 0).count() > 0}">--%>
+<%--                                    <span class="position-absolute translate-middle p-2 bg-danger border border-light rounded-circle">--%>
+<%--                                        <span class="visually-hidden">New alerts</span>--%>
+<%--                                    </span>--%>
+<%--                                </c:if>--%>
                             </a>
                         </c:if>
                         <c:if test="${currentRole == 'PROVIDER'}">
                             <a class="nav-link" id="myRequests" href="<c:url value="/requests/myRequests"/>">
                                 <spring:message code="MyPublications"/>
-                                <c:if test="${currentUser.truckerTrips.stream().filter(trip -> trip.proposals.size() > 0).count() > 0}">
-                                    <span class="position-absolute translate-middle p-2 bg-danger border border-light rounded-circle">
-                                        <span class="visually-hidden">New alerts</span>
-                                    </span>
-                                </c:if>
+<%--                                <c:if test="${currentUser.truckerTrips.stream().filter(trip -> trip.proposals.size() > 0).count() > 0}">--%>
+<%--                                    <span class="position-absolute translate-middle p-2 bg-danger border border-light rounded-circle">--%>
+<%--                                        <span class="visually-hidden">New alerts</span>--%>
+<%--                                    </span>--%>
+<%--                                </c:if>--%>
                             </a>
                         </c:if>
                     </li>
