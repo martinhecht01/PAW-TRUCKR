@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.form;
 
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
@@ -9,26 +10,38 @@ public class FilterForm {
 
 
     //custom annotation para validar.
-    @Range(min = 1)
+    @Null
+    @Range(min = 1, max=10000)
     private  int minAvailableWeight;
-    @Range(min=1)
+
+    @Null
+    @Range(min = 1, max=10000)
     private  int minAvailableVolume;
 
-
+    @Null
     private Date departureDate;
+
+    @Null
     private Date arrivalDate;
 
-    @Size(min = 1, max = 100000)
+    @Null
+    @Size(min = 1, max = 1000)
     private  String origin;
-    @Size(min = 1, max = 100000)
+
+    @Null
+    @Size(min = 1, max = 1000)
     private String destination;
 
+    @Null
     @Size(min = 1, max = 100000)
     private String sortOrder;
 
-    @Range(min=0)
+    @Null
+    @Range(min=0, max=999999)
     private Integer minPrice;
-    @Range(min=0)
+
+    @Null
+    @Range(min=0, max=1000000)
     private Integer maxPrice;
 
     public Integer getMinAvailableWeight() {

@@ -40,6 +40,9 @@
   </symbol>
 </svg>
 
+<%--<c:url value="/trips/browse" var="getPath"/>--%>
+<%--<form:form method="get" modelAttribute="filterForm" action="${getPath}">--%>
+
 <components:navBar/>
 <form:form method="get">
 <div class="d-flex pt-5" style="width: 100%; padding: 10% 10% ">

@@ -246,7 +246,6 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional
     @Override
     public void deleteOffer(int offerId){
-        System.out.println("Deleting offer with id: " + offerId);
         Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(ProposalNotFoundException::new);
         tripDaoV2.deleteOffer(offer);
     }

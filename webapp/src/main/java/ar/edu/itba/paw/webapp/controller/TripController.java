@@ -8,6 +8,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
+import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,37 @@ public class TripController {
         view.addObject("offers", trips);
         return view;
     }
+
+//    @RequestMapping("/trips/browse")
+//    public ModelAndView browse(@Valid  @ModelAttribute("filterForm") FilterForm ff)
+//    {
+//        LOGGER.info("Accessing browse trips page");
+//        String page= "1";
+//        Integer maxPages = ts.getActiveTripsTotalPages(ff.getOrigin(), ff.getDestination(),ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getDepartureDate().toString(), ff.getArrivalDate().toString());
+//        Integer currPage = Integer.parseInt(page);
+//        if(currPage < 1 || currPage > maxPages ){
+//            page = "1";
+//        }
+//
+//        final ModelAndView view = new ModelAndView("trips/browse");
+//
+//        view.addObject("maxPage", maxPages);
+//        view.addObject("currentPage", page);
+//        view.addObject("origin",ff.getOrigin());
+//        view.addObject("destination",ff.getDestination());
+//        view.addObject("minAvailableVolume",ff.getAvailableVolume());
+//        view.addObject("minAvailableWeight",ff.getMinAvailableWeight());
+//        view.addObject("minPrice",ff.getMinPrice());
+//        view.addObject("maxPrice",ff.getMaxPrice());
+//        view.addObject("sortOrder",ff.getSortOrder());
+//        view.addObject("departureDate",ff.getDepartureDate());
+//        view.addObject("arrivalDate",ff.getArrivalDate());
+//        List<Trip> trips = ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), ff.getDepartureDate().toString(), ff.getArrivalDate().toString(), Integer.parseInt(page));
+//        LOGGER.debug("TRIPS SIZE = {}",trips.size());
+//        view.addObject("offers", trips);
+//        return view;
+//    }
+
 
     @ModelAttribute("cities")
     public List<String> getCities() {

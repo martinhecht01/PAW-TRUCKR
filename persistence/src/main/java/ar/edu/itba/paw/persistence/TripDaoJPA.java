@@ -273,10 +273,15 @@ public class TripDaoJPA implements TripDaoV2 {
         @SuppressWarnings("unchecked")
         final List<Integer> idList = (List<Integer>) nativeQuery.getResultList()
                 .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
-        System.out.println(idList + "ID LIST");
 
-        final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
+        StringBuilder query2 = new StringBuilder("FROM Trip WHERE tripId IN (:ids)");
+
+        if(sortOrder != null && !sortOrder.isEmpty())
+            query2.append(" order by ").append(sortOrder);
+
+        final TypedQuery<Trip> query3 = entityManager.createQuery(query2.toString(), Trip.class);
         query3.setParameter("ids", idList);
+
         return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
     }
 
@@ -292,7 +297,12 @@ public class TripDaoJPA implements TripDaoV2 {
         final List<Integer> idList = (List<Integer>) nativeQuery.getResultList()
                 .stream().map(n -> ((Number) n).intValue()).collect(Collectors.toList());
 
-        final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
+        StringBuilder query2 = new StringBuilder("FROM Trip WHERE tripId IN (:ids)");
+
+        if(sortOrder != null && !sortOrder.isEmpty())
+            query2.append(" order by ").append(sortOrder);
+
+        final TypedQuery<Trip> query3 = entityManager.createQuery(query2.toString(), Trip.class);
         query3.setParameter("ids", idList);
 
         return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
