@@ -162,6 +162,13 @@ public class RequestController {
             return new ModelAndView("redirect:/requests/details?id="+ requestid);
     }
 
+    @RequestMapping(value = "/requests/cancelOffer", method = RequestMethod.POST)
+    public ModelAndView cancelOffer(@ModelAttribute("offerId") final Integer offerId, @ModelAttribute("tripId") final Integer requestId) {
+        LOGGER.info("Cancelling offer with id {}", offerId);
+        ts.deleteOffer(offerId);
+        return new ModelAndView("redirect:/requests/manageRequest?requestId=" + requestId);
+    }
+
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
