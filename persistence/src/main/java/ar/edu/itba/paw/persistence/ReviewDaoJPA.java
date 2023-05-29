@@ -29,12 +29,12 @@ public class ReviewDaoJPA implements ReviewDao {
     @Override
     public Optional<Review> getReviewByTripAndUserId(Trip trip, User user) {
         String jpql = "SELECT r FROM Review r WHERE r.trip = :trip AND r.user = :user";
-        Review review = entityManager.createQuery(jpql, Review.class)
+        List<Review> reviews = entityManager.createQuery(jpql, Review.class)
                 .setParameter("trip", trip)
                 .setParameter("user", user)
-                .getSingleResult();
+                .getResultList();
         LOGGER.info("Creating review token for user {} in trip {}", user.getUserId(), trip.getTripId());
-        return Optional.of(review);
+        return reviews.isEmpty() ? Optional.empty() : Optional.of(reviews.get(0));
     }
 
     @Override

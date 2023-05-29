@@ -54,7 +54,7 @@
                                 href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
                             </c:if>
                             <c:if test="${currentUser.role == 'PROVIDER'}">
-                                href="<c:url value="/request/manageRequest?requestId=${trip.tripId}"/>"
+                                href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
                             </c:if>
                         >
                             <div class="d-flex align-items-center justify-content-between">
