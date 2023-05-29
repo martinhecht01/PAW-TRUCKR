@@ -22,7 +22,12 @@
                 <h1 class="display-6 mb-2 fw-medium lh-1"><spring:message code="LandingMainMessage"/></h1>
                 <p class="lead mt-3 light" ><spring:message code="LandingMainSubMessage"/></p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
+                    <c:if test="${currentUser == null}">
+                        <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
+                    </c:if>
+                    <c:if test="${currentUser != null}">
+                        <a href="<c:url value="/explore"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
+                    </c:if>
                 </div>
             </div>
             <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
