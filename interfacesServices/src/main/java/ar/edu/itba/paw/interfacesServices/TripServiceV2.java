@@ -85,4 +85,5 @@ public interface TripServiceV2 {
 
     List<Trip> getAllFutureTrips(Integer userId);
 
+    Integer getCompletedTripsCount(Integer userId);
 }

@@ -576,4 +576,12 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
                 .getResultList();
     }
 
+    @Override
+    public Integer getCompletedTripsCount(User user){
+        String jpql = "SELECT r FROM Trip r WHERE ((r.provider = :user AND r.trucker IS NOT NULL ) OR (r.trucker = :user AND r.provider IS NOT NULL)) AND r.providerConfirmation = true AND r.truckerConfirmation = true)";
+        return entityManager.createQuery(jpql, Trip.class)
+                .setParameter("user", user)
+                .getResultList().size();
+    }
+
 }

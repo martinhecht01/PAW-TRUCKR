@@ -109,12 +109,15 @@ public class UserController {
         if (id == null){
             mav.addObject("userRating", revs.getUserRating(getCurrentUser().getUserId()));
             mav.addObject("userReviews", revs.getUserReviews(getCurrentUser().getUserId()));
+            mav.addObject("completedTrips", ts.getCompletedTripsCount(getCurrentUser().getUserId()));
             mav.addObject("currUser", getCurrentUser());
         }
         else{
             User currUser = us.getUserById(id).orElseThrow(UserNotFoundException::new);
             mav.addObject("userRating", revs.getUserRating(currUser.getUserId()));
             mav.addObject("userReviews", revs.getUserReviews(currUser.getUserId()));
+            mav.addObject("completedTrips", ts.getCompletedTripsCount(currUser.getUserId()));
+            System.out.println("COMPLETED TRIPS = " + ts.getCompletedTripsCount(currUser.getUserId()));
             mav.addObject("currUser", currUser);
         }
         return mav;

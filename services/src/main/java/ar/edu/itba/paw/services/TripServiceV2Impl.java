@@ -278,4 +278,11 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return imageDao.getImage(tripId).get().getImage();
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getCompletedTripsCount(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getCompletedTripsCount(user);
+    }
+
 }
