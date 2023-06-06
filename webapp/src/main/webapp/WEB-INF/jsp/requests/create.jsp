@@ -71,12 +71,12 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label for="minDepartureDate" path="minDepartureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
                     <form:errors path="minDepartureDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="minDepartureDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" value="${departureDate}" class="form-control" path="minDepartureDate" placeholder="DD/MM/AAAA"/>
                 </div>
                 <div class="mb-3 inlineFormInput">
                     <form:label for="maxArrivalDate" path="maxArrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
                     <form:errors path="maxArrivalDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="maxArrivalDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" value="${arrivalDate}" class="form-control" path="maxArrivalDate" placeholder="DD/MM/AAAA"/>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
                     <form:label path="requestedVolume"  class="form-label"><spring:message code="CreateRequestRequestedVolume"/></form:label>
                     <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)"/>
+                        <form:input value="${minAvailableVolume}" type="number" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -96,7 +96,7 @@
                     <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="CreateRequestRequestedWeight"/></form:label>
                     <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" class="form-control" path="requestedWeight" placeholder="0"/>
+                        <form:input value="${minAvailableWeight}" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" class="form-control" path="requestedWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
