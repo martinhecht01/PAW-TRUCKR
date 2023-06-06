@@ -12,7 +12,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 
 <head>
-    <title><spring:message code="CreateRequest"/></title>
+    <title><spring:message code="CreatePublication"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">
@@ -23,7 +23,7 @@
 <form:form modelAttribute="requestForm" action="${postPath}" method="post" enctype="multipart/form-data">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
-            <h4 class="card-title"><b><spring:message code="CreateRequest"/></b></h4>
+            <h4 class="card-title"><b><spring:message code="CreatePublication"/></b></h4>
         </div>
         <div class="card-body">
             <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton" />
+            <input  type="submit" value="<spring:message code="CreatePublication"/>" class="btn btn-color mt-3 formButton" />
         </div>
     </div>
 </form:form>

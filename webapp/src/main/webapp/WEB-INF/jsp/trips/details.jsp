@@ -121,6 +121,11 @@
                                 <spring:message var="writeDescription" code="WriteDescription"/>
                                 <form:textarea type="text" class="form-control" id="description" path="description" placeholder="${writeDesctiption}"/>
                             </div>
+                            <div class="mb-3 flex-column">
+                                <form:label for="price" class="form-label" path="price"><spring:message code="OfferedPrice"/></form:label>
+                                <form:errors cssClass="formError" path="price"/>
+                                <form:input type="number" id="price" class="form-control" path="price"  placeholder="0"/>
+                            </div>
                             <div>
                                 <spring:message code="SendOffer" var="sendOffer"/>
 

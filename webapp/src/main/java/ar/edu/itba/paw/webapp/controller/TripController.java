@@ -9,6 +9,7 @@ import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.FilterForm;
+import ar.edu.itba.paw.webapp.form.SearchTripForm;
 import ar.edu.itba.paw.webapp.form.TripForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,12 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,6 +50,61 @@ public class TripController {
         this.cs = cs;
         this.is = is;
         this.revs = revs;
+    }
+
+    @RequestMapping("/trips/search")
+    public ModelAndView searchGet(@ModelAttribute("searchTripForm") final SearchTripForm form){
+        final ModelAndView mav = new ModelAndView("trips/searchTrip");
+        return mav;
+    }
+
+    @RequestMapping(value = "/trips/search", method = RequestMethod.POST)
+    public ModelAndView searchPost(@Valid @ModelAttribute("searchTripForm") final SearchTripForm form, final BindingResult result){
+        if(result.hasErrors()){
+            return searchGet(form);
+        }
+
+        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
+        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
+
+        return new ModelAndView("redirect:/trips/search/results?" +
+                "origin="
+                +form.getOrigin()
+                +"&destination=" + form.getDestination()
+                +"&minAvailableVolume=" + form.getAvailableVolume()
+                +"&minAvailableWeight=" + form.getAvailableWeight()
+                +"&departureDate=" + departure
+                +"&arrivalDate=" + arrival
+        );
+    }
+
+    @RequestMapping("/trips/search/results")
+    public ModelAndView searchResults(@RequestParam(defaultValue = "1") String page,
+                                      @RequestParam(required = false) String origin,
+                                      @RequestParam(required = false) String destination,
+                                      @RequestParam(required = false) Integer minAvailableVolume,
+                                      @RequestParam(required = false) Integer minAvailableWeight,
+                                      @RequestParam(required = false) Integer minPrice,
+                                      @RequestParam(required = false) Integer maxPrice,
+                                      @RequestParam(required = false) String sortOrder,
+                                      @RequestParam(required = false) String departureDate,
+                                      @RequestParam(required = false) String arrivalDate){
+        LOGGER.info("Accessing search results trips page");
+        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, null);
+        Integer currPage = Integer.parseInt(page);
+
+        if(currPage < 1 || currPage > maxPages ){
+            currPage = 1;
+        }
+
+        final ModelAndView view = new ModelAndView("trips/results");
+
+        view.addObject("maxPage", maxPages);
+        view.addObject("currentPage", currPage);
+        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, null, null, Integer.parseInt(page));
+        LOGGER.debug("TRIPS SIZE = {}",trips.size());
+        view.addObject("offers", trips);
+        return view;
     }
 
     @RequestMapping("/trips/browse")
