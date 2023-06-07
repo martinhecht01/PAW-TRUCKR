@@ -22,6 +22,9 @@ package ar.edu.itba.paw.models;
         @Column(name = "description", length = 300)
         private String description;
 
+        @Column(name = "price")
+        private Integer price;
+
         // Additional property not present in the base class
         @Transient
         private String userName;
@@ -32,19 +35,21 @@ package ar.edu.itba.paw.models;
             // Default constructor required by Hibernate
         }
 
-        public Proposal(int proposalId, Trip trip, User user, String description, String userName) {
+        public Proposal(int proposalId, Trip trip, User user, String description, String userName, Integer price) {
             this.proposalId = proposalId;
             this.trip = trip;
             this.user = user;
             this.description = description;
             this.userName = userName;
+            this.price = price;
         }
-        public Proposal(Trip trip, User user, String description) {
+        public Proposal(Trip trip, User user, String description, Integer price) {
             this.proposalId = null;
             this.trip = trip;
             this.user = user;
             this.description = description;
             this.userName = null;
+            this.price = price;
         }
 
         public int getProposalId() {
@@ -85,5 +90,17 @@ package ar.edu.itba.paw.models;
 
         public void setUserName(String userName) {
             this.userName = userName;
+        }
+
+        public void setProposalId(Integer proposalId) {
+            this.proposalId = proposalId;
+        }
+
+        public Integer getPrice() {
+            return price;
+        }
+
+        public void setPrice(Integer price) {
+            this.price = price;
         }
     }

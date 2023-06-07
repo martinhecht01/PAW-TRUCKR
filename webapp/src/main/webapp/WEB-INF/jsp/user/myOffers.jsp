@@ -79,7 +79,7 @@
                         <div class="vr"></div>
                         <div class="w-25 d-flex align-items-center justify-content-evenly">
                             <div class="text-center align-items-center">
-                                <h4>$${offer.trip.price}</h4>
+                                <h4>$${offer.price}</h4>
                             </div>
                             <div class="text-center align-items-center">
                                 <c:url value="/user/cancelOffer" var="postPath"/>

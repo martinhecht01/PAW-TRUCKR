@@ -34,7 +34,7 @@
             <c:if test="${currentUser == null}">
                 <ul class="navbar-nav nav-underline justify-content-center">
                     <li class="nav-item mx-5" style="margin-right: 10px">
-                        <a class="nav-link"  id="browseTrips2" href="<c:url value="/trips/browse"/>"><spring:message code="BrowseTrips"/></a>
+                        <a class="nav-link"  id="browseTrips2" href="<c:url value="/trips/search"/>"><spring:message code="BrowseTrips"/></a>
                     </li>
                     <li class="nav-item mx-5" style="margin-right: 10px">
                         <a class="nav-link" id="browseRequests2" href="<c:url value="/requests/browse"/>"><spring:message code="BrowseCargo"/></a>

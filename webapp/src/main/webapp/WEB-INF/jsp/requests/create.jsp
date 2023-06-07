@@ -12,7 +12,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 
 <head>
-    <title><spring:message code="CreateRequest"/></title>
+    <title><spring:message code="CreatePublication"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">
@@ -23,7 +23,7 @@
 <form:form modelAttribute="requestForm" action="${postPath}" method="post" enctype="multipart/form-data">
     <div class="card w-75 mb-3 mt-5 formCard">
         <div class="card-header">
-            <h4 class="card-title"><b><spring:message code="CreateRequest"/></b></h4>
+            <h4 class="card-title"><b><spring:message code="CreatePublication"/></b></h4>
         </div>
         <div class="card-body">
             <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
@@ -71,12 +71,12 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label for="minDepartureDate" path="minDepartureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
                     <form:errors path="minDepartureDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="minDepartureDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" value="${departureDate}" class="form-control" path="minDepartureDate" placeholder="DD/MM/AAAA"/>
                 </div>
                 <div class="mb-3 inlineFormInput">
                     <form:label for="maxArrivalDate" path="maxArrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
                     <form:errors path="maxArrivalDate" cssClass="formError" element="p"/>
-                    <form:input type="datetime-local" class="form-control" path="maxArrivalDate" placeholder="DD/MM/AAAA"/>
+                    <form:input type="datetime-local" value="${arrivalDate}" class="form-control" path="maxArrivalDate" placeholder="DD/MM/AAAA"/>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
                     <form:label path="requestedVolume"  class="form-label"><spring:message code="CreateRequestRequestedVolume"/></form:label>
                     <form:errors path="requestedVolume" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)"/>
+                        <form:input value="${minAvailableVolume}" type="number" min="0" step="1" class="form-control" path="requestedVolume" placeholder="0" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">m3</span>
                         </div>
@@ -96,7 +96,7 @@
                     <form:label path="requestedWeight" for="origin" class="form-label"><spring:message code="CreateRequestRequestedWeight"/></form:label>
                     <form:errors path="requestedWeight" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" class="form-control" path="requestedWeight" placeholder="0"/>
+                        <form:input value="${minAvailableWeight}" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" class="form-control" path="requestedWeight" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">kg</span>
                         </div>
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            <input  type="submit" value="<spring:message code="CreateRequest"/>" class="btn btn-color mt-3 formButton" />
+            <input  type="submit" value="<spring:message code="CreatePublication"/>" class="btn btn-color mt-3 formButton" />
         </div>
     </div>
 </form:form>

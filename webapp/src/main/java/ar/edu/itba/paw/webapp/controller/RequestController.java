@@ -60,10 +60,11 @@ public class RequestController {
                                     @RequestParam(required = false) Integer maxPrice,
                                     @RequestParam(required = false) String sortOrder,
                                     @RequestParam(required = false) String departureDate,
-                                    @RequestParam(required = false) String arrivalDate)
+                                    @RequestParam(required = false) String arrivalDate,
+                                    @RequestParam(required = false) String type)
     {
         LOGGER.info("Accessing browse requests page");
-        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
+        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
         Integer currPage = Integer.parseInt(page);
         if(currPage < 1 || currPage > maxPages ){
             page = "1";
@@ -85,7 +86,7 @@ public class RequestController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page));
 
         LOGGER.debug("ACTIVE REQUESTS SIZE: {}  ",trips.size());
         view.addObject("offers", trips);
@@ -94,9 +95,21 @@ public class RequestController {
 
 
     @RequestMapping("/requests/create")
-    public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form) {
+    public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form,
+                                      @RequestParam(required = false) String origin,
+                                      @RequestParam(required = false) String destination,
+                                      @RequestParam(required = false) Integer minAvailableVolume,
+                                      @RequestParam(required = false) Integer minAvailableWeight,
+                                      @RequestParam(required = false) String departureDate,
+                                      @RequestParam(required = false) String arrivalDate) {
         LOGGER.info("Accessing create requests page");
         final ModelAndView view = new ModelAndView("requests/create");
+        view.addObject("origin",origin);
+        view.addObject("destination",destination);
+        view.addObject("minAvailableVolume",minAvailableVolume);
+        view.addObject("minAvailableWeight",minAvailableWeight);
+        view.addObject("departureDate",departureDate);
+        view.addObject("arrivalDate", arrivalDate);
         return view;
     }
 
@@ -110,7 +123,7 @@ public class RequestController {
     public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             LOGGER.info("Error in create request form");
-            return createRequest(form);
+            return createRequest(form, form.getOrigin(), form.getDestination(), Integer.parseInt(form.getRequestedVolume()), Integer.parseInt(form.getRequestedWeight()), form.getMinDepartureDate(), form.getMaxArrivalDate());
         }
 
         LocalDateTime departure = LocalDateTime.parse(form.getMinDepartureDate());
@@ -194,7 +207,7 @@ public class RequestController {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
-        ts.createProposal(id, user.getUserId(), form.getDescription());
+        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice());
         LOGGER.info("Proposal created successfully");
         ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 

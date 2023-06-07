@@ -35,7 +35,7 @@ public class NavigationController {
             return new ModelAndView("forward:/requests/browse");
         } else if(role.equals("PROVIDER")){
             LOGGER.info("Redirecting to /trips/browse");
-            return new ModelAndView("forward:/trips/browse");
+            return new ModelAndView("forward:/trips/search");
         }
         return new ModelAndView("redirect:/");
     }

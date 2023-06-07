@@ -1,79 +1,79 @@
 package ar.edu.itba.paw.services;
-
-import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
-import ar.edu.itba.paw.interfacesPersistence.UserDao;
-import ar.edu.itba.paw.interfacesServices.MailService;
-import ar.edu.itba.paw.interfacesServices.TripServiceV2;
-import ar.edu.itba.paw.models.Proposal;
-import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
-import net.bytebuddy.asm.Advice;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
-public class TripServiceV2ImplTest {
-
-    private static final int TRIPID_NOT_EXISTENT = 1;
-    private static final int TRUCKERID_NOT_EXISTENT = 1;
-
-    private static final String TRUCKERNAME_NOT_EXISTENT = "Julian Marenco";
-
-    private static final int PROVIDERID_NOT_EXISTENT = 2;
-
-    private static final String LICENSEPLATE_NOT_EXISTENT = "AHU123";
-    private static final int WEIGHT_NOT_EXISTENT = 100;
-
-    private static final int VOLUME_NOT_EXISTENT = 100;
-    private static final LocalDateTime DEPARTUREDATE_NOT_EXISTENT = LocalDateTime.now();
-    private static final LocalDateTime ARRIVALDATE_NOT_EXISTENT = LocalDateTime.of(2024, 12, 12, 12, 12);
-
-    private static final String ORIGIN_NOT_EXISTENT = "Buenos Aires";
-
-    private static final String DESTINATION_NOT_EXISTENT = "Chivilcoy";
-
-    private static final String TYPE_NOT_EXISTENT = "REFRIGERATED";
-
-    private static final int PRICE_NOT_EXISTENT = 100;
-
-    private static final int PROPOSALID_NOT_EXISTENT = 1;
-    private static final String PROPOSAL_DESCRIPTION = "Proposal description.";
-
-    private static final String EMAIL = "testing@gmail.com";
-    private static final String NAME = "Testing Testington";
-    private static final String ROLE_PROVIDER = "PROVIDER";
-
-    private static final String ROLE_TRUCKER="TRUCKER";
-    private static final String PASSWORD = "password";
-    private static final String CUIT = "20-12345678-9";
-    private static final int USERID = 1;
-
-
-
-    @Mock
-    private TripDaoV2 tripDao;
-    @InjectMocks
-    private TripServiceV2Impl tripService;
-
-    @Mock
-    private MailServiceImpl ms;
-
-    @Mock
-    private UserDao userDao;
-
+//
+//import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
+//import ar.edu.itba.paw.interfacesPersistence.UserDao;
+//import ar.edu.itba.paw.interfacesServices.MailService;
+//import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+//import ar.edu.itba.paw.models.Proposal;
+//import ar.edu.itba.paw.models.Trip;
+//import ar.edu.itba.paw.models.User;
+//import net.bytebuddy.asm.Advice;
+//import org.junit.Assert;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.Spy;
+//import org.mockito.junit.MockitoJUnitRunner;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+//import org.springframework.security.crypto.password.PasswordEncoder;
+//
+//import java.time.LocalDateTime;
+//import java.util.Optional;
+//
+//import static org.mockito.ArgumentMatchers.*;
+//import static org.mockito.Mockito.when;
+//
+//@RunWith(MockitoJUnitRunner.class)
+//public class TripServiceV2ImplTest {
+//
+//    private static final int TRIPID_NOT_EXISTENT = 1;
+//    private static final int TRUCKERID_NOT_EXISTENT = 1;
+//
+//    private static final String TRUCKERNAME_NOT_EXISTENT = "Julian Marenco";
+//
+//    private static final int PROVIDERID_NOT_EXISTENT = 2;
+//
+//    private static final String LICENSEPLATE_NOT_EXISTENT = "AHU123";
+//    private static final int WEIGHT_NOT_EXISTENT = 100;
+//
+//    private static final int VOLUME_NOT_EXISTENT = 100;
+//    private static final LocalDateTime DEPARTUREDATE_NOT_EXISTENT = LocalDateTime.now();
+//    private static final LocalDateTime ARRIVALDATE_NOT_EXISTENT = LocalDateTime.of(2024, 12, 12, 12, 12);
+//
+//    private static final String ORIGIN_NOT_EXISTENT = "Buenos Aires";
+//
+//    private static final String DESTINATION_NOT_EXISTENT = "Chivilcoy";
+//
+//    private static final String TYPE_NOT_EXISTENT = "REFRIGERATED";
+//
+//    private static final int PRICE_NOT_EXISTENT = 100;
+//
+//    private static final int PROPOSALID_NOT_EXISTENT = 1;
+//    private static final String PROPOSAL_DESCRIPTION = "Proposal description.";
+//
+//    private static final String EMAIL = "testing@gmail.com";
+//    private static final String NAME = "Testing Testington";
+//    private static final String ROLE_PROVIDER = "PROVIDER";
+//
+//    private static final String ROLE_TRUCKER="TRUCKER";
+//    private static final String PASSWORD = "password";
+//    private static final String CUIT = "20-12345678-9";
+//    private static final int USERID = 1;
+//
+//
+//
+//    @Mock
+//    private TripDaoV2 tripDao;
+//    @InjectMocks
+//    private TripServiceV2Impl tripService;
+//
+//    @Mock
+//    private MailServiceImpl ms;
+//
+//    @Mock
+//    private UserDao userDao;
+//
 
 //    @Test
 //    public void testCreateTrip() {
@@ -152,4 +152,4 @@ public class TripServiceV2ImplTest {
 //        Assert.assertEquals(TRUCKERNAME_NOT_EXISTENT, proposal.getUserName());
 //    }
 
-}
+//}
