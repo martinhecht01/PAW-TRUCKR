@@ -43,7 +43,7 @@
                                 <b><spring:message code="CargoType"/></b>
                             </td>
                             <td>
-                                <a class="text-decoration-none text-dark" href="<c:out value="/explore?type=${request.type}"/>">
+                                <a class="text-decoration-none text-dark" href="<c:url value="/explore?type=${request.type}"/>">
                                     <spring:message code="${request.type}" htmlEscape="true" />
                                 </a>
                             </td>
@@ -52,11 +52,11 @@
                     <tr>
                         <td><b><spring:message code="Origin"/> - <spring:message code="Destination"/></b></td>
                         <td>
-                            <a class="text-decoration-none text-dark" href=" <c:out value="/explore?origin=${request.origin}"/> ">
+                            <a class="text-decoration-none text-dark" href=" <c:url value="/explore?origin=${request.origin}"/> ">
                                 <c:out value="${request.origin}"/>
                             </a>
                             -
-                            <a class="text-decoration-none text-dark" href=" <c:out value="/explore?destination=${request.destination}"/> ">
+                            <a class="text-decoration-none text-dark" href=" <c:url value="/explore?destination=${request.destination}"/> ">
                                 <c:out value="${request.destination}"/>
                             </a>
                         </td>
