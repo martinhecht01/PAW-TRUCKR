@@ -94,6 +94,9 @@
       <input type="submit" value="Search Trips" class="btn btn-color mt-3 formButton"/>
     </div>
   </div>
+  <div class="w-75 d-flex justify-content-end formCard">
+    <a class="text-dark text-decoration-underline" href="<c:url value="/trips/browse"/>"><spring:message code="SearchAllTrips"/></a>
+  </div>
 </form:form>
 <script>
   function previewImage() {

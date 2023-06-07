@@ -60,10 +60,11 @@ public class RequestController {
                                     @RequestParam(required = false) Integer maxPrice,
                                     @RequestParam(required = false) String sortOrder,
                                     @RequestParam(required = false) String departureDate,
-                                    @RequestParam(required = false) String arrivalDate)
+                                    @RequestParam(required = false) String arrivalDate,
+                                    @RequestParam(required = false) String type)
     {
         LOGGER.info("Accessing browse requests page");
-        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate);
+        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
         Integer currPage = Integer.parseInt(page);
         if(currPage < 1 || currPage > maxPages ){
             page = "1";
@@ -85,7 +86,7 @@ public class RequestController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
-        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, Integer.parseInt(page));
+        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page));
 
         LOGGER.debug("ACTIVE REQUESTS SIZE: {}  ",trips.size());
         view.addObject("offers", trips);
@@ -95,12 +96,12 @@ public class RequestController {
 
     @RequestMapping("/requests/create")
     public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form,
-                                      @RequestParam String origin,
-                                      @RequestParam String destination,
-                                      @RequestParam Integer minAvailableVolume,
-                                      @RequestParam Integer minAvailableWeight,
-                                      @RequestParam String departureDate,
-                                      @RequestParam String arrivalDate) {
+                                      @RequestParam(required = false) String origin,
+                                      @RequestParam(required = false) String destination,
+                                      @RequestParam(required = false) Integer minAvailableVolume,
+                                      @RequestParam(required = false) Integer minAvailableWeight,
+                                      @RequestParam(required = false) String departureDate,
+                                      @RequestParam(required = false) String arrivalDate) {
         LOGGER.info("Accessing create requests page");
         final ModelAndView view = new ModelAndView("requests/create");
         view.addObject("origin",origin);

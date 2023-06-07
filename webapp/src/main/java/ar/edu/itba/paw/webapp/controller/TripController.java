@@ -89,9 +89,10 @@ public class TripController {
                                       @RequestParam(required = false) Integer maxPrice,
                                       @RequestParam(required = false) String sortOrder,
                                       @RequestParam(required = false) String departureDate,
-                                      @RequestParam(required = false) String arrivalDate){
+                                      @RequestParam(required = false) String arrivalDate,
+                                      @RequestParam(required = false) String type){
         LOGGER.info("Accessing search results trips page");
-        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, null);
+        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, null, type);
         Integer currPage = Integer.parseInt(page);
 
         if(currPage < 1 || currPage > maxPages ){
@@ -112,7 +113,7 @@ public class TripController {
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate", arrivalDate);
 
-        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, null, null, Integer.parseInt(page));
+        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, null, null, type, Integer.parseInt(page));
         LOGGER.debug("TRIPS SIZE = {}",trips.size());
         view.addObject("offers", trips);
         return view;
@@ -152,6 +153,42 @@ public class TripController {
         ts.updateTripPicture(trip.getTripId(),imageid);
         LOGGER.info("Trip created successfully");
         return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
+    }
+
+    @RequestMapping("/trips/browse")
+    public ModelAndView browse(@RequestParam(defaultValue = "1") String page,
+                               @RequestParam(required = false) String origin,
+                               @RequestParam(required = false) String destination,
+                               @RequestParam(required = false) Integer minAvailableVolume,
+                               @RequestParam(required = false) Integer minAvailableWeight,
+                               @RequestParam(required = false) Integer minPrice,
+                               @RequestParam(required = false) Integer maxPrice,
+                               @RequestParam(required = false) String sortOrder,
+                               @RequestParam(required = false) String departureDate,
+                               @RequestParam(required = false) String arrivalDate,
+                               @RequestParam(required = false) String type) {
+        LOGGER.info("Accessing browse trips page");
+        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+        Integer currPage = Integer.parseInt(page);
+        if (currPage < 1 || currPage > maxPages) {
+            page = "1";
+        }
+
+        final ModelAndView view = new ModelAndView("trips/browse");
+
+        view.addObject("maxPage", maxPages);
+        view.addObject("currentPage", currPage);
+        view.addObject("origin",origin);
+        view.addObject("destination",destination);
+        view.addObject("minAvailableVolume",minAvailableVolume);
+        view.addObject("minAvailableWeight",minAvailableWeight);
+        view.addObject("minPrice",minPrice);
+        view.addObject("maxPrice",maxPrice);
+        view.addObject("sortOrder",sortOrder);
+        view.addObject("departureDate",departureDate);
+        view.addObject("arrivalDate", arrivalDate);
+        view.addObject("offers", ts.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page)));
+        return view;
     }
 
 

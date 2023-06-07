@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -135,9 +137,9 @@ public class TripDaoJPA implements TripDaoV2 {
 
     //PAGINACION
     @Override
-    public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate) {
+    public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type) {
         String query= "SELECT COUNT(trip_id) FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
-        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, departureDate, arrivalDate);
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, departureDate, arrivalDate, type);
 
         final int totalItems = ((Number) nativeQuery.getSingleResult()).intValue();
         return (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
@@ -145,9 +147,9 @@ public class TripDaoJPA implements TripDaoV2 {
 
     //PAGINACION
     @Override
-    public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate) {
+    public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type) {
         String query= "SELECT COUNT(trip_id) FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
-        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, departureDate, arrivalDate);
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, departureDate, arrivalDate, type);
 
         final int totalItems = ((Number) nativeQuery.getSingleResult()).intValue();
         return (int) Math.ceil((double) totalItems / ITEMS_PER_PAGE);
@@ -179,7 +181,7 @@ public class TripDaoJPA implements TripDaoV2 {
         return Optional.of(trip);
     }
 
-    private Query buildQuery(String baseQuery, String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate){
+    private Query buildQuery(String baseQuery, String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type){
 
         LOGGER.debug("Building query for trips");
         StringBuilder query = new StringBuilder();
@@ -227,14 +229,20 @@ public class TripDaoJPA implements TripDaoV2 {
         if (departureDate != null && !departureDate.equals("")){
             LOGGER.debug("Adding departureDate: {} to query", departureDate);
             query.append(" AND DATE(departure_date) >= CAST( :departureDate AS DATE)");
-            params.put("departureDate", "'" + departureDate + "'");
+            params.put("departureDate", Timestamp.valueOf(LocalDateTime.parse(departureDate)));
 
         }
 
         if (arrivalDate != null && !arrivalDate.equals("")){
             LOGGER.debug("Adding arrivalDate: {} to query", arrivalDate);
             query.append(" AND DATE(arrival_date) <= CAST( :arrivalDate AS DATE)");
-            params.put(arrivalDate, "'" + arrivalDate + "'");
+            params.put("arrivalDate", Timestamp.valueOf(LocalDateTime.parse(arrivalDate)));
+        }
+
+        if (type != null && !type.equals("")){
+            LOGGER.debug("Adding type: {} to query", type);
+            query.append(" AND type = :type");
+            params.put("type", type);
         }
 
         if(sortOrder != null && !sortOrder.isEmpty()) {
@@ -262,10 +270,10 @@ public class TripDaoJPA implements TripDaoV2 {
     }
 
     @Override
-    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag) {
 
         String query= "SELECT trip_id FROM trips WHERE provider_id IS NULL AND departure_date >= now()";
-        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
         nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
@@ -286,9 +294,9 @@ public class TripDaoJPA implements TripDaoV2 {
     }
 
     @Override
-    public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, Integer pag) {
+    public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag) {
         String query = "SELECT trip_id FROM trips WHERE trucker_id IS NULL AND departure_date >= now()";
-        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate);
+        Query nativeQuery = buildQuery(query, origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type);
 
         nativeQuery.setMaxResults(ITEMS_PER_PAGE);
         nativeQuery.setFirstResult((pag - 1) * ITEMS_PER_PAGE);
