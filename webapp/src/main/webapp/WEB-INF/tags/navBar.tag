@@ -21,7 +21,7 @@
             </a>
         </c:if>
         <c:if test="${currentUser != null}">
-            <a href="<c:url value="/myItinerary"/>">
+            <a href="<c:url value="/explore"/>">
                 <img src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" alt="logo" height="40px" style="margin-right: 40px; margin-left: 20px">
             </a>
         </c:if>
