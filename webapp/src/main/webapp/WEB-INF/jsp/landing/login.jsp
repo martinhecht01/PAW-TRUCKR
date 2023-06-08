@@ -18,8 +18,8 @@
 <body class="bodyContent">
 <c:url var="loginUrl" value="/login"/>
 <components:navBar/>
-<div class="w-75 m-auto">
-    <main class="form-signin m-auto">
+<div class="w-100 h-50 d-flex justify-content-center align-items-center m-auto pt-2">
+    <main class="w-25 mt-5 m-auto">
         <div class="card py-2">
             <div class="card-body">
                 <form:form action="${loginUrl}" method="post">
@@ -54,8 +54,10 @@
     </main>
 </div>
 </body>
-<components:waveDivider/>
-<components:footer/>
+<div class="mt-auto">
+    <components:waveDivider/>
+    <components:footer/>
+</div>
 </html>
 
 <script>

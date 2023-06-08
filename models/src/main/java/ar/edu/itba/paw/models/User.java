@@ -44,7 +44,8 @@ public class User {
     @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
     private List<Trip> providerTrips;
 
-
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<Review> reviews;
 
     // Constructors, getters, and setters
 
@@ -188,5 +189,20 @@ public class User {
 
     public void setProviderTrips(List<Trip> providerTrips) {
         this.providerTrips = providerTrips;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Double getRating(){
+        if (reviews == null || reviews.isEmpty()) {
+            return 0.0;
+        }
+        return reviews.stream().mapToDouble(Review::getRating).sum() / reviews.size();
     }
 }

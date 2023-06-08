@@ -104,11 +104,11 @@
           <div class="form-group row mb-3">
             <div class="col-md-6">
               <label for="departureDate"><spring:message code="FiltersDeparture"/>:</label>
-              <input type="date" class="form-control" id="departureDate" name="departureDate" <c:if test="${departureDate != null || departureDate != ''}">value="${departureDate}"</c:if>/>
+              <input type="datetime-local" class="form-control" id="departureDate" name="departureDate" <c:if test="${departureDate != null || departureDate != ''}">value="${departureDate}"</c:if>/>
             </div>
             <div class="col-md-6">
               <label for="arrivalDate"><spring:message code="FiltersArrival"/>:</label>
-              <input type="date" class="form-control" id="arrivalDate" name="arrivalDate" <c:if test="${arrivalDate != null || arrivalDate != ''}">value="${arrivalDate}"</c:if> />
+              <input type="datetime-local" class="form-control" id="arrivalDate" name="arrivalDate" <c:if test="${arrivalDate != null || arrivalDate != ''}">value="${arrivalDate}"</c:if> />
             </div>
           </div>
           <div class="form-group mb-3">

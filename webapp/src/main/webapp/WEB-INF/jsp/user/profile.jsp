@@ -71,14 +71,14 @@
     </div>
     <div class="card mt-5">
         <div class="card-header" style="display: inline-flex">
-            <h4><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:out value="${userRating}"/> (${userReviews.size()})</h4>
+            <h4><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg><c:if test="${userReviews.size() != 0}"><c:out value="${currUser.rating}"/></c:if> - (${currUser.reviews.size()} <spring:message code="Reviews"/>)</h4>
         </div>
         <div class="card-body">
-            <c:if test="${userReviews.size() == 0}">
+            <c:if test="${currUser.reviews.size() == 0}">
                 <p><b><spring:message code="NoReviewsYet"/></b></p>
             </c:if>
             <ul class="list-group list-group-flush">
-            <c:forEach items="${userReviews}" var="review">
+            <c:forEach items="${currUser.reviews}" var="review">
                 <li class="list-group-item">
                     <h5><b><c:out value="${review.rating}"/> <svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
                     </b></h5>

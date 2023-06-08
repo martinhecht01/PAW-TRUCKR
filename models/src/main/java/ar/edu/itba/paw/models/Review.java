@@ -7,12 +7,12 @@ import javax.persistence.*;
 @IdClass(ReviewId.class)
 public class Review {
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userid", nullable = false)
     private User user;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tripid", nullable = false)
     private Trip trip;
 
