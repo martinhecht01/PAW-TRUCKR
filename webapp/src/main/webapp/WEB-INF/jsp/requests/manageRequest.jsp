@@ -143,15 +143,21 @@
                     <label for="star1" title="1 star"></label>
                   </div>
 
-                  <div class="mt-2">
+                  <div class="mt-2 mb-2">
                     <spring:message var="writeReview" code="WriteReview"/>
                     <form:textarea type="text" class="form-control" path="description" placeholder="${writeReview}"/>
                   </div>
+
+                  <spring:message var="sendReview" code="SendReview"/>
+                  <input type="submit" class="btn btn-color mt-3 w-25" value="${sendReview}"/>
                 </div>
               </div>
-              <spring:message var="sendReview" code="SendReview"/>
-              <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
             </form:form>
+            <div class="mt-3 text-right">
+              <a class="btn btn-outline-secondary mx-3 mb-2" href="<c:url value="/trips/search/results?origin=${request.origin}&destination=${request.destination}&minAvailableVolume=${request.volume}&minAvailableWeight=${request.weight}&departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}&type=${request.type}"/>">
+                <spring:message code="SearchSimilar"/>
+              </a>
+            </div>
           </c:if>
           <c:if test="${request.review != null}">
             <div class="card mt-4" style="width: 18rem;">

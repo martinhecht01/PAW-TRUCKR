@@ -76,6 +76,7 @@ public class TripController {
                 +"&minAvailableWeight=" + form.getAvailableWeight()
                 +"&departureDate=" + departure
                 +"&arrivalDate=" + arrival
+                +"&type=" + form.getCargoType()
         );
     }
 
@@ -103,16 +104,8 @@ public class TripController {
 
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", currPage);
-        view.addObject("origin",origin);
-        view.addObject("destination",destination);
-        view.addObject("minAvailableVolume",minAvailableVolume);
-        view.addObject("minAvailableWeight",minAvailableWeight);
-        view.addObject("minPrice",minPrice);
-        view.addObject("maxPrice",maxPrice);
-        view.addObject("sortOrder",sortOrder);
-        view.addObject("departureDate",departureDate);
-        view.addObject("arrivalDate", arrivalDate);
 
+        //TODO: Agregar las fechas aca
         List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, null, null, type, Integer.parseInt(page));
         LOGGER.debug("TRIPS SIZE = {}",trips.size());
         view.addObject("offers", trips);
@@ -127,7 +120,7 @@ public class TripController {
 
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
-        if (errors.hasErrors()) {
+        if (errors.hasErrors() || Objects.requireNonNull(getUser()).getUserId() == null) {
             LOGGER.info("Error creating trip");
             return createTrip(form);
         }
