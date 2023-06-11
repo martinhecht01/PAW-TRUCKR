@@ -113,35 +113,63 @@
                         </a>
                     </div>
                 </div>
-                <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
+                <c:if test="${request.offer == null}">
+                    <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
+                        <div class="card mx-4 mt-4" style="width: 20rem;">
+                            <div class="card-header">
+                                <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveRequest"/></b></h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
+                                    <spring:message var="writeDescription" code="WriteDescription"/>
+                                    <form:textarea type="text" id="description" class="form-control" path="description" placeholder="${writeDescription}"/>
+                                </div>
+                                <div class="mb-3 flex-column">
+                                    <form:label for="description" class="form-label" path="price"><spring:message code="OfferedPrice"/></form:label>
+                                    <form:errors cssClass="formError" path="price"/>
+                                    <form:input type="number" id="description" class="form-control" path="price"  placeholder="0"/>
+                                </div>
+                                <div>
+                                    <spring:message code="Reserve" var="reserve"/>
+
+                                    <c:if test="${currentRole == ''}">
+                                        <a href=" <c:url value="/login" />" class="btn btn-color">${reserve}</a>
+                                    </c:if>
+                                    <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
+                                        <input type="submit" class="btn btn-color" value="${reserve}"/>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </form:form>
+                </c:if>
+                <c:if test="${request.offer != null}">
                     <div class="card mx-4 mt-4" style="width: 20rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveRequest"/></b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="OfferYouSent"/>:</b></h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                                <spring:message var="writeDescription" code="WriteDescription"/>
-                                <form:textarea type="text" id="description" class="form-control" path="description" placeholder="${writeDescription}"/>
+                                <label for="description" class="form-label"><spring:message code="Description"/></label>
+                                <textarea id="description" disabled class="form-control bg-light" placeholder="${writeDescription}">${request.offer.description}</textarea>
                             </div>
                             <div class="mb-3 flex-column">
-                                <form:label for="description" class="form-label" path="price"><spring:message code="OfferedPrice"/></form:label>
-                                <form:errors cssClass="formError" path="price"/>
-                                <form:input type="number" id="description" class="form-control" path="price"  placeholder="0"/>
+                                <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
+                                <h4>$${request.offer.price}</h4>
                             </div>
-                            <div>
-                                <spring:message code="Reserve" var="reserve"/>
-
-                                <c:if test="${currentRole == ''}">
-                                    <a href=" <c:url value="/login" />" class="btn btn-color">${reserve}</a>
-                                </c:if>
-                                <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
-                                    <input type="submit" class="btn btn-color" value="${reserve}"/>
-                                </c:if>
+                            <div class="w-25 pt-1">
+                                <div class="text-center align-items-center">
+                                    <c:url value="/user/cancelOffer" var="postPath"/>
+                                    <form:form method="post" action="${postPath}?offerId=${request.offer.proposalId}">
+                                        <spring:message code="Cancel" var="Cancel"/>
+                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                    </form:form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </form:form>
+                </c:if>
             </div>
         </c:if>
     </div>

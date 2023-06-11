@@ -203,9 +203,8 @@ public class TripController {
     public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
         LOGGER.info("Accessing trip details page with trip Id: {}", id);
         final ModelAndView mav = new ModelAndView("trips/details");
-        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
-        mav.addObject("userRating", revs.getUserRating(trip.getTrucker().getUserId()));
         return mav;
     }
 
@@ -218,6 +217,10 @@ public class TripController {
         }
 
         User user = getUser();
+
+        if(user == null)
+            throw new UserNotFoundException();
+
         ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice());
         LOGGER.info("Proposal with Id: {} sent successfully", id);
         ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
@@ -243,9 +246,11 @@ public class TripController {
     @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
     public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalid, @RequestParam("tripid") int tripid) {
         ts.acceptProposal(proposalid);
+
+        //TODO: Capaz hacer esto una funcion y hacer redirect.
         ModelAndView mav = new ModelAndView("trips/acceptSuccess");
 
-        Trip trip = ts.getTripOrRequestById(tripid).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(tripid, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         LOGGER.info("Proposal with Id: {} accepted successfully", proposalid);
         mav.addObject("trip", trip);
         return mav;
@@ -254,7 +259,7 @@ public class TripController {
     public ModelAndView tripDetail(@RequestParam("id") int id) {
         LOGGER.info("Accessing trip success page with trip Id: {}", id);
         final ModelAndView mav = new ModelAndView("trips/success");
-        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -263,7 +268,7 @@ public class TripController {
     public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
         LOGGER.info("Accessing trip reserve success page with trip Id: {}", id);
         final ModelAndView mav = new ModelAndView("trips/reserveSuccess");
-        Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
@@ -299,16 +304,13 @@ public class TripController {
     public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {
         LOGGER.info("Accessing manage trip page with trip Id: {}", tripId);
         final ModelAndView mav = new ModelAndView("trips/manageTrip");
+        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+
         int userId = Objects.requireNonNull(getUser()).getUserId();
-        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, userId).orElseThrow(TripOrRequestNotFoundException::new);
-        if(trip.getProvider() != null){
-            mav.addObject("acceptUser", us.getUserById(trip.getProvider().getUserId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByTripAndUserId(tripId, trip.getProvider().getUserId()).orElse(null)); //TODO: fijarse si existe una review para este trip de este usuario
-            mav.addObject("userRating", revs.getUserRating(trip.getProvider().getUserId()));
-            mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
-        }
         mav.addObject("trip", trip);
         mav.addObject("userId", userId);
+        mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
+
         return mav;
     }
 

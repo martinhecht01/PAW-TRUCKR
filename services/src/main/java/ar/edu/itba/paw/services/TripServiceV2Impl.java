@@ -214,9 +214,10 @@ public class TripServiceV2Impl implements TripServiceV2 {
         if(!optionalTrip.isPresent())
             return Optional.empty();
 
-        //OJO AL PIOJO CON ESTO
-        //QUE PASA SI USER ES NULL???
-        //PARA MI FUNCIONA IGUAL PERO WARNING!!!
+        //TODO: Check si es necesario esto
+        if(user == null)
+            return optionalTrip;
+
         optionalTrip.get().setReview(reviewDao.getReviewByTripAndUserId(trip, user).orElse(null));
         optionalTrip.get().setOffer(tripDaoV2.getOffer(user, trip).orElse(null));
         return optionalTrip;

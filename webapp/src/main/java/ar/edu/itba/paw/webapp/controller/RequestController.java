@@ -157,8 +157,7 @@ public class RequestController {
         LOGGER.info("Accessing request details page");
         final ModelAndView mav = new ModelAndView("requests/details");
         LOGGER.info("Accessing request details page with id: {} ", id);
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
-        mav.addObject("userRating", revs.getUserRating(request.getProvider().getUserId()));
+        Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -219,7 +218,8 @@ public class RequestController {
         ts.acceptProposal(proposalId);
         ModelAndView mav = new ModelAndView("requests/acceptSuccess");
 
-        Trip request = ts.getTripOrRequestById(requestId).orElseThrow(TripOrRequestNotFoundException::new);
+        //TODO: HACER UNA VIEW CON ESTO + redirect
+        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         LOGGER.info("Proposal with Id: {} accepted successfully", proposalId);
         mav.addObject("request", request);
         return mav;
@@ -228,7 +228,7 @@ public class RequestController {
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         LOGGER.info("Accessing request success page");
         final ModelAndView mav = new ModelAndView("requests/success");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -238,7 +238,7 @@ public class RequestController {
     public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
         LOGGER.info("Accessing request reserve success page");
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
-        Trip request = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
     }
@@ -276,15 +276,9 @@ public class RequestController {
         LOGGER.info("Accessing manage request page with request Id: {} ", requestId);
         final ModelAndView mav = new ModelAndView("requests/manageRequest");
         int userId = Objects.requireNonNull(getUser()).getUserId();
-        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, userId).orElseThrow(TripOrRequestNotFoundException::new);
+        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
 
-        if(request.getTrucker() != null){
-            mav.addObject("acceptUser", us.getUserById(request.getTrucker().getUserId()).orElseThrow(UserNotFoundException::new));
-            mav.addObject("reviewed", revs.getReviewByTripAndUserId(requestId, request.getTrucker().getUserId()).orElse(null)); //TODO: fijarse si existe una review para este request de este usuario
-            mav.addObject("userRating", revs.getUserRating(request.getTrucker().getUserId()));//TODO: se puede mejorar, ahora en requests ya tenemos el usuario
-            mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
-        }
-
+        mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
         mav.addObject("request", request);
         mav.addObject("userId", userId);
         return mav;

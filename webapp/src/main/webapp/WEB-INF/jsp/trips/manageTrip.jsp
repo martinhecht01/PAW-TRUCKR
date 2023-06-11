@@ -124,7 +124,7 @@
                     </c:if>
                 </c:if>
                 <c:if test="${trip.truckerConfirmation && trip.providerConfirmation }">
-                    <c:if test="${reviewed == null}">
+                    <c:if test="${trip.review == null}">
                         <c:url value="/trips/sendReview" var="reviewPath"/>
                         <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${trip.provider.userId}">
                         <div class="card mt-4" style="width: 18rem;">
@@ -157,7 +157,7 @@
                             <input type="submit" class="btn btn-color mt-3 w-100" value="${sendReview}"/>
                         </form:form>
                     </c:if>
-                    <c:if test="${reviewed != null}">
+                    <c:if test="${trip.review != null}">
                         <div class="card mt-4" style="width: 18rem;">
                             <div class="card-body p-3">
                                 <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>

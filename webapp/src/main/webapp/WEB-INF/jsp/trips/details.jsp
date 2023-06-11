@@ -111,35 +111,63 @@
                         </a>
                     </div>
                 </div>
-                <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
+                <c:if test="${trip.offer == null}">
+                    <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
+                        <div class="card mx-4 mt-4" style="width: 20rem;">
+                            <div class="card-header">
+                                <h4 class="card-title" style="color: #142D4C"><b><spring:message code="SendOffer"/></b></h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="mb-3">
+                                    <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
+                                    <spring:message var="writeDescription" code="WriteDescription"/>
+                                    <form:textarea type="text" class="form-control" id="description" path="description" placeholder="${writeDesctiption}"/>
+                                </div>
+                                <div class="mb-3 flex-column">
+                                    <form:label for="price" class="form-label" path="price"><spring:message code="OfferedPrice"/></form:label>
+                                    <form:errors cssClass="formError" path="price"/>
+                                    <form:input type="number" id="price" class="form-control" path="price"  placeholder="0"/>
+                                </div>
+                                <div>
+                                    <spring:message code="SendOffer" var="sendOffer"/>
+
+                                    <c:if test="${currentRole == ''}">
+                                        <a href="<c:url value ="/login" />" class="btn btn-color">${sendOffer}</a>
+                                    </c:if>
+                                    <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
+                                        <input type="submit" class="btn btn-color" value="${sendOffer}"/>
+                                    </c:if>
+                                </div>
+                            </div>
+                        </div>
+                    </form:form>
+                </c:if>
+                <c:if test="${trip.offer != null}">
                     <div class="card mx-4 mt-4" style="width: 20rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="SendOffer"/></b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="OfferYouSent"/>:</b></h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
-                                <form:label for="description" class="form-label" path="description"><spring:message code="Description"/></form:label>
-                                <spring:message var="writeDescription" code="WriteDescription"/>
-                                <form:textarea type="text" class="form-control" id="description" path="description" placeholder="${writeDesctiption}"/>
+                                <label for="description" class="form-label"><spring:message code="Description"/></label>
+                                <textarea id="description" disabled class="form-control bg-light" placeholder="${writeDescription}">${trip.offer.description}</textarea>
                             </div>
                             <div class="mb-3 flex-column">
-                                <form:label for="price" class="form-label" path="price"><spring:message code="OfferedPrice"/></form:label>
-                                <form:errors cssClass="formError" path="price"/>
-                                <form:input type="number" id="price" class="form-control" path="price"  placeholder="0"/>
+                                <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
+                                <h4>$${trip.offer.price}</h4>
                             </div>
-                            <div>
-                                <spring:message code="SendOffer" var="sendOffer"/>
-
-                                <c:if test="${currentRole == ''}">
-                                    <a href="<c:url value ="/login" />" class="btn btn-color">${sendOffer}</a>
-                                </c:if>
-                                <c:if test="${currentRole == 'TRUCKER' || currentRole == 'PROVIDER'}">
-                                    <input type="submit" class="btn btn-color" value="${sendOffer}"/>
-                                </c:if>
+                            <div class="w-25 pt-1">
+                                <div class="text-center align-items-center">
+                                    <c:url value="/user/cancelOffer" var="postPath"/>
+                                    <form:form method="post" action="${postPath}?offerId=${trip.offer.proposalId}">
+                                        <spring:message code="Cancel" var="Cancel"/>
+                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                    </form:form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </form:form>
+                </c:if>
             </div>
         </c:if>
     </div>
