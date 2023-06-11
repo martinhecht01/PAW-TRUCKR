@@ -88,6 +88,13 @@
                                                     <p><spring:message code="${trip.provider.role}"/></p>
                                                 </div>
                                             </div>
+                                            <div class="col-md">
+                                                <div class="text-center align-items-center">
+                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                        <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if> -
+                                                    </h5>
+                                                </div>
+                                            </div>
                                         </c:if>
                                         <c:if test="${currentUser.role == 'PROVIDER'}">
                                             <div class="col-md">
@@ -101,13 +108,16 @@
                                                     <p><spring:message code="${trip.trucker.role}"/></p>
                                                 </div>
                                             </div>
+                                            <div class="col-md">
+                                                <div class="text-center align-items-center">
+                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                        <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if> -
+                                                    </h5>
+                                                </div>
+                                            </div>
                                         </c:if>
                                     </div>
                                 </div>
-<%--                                <div class="vr"></div>--%>
-<%--                                <div>--%>
-<%--                                    <h4 class="mx-3 my-3"><span class="badge rounded-pill bg-primary">in progress</span></h4>--%>
-<%--                                </div>--%>
                             </div>
                         </a>
                     </c:forEach>
@@ -129,13 +139,14 @@
                         <c:if test="${trip != futureTrips[0]}">
                             <hr class="py-2">
                         </c:if>
-                        <a <c:if test="${currentUser.role == 'TRUCKER'}">
-                                href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
-                        </c:if>
-                        <c:if test="${currentUser.role == 'PROVIDER'}">
-                                href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
-                        </c:if>
-                                class="text-decoration-none text-dark"
+                        <a
+                            <c:if test="${currentUser.role == 'TRUCKER'}">
+                                    href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
+                            </c:if>
+                            <c:if test="${currentUser.role == 'PROVIDER'}">
+                                    href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
+                            </c:if>
+                            class="text-decoration-none text-dark"
                         >
                             <div class="d-flex align-items-center justify-content-between">
                                 <div class="w-50 d-flex justify-content-center">
@@ -163,6 +174,11 @@
                                             <h5><c:out value="${trip.provider.name}"/></h5>
                                             <p><spring:message code="${trip.provider.role}"/></p>
                                         </div>
+                                        <div class="text-center align-items-center">
+                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if> -
+                                            </h5>
+                                        </div>
     <%--                                    <div class="mx-3 text-center align-items-center">--%>
     <%--                                        <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>--%>
     <%--                                    </div>--%>
@@ -174,6 +190,11 @@
                                         <div class="text-center align-items-center">
                                             <h5><c:out value="${trip.trucker.name}"/></h5>
                                             <p><spring:message code="${trip.trucker.role}"/></p>
+                                        </div>
+                                        <div class="text-center align-items-center">
+                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if> -
+                                            </h5>
                                         </div>
     <%--                                    <div class="mx-3 text-center align-items-center">--%>
     <%--                                        <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> 4.2</h5>--%>

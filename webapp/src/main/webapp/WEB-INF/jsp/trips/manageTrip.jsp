@@ -80,7 +80,7 @@
                             <div class="d-flex justify-content-evenly">
                                 <img class="profileImageNavbar" src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>"/>
                                 <div>
-                                    <h5 class="card-title"><c:out value="${trip.provider.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${trip.provider.rating}</h5>
+                                    <h5 class="card-title"><c:out value="${trip.provider.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg><c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if> - (${trip.provider.reviews.size()} <spring:message code="Reviews"/>)</h5>
                                     <p class="text-dark card-text"><c:out value="${trip.provider.email.toLowerCase()}"/></p>
                                 </div>
                             </div>

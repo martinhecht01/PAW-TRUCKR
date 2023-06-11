@@ -84,9 +84,12 @@
                                     <h5>${offer.trip.provider.name}</h5>
                                     <p>Provider</p>
                                 </div>
-                                    <%--                            <div class="text-center align-items-center">--%>
-                                    <%--                                <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>4 (ARREGLAR)</h5>--%>
-                                    <%--                            </div>--%>
+                                <div class="text-center align-items-center">
+                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                        <c:if test="${currentUser.role == 'TRUCKER'}"><c:if test="${offer.trip.provider.reviews.size() != 0}"><c:out value="${offer.trip.provider.rating}"/></c:if> - (${offer.trip.provider.reviews.size()} <spring:message code="Reviews"/>)</c:if>
+                                        <c:if test="${currentUser.role == 'PROVIDER'}"><c:if test="${offer.trip.trucker.reviews.size() != 0}"><c:out value="${offer.trip.trucker.rating}"/></c:if> - (${offer.trip.trucker.reviews.size()} <spring:message code="Reviews"/>)</c:if>
+                                    </h5>
+                                </div>
                             </div>
                             <div class="vr"></div>
                             <div class="w-25 d-flex align-items-center justify-content-evenly">
