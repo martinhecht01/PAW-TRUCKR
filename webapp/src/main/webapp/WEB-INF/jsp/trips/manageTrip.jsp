@@ -78,10 +78,10 @@
                     <div class="card-body p-3">
                         <a class="text-decoration-none" href="<c:url value="/profile?id=${trip.provider.userId}"/>">
                             <div class="d-flex justify-content-evenly">
-                                <img class="profileImageNavbar" src="<c:url value="/user/${acceptUser.userId}/profilePicture"/>"/>
+                                <img class="profileImageNavbar" src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>"/>
                                 <div>
-                                    <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating}</h5>
-                                    <p class="text-dark card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
+                                    <h5 class="card-title"><c:out value="${trip.provider.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${trip.provider.rating}</h5>
+                                    <p class="text-dark card-text"><c:out value="${trip.provider.email.toLowerCase()}"/></p>
                                 </div>
                             </div>
                         </a>
@@ -126,7 +126,7 @@
                 <c:if test="${trip.truckerConfirmation && trip.providerConfirmation }">
                     <c:if test="${reviewed == null}">
                         <c:url value="/trips/sendReview" var="reviewPath"/>
-                        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${acceptUser.userId}">
+                        <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${trip.tripId}&userid=${trip.provider.userId}">
                         <div class="card mt-4" style="width: 18rem;">
                             <div class="card-header">
                                 <h4>

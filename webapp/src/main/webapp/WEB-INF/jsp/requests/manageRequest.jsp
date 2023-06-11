@@ -69,15 +69,15 @@
       <div class="justify-content-top align-items-top px-5" >
         <div class="card" style="width: 18rem;">
           <div class="card-header">
-            <h4><spring:message code="AcceptedBy"/>: </h4>
+            <h4><spring:message code="Driver"/>: </h4>
           </div>
           <div class="card-body p-3">
             <a class="text-decoration-none" href="<c:url value="/profile?id=${request.trucker.userId}"/>">
               <div class="d-flex justify-content-evenly">
-                <img class="profileImageNavbar" src="<c:url value="/user/${acceptUser.userId}/profilePicture"/>"/>
+                <img class="profileImageNavbar" src="<c:url value="/user/${request.trucker.userId}/profilePicture"/>"/>
                 <div>
-                  <h5 class="card-title"><c:out value="${acceptUser.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${userRating}</h5>
-                  <p class="text-dark card-text"><c:out value="${acceptUser.email.toLowerCase()}"/></p>
+                  <h5 class="card-title"><c:out value="${request.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> ${request.trucker.rating}</h5>
+                  <p class="text-dark card-text"><c:out value="${request.trucker.email.toLowerCase()}"/></p>
                 </div>
               </div>
             </a>
@@ -89,17 +89,17 @@
               <h4><spring:message code="Status"/>:</h4>
             </div>
             <div class="card-body p-3">
-              <c:if test="${request.truckerConfirmation && !request.providerConfirmation}">
-                <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="FinishedTrip"/></p>
-              </c:if>
-              <c:if test="${!request.truckerConfirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntFinishTrip"/></p>
-              </c:if>
               <c:if test="${request.providerConfirmation && !request.truckerConfirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ProviderReceivedCargo"/></p>
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReceivedCargo"/></p>
               </c:if>
               <c:if test="${!request.providerConfirmation}">
-                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="ProviderDidntReceiveCargo"/></p>
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DidntReceiveCargo"/></p>
+              </c:if>
+              <c:if test="${request.truckerConfirmation && !request.providerConfirmation}">
+                <p class="card-text pb-1 pt-2"><svg width="1em" height="1em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="DriverCompletedTrip"/></p>
+              </c:if>
+              <c:if test="${!request.truckerConfirmation}">
+                <p class="card-text py-1"><svg width="1em" height="1em" fill="gray"><use xlink:href="#check"></use></svg> <spring:message code="DriverDidntCompleteTrip"/></p>
               </c:if>
               <c:if test="${request.providerConfirmation && request.truckerConfirmation}">
                 <h4 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="TripFinished"/></h4>
@@ -122,7 +122,7 @@
         <c:if test="${request.truckerConfirmation && request.providerConfirmation }">
           <c:if test="${reviewed == null}">
             <c:url value="/requests/sendReview" var="reviewPath"/>
-            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${acceptUser.userId}">
+            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${request.trucker.userId}">
               <div class="card mt-4" style="width: 18rem;">
                 <div class="card-header">
                   <h4>
