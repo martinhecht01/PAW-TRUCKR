@@ -69,6 +69,11 @@ public class Trip {
     @Transient
     private int proposalCount;
 
+    @Transient
+    private Proposal offer;
+
+    @Transient Review review;
+
     public void setTrucker(User trucker) {
         this.trucker = trucker;
     }
@@ -322,5 +327,21 @@ public class Trip {
 
     public void setProposalCount(int proposalCount) {
         this.proposalCount = proposalCount;
+    }
+
+    public Proposal getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Proposal offer) {
+        this.offer = offer;
+    }
+
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
     }
 }

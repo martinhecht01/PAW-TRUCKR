@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesPersistence.ImageDao;
+import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
@@ -34,13 +35,16 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     private final ImageDao imageDao;
 
+    private final ReviewDao reviewDao;
+
     private final MailService ms;
 
     @Autowired
-    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, @Qualifier("imageDaoJPA") ImageDao imageDao, MailService ms) {
+    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, @Qualifier("imageDaoJPA") ImageDao imageDao, MailService ms, ReviewDao reviewDao) {
         this.tripDaoV2 = tripDaoV2;
         this.userDao = userDao;
         this.imageDao = imageDao;
+        this.reviewDao = reviewDao;
         this.ms = ms;
     }
 
@@ -203,8 +207,19 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid){
-        return tripDaoV2.getTripOrRequestByIdAndUserId(id, userid);
+    public Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user){
+        Trip trip = tripDaoV2.getTripOrRequestById(id).orElseThrow(NoSuchElementException::new);
+        Optional<Trip> optionalTrip = tripDaoV2.getTripOrRequestByIdAndUserId(trip, user);
+
+        if(!optionalTrip.isPresent())
+            return Optional.empty();
+
+        //OJO AL PIOJO CON ESTO
+        //QUE PASA SI USER ES NULL???
+        //PARA MI FUNCIONA IGUAL PERO WARNING!!!
+        optionalTrip.get().setReview(reviewDao.getReviewByTripAndUserId(trip, user).orElse(null));
+        optionalTrip.get().setOffer(tripDaoV2.getOffer(user, trip).orElse(null));
+        return optionalTrip;
     }
     @Transactional(readOnly = true)
     @Override
@@ -283,6 +298,12 @@ public class TripServiceV2Impl implements TripServiceV2 {
     public Integer getCompletedTripsCount(Integer userId){
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         return tripDaoV2.getCompletedTripsCount(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Proposal> getOffer(User user, Trip trip){
+        return tripDaoV2.getOffer(user, trip);
     }
 
 }

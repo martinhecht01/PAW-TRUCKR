@@ -72,7 +72,7 @@ public interface TripDaoV2 {
 
     Integer getTotalPagesAcceptedTripsAndRequests(User user);
 
-    Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
+    Optional<Trip> getTripOrRequestByIdAndUserId(Trip trip, User user);
 
     void setImage(Trip trip, Image image);
 
@@ -87,4 +87,6 @@ public interface TripDaoV2 {
     List<Trip> getAllFutureTrips(User user);
 
     Integer getCompletedTripsCount(User user);
+
+    Optional<Proposal> getOffer(User user, Trip trip);
 }

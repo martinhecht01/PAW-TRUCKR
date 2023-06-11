@@ -12,9 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -178,6 +176,7 @@ public class TripDaoJPA implements TripDaoV2 {
             LOGGER.info("Trip with id {} not found", tripId);
             return Optional.empty();
         }
+
         return Optional.of(trip);
     }
 
@@ -533,10 +532,12 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
 
     @Override
-    public Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid) {
-        return getTripOrRequestById(id)
-//                .filter(trip -> trip.getTrucker() != null? trip.getTrucker().getUserId() == userid : trip.getProvider().getUserId() == userid);
-                .filter(trip -> (trip.getTrucker() != null && trip.getTrucker().getUserId() == userid) || (trip.getProvider() != null && trip.getProvider().getUserId() == userid));
+    public Optional<Trip> getTripOrRequestByIdAndUserId(Trip trip, User user) {
+        if(user == null)
+            return getTripOrRequestById(trip.getTripId()).filter(t -> (t.getProvider() == null && t.getTrucker() != null) || (t.getProvider() != null && t.getTrucker() == null));
+
+        return getTripOrRequestById(trip.getTripId())
+                .filter(auxTrip -> (auxTrip.getTrucker() != null && auxTrip.getTrucker().getUserId() == user.getUserId()) || (auxTrip.getProvider() != null && auxTrip.getProvider().getUserId() == user.getUserId()));
     }
 
 
@@ -590,6 +591,20 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         return entityManager.createQuery(jpql, Trip.class)
                 .setParameter("user", user)
                 .getResultList().size();
+    }
+
+    @Override
+    public Optional<Proposal> getOffer(User user, Trip trip){
+        String jpql = "SELECT p FROM Proposal p WHERE p.user = :user AND p.trip = :trip";
+        List<Proposal> results = entityManager.createQuery(jpql, Proposal.class)
+                .setParameter("user", user)
+                .setParameter("trip", trip)
+                .getResultList();
+
+        if(results.isEmpty())
+            return Optional.empty();
+
+        return Optional.of(results.get(0));
     }
 
 }

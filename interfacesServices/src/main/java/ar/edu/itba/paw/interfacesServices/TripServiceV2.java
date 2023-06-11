@@ -58,7 +58,7 @@ public interface TripServiceV2 {
 
     Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
 
-    Optional<Trip> getTripOrRequestByIdAndUserId(int id, int userid);
+    Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
 
 
     List<Trip> getAllActivePublications(Integer userId, Integer pag);
@@ -86,4 +86,6 @@ public interface TripServiceV2 {
     List<Trip> getAllFutureTrips(Integer userId);
 
     Integer getCompletedTripsCount(Integer userId);
+
+    Optional<Proposal> getOffer(User user, Trip trip);
 }
