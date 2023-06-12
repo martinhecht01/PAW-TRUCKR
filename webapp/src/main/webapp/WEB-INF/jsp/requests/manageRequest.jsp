@@ -76,7 +76,7 @@
               <div class="d-flex justify-content-evenly">
                 <img class="profileImageNavbar" src="<c:url value="/user/${request.trucker.userId}/profilePicture"/>"/>
                 <div>
-                  <h5 class="card-title"><c:out value="${request.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:if test="${request.provider.reviews.size() != 0}"><c:out value="${request.trucker.rating}"/></c:if> - (${request.trucker.reviews.size()} <spring:message code="Reviews"/>)</h5>
+                  <h5 class="card-title"><c:out value="${request.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:if test="${request.provider.reviews.size() != 0}"> <c:out value="${request.trucker.rating}"/></c:if> - (${request.trucker.reviews.size()})</h5>
                   <p class="text-dark card-text"><c:out value="${request.trucker.email.toLowerCase()}"/></p>
                 </div>
               </div>

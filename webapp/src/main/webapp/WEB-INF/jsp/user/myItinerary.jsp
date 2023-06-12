@@ -74,49 +74,37 @@
                                     </div>
                                 </div>
                                 <div class="vr"></div>
-                                <div class="w-25 d-flex align-items-center justify-content-center">
-                                    <div class="row">
-                                        <c:if test="${currentUser.role == 'TRUCKER'}">
-                                            <div class="col-md">
-                                                <div class="text-center mx-2 align-items-center">
-                                                    <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
-                                                </div>
+                                <div class="w-50 d-flex flex-row align-items-center justify-content-evenly">
+                                    <c:if test="${currentUser.role == 'TRUCKER'}">
+                                        <div class="text-center mx-2 align-items-center">
+                                            <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                        </div>
+                                        <div class="text-center align-items-center">
+                                            <h5><c:out value="${trip.provider.name}"/></h5>
+                                            <p><spring:message code="${trip.provider.role}"/></p>
+                                        </div>
+                                        <div class="text-center align-items-center">
+                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if>
+                                                <c:if test="${trip.provider.reviews.size() == 0}">-</c:if>
+                                            </h5>
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${currentUser.role == 'PROVIDER'}">
+                                            <div class="text-center mx-2 align-items-center">
+                                                <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
                                             </div>
-                                            <div class="col-md">
-                                                <div class="text-center align-items-center">
-                                                    <h5><c:out value="${trip.provider.name}"/></h5>
-                                                    <p><spring:message code="${trip.provider.role}"/></p>
-                                                </div>
+                                            <div class="text-center align-items-center">
+                                                <h5><c:out value="${trip.trucker.name}"/></h5>
+                                                <p><spring:message code="${trip.trucker.role}"/></p>
                                             </div>
-                                            <div class="col-md">
-                                                <div class="text-center align-items-center">
-                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                        <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if> -
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                        </c:if>
-                                        <c:if test="${currentUser.role == 'PROVIDER'}">
-                                            <div class="col-md">
-                                                <div class="text-center mx-2 align-items-center">
-                                                    <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
-                                                </div>
-                                            </div>
-                                            <div class="col-md">
-                                                <div class="text-center align-items-center">
-                                                    <h5><c:out value="${trip.trucker.name}"/></h5>
-                                                    <p><spring:message code="${trip.trucker.role}"/></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md">
-                                                <div class="text-center align-items-center">
-                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                        <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if> -
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                        </c:if>
-                                    </div>
+                                        <div class="text-center align-items-center">
+                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if>
+                                                <c:if test="${trip.trucker.reviews.size() == 0}">-</c:if>
+                                            </h5>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
                         </a>
@@ -176,7 +164,8 @@
                                         </div>
                                         <div class="text-center align-items-center">
                                             <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if> -
+                                                <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if>
+                                                <c:if test="${trip.provider.reviews.size() == 0}">-</c:if>
                                             </h5>
                                         </div>
     <%--                                    <div class="mx-3 text-center align-items-center">--%>
@@ -193,7 +182,8 @@
                                         </div>
                                         <div class="text-center align-items-center">
                                             <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if> -
+                                                <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if>
+                                                <c:if test="${trip.trucker.reviews.size() == 0}">-</c:if>
                                             </h5>
                                         </div>
     <%--                                    <div class="mx-3 text-center align-items-center">--%>
