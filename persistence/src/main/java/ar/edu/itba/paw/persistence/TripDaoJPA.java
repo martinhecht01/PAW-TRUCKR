@@ -533,11 +533,12 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
     @Override
     public Optional<Trip> getTripOrRequestByIdAndUserId(Trip trip, User user) {
-        if(user == null)
-            return getTripOrRequestById(trip.getTripId()).filter(t -> (t.getProvider() == null && t.getTrucker() != null) || (t.getProvider() != null && t.getTrucker() == null));
+        Optional<Trip> optionalTrip = getTripOrRequestById(trip.getTripId());
+        System.out.println("IS PRESENT ?? " + (optionalTrip.isPresent() ? "YES" : "NO"));
+        if(!optionalTrip.isPresent() || (optionalTrip.get().getProvider() != null && optionalTrip.get().getTrucker() != null && user == null))
+            return Optional.empty();
 
-        return getTripOrRequestById(trip.getTripId())
-                .filter(auxTrip -> (auxTrip.getTrucker() != null && auxTrip.getTrucker().getUserId() == user.getUserId()) || (auxTrip.getProvider() != null && auxTrip.getProvider().getUserId() == user.getUserId()));
+        return optionalTrip.filter(auxTrip -> (auxTrip.getTrucker() != null && Objects.equals(auxTrip.getTrucker().getUserId(), user.getUserId())) || (auxTrip.getProvider() != null && Objects.equals(auxTrip.getProvider().getUserId(), user.getUserId())));
     }
 
 

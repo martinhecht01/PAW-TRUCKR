@@ -67,7 +67,7 @@
     </div>
     <c:if test="${request.trucker != null}">
       <div class="justify-content-top align-items-top px-5" >
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 30rem;">
           <div class="card-header">
             <h4><spring:message code="Driver"/>: </h4>
           </div>
@@ -84,7 +84,7 @@
           </div>
         </div>
         <c:if test="${request.departureDate.before(now)}">
-          <div class="card mt-4" style="width: 18rem;">
+          <div class="card mt-4" style="width: 30rem;">
             <div class="card-header">
               <h4><spring:message code="Status"/>:</h4>
             </div>
@@ -123,7 +123,7 @@
           <c:if test="${request.review == null}">
             <c:url value="/requests/sendReview" var="reviewPath"/>
             <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${request.trucker.userId}">
-              <div class="card mt-4" style="width: 18rem;">
+              <div class="card mt-4" style="width: 30rem;">
                 <div class="card-header">
                   <h4>
                     <spring:message code="Review"/>
@@ -160,7 +160,7 @@
             </div>
           </c:if>
           <c:if test="${request.review != null}">
-            <div class="card mt-4" style="width: 18rem;">
+            <div class="card mt-4" style="width: 30rem;">
               <div class="card-body p-3">
                 <h5 class="card-text py-1"><svg class="mx-2" width="2em" height="2em" fill="green"><use xlink:href="#check"></use></svg> <spring:message code="ReviewSent"/></h5>
               </div>
@@ -172,14 +172,14 @@
     <c:if test="${request.trucker == null}">
       <div class="justify-content-top align-items-top px-5" >
         <c:if test="${request.proposals.size() == 0}">
-          <div class="card p-3" style="width: 18rem;">
+          <div class="card p-3" style="width: 30rem;">
             <div class="card-body">
               <h5 class="card-title"><spring:message code="NoProposalsYet"/></h5>
             </div>
           </div>
         </c:if>
         <c:forEach var="offer" items="${request.proposals}">
-          <div class="card p-2" style="width: 18rem;">
+          <div class="card p-2" style="width: 30rem;">
             <div class="card-body">
               <a href="<c:url value="/profile?id=${offer.user.userId}"/>">
                 <div class="d-flex justify-content-between align-items-center">

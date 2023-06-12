@@ -97,7 +97,7 @@
         </div>
         <c:if test="${request.trucker == null}">
             <div class="justify-content-top align-items-top" >
-                <div class="card mx-4" style="width: 20rem;">
+                <div class="card mx-4" style="width: 30rem;">
                     <div class="card-header">
                         <h4><spring:message code="Provider"/>:</h4>
                     </div>
@@ -115,7 +115,7 @@
                 </div>
                 <c:if test="${request.offer == null}">
                     <form:form nestedPath="reserveForm" id="reserveForm" modelAttribute="acceptForm" action="${postPath}?id=${request.tripId}" method="post">
-                        <div class="card mx-4 mt-4" style="width: 20rem;">
+                        <div class="card mx-4 mt-4" style="width: 30rem;">
                             <div class="card-header">
                                 <h4 class="card-title" style="color: #142D4C"><b><spring:message code="ReserveRequest"/></b></h4>
                             </div>
@@ -145,26 +145,28 @@
                     </form:form>
                 </c:if>
                 <c:if test="${request.offer != null}">
-                    <div class="card mx-4 mt-4" style="width: 20rem;">
+                    <div class="card mx-4 mt-4" style="width: 30rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="OfferYouSent"/>:</b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><spring:message code="OfferYouSent"/>:</h4>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body w-100">
                             <div class="mb-3">
                                 <label for="description" class="form-label"><spring:message code="Description"/></label>
                                 <textarea id="description" disabled class="form-control bg-light" placeholder="${writeDescription}">${request.offer.description}</textarea>
                             </div>
-                            <div class="mb-3 flex-column">
-                                <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
-                                <h4>$${request.offer.price}</h4>
-                            </div>
-                            <div class="w-25 pt-1">
-                                <div class="text-center align-items-center">
-                                    <c:url value="/user/cancelOffer" var="postPath"/>
-                                    <form:form method="post" action="${postPath}?offerId=${request.offer.proposalId}">
-                                        <spring:message code="Cancel" var="Cancel"/>
-                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                                    </form:form>
+                            <div class="d-flex w-100 align-items-center flex-row justify-content-between">
+                                <div class="w-25 mb-3 flex-column">
+                                    <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
+                                    <h4>$${request.offer.price}</h4>
+                                </div>
+                                <div class="w-25 pt-1">
+                                    <div class="text-center align-items-center">
+                                        <c:url value="/user/cancelOffer" var="postPath"/>
+                                        <form:form method="post" action="${postPath}?offerId=${request.offer.proposalId}">
+                                            <spring:message code="Cancel" var="Cancel"/>
+                                            <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                        </form:form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

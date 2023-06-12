@@ -28,6 +28,8 @@ public class ReviewDaoJPA implements ReviewDao {
 
     @Override
     public Optional<Review> getReviewByTripAndUserId(Trip trip, User user) {
+        if(user == null)
+            return Optional.empty();
         String jpql = "SELECT r FROM Review r WHERE r.trip = :trip AND r.user = :user";
         List<Review> reviews = entityManager.createQuery(jpql, Review.class)
                 .setParameter("trip", trip)

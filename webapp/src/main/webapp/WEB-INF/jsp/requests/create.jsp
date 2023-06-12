@@ -31,7 +31,7 @@
                 <div class="mb-3 inlineFormInput">
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
-                    <form:select class="form-select" path="cargoType">
+                    <form:select class="form-select" path="cargoType" itemValue="${type}">
                         <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
                         <form:option value="Refrigerated"><spring:message code="CreateTripCargoTypeRefrigerated"/></form:option>
                         <form:option value="Hazardous"><spring:message code="CreateTripCargoTypeHazardous"/></form:option>

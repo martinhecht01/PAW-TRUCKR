@@ -94,7 +94,7 @@
         </div>
         <c:if test="${trip.provider == null}">
             <div class="justify-content-top align-items-top" >
-                <div class="card mx-4" style="width: 20rem;">
+                <div class="card mx-4" style="width: 30rem;">
                     <div class="card-header">
                         <h4><spring:message code="Driver"/>:</h4>
                     </div>
@@ -113,7 +113,7 @@
                 </div>
                 <c:if test="${trip.offer == null}">
                     <form:form modelAttribute="acceptForm" action="${postPath}?id=${trip.tripId}" method="post">
-                        <div class="card mx-4 mt-4" style="width: 20rem;">
+                        <div class="card mx-4 mt-4" style="width: 30rem;">
                             <div class="card-header">
                                 <h4 class="card-title" style="color: #142D4C"><b><spring:message code="SendOffer"/></b></h4>
                             </div>
@@ -143,26 +143,28 @@
                     </form:form>
                 </c:if>
                 <c:if test="${trip.offer != null}">
-                    <div class="card mx-4 mt-4" style="width: 20rem;">
+                    <div class="card mx-4 mt-4" style="width: 30rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><b><spring:message code="OfferYouSent"/>:</b></h4>
+                            <h4 class="card-title" style="color: #142D4C"><spring:message code="OfferYouSent"/>:</h4>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="description" class="form-label"><spring:message code="Description"/></label>
                                 <textarea id="description" disabled class="form-control bg-light" placeholder="${writeDescription}">${trip.offer.description}</textarea>
                             </div>
-                            <div class="mb-3 flex-column">
-                                <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
-                                <h4>$${trip.offer.price}</h4>
-                            </div>
-                            <div class="w-25 pt-1">
-                                <div class="text-center align-items-center">
-                                    <c:url value="/user/cancelOffer" var="postPath"/>
-                                    <form:form method="post" action="${postPath}?offerId=${trip.offer.proposalId}">
-                                        <spring:message code="Cancel" var="Cancel"/>
-                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                                    </form:form>
+                            <div class="d-flex w-100 flex-row align-items-center justify-content-between">
+                                <div class="w-25 mb-3 flex-column">
+                                    <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
+                                    <h4>$${trip.offer.price}</h4>
+                                </div>
+                                <div class="w-25 pt-1">
+                                    <div class="text-center align-items-center">
+                                        <c:url value="/user/cancelOffer" var="postPath"/>
+                                        <form:form method="post" action="${postPath}?offerId=${trip.offer.proposalId}">
+                                            <spring:message code="Cancel" var="Cancel"/>
+                                            <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                        </form:form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
