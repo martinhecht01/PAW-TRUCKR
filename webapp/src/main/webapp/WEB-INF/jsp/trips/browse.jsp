@@ -142,7 +142,7 @@
                 <div class="w-100 d-flex space-apart">
                   <div class="text-truncate text-center" style="width: 35%">
                     <h5><c:out value="${trip.origin}"/></h5>
-                    ${trip.departureDate}
+                    ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().month}-${trip.departureDate.toLocalDateTime().dayOfMonth}
                   </div>
 
                   <div style="width: 30%">
@@ -151,7 +151,7 @@
 
                   <div class="text-truncate text-center" style="width: 35%">
                     <h5><c:out value="${trip.destination}"/></h5>
-                    ${trip.arrivalDate}
+                    ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().month}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
                   </div>
                 </div>
               </div>
