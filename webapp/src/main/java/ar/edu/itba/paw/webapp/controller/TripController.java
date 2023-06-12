@@ -188,6 +188,7 @@ public class TripController {
         view.addObject("minPrice",minPrice);
         view.addObject("maxPrice",maxPrice);
         view.addObject("sortOrder",sortOrder);
+        view.addObject("cargoType",type);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate", arrivalDate);
         view.addObject("offers", ts.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page)));

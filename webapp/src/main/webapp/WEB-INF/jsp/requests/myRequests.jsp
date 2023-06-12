@@ -88,7 +88,7 @@
                   <div class="w-100 d-flex space-apart">
                     <div class="text-truncate text-center" style="width: 35%">
                       <h5><c:out value="${request.origin}"/></h5>
-                        ${request.departureDate.toLocalDateTime().year}-${request.departureDate.toLocalDateTime().month}-${request.departureDate.toLocalDateTime().dayOfMonth}
+                        ${request.departureDate.toLocalDateTime().year}-${request.departureDate.toLocalDateTime().monthValue}-${request.departureDate.toLocalDateTime().dayOfMonth}
                     </div>
 
                     <div style="width: 30%">
@@ -97,7 +97,7 @@
 
                     <div class="text-truncate text-center" style="width: 35%">
                       <h5><c:out value="${request.destination}"/></h5>
-                        ${request.arrivalDate.toLocalDateTime().year}-${request.arrivalDate.toLocalDateTime().month}-${request.arrivalDate.toLocalDateTime().dayOfMonth}
+                        ${request.arrivalDate.toLocalDateTime().year}-${request.arrivalDate.toLocalDateTime().monthValue}-${request.arrivalDate.toLocalDateTime().dayOfMonth}
                     </div>
                   </div>
                 </div>
@@ -162,7 +162,7 @@
                   <div class="w-100 d-flex space-apart">
                     <div class="text-truncate text-center" style="width: 35%">
                       <h5><c:out value="${request.origin}"/></h5>
-                        ${request.departureDate.toLocalDateTime().year}-${request.departureDate.toLocalDateTime().month}-${request.departureDate.toLocalDateTime().dayOfMonth}
+                        ${request.departureDate.toLocalDateTime().year}-${request.departureDate.toLocalDateTime().monthValue}-${request.departureDate.toLocalDateTime().dayOfMonth}
                     </div>
 
                     <div style="width: 30%">
@@ -171,7 +171,7 @@
 
                     <div class="text-truncate text-center" style="width: 35%">
                       <h5><c:out value="${request.destination}"/></h5>
-                        ${request.arrivalDate.toLocalDateTime().year}-${request.arrivalDate.toLocalDateTime().month}-${request.arrivalDate.toLocalDateTime().dayOfMonth}
+                        ${request.arrivalDate.toLocalDateTime().year}-${request.arrivalDate.toLocalDateTime().monthValue}-${request.arrivalDate.toLocalDateTime().dayOfMonth}
                     </div>
                   </div>
                 </div>

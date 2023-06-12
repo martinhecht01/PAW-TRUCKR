@@ -63,7 +63,7 @@
                             <div class="d-flex justify-content-center" style="width: 40%">
                                 <div class="w-25 text-truncate text-center">
                                     <h5>${offer.trip.origin}</h5>
-                                        ${offer.trip.departureDate.toLocalDateTime().year}-${offer.trip.departureDate.toLocalDateTime().month}-${offer.trip.departureDate.toLocalDateTime().dayOfMonth}
+                                        ${offer.trip.departureDate.toLocalDateTime().year}-${offer.trip.departureDate.toLocalDateTime().monthValue}-${offer.trip.departureDate.toLocalDateTime().dayOfMonth}
                                 </div>
 
                                 <div class="w-25 text-center">
@@ -72,7 +72,7 @@
 
                                 <div class="w-25 text-truncate text-center">
                                     <h5>${offer.trip.destination}</h5>
-                                        ${offer.trip.arrivalDate.toLocalDateTime().year}-${offer.trip.arrivalDate.toLocalDateTime().month}-${offer.trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                        ${offer.trip.arrivalDate.toLocalDateTime().year}-${offer.trip.arrivalDate.toLocalDateTime().monthValue}-${offer.trip.arrivalDate.toLocalDateTime().dayOfMonth}
                                 </div>
                             </div>
                             <div class="vr"></div>
