@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 
+    import com.sun.istack.internal.Nullable;
+
     import javax.persistence.*;
 
     @Entity
@@ -12,10 +14,12 @@ package ar.edu.itba.paw.models;
         private Integer proposalId;
 
         @ManyToOne
+        @Nullable
         @JoinColumn(name = "trip_id")
         private Trip trip;
 
         @ManyToOne
+        @Nullable
         @JoinColumn(name = "user_id")
         private User user;
 
@@ -47,14 +51,14 @@ package ar.edu.itba.paw.models;
             this.price = price;
             this.counterProposal = counterProposal;
         }
-        public Proposal(Trip trip, User user, String description, Integer price, Proposal counterProposal) {
+        public Proposal(Trip trip, User user, String description, Integer price) {
             this.proposalId = null;
             this.trip = trip;
             this.user = user;
             this.description = description;
             this.userName = null;
             this.price = price;
-            this.counterProposal = counterProposal;
+            this.counterProposal = null;
         }
 
         public Proposal getCounterProposal() {

@@ -213,7 +213,7 @@ public class TripController {
 
 
     @RequestMapping(value = "/trips/sendProposal", method = { RequestMethod.POST })
-    public ModelAndView accept(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
+    public ModelAndView sendProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             LOGGER.info("Error sending proposal");
             return tripDetail(id, form);
@@ -243,21 +243,14 @@ public class TripController {
         else
             return new ModelAndView("redirect:/trips/details?id="+ tripid);
     }
-
-
-
-    @RequestMapping(value = "/trips/acceptProposal", method = { RequestMethod.POST })
-    public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalid, @RequestParam("tripid") int tripid) {
-        ts.acceptProposal(proposalid);
-
-        //TODO: Capaz hacer esto una funcion y hacer redirect.
+    @RequestMapping("/trips/acceptSuccess")
+    public ModelAndView acceptSuccess(@RequestParam("tripId") String tripId){
         ModelAndView mav = new ModelAndView("trips/acceptSuccess");
-
-        Trip trip = ts.getTripOrRequestByIdAndUserId(tripid, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        LOGGER.info("Proposal with Id: {} accepted successfully", proposalid);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(Integer.parseInt(tripId), getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("trip", trip);
         return mav;
     }
+
     @RequestMapping("/trips/success")
     public ModelAndView tripDetail(@RequestParam("id") int id) {
         LOGGER.info("Accessing trip success page with trip Id: {}", id);
@@ -315,13 +308,6 @@ public class TripController {
         mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
 
         return mav;
-    }
-
-    @RequestMapping(value = "/trip/cancelOffer", method = RequestMethod.POST)
-    public ModelAndView cancelOffer(@ModelAttribute("offerId") final Integer offerId, @ModelAttribute("tripId") final Integer tripId) {
-        LOGGER.info("Cancelling offer with id {}", offerId);
-        ts.deleteOffer(offerId);
-        return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
     }
 
     @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })

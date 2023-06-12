@@ -153,11 +153,6 @@
                 </div>
               </div>
             </form:form>
-            <div class="mt-3 text-right">
-              <a class="btn btn-outline-secondary mx-3 mb-2" href="<c:url value="/trips/search/results?origin=${request.origin}&destination=${request.destination}&minAvailableVolume=${request.volume}&minAvailableWeight=${request.weight}&departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}&type=${request.type}"/>">
-                <spring:message code="SearchSimilar"/>
-              </a>
-            </div>
           </c:if>
           <c:if test="${request.review != null}">
             <div class="card mt-4" style="width: 30rem;">
@@ -167,6 +162,11 @@
             </div>
           </c:if>
         </c:if>
+        <div class="mt-3 text-center">
+          <a class="btn btn-outline-secondary mb-2" href="<c:url value="/trips/search/results?origin=${request.origin}&destination=${request.destination}&minAvailableVolume=${request.volume}&minAvailableWeight=${request.weight}&departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}&type=${request.type}"/>">
+            <spring:message code="SearchSimilar"/>
+          </a>
+        </div>
       </div>
     </c:if>
     <c:if test="${request.trucker == null}">
@@ -179,7 +179,7 @@
           </div>
         </c:if>
         <c:forEach var="offer" items="${request.proposals}">
-          <div class="card p-2" style="width: 30rem;">
+          <div class="card p-2 mb-3" style="width: 30rem;">
             <div class="card-body">
               <a href="<c:url value="/profile?id=${offer.user.userId}"/>">
                 <div class="d-flex justify-content-between align-items-center">
@@ -198,16 +198,42 @@
                 </div>
               </div>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
-              <div class="d-flex justify-content-between">
-                <c:url value="/requests/acceptProposal" var="postPath"/>
-                <form:form action="${postPath}?proposalid=${offer.proposalId}&requestid=${offer.trip.tripId}" method="post">
-                  <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
-                </form:form>
-                <c:url value="/requests/cancelOffer" var="postPath2"/>
-                <form:form action="${postPath2}?offerId=${offer.proposalId}&requestid=${offer.trip.tripId}" method="post">
-                  <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
-                </form:form>
-              </div>
+              <c:if test="${offer.counterProposal == null}">
+                <div class="d-flex justify-content-between">
+                  <c:url value="/offers/acceptOffer" var="postPath"/>
+                  <form:form action="${postPath}?offerId=${offer.proposalId}&tripId=${offer.trip.tripId}" method="post">
+                    <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                  </form:form>
+                  <a href="<c:url value="/offers/sendCounterOffer?offerId=${offer.proposalId}"/>">
+                    <input type="submit" class="btn btn-outline-warning mx-2" value="Contraoferta"/>
+                  </a>
+                  <c:url value="/offers/rejectOffer" var="postPath2"/>
+                  <form:form action="${postPath2}?offerId=${offer.proposalId}&tripId=${offer.trip.tripId}" method="post">
+                    <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                  </form:form>
+                </div>
+              </c:if>
+              <c:if test="${offer.counterProposal != null}">
+                <hr/>
+                <h4 class="mb-3"><spring:message code="CounterOffer"/></h4>
+                <div class="mb-3">
+                  <label for="description" class="form-label"><spring:message code="Description"/></label>
+                  <textarea disabled class="form-control bg-light">${offer.counterProposal.description}</textarea>
+                </div>
+                <div class="d-flex w-100 flex-row align-items-center justify-content-between">
+                  <div class="w-25 mb-3 flex-column">
+                    <label class="form-label"><spring:message code="OfferedPrice"/></label>
+                    <h4>$${offer.counterProposal.price}</h4>
+                  </div>
+                  <div class="w-25">
+                    <c:url value="/offers/deleteCounterOffer" var="postPath"/>
+                    <form:form method="post" action="${postPath}?offerId=${offer.counterProposal.proposalId}&tripId=${request.tripId}">
+                      <spring:message code="Cancel" var="Cancel"/>
+                      <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                    </form:form>
+                  </div>
+                </div>
+              </c:if>
             </div>
           </div>
         </c:forEach>

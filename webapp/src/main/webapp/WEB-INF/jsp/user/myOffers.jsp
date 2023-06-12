@@ -100,27 +100,38 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="vr"></div>
-                            <div class="d-flex justify-content-center align-items-center" style="width: 10%">
-                                <c:url value="/user/cancelOffer" var="postPath"/>
-                                <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">
-                                    <spring:message code="Cancel" var="Cancel"/>
-                                    <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                                </form:form>
-                            </div>
+                            <c:if test="${offer.counterProposal == null}">
+                                <div class="vr"></div>
+                                <div class="d-flex justify-content-center align-items-center" style="width: 10%">
+                                    <c:url value="/user/cancelOffer" var="postPath"/>
+                                    <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">
+                                        <spring:message code="Cancel" var="Cancel"/>
+                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                    </form:form>
+                                </div>
+                            </c:if>
                         </div>
-<%--                        <div class="w-100 mt-3 d-flex justify-content-center align-items-center">--%>
-<%--                            <div class="bg-white border border-dark-subtle rounded px-2 py-2 w-50"> <c:out value="${offer.description}"/></div>--%>
-<%--                            <div class="w-25 pt-1">--%>
-<%--                                <div class="text-center align-items-center">--%>
-<%--                                    <c:url value="/user/cancelOffer" var="postPath"/>--%>
-<%--                                    <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">--%>
-<%--                                        <spring:message code="Cancel" var="Cancel"/>--%>
-<%--                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>--%>
-<%--                                    </form:form>--%>
-<%--                                </div>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
+                        <c:if test="${offer.counterProposal != null}">
+                            <div class="d-flex justify-content-center w-100">
+                                <div class="bg-white border border-dark-subtle rounded mt-4 mb-2 px-4 py-4 w-50 text-center">
+                                    <h4><spring:message code="CounterOffer"/></h4>
+                                    <div class="my-3 d-flex flex-row justify-content-evenly align-items-center">
+                                        <p><c:out value="${offer.counterProposal.description}"/></p>
+                                        <h4>$<c:out value="${offer.counterProposal.price}"/></h4>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-center align-items-center">
+                                        <c:url value="/offers/acceptCounterOffer" var="postPath"/>
+                                        <form:form action="${postPath}?offerId=${offer.counterProposal.proposalId}&tripId=${offer.trip.tripId}" method="post">
+                                            <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                                        </form:form>
+                                        <c:url value="/offers/rejectCounterOffer" var="postPath2"/>
+                                        <form:form action="${postPath2}?offerId=${offer.counterProposal.proposalId}" method="post">
+                                            <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                                        </form:form>
+                                    </div>
+                            </div>
+                            </div>
+                        </c:if>
                     </a>
                 </c:forEach>
             </c:if>

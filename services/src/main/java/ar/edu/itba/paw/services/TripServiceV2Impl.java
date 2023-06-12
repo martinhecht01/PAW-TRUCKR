@@ -319,10 +319,30 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public Optional<Proposal> sendCounterOffer(Integer originalId, Integer tripId, User user, String description, Integer price){
-        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+    public Optional<Proposal> sendCounterOffer(Integer originalId, User user, String description, Integer price){
         Proposal original = tripDaoV2.getProposalById(originalId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.sendCounterOffer(original, trip, user, description, price);
+        return tripDaoV2.sendCounterOffer(original, description, price);
+    }
+
+    @Transactional
+    @Override
+    public void rejectCounterOffer(Integer offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.rejectCounterOffer(offer);
+    }
+
+    @Transactional
+    @Override
+    public void acceptCounterOffer(Integer offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.acceptCounterOffer(offer);
+    }
+
+    @Transactional
+    @Override
+    public void deleteCounterOffer(Integer offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.deleteCounterOffer(offer);
     }
 
 }

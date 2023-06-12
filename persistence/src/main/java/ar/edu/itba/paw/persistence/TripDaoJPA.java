@@ -108,9 +108,9 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public Proposal createProposal(Trip trip, User user, String description, Integer price) {
-        Proposal proposal = new Proposal(trip, user, description, price, null);
+        Proposal proposal = new Proposal(trip, user, description, price);
         entityManager.persist(proposal);
-        LOGGER.info("Creating proposal with id {} for user {}", proposal.getProposalId(), user.getUserId());
+        LOGGER.info("Creating proposal with id {}", proposal.getProposalId());
         return proposal;
     }
 
@@ -327,6 +327,8 @@ public class TripDaoJPA implements TripDaoV2 {
         } else {
             trip.setTrucker(proposal.getUser());
         }
+
+        trip.setPrice(proposal.getPrice());
         entityManager.persist(trip);
 
 //        entityManager.remove(proposal);
@@ -609,14 +611,54 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     }
 
     @Override
-    public Optional<Proposal> sendCounterOffer(Proposal original, Trip trip, User user, String description, Integer price){
+    public Optional<Proposal> sendCounterOffer(Proposal original, String description, Integer price){
         if(original == null || entityManager.find(Proposal.class, original.getProposalId()) == null)
             return Optional.empty();
 
-        Proposal counterProposal = createProposal(trip, user, description, price);
+        Proposal counterProposal = createProposal(null, null, description, price);
         original.setCounterProposal(counterProposal);
         entityManager.persist(original);
         return Optional.of(counterProposal);
+    }
+
+    @Override
+    public void acceptCounterOffer(Proposal counterOffer){
+        String jpql = "SELECT p FROM Proposal p WHERE p.counterProposal = :counterProposal";
+        Proposal originalProposal = entityManager.createQuery(jpql, Proposal.class)
+                .setParameter("counterProposal", counterOffer)
+                .getSingleResult();
+
+        originalProposal.setPrice(counterOffer.getPrice());
+        acceptProposal(originalProposal);
+    }
+
+    @Override
+    public void rejectCounterOffer(Proposal counterOffer){
+        String jpql = "SELECT p FROM Proposal p WHERE p.counterProposal = :counterProposal";
+        List<Proposal> originalProposals = entityManager.createQuery(jpql, Proposal.class)
+                .setParameter("counterProposal", counterOffer)
+                .getResultList();
+
+        entityManager.remove(counterOffer);
+
+        for(Proposal offer : originalProposals)
+            entityManager.remove(offer);
+
+    }
+
+    @Override
+    public void deleteCounterOffer(Proposal counterOffer){
+        String jpql = "SELECT p FROM Proposal p WHERE p.counterProposal = :counterProposal";
+        List<Proposal> originalProposals = entityManager.createQuery(jpql, Proposal.class)
+                .setParameter("counterProposal", counterOffer)
+                .getResultList();
+
+        for(Proposal offer : originalProposals) {
+            offer.setCounterProposal(null);
+            entityManager.persist(offer);
+        }
+
+        entityManager.remove(counterOffer);
     }
 
 }
