@@ -51,7 +51,7 @@
                                 <spring:message code="BrowseCargo"/>
                             </c:if>
                             <c:if test="${currentRole == 'PROVIDER'}">
-                                <spring:message code="BrowseTrips"/>
+                                <spring:message code="SearchTrips"/>
                             </c:if>
                         </a>
                     </li>

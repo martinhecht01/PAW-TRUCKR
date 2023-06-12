@@ -114,7 +114,7 @@
           <c:if test="${!request.providerConfirmation}">
             <c:url value="/requests/confirmRequest" var="confirmPath"/>
             <form:form method="post" action="${confirmPath}?requestId=${request.tripId}">
-              <spring:message var="finished" code="IFinishedTrip"/>
+              <spring:message var="finished" code="IReceivedCargo"/>
               <input type="submit" class="btn btn-color mt-3 w-100" value="${finished}"/>
             </form:form>
           </c:if>
@@ -187,7 +187,16 @@
                   <img class="profileImageNavbar" src="<c:url value="/user/${offer.user.userId}/profilePicture"/>"/>
                 </div>
               </a>
-              <p class="card-text"><c:out value="${offer.description}"/></p>
+              <div class="mb-3">
+                <label for="description" class="form-label"><spring:message code="Description"/></label>
+                <textarea id="description" disabled class="form-control bg-light">${offer.description}</textarea>
+              </div>
+              <div class="d-flex w-100 flex-row align-items-center justify-content-between">
+                <div class="w-25 mb-3 flex-column">
+                  <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
+                  <h4>$${offer.price}</h4>
+                </div>
+              </div>
               <spring:message code="Trips.AcceptProposal" var="reserve"/>
               <div class="d-flex justify-content-between">
                 <c:url value="/requests/acceptProposal" var="postPath"/>
@@ -195,13 +204,12 @@
                   <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
                 </form:form>
                 <c:url value="/requests/cancelOffer" var="postPath2"/>
-                <form:form action="${postPath2}?offerId=${offer.proposalId}&requestId=${offer.trip.tripId}" method="post">
+                <form:form action="${postPath2}?offerId=${offer.proposalId}&requestid=${offer.trip.tripId}" method="post">
                   <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
                 </form:form>
               </div>
             </div>
           </div>
-
         </c:forEach>
       </div>
     </c:if>
