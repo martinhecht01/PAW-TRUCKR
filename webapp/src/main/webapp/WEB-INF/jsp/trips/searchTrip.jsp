@@ -26,6 +26,7 @@
       <h4 class="card-title"><b><spring:message code="SearchTrips"/></b></h4>
     </div>
     <div class="card-body">
+      <form:errors cssClass="formError"/>
       <div class="inlineFormInputContainer">
         <div class="mb-3 inlineFormInput">
           <form:label path="origin" for="origin" class="form-label"><spring:message code="Origin"/></form:label>
@@ -66,7 +67,6 @@
           <form:option value="Normal"><spring:message code="CreateTripCargoTypeNormal"/></form:option>
         </form:select>
       </div>
-      <form:errors cssClass="formError"/>
       <div class="inlineFormInputContainer">
         <div class="mb-3 mr-3 inlineFormInput">
           <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
