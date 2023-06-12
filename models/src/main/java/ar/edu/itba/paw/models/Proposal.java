@@ -29,27 +29,40 @@ package ar.edu.itba.paw.models;
         @Transient
         private String userName;
 
+        @OneToOne
+        private Proposal counterProposal;
+
         // Constructors, getters, and setters
 
         public Proposal() {
             // Default constructor required by Hibernate
         }
 
-        public Proposal(int proposalId, Trip trip, User user, String description, String userName, Integer price) {
+        public Proposal(int proposalId, Trip trip, User user, String description, String userName, Integer price, Proposal counterProposal) {
             this.proposalId = proposalId;
             this.trip = trip;
             this.user = user;
             this.description = description;
             this.userName = userName;
             this.price = price;
+            this.counterProposal = counterProposal;
         }
-        public Proposal(Trip trip, User user, String description, Integer price) {
+        public Proposal(Trip trip, User user, String description, Integer price, Proposal counterProposal) {
             this.proposalId = null;
             this.trip = trip;
             this.user = user;
             this.description = description;
             this.userName = null;
             this.price = price;
+            this.counterProposal = counterProposal;
+        }
+
+        public Proposal getCounterProposal() {
+            return counterProposal;
+        }
+
+        public void setCounterProposal(Proposal counterProposal) {
+            this.counterProposal = counterProposal;
         }
 
         public int getProposalId() {

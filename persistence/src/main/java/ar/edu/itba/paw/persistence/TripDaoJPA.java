@@ -108,7 +108,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public Proposal createProposal(Trip trip, User user, String description, Integer price) {
-        Proposal proposal = new Proposal(trip, user, description, price);
+        Proposal proposal = new Proposal(trip, user, description, price, null);
         entityManager.persist(proposal);
         LOGGER.info("Creating proposal with id {} for user {}", proposal.getProposalId(), user.getUserId());
         return proposal;
@@ -606,6 +606,17 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
             return Optional.empty();
 
         return Optional.of(results.get(0));
+    }
+
+    @Override
+    public Optional<Proposal> sendCounterOffer(Proposal original, Trip trip, User user, String description, Integer price){
+        if(original == null || entityManager.find(Proposal.class, original.getProposalId()) == null)
+            return Optional.empty();
+
+        Proposal counterProposal = createProposal(trip, user, description, price);
+        original.setCounterProposal(counterProposal);
+        entityManager.persist(original);
+        return Optional.of(counterProposal);
     }
 
 }

@@ -88,4 +88,6 @@ public interface TripServiceV2 {
     Integer getCompletedTripsCount(Integer userId);
 
     Optional<Proposal> getOffer(User user, Trip trip);
+
+    Optional<Proposal> sendCounterOffer(Integer originalId, Integer tripId, User user, String description, Integer price);
 }

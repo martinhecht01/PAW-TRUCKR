@@ -6,7 +6,6 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
-import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -315,6 +314,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Override
     public Optional<Proposal> getOffer(User user, Trip trip){
         return tripDaoV2.getOffer(user, trip);
+    }
+
+
+    @Transactional
+    @Override
+    public Optional<Proposal> sendCounterOffer(Integer originalId, Integer tripId, User user, String description, Integer price){
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        Proposal original = tripDaoV2.getProposalById(originalId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.sendCounterOffer(original, trip, user, description, price);
     }
 
 }

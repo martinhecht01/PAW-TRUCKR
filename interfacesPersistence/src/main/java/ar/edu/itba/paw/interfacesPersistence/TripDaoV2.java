@@ -89,4 +89,6 @@ public interface TripDaoV2 {
     Integer getCompletedTripsCount(User user);
 
     Optional<Proposal> getOffer(User user, Trip trip);
+
+    Optional<Proposal> sendCounterOffer(Proposal original, Trip trip, User user, String description, Integer price);
 }
