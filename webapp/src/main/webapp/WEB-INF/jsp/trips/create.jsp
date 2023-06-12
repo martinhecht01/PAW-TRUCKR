@@ -26,7 +26,7 @@
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
         </div>
         <div class="card-body">
-            <a href="<c:url value="/requests/browse"/>">
+            <a href="#" id="imageLink">
                 <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="image-wrapper-create rounded-start p-3"  alt="TruckImg">
             </a>
             <div>
@@ -134,6 +134,15 @@
             URL.revokeObjectURL(output.src)
         }
     }
+</script>
+<script>
+    const imageLink = document.getElementById('imageLink');
+    const tripImageInput = document.getElementById('inputGroupFile01');
+
+    imageLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        tripImageInput.click();
+    });
 </script>
 <div style="margin-top: auto">
     <components:waveDivider/>
