@@ -86,6 +86,7 @@ public class RequestController {
         view.addObject("sortOrder",sortOrder);
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate",arrivalDate);
+        view.addObject("cargoType",type);
         List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page));
 
         LOGGER.debug("ACTIVE REQUESTS SIZE: {}  ",trips.size());

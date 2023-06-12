@@ -108,6 +108,15 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="type"><spring:message code="CreateTripCargoType"/></label>
+                        <select class="form-select" name="type" id="type">
+                            <option value="" disabled <c:if test="${cargoType == null || cargoType == ''}">selected</c:if>><spring:message code="Select"/></option>
+                            <option value="Refrigerated" <c:if test="${cargoType == 'Refrigerated'}">selected</c:if>><spring:message code="CreateTripCargoTypeRefrigerated"/></option>
+                            <option value="Hazardous" <c:if test="${cargoType == 'Hazardous'}">selected</c:if>><spring:message code="CreateTripCargoTypeHazardous"/></option>
+                            <option value="Normal" <c:if test="${cargoType == 'Normal'}">selected</c:if>><spring:message code="CreateTripCargoTypeNormal"/></option>
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="sortOrder"><spring:message code="FiltersSortBy"/>:</label>
                         <select class="form-control" name="sortOrder" id="sortOrder">
                             <option value="" disabled <c:if test="${sortOrder == null || sortOrder == ''}">selected</c:if>><spring:message code="Select"/></option>
