@@ -111,6 +111,15 @@
               <input type="datetime-local" class="form-control" id="arrivalDate" name="arrivalDate" <c:if test="${arrivalDate != null || arrivalDate != ''}">value="${arrivalDate}"</c:if> />
             </div>
           </div>
+            <div class="form-group mb-3">
+                <label for="type"><spring:message code="CreateTripCargoType"/></label>
+                <select class="form-select" name="type" id="type">
+                    <option value="" disabled <c:if test="${cargoType == null || cargoType == ''}">selected</c:if>><spring:message code="Select"/></option>
+                    <option value="Refrigerated" <c:if test="${cargoType == 'Refrigerated'}">selected</c:if>><spring:message code="CreateTripCargoTypeRefrigerated"/></option>
+                    <option value="Hazardous" <c:if test="${cargoType == 'Hazardous'}">selected</c:if>><spring:message code="CreateTripCargoTypeHazardous"/></option>
+                    <option value="Normal" <c:if test="${cargoType == 'Normal'}">selected</c:if>><spring:message code="CreateTripCargoTypeNormal"/></option>
+                </select>
+            </div>
           <div class="form-group mb-3">
             <label for="sortOrder"><spring:message code="FiltersSortBy"/>:</label>
             <select class="form-control" name="sortOrder" id="sortOrder">
@@ -142,7 +151,7 @@
                 <div class="w-100 d-flex space-apart">
                   <div class="text-truncate text-center" style="width: 35%">
                     <h5><c:out value="${trip.origin}"/></h5>
-                    ${trip.departureDate}
+                    ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
                   </div>
 
                   <div style="width: 30%">
@@ -151,7 +160,7 @@
 
                   <div class="text-truncate text-center" style="width: 35%">
                     <h5><c:out value="${trip.destination}"/></h5>
-                    ${trip.arrivalDate}
+                    ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
                   </div>
                 </div>
               </div>

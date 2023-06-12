@@ -12,7 +12,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 
 <head>
-  <title><spring:message code="CreateTrip"/></title>
+  <title><spring:message code="SearchTrips"/></title>
   <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">
@@ -23,7 +23,7 @@
 <form:form modelAttribute="searchTripForm" action="${postPath}" method="post" enctype="multipart/form-data">
   <div class="card w-75 mb-3 mt-5 formCard">
     <div class="card-header">
-      <h4 class="card-title"><b>Search Trip</b></h4>
+      <h4 class="card-title"><b><spring:message code="SearchTrips"/></b></h4>
     </div>
     <div class="card-body">
       <div class="inlineFormInputContainer">

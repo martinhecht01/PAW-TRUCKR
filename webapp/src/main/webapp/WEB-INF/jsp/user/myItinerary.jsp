@@ -61,7 +61,7 @@
                                 <div class="w-50 d-flex justify-content-center">
                                     <div class="w-25 text-truncate text-center">
                                         <h5>${trip.origin}</h5>
-                                            ${trip.departureDate}
+                                            ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
                                     </div>
 
                                     <div class="w-25 text-center">
@@ -70,7 +70,7 @@
 
                                     <div class="w-25 text-truncate text-center">
                                         <h5>${trip.destination}</h5>
-                                            ${trip.arrivalDate}
+                                            ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
                                     </div>
                                 </div>
                                 <div class="vr"></div>
@@ -140,7 +140,7 @@
                                 <div class="w-50 d-flex justify-content-center">
                                     <div class="w-25 text-truncate text-center">
                                         <h5>${trip.origin}</h5>
-                                        ${trip.departureDate}
+                                        ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
                                     </div>
 
                                     <div class="w-25 text-center">
@@ -149,7 +149,7 @@
 
                                     <div class="w-25 text-truncate text-center">
                                         <h5>${trip.destination}</h5>
-                                        ${trip.arrivalDate}
+                                        ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
                                     </div>
                                 </div>
                                 <div class="vr"></div>
