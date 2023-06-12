@@ -26,7 +26,9 @@
             <h4 class="card-title"><b><spring:message code="CreatePublication"/></b></h4>
         </div>
         <div class="card-body">
+            <a href="<c:url value="/trips/browse"/>">
             <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
+            </a>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>

@@ -60,7 +60,7 @@
                             <hr class="py-2">
                         </c:if>
                         <div class="d-flex align-items-center justify-content-between">
-                            <div class="w-50 d-flex justify-content-center">
+                            <div class="d-flex justify-content-center" style="width: 40%">
                                 <div class="w-25 text-truncate text-center">
                                     <h5>${offer.trip.origin}</h5>
                                         ${offer.trip.departureDate.toLocalDateTime().year}-${offer.trip.departureDate.toLocalDateTime().month}-${offer.trip.departureDate.toLocalDateTime().dayOfMonth}
@@ -76,7 +76,7 @@
                                 </div>
                             </div>
                             <div class="vr"></div>
-                            <div class="w-25 d-flex align-items-center justify-content-evenly">
+                            <div class="d-flex align-items-center justify-content-evenly" style="width: 35%">
                                 <div class="text-center align-items-center">
                                     <img src="<c:url value="/user/${currentUser.role == 'TRUCKER' ? offer.trip.provider.userId : offer.trip.trucker.userId}/profilePicture"/> " class="profileImageNavbar"/>
                                 </div>
@@ -86,32 +86,40 @@
                                 </div>
                                 <div class="text-center align-items-center">
                                     <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                        <c:if test="${currentUser.role == 'TRUCKER'}"><c:if test="${offer.trip.provider.reviews.size() != 0}"><c:out value="${offer.trip.provider.rating}"/></c:if> - (${offer.trip.provider.reviews.size()} <spring:message code="Reviews"/>)</c:if>
-                                        <c:if test="${currentUser.role == 'PROVIDER'}"><c:if test="${offer.trip.trucker.reviews.size() != 0}"><c:out value="${offer.trip.trucker.rating}"/></c:if> - (${offer.trip.trucker.reviews.size()} <spring:message code="Reviews"/>)</c:if>
+                                        <c:if test="${currentUser.role == 'TRUCKER'}"><c:if test="${offer.trip.provider.reviews.size() != 0}"><c:out value="${offer.trip.provider.rating}"/></c:if> - (${offer.trip.provider.reviews.size()})</c:if>
+                                        <c:if test="${currentUser.role == 'PROVIDER'}"><c:if test="${offer.trip.trucker.reviews.size() != 0}"><c:out value="${offer.trip.trucker.rating}"/></c:if> - (${offer.trip.trucker.reviews.size()})</c:if>
                                     </h5>
                                 </div>
                             </div>
                             <div class="vr"></div>
-                            <div class="w-25 d-flex align-items-center justify-content-evenly">
+                            <div class="d-flex align-items-center justify-content-evenly" style="width: 15%">
                                 <div class="w-50">
                                     <div class="text-center align-items-center">
                                         <h4>$${offer.price}</h4>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="w-100 mt-3 d-flex justify-content-center align-items-center">
-                            <div class="bg-white border border-dark-subtle rounded px-2 py-2 w-50"> <c:out value="${offer.description}"/></div>
-                            <div class="w-25 pt-1">
-                                <div class="text-center align-items-center">
-                                    <c:url value="/user/cancelOffer" var="postPath"/>
-                                    <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">
-                                        <spring:message code="Cancel" var="Cancel"/>
-                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                                    </form:form>
-                                </div>
+                            <div class="vr"></div>
+                            <div class="d-flex justify-content-center align-items-center" style="width: 10%">
+                                <c:url value="/user/cancelOffer" var="postPath"/>
+                                <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">
+                                    <spring:message code="Cancel" var="Cancel"/>
+                                    <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                </form:form>
                             </div>
                         </div>
+<%--                        <div class="w-100 mt-3 d-flex justify-content-center align-items-center">--%>
+<%--                            <div class="bg-white border border-dark-subtle rounded px-2 py-2 w-50"> <c:out value="${offer.description}"/></div>--%>
+<%--                            <div class="w-25 pt-1">--%>
+<%--                                <div class="text-center align-items-center">--%>
+<%--                                    <c:url value="/user/cancelOffer" var="postPath"/>--%>
+<%--                                    <form:form method="post" action="${postPath}?offerId=${offer.proposalId}">--%>
+<%--                                        <spring:message code="Cancel" var="Cancel"/>--%>
+<%--                                        <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>--%>
+<%--                                    </form:form>--%>
+<%--                                </div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
                     </a>
                 </c:forEach>
             </c:if>
