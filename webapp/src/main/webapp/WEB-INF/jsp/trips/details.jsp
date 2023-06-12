@@ -102,7 +102,6 @@
                         <a  class="text-decoration-none" href="<c:url value="/profile?id=${trip.trucker.userId}"/>">
                             <div class="d-flex justify-content-evenly">
                                 <img class="mx-1 profileImageNavbar" src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" alt="ProfilePicture">
-                                <img class="mx-1 profileImageNavbar" src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" alt="ProfilePicture">
                                 <div>
                                     <h5 class="card-title"><c:out value="${trip.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg><c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if> - (${trip.trucker.reviews.size()} <spring:message code="Reviews"/>)</h5>
                                     <p class="text-dark card-text text-decoration-none"><c:out value="${trip.trucker.email.toLowerCase()}"/></p>
