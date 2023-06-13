@@ -132,7 +132,10 @@
                 <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>><spring:message code="FiltersSortPriceDesc"/></option>
             </select>
           </div>
-          <button type="submit" class="btn btn-color" ><spring:message code="FiltersApply"/></button>
+          <div class="d-flex w-100 flex-row justify-content-between">
+            <button type="submit" class="w-50 btn btn-color" ><spring:message code="FiltersApply"/></button>
+            <a href="<c:url value="/trips/browse"/>" class="w-25 btn btn-outline-secondary"><spring:message code="Clear"/></a>
+          </div>
         </div>
       </div>
   </div>

@@ -118,7 +118,10 @@
                             <form:option value="price DESC" ><spring:message code="FiltersSortPriceDesc"/></form:option>
                         </form:select>
                     </div>
-                    <input type="submit" class="btn btn-color" value="<spring:message code="FiltersApply"/>" />
+                    <div class="d-flex w-100 flex-row justify-content-between">
+                        <button type="submit" class="w-50 btn btn-color" ><spring:message code="FiltersApply"/></button>
+                        <a type="submit" href="<c:url value="/explore"/>" class="w-25 btn btn-outline-secondary" ><spring:message code="Clear"/></a type="submit">
+                    </div>
                 </div>
             </div>
         </div>
