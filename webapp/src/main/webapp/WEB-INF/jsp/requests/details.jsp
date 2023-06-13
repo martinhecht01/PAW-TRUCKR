@@ -159,16 +159,42 @@
                                     <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
                                     <h4>$${request.offer.price}</h4>
                                 </div>
-                                <div class="w-25 pt-1">
-                                    <div class="text-center align-items-center">
-                                        <c:url value="/user/cancelOffer" var="postPath"/>
-                                        <form:form method="post" action="${postPath}?offerId=${request.offer.proposalId}">
-                                            <spring:message code="Cancel" var="Cancel"/>
-                                            <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                                        </form:form>
+                                <c:if test="${request.offer.counterProposal == null}">
+                                    <div class="w-25 pt-1">
+                                        <div class="text-center align-items-center">
+                                            <c:url value="/user/cancelOffer" var="postPath"/>
+                                            <form:form method="post" action="${postPath}?offerId=${request.offer.proposalId}">
+                                                <spring:message code="Cancel" var="Cancel"/>
+                                                <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                            </form:form>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </div>
+                            <c:if test="${request.offer.counterProposal != null}">
+                                <hr/>
+                                <h4 class="mb-3"><spring:message code="CounterOffer"/></h4>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label"><spring:message code="Description"/></label>
+                                    <textarea disabled class="form-control bg-light">${request.offer.counterProposal.description}</textarea>
+                                </div>
+                                <div class="d-flex w-100 flex-row align-items-center justify-content-between">
+                                    <div class="w-25 mb-3 flex-column">
+                                        <label class="form-label"><spring:message code="OfferedPrice"/></label>
+                                        <h4>$${request.offer.counterProposal.price}</h4>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="d-flex justify-content-evenly">
+                                    <c:url value="/offers/acceptCounterOffer" var="postPath"/>
+                                    <form:form action="${postPath}?offerId=${request.offer.counterProposal.proposalId}&tripId=${request.tripId}" method="post">
+                                        <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                                    </form:form>
+                                    <c:url value="/offers/rejectCounterOffer" var="postPath2"/>
+                                    <form:form action="${postPath2}?offerId=${request.offer.counterProposal.proposalId}&tripId=${request.tripId}" method="post">
+                                        <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                                    </form:form>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </c:if>

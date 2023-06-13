@@ -260,13 +260,6 @@ public class RequestController {
             return new ModelAndView("redirect:/requests/details?id="+ requestid);
     }
 
-    @RequestMapping(value = "/requests/cancelOffer", method = RequestMethod.POST)
-    public ModelAndView cancelOffer(@ModelAttribute("offerId") final Integer offerId, @ModelAttribute("requestId") final Integer requestId) {
-        LOGGER.info("Cancelling offer with id {}", offerId);
-        ts.deleteOffer(offerId);
-        return new ModelAndView("redirect:/requests/manageRequest?requestId=" + requestId);
-    }
-
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
@@ -282,7 +275,7 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
-    public ModelAndView acceptProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
+    public ModelAndView sendProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             LOGGER.info("Error in accept form");
             return requestDetail(id, form);
@@ -298,17 +291,15 @@ public class RequestController {
         mav.addObject("id",id);
         return mav;
     }
-    @RequestMapping(value = "/requests/acceptProposal", method = { RequestMethod.POST })
-    public ModelAndView acceptProposal(@RequestParam("proposalid") int proposalId, @RequestParam("requestid") int requestId) {
-        ts.acceptProposal(proposalId);
-        ModelAndView mav = new ModelAndView("requests/acceptSuccess");
 
-        //TODO: HACER UNA VIEW CON ESTO + redirect
-        Trip request = ts.getTripOrRequestByIdAndUserId(requestId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        LOGGER.info("Proposal with Id: {} accepted successfully", proposalId);
-        mav.addObject("request", request);
+    @RequestMapping("/requests/acceptSuccess")
+    public ModelAndView acceptSuccess(@RequestParam("requestId") String tripId){
+        ModelAndView mav = new ModelAndView("requests/acceptSuccess");
+        Trip trip = ts.getTripOrRequestByIdAndUserId(Integer.parseInt(tripId), getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+        mav.addObject("request", trip);
         return mav;
     }
+
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
         LOGGER.info("Accessing request success page");

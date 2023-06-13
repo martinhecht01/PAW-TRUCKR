@@ -144,9 +144,10 @@
                 <c:if test="${trip.offer != null}">
                     <div class="card mx-4 mt-4" style="width: 30rem;">
                         <div class="card-header">
-                            <h4 class="card-title" style="color: #142D4C"><spring:message code="OfferYouSent"/>:</h4>
+                            <h4 class="card-title" style="color: #142D4C"><spring:message code="Offers"/>:</h4>
                         </div>
                         <div class="card-body">
+                            <h4 class="mb-3"><spring:message code="SentOffer"/></h4>
                             <div class="mb-3">
                                 <label for="description" class="form-label"><spring:message code="Description"/></label>
                                 <textarea id="description" disabled class="form-control bg-light" placeholder="${writeDescription}">${trip.offer.description}</textarea>
@@ -156,16 +157,42 @@
                                     <label for="description" class="form-label"><spring:message code="OfferedPrice"/></label>
                                     <h4>$${trip.offer.price}</h4>
                                 </div>
-                                <div class="w-25 pt-1">
-                                    <div class="text-center align-items-center">
-                                        <c:url value="/user/cancelOffer" var="postPath"/>
-                                        <form:form method="post" action="${postPath}?offerId=${trip.offer.proposalId}">
-                                            <spring:message code="Cancel" var="Cancel"/>
-                                            <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
-                                        </form:form>
+                                <c:if test="${trip.offer.counterProposal == null}">
+                                    <div class="w-25 pt-1">
+                                        <div class="text-center align-items-center">
+                                            <c:url value="/user/cancelOffer" var="postPath"/>
+                                            <form:form method="post" action="${postPath}?offerId=${trip.offer.proposalId}">
+                                                <spring:message code="Cancel" var="Cancel"/>
+                                                <input type="submit" class="btn btn-outline-danger mx-2" value="${Cancel}"/>
+                                            </form:form>
+                                        </div>
+                                    </div>
+                                </c:if>
+                            </div>
+                            <c:if test="${trip.offer.counterProposal != null}">
+                                <hr/>
+                                <h4 class="mb-3"><spring:message code="CounterOffer"/></h4>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label"><spring:message code="Description"/></label>
+                                    <textarea disabled class="form-control bg-light">${trip.offer.counterProposal.description}</textarea>
+                                </div>
+                                <div class="d-flex w-100 flex-row align-items-center justify-content-between">
+                                    <div class="w-25 mb-3 flex-column">
+                                        <label class="form-label"><spring:message code="OfferedPrice"/></label>
+                                        <h4>$${trip.offer.counterProposal.price}</h4>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="d-flex justify-content-evenly">
+                                    <c:url value="/offers/acceptCounterOffer" var="postPath"/>
+                                    <form:form action="${postPath}?offerId=${trip.offer.counterProposal.proposalId}&tripId=${trip.tripId}" method="post">
+                                        <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                                    </form:form>
+                                    <c:url value="/offers/rejectCounterOffer" var="postPath2"/>
+                                    <form:form action="${postPath2}?offerId=${trip.offer.counterProposal.proposalId}&tripId=${trip.tripId}" method="post">
+                                        <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                                    </form:form>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
                 </c:if>

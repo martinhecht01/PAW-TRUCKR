@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 
+    import com.sun.istack.internal.Nullable;
+
     import javax.persistence.*;
 
     @Entity
@@ -12,10 +14,12 @@ package ar.edu.itba.paw.models;
         private Integer proposalId;
 
         @ManyToOne
+        @Nullable
         @JoinColumn(name = "trip_id")
         private Trip trip;
 
         @ManyToOne
+        @Nullable
         @JoinColumn(name = "user_id")
         private User user;
 
@@ -29,19 +33,23 @@ package ar.edu.itba.paw.models;
         @Transient
         private String userName;
 
+        @OneToOne
+        private Proposal counterProposal;
+
         // Constructors, getters, and setters
 
         public Proposal() {
             // Default constructor required by Hibernate
         }
 
-        public Proposal(int proposalId, Trip trip, User user, String description, String userName, Integer price) {
+        public Proposal(int proposalId, Trip trip, User user, String description, String userName, Integer price, Proposal counterProposal) {
             this.proposalId = proposalId;
             this.trip = trip;
             this.user = user;
             this.description = description;
             this.userName = userName;
             this.price = price;
+            this.counterProposal = counterProposal;
         }
         public Proposal(Trip trip, User user, String description, Integer price) {
             this.proposalId = null;
@@ -50,6 +58,15 @@ package ar.edu.itba.paw.models;
             this.description = description;
             this.userName = null;
             this.price = price;
+            this.counterProposal = null;
+        }
+
+        public Proposal getCounterProposal() {
+            return counterProposal;
+        }
+
+        public void setCounterProposal(Proposal counterProposal) {
+            this.counterProposal = counterProposal;
         }
 
         public int getProposalId() {
