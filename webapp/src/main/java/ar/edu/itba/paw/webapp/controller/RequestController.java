@@ -8,7 +8,9 @@ import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
+import ar.edu.itba.paw.webapp.form.FilterForm;
 import ar.edu.itba.paw.webapp.form.RequestForm;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,49 +52,127 @@ public class RequestController {
         this.revs = revs;
     }
 
+//    @RequestMapping("/requests/browse")
+//    public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
+//                                    @RequestParam(required = false) String origin,
+//                                    @RequestParam(required = false) String destination,
+//                                    @RequestParam(required = false) Integer minAvailableVolume,
+//                                    @RequestParam(required = false) Integer maxAvailableVolume,
+//                                    @RequestParam(required = false) Integer minAvailableWeight,
+//                                    @RequestParam(required = false) Integer maxAvailableWeight,
+//                                    @RequestParam(required = false) Integer minPrice,
+//                                    @RequestParam(required = false) Integer maxPrice,
+//                                    @RequestParam(required = false) String sortOrder,
+//                                    @RequestParam(required = false) String departureDate,
+//                                    @RequestParam(required = false) String arrivalDate,
+//                                    @RequestParam(required = false) String type)
+//    {
+//        LOGGER.info("Accessing browse requests page");
+//        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+//        Integer currPage = Integer.parseInt(page);
+//        if(currPage < 1 || currPage > maxPages ){
+//            page = "1";
+//        }
+//
+//
+//        LOGGER.debug("MAX PAGES = {}", maxPages);
+//
+//        final ModelAndView view = new ModelAndView("requests/browse");
+//
+//        view.addObject("maxPage", maxPages);
+//        view.addObject("currentPage", page);
+//        view.addObject("origin",origin);
+//        view.addObject("destination",destination);
+//        view.addObject("minAvailableVolume",minAvailableVolume);
+//        view.addObject("minAvailableWeight",minAvailableWeight);
+//        view.addObject("minPrice",minPrice);
+//        view.addObject("maxPrice",maxPrice);
+//        view.addObject("sortOrder",sortOrder);
+//        view.addObject("departureDate",departureDate);
+//        view.addObject("arrivalDate",arrivalDate);
+//        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page));
+//
+//        LOGGER.debug("ACTIVE REQUESTS SIZE: {}  ",trips.size());
+//        view.addObject("offers", trips);
+//        return view;
+//    }
+
+//    @RequestMapping(value = "/media/films")
+//    public ModelAndView films(HttpServletRequest request,@RequestParam(value = "page", defaultValue = "1") final int page,
+//                              @Valid @ModelAttribute("filterForm") final FilterForm filterForm,
+//                              final BindingResult errors) throws ParseException {
+//        LOGGER.debug("Trying to access films");
+//        if(errors.hasErrors()){
+//            LOGGER.info("Redirecting to: {}", request.getHeader("referer"));
+//            return new ModelAndView("redirect: " + request.getHeader("referer"));
+//        }
+//        final ModelAndView mav = new ModelAndView("principal/primary/films");
+//        final List<Genre> genres = filterForm.getGenres().stream().map(g -> g.replaceAll("\\s+", "")).map(Genre::valueOf).collect(Collectors.toList());
+//        final List<MediaType> mediaTypes = new ArrayList<>();
+//        mediaTypes.add(MediaType.FILMS);
+//        final PageContainer<Media> mostLikedFilms = favoriteService.getMostLikedMedia(MediaType.FILMS, 0, itemsPerContainer);
+//        final PageContainer<Media> mediaListContainer = mediaService.getMediaByFilters(mediaTypes,page-1,itemsPerPage, SortType.valueOf(filterForm.getSortType().toUpperCase()),genres,filterForm.getDecade(), filterForm.getLastYear());
+//        mav.addObject("mostLikedFilms", mostLikedFilms.getElements());
+//        mav.addObject("mediaListContainer", mediaListContainer);
+//        final List<String> decades = new ArrayList<>();
+//        decades.add("ALL");
+//        for (Integer i : IntStream.range(0, 11).map(x -> (10 * x) + 1920).toArray()) {
+//            decades.add(Integer.toString(i));
+//        }
+//        mav.addObject("sortTypes", Arrays.stream(SortType.values()).map(SortType::getName).map(String::toUpperCase).collect(Collectors.toList()));
+//        mav.addObject("genreTypes",Arrays.stream(Genre.values()).map(Genre::getGenre).map(String::toUpperCase).collect(Collectors.toList()));
+//        mav.addObject("decadesType", decades);
+//        LOGGER.info("Access to films successfully");
+//        return mav;
+
     @RequestMapping("/requests/browse")
-    public ModelAndView browseRequests(@RequestParam(defaultValue = "1") String page,
-                                    @RequestParam(required = false) String origin,
-                                    @RequestParam(required = false) String destination,
-                                    @RequestParam(required = false) Integer minAvailableVolume,
-                                    @RequestParam(required = false) Integer maxAvailableVolume,
-                                    @RequestParam(required = false) Integer minAvailableWeight,
-                                    @RequestParam(required = false) Integer maxAvailableWeight,
-                                    @RequestParam(required = false) Integer minPrice,
-                                    @RequestParam(required = false) Integer maxPrice,
-                                    @RequestParam(required = false) String sortOrder,
-                                    @RequestParam(required = false) String departureDate,
-                                    @RequestParam(required = false) String arrivalDate,
-                                    @RequestParam(required = false) String type)
-    {
-        LOGGER.info("Accessing browse requests page");
-        Integer maxPages = ts.getActiveRequestsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+    public ModelAndView browse( @RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") FilterForm ff, final BindingResult errors){
+
+        final ModelAndView view = new ModelAndView("requests/browse");
+
+        if(errors.hasErrors()){
+            List<Trip> trips = new ArrayList<>();
+            view.addObject("offers", trips);
+            view.addObject("errors", errors);
+            LOGGER.info("Error filtering trips");
+            return  view;
+        }
+
+        String arrDate;
+        String depDate;
+        if(ff.getArrivalDate() == null || ff.getArrivalDate().equals(""))
+            arrDate = "";
+        else
+            arrDate = ff.getArrivalDate();
+
+        if (ff.getDepartureDate() == null || ff.getDepartureDate().equals(""))
+            depDate = "";
+        else
+            depDate = ff.getDepartureDate();
+
+       // String page= "1";
+        Integer maxPages = ts.getActiveRequestsTotalPages(ff.getOrigin(), ff.getDestination(),ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), depDate, arrDate, ff.getType());
+
         Integer currPage = Integer.parseInt(page);
         if(currPage < 1 || currPage > maxPages ){
             page = "1";
         }
 
-
-        LOGGER.debug("MAX PAGES = {}", maxPages);
-
-        final ModelAndView view = new ModelAndView("requests/browse");
-
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", page);
-        view.addObject("origin",origin);
-        view.addObject("destination",destination);
-        view.addObject("minAvailableVolume",minAvailableVolume);
-        view.addObject("minAvailableWeight",minAvailableWeight);
-        view.addObject("minPrice",minPrice);
-        view.addObject("maxPrice",maxPrice);
-        view.addObject("sortOrder",sortOrder);
-        view.addObject("departureDate",departureDate);
-        view.addObject("arrivalDate",arrivalDate);
-        view.addObject("cargoType",type);
-        List<Trip> trips = ts.getAllActiveRequests(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page));
+        view.addObject("origin",ff.getOrigin());
+        view.addObject("destination",ff.getDestination());
+        view.addObject("minAvailableVolume",ff.getAvailableVolume());
+        view.addObject("minAvailableWeight",ff.getMinAvailableWeight());
+        view.addObject("minPrice",ff.getMinPrice());
+        view.addObject("maxPrice",ff.getMaxPrice());
+        view.addObject("sortOrder",ff.getSortOrder());
+        view.addObject("departureDate",ff.getDepartureDate());
+        view.addObject("arrivalDate",ff.getArrivalDate());
 
-        LOGGER.debug("ACTIVE REQUESTS SIZE: {}  ",trips.size());
-        view.addObject("offers", trips);
+
+        view.addObject("offers", ts.getAllActiveRequests(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
+
         return view;
     }
 

@@ -1,46 +1,52 @@
 package ar.edu.itba.paw.webapp.form;
 
 import org.hibernate.validator.constraints.Range;
+import org.springframework.validation.BindingResult;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class FilterForm {
 
-
     //custom annotation para validar.
-    @Null
-    @Range(min = 1, max=10000)
-    private  int minAvailableWeight;
 
-    @Null
-    @Range(min = 1, max=10000)
-    private  int minAvailableVolume;
+    @Min(1)
+    @Max(1000000)
+    private  Integer minAvailableWeight;
 
-    @Null
-    private Date departureDate;
 
-    @Null
-    private Date arrivalDate;
+    @Range(min = 1, max=1000000)
+    private  Integer minAvailableVolume;
 
-    @Null
-    @Size(min = 1, max = 1000)
+
+    private String type;
+
+
+    private String departureDate;
+
+
+    private String arrivalDate;
+
+
+    @Size(min = 0, max = 1000)
     private  String origin;
 
-    @Null
-    @Size(min = 1, max = 1000)
+
+    @Size(min = 0, max = 1000)
     private String destination;
 
-    @Null
+
     @Size(min = 1, max = 100000)
     private String sortOrder;
 
-    @Null
+
     @Range(min=0, max=999999)
     private Integer minPrice;
 
-    @Null
+
     @Range(min=0, max=1000000)
     private Integer maxPrice;
 
@@ -52,19 +58,19 @@ public class FilterForm {
         this.minAvailableWeight = minAvailableWeight;
     }
 
-    public Date getDepartureDate() {
+    public String getDepartureDate() {
         return departureDate;
     }
 
-    public void setDepartureDate(Date departureDate) {
+    public void setDepartureDate(String departureDate) {
         this.departureDate = departureDate;
     }
 
-    public Date getArrivalDate() {
+    public String getArrivalDate() {
         return arrivalDate;
     }
 
-    public void setArrivalDate(Date arrivalDate) {
+    public void setArrivalDate(String arrivalDate) {
         this.arrivalDate = arrivalDate;
     }
 
@@ -109,12 +115,32 @@ public class FilterForm {
     }
 
 
-    public int getAvailableWeight() {
+    public Integer getAvailableWeight() {
         return minAvailableWeight;
     }
 
-    public int getAvailableVolume() {
+    public Integer getAvailableVolume() {
         return minAvailableVolume;
+    }
+
+    public void setMinAvailableWeight(Integer minAvailableWeight) {
+        this.minAvailableWeight = minAvailableWeight;
+    }
+
+    public Integer getMinAvailableVolume() {
+        return minAvailableVolume;
+    }
+
+    public void setMinAvailableVolume(Integer minAvailableVolume) {
+        this.minAvailableVolume = minAvailableVolume;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getOrigin() {

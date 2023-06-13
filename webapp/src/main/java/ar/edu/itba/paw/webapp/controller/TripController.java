@@ -181,7 +181,7 @@ public class TripController {
 
         view.addObject("maxPage", maxPages);
         view.addObject("currentPage", currPage);
-        view.addObject("origin",origin);
+        view.addObject("origin", origin);
         view.addObject("destination",destination);
         view.addObject("minAvailableVolume",minAvailableVolume);
         view.addObject("minAvailableWeight",minAvailableWeight);

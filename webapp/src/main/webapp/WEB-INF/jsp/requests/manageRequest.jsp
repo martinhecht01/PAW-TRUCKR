@@ -76,7 +76,7 @@
               <div class="d-flex justify-content-evenly">
                 <img class="profileImageNavbar" src="<c:url value="/user/${request.trucker.userId}/profilePicture"/>"/>
                 <div>
-                  <h5 class="card-title"><c:out value="${request.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:if test="${request.provider.reviews.size() != 0}"> <c:out value="${request.trucker.rating}"/></c:if> - (${request.trucker.reviews.size()})</h5>
+                  <h5 class="card-title"><c:out value="${request.trucker.name.toUpperCase()}"/>&nbsp;&nbsp;&nbsp;&nbsp;<svg class="ml-2" width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg> <c:if test="${request.trucker.reviews.size() != 0}"> <c:out value="${request.trucker.rating}"/></c:if> - (${request.trucker.reviews.size()})</h5>
                   <p class="text-dark card-text"><c:out value="${request.trucker.email.toLowerCase()}"/></p>
                 </div>
               </div>
@@ -153,11 +153,6 @@
                 </div>
               </div>
             </form:form>
-            <div class="mt-3 text-right">
-              <a class="btn btn-outline-secondary mx-3 mb-2" href="<c:url value="/trips/search/results?origin=${request.origin}&destination=${request.destination}&minAvailableVolume=${request.volume}&minAvailableWeight=${request.weight}&departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}&type=${request.type}"/>">
-                <spring:message code="SearchSimilar"/>
-              </a>
-            </div>
           </c:if>
           <c:if test="${request.review != null}">
             <div class="card mt-4" style="width: 30rem;">
@@ -167,6 +162,11 @@
             </div>
           </c:if>
         </c:if>
+        <div class="mt-3 text-center">
+          <a class="btn btn-outline-secondary mx-3 mb-2" href="<c:url value="/trips/search/results?origin=${request.origin}&destination=${request.destination}&minAvailableVolume=${request.volume}&minAvailableWeight=${request.weight}&departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}&type=${request.type}"/>">
+            <spring:message code="SearchSimilar"/>
+          </a>
+        </div>
       </div>
     </c:if>
     <c:if test="${request.trucker == null}">
