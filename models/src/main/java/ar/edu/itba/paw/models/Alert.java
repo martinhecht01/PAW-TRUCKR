@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -28,6 +30,7 @@ public class Alert {
     @Column(name = "fromDate", nullable = false)
     private Timestamp fromDate;
 
+    @Nullable
     @Column(name = "toDate")
     private Timestamp toDate;
 
