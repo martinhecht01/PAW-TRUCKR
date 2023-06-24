@@ -111,7 +111,7 @@
 
 
                 <div class="mb-3 ml-3 inlineFormTripleInput">
-                    <form:label path="price" class="form-label"><spring:message code="Price"/></form:label>
+                    <form:label path="price" class="form-label"><spring:message code="SuggestedPrice"/></form:label>
                     <form:errors path="price" min="0" step="1" cssClass="formError" element="p"/>
                     <div class="input-group">
                         <form:input type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" class="form-control" path="price" placeholder="0"/>
