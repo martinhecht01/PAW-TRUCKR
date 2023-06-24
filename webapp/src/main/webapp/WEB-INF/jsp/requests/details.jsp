@@ -83,7 +83,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="Price"/></b></td>
+                        <td><b><spring:message code="SuggestedPrice"/></b></td>
                         <td>$<c:out value="${request.price}"/></td>
                     </tr>
                 </table>
@@ -119,6 +119,8 @@
                                     <spring:message var="writeDescription" code="WriteDescription"/>
                                     <form:textarea type="text" id="description" class="form-control" path="description" placeholder="${writeDescription}"/>
                                 </div>
+                                <p><spring:message code="SuggestedPrice"/> </p>
+                                <p>$${request.price}</p>
                                 <div class="mb-3 flex-column">
                                     <form:label for="description" class="form-label" path="price"><spring:message code="OfferedPrice"/></form:label>
                                     <form:errors cssClass="formError" path="price"/>

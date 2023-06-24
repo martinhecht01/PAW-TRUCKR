@@ -56,7 +56,7 @@
             <td><c:out value="${request.weight}"/> kg</td>
           </tr>
           <tr>
-            <td><b><spring:message code="Price"/></b></td>
+            <td><b><spring:message code="SuggestedPrice"/></b></td>
             <td>$<c:out value="${request.price}"/></td>
           </tr>
         </table>

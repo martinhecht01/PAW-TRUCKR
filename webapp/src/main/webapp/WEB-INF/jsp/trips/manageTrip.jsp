@@ -60,7 +60,7 @@
                         <td><c:out value="${trip.weight}"/> kg</td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="Price"/></b></td>
+                        <td><b><spring:message code="SuggestedPrice"/></b></td>
                         <td>$<c:out value="${trip.price}"/></td>
                     </tr>
                 </table>
