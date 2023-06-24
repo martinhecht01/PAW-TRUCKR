@@ -135,7 +135,7 @@ public class RequestController {
             view.addObject("offers", trips);
             view.addObject("errors", errors);
             LOGGER.info("Error filtering trips");
-            return  view;
+            return view;
         }
 
         String arrDate;
@@ -169,7 +169,6 @@ public class RequestController {
         view.addObject("sortOrder",ff.getSortOrder());
         view.addObject("departureDate",ff.getDepartureDate());
         view.addObject("arrivalDate",ff.getArrivalDate());
-
 
         view.addObject("offers", ts.getAllActiveRequests(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
 
@@ -245,19 +244,6 @@ public class RequestController {
         Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
         return mav;
-    }
-
-    @RequestMapping(value="/requests/sendReview", method = { RequestMethod.POST })
-    public ModelAndView sendReview(@RequestParam("requestid") int requestid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
-        User user = getUser();
-        if (user == null){
-            return new ModelAndView("redirect:/login");
-        }
-        revs.createReview(requestid, userid, rating, comment);
-        if (Objects.equals(user.getRole(), "PROVIDER"))
-            return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestid);
-        else
-            return new ModelAndView("redirect:/requests/details?id="+ requestid);
     }
 
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })

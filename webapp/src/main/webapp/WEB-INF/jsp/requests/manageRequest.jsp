@@ -121,8 +121,8 @@
         </c:if>
         <c:if test="${request.truckerConfirmation && request.providerConfirmation }">
           <c:if test="${request.review == null}">
-            <c:url value="/requests/sendReview" var="reviewPath"/>
-            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${request.trucker.userId}">
+            <c:url value="/reviews/sendReview" var="reviewPath"/>
+            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${request.tripId}&userid=${request.trucker.userId}">
               <div class="card mt-4" style="width: 30rem;">
                 <div class="card-header">
                   <h4>

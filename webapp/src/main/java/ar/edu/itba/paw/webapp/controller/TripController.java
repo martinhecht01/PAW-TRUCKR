@@ -42,15 +42,12 @@ public class TripController {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(TripController.class);
 
-    private final ReviewService revs;
-
     @Autowired
-    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs, ImageService is, ReviewService revs){
+    public TripController(final TripServiceV2 ts, final UserService us, final CityService cs, ImageService is){
         this.ts = ts;
         this.us = us;
         this.cs = cs;
         this.is = is;
-        this.revs = revs;
     }
 
     @RequestMapping("/trips/search")
@@ -232,18 +229,6 @@ public class TripController {
         return mav;
     }
 
-    @RequestMapping(value="/trips/sendReview", method = { RequestMethod.POST })
-    public ModelAndView sendReview(@RequestParam("tripid") int tripid, @RequestParam("userid") int userid, @RequestParam ("rating") int rating, @RequestParam("description") String comment){
-        User user = getUser();
-        if (user == null){
-            return new ModelAndView("redirect:/login");
-        }
-        revs.createReview(tripid, userid, rating, comment);
-        if (Objects.equals(user.getRole(), "TRUCKER"))
-            return new ModelAndView("redirect:/trips/manageTrip?tripId="+ tripid);
-        else
-            return new ModelAndView("redirect:/trips/details?id="+ tripid);
-    }
     @RequestMapping("/trips/acceptSuccess")
     public ModelAndView acceptSuccess(@RequestParam("tripId") String tripId){
         ModelAndView mav = new ModelAndView("trips/acceptSuccess");
