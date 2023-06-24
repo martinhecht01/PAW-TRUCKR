@@ -22,11 +22,11 @@ public class AlertDaoJPA implements AlertDao {
 
 
     @Override
-    public Optional<Alert> createAlert(User user, List<String> cities, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
+    public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
         if(user == null || getAlert(user).isPresent())
             return Optional.empty();
 
-        Alert alert = new Alert(user, cities, maxWeight, maxVolume, from, to);
+        Alert alert = new Alert(user, city, maxWeight, maxVolume, from, to);
         entityManager.persist(alert);
         return Optional.of(alert);
     }
@@ -47,17 +47,17 @@ public class AlertDaoJPA implements AlertDao {
     }
 
     @Override
-    public Optional<Alert> updateAlert(User user, List<String> cities, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
+    public Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
         Alert alert = entityManager.find(Alert.class, user);
 
         if(alert == null)
             return Optional.empty();
 
-        alert.setCities(cities);
+        alert.setCity(city);
         alert.setMaxWeight(maxWeight);
         alert.setMaxVolume(maxVolume);
-        alert.setFrom(from);
-        alert.setTo(to);
+        alert.setFromDate(from);
+        alert.setToDate(to);
 
         entityManager.persist(alert);
 

@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AlertService {
-    Optional<Alert> createAlert(User user, List<String> cities, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
+    Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
 
     Optional<Alert> getAlert(User user);
 
     void deleteAlert(User user);
 
-    Optional<Alert> updateAlert(User user, List<String> cities, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
+    Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
 
     List<Alert> getAlertsThatMatch(Integer tripId);
 }

@@ -3,41 +3,70 @@ package ar.edu.itba.paw.models;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "alerts")
 public class Alert {
-
     @Id
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alerts_alert_id_seq")
+    @SequenceGenerator(sequenceName="alerts_alert_id_seq", name = "alerts_alert_id_seq", allocationSize = 1)
+    @Column(name = "alert_id")
+    private Integer alertId;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "cities", nullable = false)
-    private List<String> cities;
+    @Column(name = "city", nullable = false)
+    private String city;
 
     @Column(name = "maxWeight")
     private Integer maxWeight;
-    @Column(name = "maxWeight")
+    @Column(name = "maxVolume")
     private Integer maxVolume;
 
-    @Column(name = "from", nullable = false)
-    private Timestamp from;
+    @Column(name = "fromDate", nullable = false)
+    private Timestamp fromDate;
 
-    @Column(name = "to")
-    private Timestamp to;
+    @Column(name = "toDate")
+    private Timestamp toDate;
 
     public Alert() {
         /* For Hibernate */
     }
-    public Alert(User user, List<String> cities, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
+    public Alert(Integer alertId, User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate) {
+        this.alertId = alertId;
         this.user = user;
-        this.cities = cities;
+        this.city = city;
         this.maxWeight = maxWeight;
         this.maxVolume = maxVolume;
-        this.from = Timestamp.valueOf(from);
-        this.to = Timestamp.valueOf(to);
+        this.fromDate = Timestamp.valueOf(fromDate);
+        this.toDate = Timestamp.valueOf(toDate);
+    }
+
+    public Alert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate) {
+        this.user = user;
+        this.city = city;
+        this.maxWeight = maxWeight;
+        this.maxVolume = maxVolume;
+        this.fromDate = Timestamp.valueOf(fromDate);
+        this.toDate = Timestamp.valueOf(toDate);
+    }
+
+    public Integer getAlertId() {
+        return alertId;
+    }
+
+    public void setAlertId(Integer alertId) {
+        this.alertId = alertId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public User getUser() {
@@ -48,28 +77,20 @@ public class Alert {
         this.user = user;
     }
 
-    public List<String> getCities() {
-        return cities;
+    public LocalDateTime getFromDate() {
+        return fromDate.toLocalDateTime();
     }
 
-    public void setCities(List<String> cities) {
-        this.cities = cities;
+    public void setFromDate(LocalDateTime fromDate) {
+        this.fromDate = Timestamp.valueOf(fromDate);
     }
 
-    public LocalDateTime getFrom() {
-        return from.toLocalDateTime();
+    public LocalDateTime getToDate() {
+        return toDate.toLocalDateTime();
     }
 
-    public void setFrom(LocalDateTime from) {
-        this.from = Timestamp.valueOf(from);
-    }
-
-    public LocalDateTime getTo() {
-        return to.toLocalDateTime();
-    }
-
-    public void setTo(LocalDateTime to) {
-        this.to = Timestamp.valueOf(to);
+    public void setToDate(LocalDateTime toDate) {
+        this.toDate = Timestamp.valueOf(toDate);
     }
 
     public Integer getMaxWeight() {
@@ -87,4 +108,5 @@ public class Alert {
     public void setMaxVolume(Integer maxVolume) {
         this.maxVolume = maxVolume;
     }
+
 }

@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -46,6 +48,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Review> reviews;
+
+    @Nullable
+    @OneToOne
+    private Alert alert;
 
     // Constructors, getters, and setters
 
@@ -102,6 +108,15 @@ public class User {
     }
 
 // Getters and setters
+
+
+    public Alert getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Alert alert) {
+        this.alert = alert;
+    }
 
     public Integer getUserId() {
         return userId;
