@@ -32,9 +32,6 @@
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
     <div class="inlineFormInputContainer">
         <div class="card inlineFormInputContainer" style="width: 40rem;">
-            <div class="card-header">
-                <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
-            </div>
             <div class="card-body">
                 <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
                 <table class="table table-srequested">
@@ -95,9 +92,6 @@
         <c:if test="${trip.provider == null}">
             <div class="justify-content-top align-items-top" >
                 <div class="card mx-4" style="width: 30rem;">
-                    <div class="card-header">
-                        <h4><spring:message code="Driver"/>:</h4>
-                    </div>
                     <div class="card-body p-3">
                         <a  class="text-decoration-none" href="<c:url value="/profile?id=${trip.trucker.userId}"/>">
                             <div class="d-flex justify-content-evenly">
