@@ -52,7 +52,7 @@
     </symbol>
 </svg>
 
-<div class="px-5 w-100 text-center">
+<div class="px-5 w-100 text-center m-5">
     <h1 class="display-6 mb-2 fw-medium lh-1">How Truckr works</h1>
     <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
         <li class="nav-item mx-2" role="presentation">
@@ -66,83 +66,67 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
             <!-- Content for Tab 1 goes here -->
-            <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
+            <div class="tripCards w-100 px-5 pt-4 justify-content-center m-auto">
 
                 <div class="feature col">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Browse cargo</h3>
-                        </div>
-                        <div class="panel-body">
-                            Browse the cargo that is available. Filter however is more convinient for you
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Browse cargo</h3>
+                            <h5>Browse the cargo that is available. Filter however is more convinient for you</h5>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Select the best cargo option for you</h3>
-                        </div>
-                        <div class="panel-body">
-                            Select the cargo that you want to ship and send an offer
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Select the best cargo option for you</h3>
+                            <h5>Select the cargo that you want to ship and send an offer</h5>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">One more step...</h3>
-                        </div>
-                        <div class="panel-body">
-                            Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">One more step...</h3>
+                            <h5>Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want</h5>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Ship it!</h3>
-                        </div>
-                        <div class="panel-body">
-                            Once the order is confirmed, get in touch with the provider and ship the cargo
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Ship it!</h3>
+                            <h5>Once the order is confirmed, get in touch with the provider and ship the cargo</h5>
                         </div>
                     </div>
+                    <a href="<c:url value="/requests/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="BrowseCargo"/></a>
                 </div>
-
             </div>
         </div>
         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
             <!-- Content for Tab 2 goes here -->
-            <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
+            <div class="tripCards w-100 px-5 pt-4 justify-content-center m-auto">
                 <div class="feature col">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Search for a trip</h3>
-                        </div>
-                        <div class="panel-body">
-                            Create a custom search according to your needs
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Search for a trip</h3>
+                            <h5>Create a custom search according to your needs</h5>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
+                    <div class="card">
+                        <div class="card-body">
                             <h3 class="panel-title">Select the best trip for you</h3>
-                        </div>
-                        <div class="panel-body">
-                            Select the trip that best fits your needs and send an offer
+                            <h5>Select the trip that best fits your needs and send an offer</h5>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">One more step...</h3>
-                        </div>
-                        <div class="panel-body">
-                            Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>One more step...</h3>Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want<h5></h5>
                         </div>
                     </div>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">Ship it!</h3>
-                        </div>
-                        <div class="panel-body">
-                            Once the trucker confirms your offer you can get in touch with him and ship your cargo
+                    <div class="card">
+                        <div class="card-body">
+                            <h3>Ship it!</h3>
+                            <h5>Once the trucker confirms your offer you can get in touch with him and ship your cargo</h5>
                         </div>
                     </div>
                 </div>
             </div>
+            <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="BrowseTrips"/></a>
         </div>
     </div>
 </div>
@@ -150,7 +134,7 @@
 
 
 
-<div class="container px-4 pb-5" id="featured-3">
+<div class="container px-4 pb-5 pt-5" id="featured-3">
     <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
