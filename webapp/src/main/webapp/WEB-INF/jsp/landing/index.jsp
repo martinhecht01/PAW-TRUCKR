@@ -22,17 +22,13 @@
                 <h1 class="display-6 mb-2 fw-medium lh-1"><spring:message code="LandingMainMessage"/></h1>
                 <p class="lead mt-3 light" ><spring:message code="LandingMainSubMessage"/></p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <c:if test="${currentUser == null}">
-                        <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
-                    </c:if>
-                    <c:if test="${currentUser != null}">
-                        <a href="<c:url value="/explore"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
-                    </c:if>
+                    <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="BookATrucker"/></a>
+                    <a href="<c:url value="/requests/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="DriveWithTruckr"/></a>
                 </div>
             </div>
-            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                <img class="rounded-lg-3" src="https://hips.hearstapps.com/hmg-prod/images/volvo-vnr-electric-6x2-with-reefer-trailer-passenger-side-view-on-the-road-daytime-shot-1607106606.jpg?crop=0.643xw:0.988xh;0.204xw,0&resize=1200:*"  alt="" width="780" style="transform: translate(-35%, 0)">
-            </div>
+<%--            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">--%>
+<%--                <img class="rounded-lg-3" src="https://hips.hearstapps.com/hmg-prod/images/volvo-vnr-electric-6x2-with-reefer-trailer-passenger-side-view-on-the-road-daytime-shot-1607106606.jpg?crop=0.643xw:0.988xh;0.204xw,0&resize=1200:*"  alt="" width="780" style="transform: translate(-35%, 0)">--%>
+<%--            </div>--%>
         </div>
     </div>
     <div style="margin-top: auto">
@@ -56,6 +52,82 @@
     </symbol>
 </svg>
 <div class="container px-4 pb-5" id="featured-3">
+    <div style="align-content: center">
+        <h1 class="display-6 mb-2 fw-medium lh-1">How Truckr works</h1>
+        <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
+            <div class="feature col">
+                <p class="lead mt-3 light" >For cargo providers</p>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Search for a trip</h3>
+                    </div>
+                    <div class="panel-body">
+                        Create a custom search according to your needs
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Select the best trip for you</h3>
+                    </div>
+                    <div class="panel-body">
+                        Select the trip that best fits your needs and send an offer
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">One more step...</h3>
+                    </div>
+                    <div class="panel-body">
+                        Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ship it!</h3>
+                    </div>
+                    <div class="panel-body">
+                        Once the trucker confirms your offer you can get in touch with him and ship your cargo
+                    </div>
+                </div>
+            </div>
+            <div class="feature col">
+                <p class="lead mt-3 light" >For truckers</p>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Browse cargo</h3>
+                    </div>
+                    <div class="panel-body">
+                        Browse the cargo that is available. Filter however is more convinient for you
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Select the best cargo option for you</h3>
+                    </div>
+                    <div class="panel-body">
+                        Select the cargo that you want to ship and send an offer
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">One more step...</h3>
+                    </div>
+                    <div class="panel-body">
+                        Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Ship it!</h3>
+                    </div>
+                    <div class="panel-body">
+                        Once the order is confirmed, get in touch with the provider and ship the cargo
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
