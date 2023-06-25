@@ -47,6 +47,11 @@
 <form:form method="get">
   <div class="d-flex pt-5 w-100 justify-content-center p-5">
     <div class="w-75">
+      <c:if test="${offers.size() != 0}">
+        <div class="pt-4">
+          <h3><spring:message code="ResultsFound"/> <spring:message code="DontLikeThem"/> <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}"/>" class="text-decoration-underline"><spring:message code="CreatePublication"/></a></h3>
+        </div>
+      </c:if>
       <div class="d-flex">
         <div class="tripCards m-auto ml-5 justify-content-center">
           <c:if test="${offers.size() == 0}">
