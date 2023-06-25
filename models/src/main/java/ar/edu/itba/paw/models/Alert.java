@@ -15,15 +15,18 @@ public class Alert {
     @Column(name = "alert_id")
     private Integer alertId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "city", nullable = false)
     private String city;
 
+    @Nullable
     @Column(name = "maxWeight")
     private Integer maxWeight;
+
+    @Nullable
     @Column(name = "maxVolume")
     private Integer maxVolume;
 
@@ -37,7 +40,7 @@ public class Alert {
     public Alert() {
         /* For Hibernate */
     }
-    public Alert(Integer alertId, User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate) {
+    public Alert(Integer alertId, User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate, Alert alert) {
         this.alertId = alertId;
         this.user = user;
         this.city = city;
@@ -89,7 +92,7 @@ public class Alert {
     }
 
     public LocalDateTime getToDate() {
-        return toDate.toLocalDateTime();
+        return toDate == null ? null : toDate.toLocalDateTime();
     }
 
     public void setToDate(LocalDateTime toDate) {

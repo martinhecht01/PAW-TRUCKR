@@ -23,7 +23,7 @@ public class AlertDaoJPA implements AlertDao {
 
     @Override
     public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
-        if(user == null || getAlert(user).isPresent())
+        if(user == null || user.getAlert() != null)
             return Optional.empty();
 
         Alert alert = new Alert(user, city, maxWeight, maxVolume, from, to);
@@ -31,19 +31,20 @@ public class AlertDaoJPA implements AlertDao {
         return Optional.of(alert);
     }
 
-    @Override
-    public Optional<Alert> getAlert(User user) {
-        Alert alert = entityManager.find(Alert.class, user);
-
-        if(alert == null)
-            return Optional.empty();
-
-        return Optional.of(alert);
-    }
+//    @Override
+//    public Optional<Alert> getAlert(User user) {
+//        Alert alert = entityManager.find(Alert.class, user);
+//
+//        if(alert == null)
+//            return Optional.empty();
+//
+//        return Optional.of(alert);
+//    }
 
     @Override
     public void deleteAlert(Alert alert) {
-        entityManager.remove(alert);
+        if(alert != null)
+            entityManager.remove(alert);
     }
 
     @Override
@@ -66,14 +67,15 @@ public class AlertDaoJPA implements AlertDao {
 
     @Override
     public List<Alert> getAlertsThatMatch(Trip trip) {
-        String jpql = "SELECT a FROM Alert a WHERE :city IN a.cities AND DATE(a.from) <= CAST( :departureDate AS DATE) AND (a.to = NULL OR a.to >= CAST( :departureDate AS DATE)) AND a.maxWeight >= :weight AND a.maxVolume >= :volume AND a.cargoType = :type";
+        String jpql = "SELECT a FROM Alert a WHERE :city = a.city AND DATE(a.from) <= CAST( :departureDate AS DATE) AND (a.to = NULL OR a.to >= CAST( :departureDate AS DATE)) AND (a.maxWeight = null OR a.maxWeight >= :weight) AND (a.maxVolume = null OR a.maxVolume >= :volume)";
 
         return entityManager.createQuery(jpql, Alert.class)
                 .setParameter("city", trip.getOrigin())
                 .setParameter("departureDate", trip.getDepartureDate())
                 .setParameter("weight", trip.getWeight() == null ? 0 : trip.getWeight())
                 .setParameter("volume", trip.getVolume() == null ? 0 : trip.getVolume())
-                .setParameter("type", trip.getType())
+//                .setParameter("type", trip.getType())
                 .getResultList();
     }
+
 }

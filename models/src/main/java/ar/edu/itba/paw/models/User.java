@@ -40,17 +40,16 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Proposal> proposals;
 
-    @OneToMany(mappedBy = "trucker", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "trucker", fetch = FetchType.LAZY)
     private List<Trip> truckerTrips;
 
-    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     private List<Trip> providerTrips;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Review> reviews;
 
-    @Nullable
-    @OneToOne
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Alert alert;
 
     // Constructors, getters, and setters

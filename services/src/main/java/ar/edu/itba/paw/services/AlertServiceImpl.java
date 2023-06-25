@@ -31,15 +31,14 @@ public class AlertServiceImpl implements AlertService{
         return alertDao.createAlert(user, city, maxWeight, maxVolume, from, to);
     }
 
-    @Override
-    public Optional<Alert> getAlert(User user) {
-        return alertDao.getAlert(user);
-    }
+//    @Override
+//    public Optional<Alert> getAlert(User user) {
+//        return alertDao.getAlert(user);
+//    }
 
     @Override
     public void deleteAlert(User user) {
-        Optional<Alert> alert = alertDao.getAlert(user);
-        alert.ifPresent(alertDao::deleteAlert);
+        alertDao.deleteAlert(user.getAlert());
     }
 
     @Override

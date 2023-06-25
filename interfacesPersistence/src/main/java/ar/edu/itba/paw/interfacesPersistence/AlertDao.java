@@ -12,7 +12,7 @@ public interface AlertDao {
 
     Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
 
-    Optional<Alert> getAlert(User user);
+//    Optional<Alert> getAlert(User user);
 
     void deleteAlert(Alert alert);
     Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
