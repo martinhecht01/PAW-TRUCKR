@@ -33,9 +33,9 @@
 
 <components:navBar/>
 
-<div class="w-100 px-5 d-flex justify-content-center">
-  <div class="mt-5 w-75 card">
-    <div class="card-header">
+<div class="w-100 px-5 d-flex flex-column justify-content-center">
+  <div class="mt-5 w-75 card m-auto">
+    <div class="card-header d-flex justify-content-between w-100">
       <h3><spring:message code="MyAlert"/></h3>
     </div>
     <div class="card-body">
@@ -48,17 +48,17 @@
              <div class="d-flex flex-row w-100 p-3 justify-content-between">
                 <div class="d-flex flex-column w-25 px-5">
                   Ciudad
-                  <label for="text"></label>
-                  <input type="text" id="text" value="${currentUser.alert.city}" disabled="true">
+                  <label class="form-label" for="text"></label>
+                  <input class="form-control bg-light" type="text" id="text" value="${currentUser.alert.city}" disabled="true">
                 </div>
                <div class="d-flex w-75 px-5">
                  <div class="d-flex flex-column px-3" style="width: 40%">
-                   <label for="from">Desde</label>
-                   <input type="datetime-local" id="from" value="${currentUser.alert.fromDate}" disabled>
+                   <label class="form-label" for="from">Desde</label>
+                   <input class="form-control bg-light" type="datetime-local" id="from" value="${currentUser.alert.fromDate}" disabled>
                  </div>
                  <div class="d-flex flex-column px-3" style="width: 40%">
-                   <label for="to">Hasta</label>
-                   <input type="datetime-local" id="to" value="${currentUser.alert.toDate}" disabled>
+                   <label class="form-label" for="to">Hasta</label>
+                   <input class="form-control bg-light" type="datetime-local" id="to" value="${currentUser.alert.toDate}" disabled>
                    <div class="form-check my-2">
                      <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled <c:if test="${currentUser.alert.toDate == null}"> checked </c:if>>
                      <label class="form-check-label" for="flexRadioDefault1">
@@ -79,6 +79,11 @@
         </div>
     </div>
   </div>
+  <div class="mt-5 w-75 d-flex justify-content-end m-auto">
+    <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="What is an Alert?" data-bs-content="Setup an alert and you will get notified when a cargo that matches your needs appears!">
+      Need help?
+    </button>
+  </div>
 </div>
 
 <div style="margin-top: auto">
@@ -87,3 +92,8 @@
 </div>
 </body>
 </html>
+
+<script>
+  const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+  const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+</script>

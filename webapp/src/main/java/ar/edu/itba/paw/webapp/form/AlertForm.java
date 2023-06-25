@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 
 //@DateValidation(start="departureDate", end="arrivalDate")
@@ -46,16 +47,22 @@ public class AlertForm {
         this.maxVolume = maxVolume;
     }
 
-    public String getFromDate() {
-        return fromDate;
+    public LocalDateTime getFromDate() {
+        if(fromDate == null || fromDate.isEmpty()){
+            return null;
+        }
+        return LocalDateTime.parse(fromDate);
     }
 
     public void setFromDate(String fromDate) {
         this.fromDate = fromDate;
     }
 
-    public String getToDate() {
-        return toDate;
+    public LocalDateTime getToDate() {
+        if (toDate == null || toDate.isEmpty()) {
+            return null;
+        }
+        return LocalDateTime.parse(toDate);
     }
 
     public void setToDate(String toDate) {

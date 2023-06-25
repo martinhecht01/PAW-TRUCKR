@@ -12,7 +12,7 @@
 <link href="<c:url value="/css/main.css"/>" rel="stylesheet"/>
 
 <head>
-    <title><spring:message code="CreateTrip"/></title>
+    <title><spring:message code="CreateAlert"/></title>
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">
@@ -38,15 +38,13 @@
 <%--                    </form:select>--%>
 <%--                </div>--%>
 <%--            </div>--%>
-            <div class="inlineFormInputContainer">
-                <div class="mb-3 inlineFormInput">
-                    <form:label path="origin" class="form-label"><spring:message code="Origin"/></form:label>
-                    <form:errors path="origin" cssClass="formError" element="p"/>
-                    <form:select class="form-select" path="origin" html:required="true">
-                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
-                        <form:options items="${cities}"/>
-                    </form:select>
-                </div>
+            <div class="mb-3">
+                <form:label path="origin" class="form-label"><spring:message code="Origin"/></form:label>
+                <form:errors path="origin" cssClass="formError" element="p"/>
+                <form:select class="form-select" path="origin" html:required="true">
+                    <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                    <form:options items="${cities}"/>
+                </form:select>
             </div>
             <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
@@ -109,7 +107,7 @@
 <%--                </div>--%>
 <%--            </div>--%>
 
-            <input type="submit" value="<spring:message code="CreateTrip"/>" class="btn btn-color mt-3 formButton"/>
+            <input type="submit" value="<spring:message code="CreateAlert"/>" class="btn btn-color mt-3 formButton"/>
         </div>
     </div>
 </form:form>

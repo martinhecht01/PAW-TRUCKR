@@ -47,7 +47,7 @@ public class Alert {
         this.maxWeight = maxWeight;
         this.maxVolume = maxVolume;
         this.fromDate = Timestamp.valueOf(fromDate);
-        this.toDate = Timestamp.valueOf(toDate);
+        this.toDate = toDate == null ? null : Timestamp.valueOf(toDate);
     }
 
     public Alert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate) {
@@ -55,8 +55,8 @@ public class Alert {
         this.city = city;
         this.maxWeight = maxWeight;
         this.maxVolume = maxVolume;
-        this.fromDate = Timestamp.valueOf(fromDate);
-        this.toDate = Timestamp.valueOf(toDate);
+        this.fromDate = fromDate == null ? null : Timestamp.valueOf(fromDate);
+        this.toDate = toDate == null ? null : Timestamp.valueOf(toDate);
     }
 
     public Integer getAlertId() {
@@ -96,7 +96,7 @@ public class Alert {
     }
 
     public void setToDate(LocalDateTime toDate) {
-        this.toDate = Timestamp.valueOf(toDate);
+        this.toDate = toDate == null ? null : Timestamp.valueOf(toDate);
     }
 
     public Integer getMaxWeight() {
