@@ -87,6 +87,13 @@
                     <li class="nav-item ml-5" style="margin-right: 10px">
                         <a class="nav-link" id="offers" href="<c:url value="/myOffers"/>"><spring:message code="MyOffers"/></a>
                     </li>
+                    <li class="nav-item mx-5">
+                        <c:if test="${currentRole == 'TRUCKER'}">
+                            <a class="nav-link" id="myAlert" href="<c:url value="/alerts/myAlerts"/>">
+                                <spring:message code="MyAlert"/>
+                            </a>
+                        </c:if>
+                    </li>
                 </ul>
             </c:if>
             <div class="" style="margin: auto 0 auto auto; display: flex; flex-direction: row">
@@ -164,6 +171,11 @@
     var browseRequestsLink = document.getElementById('browseRequests2');
     if (browseRequestsLink && browseRequestsLink.getAttribute('href') === path) {
         browseRequestsLink.classList.add('active');
+    }
+
+    var myALertLink = document.getElementById('myAlert');
+    if (myALertLink && myALertLink.getAttribute('href') === path) {
+        myALertLink.classList.add('active');
     }
 </script>
 

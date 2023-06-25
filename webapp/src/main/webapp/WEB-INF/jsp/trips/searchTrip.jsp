@@ -20,7 +20,7 @@
 
 <components:navBar/>
 <%--Formulario--%>
-<form:form modelAttribute="searchTripForm" action="${postPath}" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="filterForm" action="${postPath}" method="post" enctype="multipart/form-data">
   <div class="card w-75 mb-3 mt-5 formCard">
     <div class="card-header">
       <h4 class="card-title"><b><spring:message code="SearchTrips"/></b></h4>
@@ -31,7 +31,7 @@
         <div class="mb-3 inlineFormInput">
           <form:label path="origin" for="origin" class="form-label"><spring:message code="Origin"/></form:label>
           <form:errors path="origin" cssClass="formError" element="p"/>
-          <form:select class="form-select" path="origin" html:required="true">
+          <form:select class="form-select" path="origin">
             <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
             <form:options items="${cities}"/>
           </form:select>
@@ -39,7 +39,7 @@
         <div class="mb-3 inlineFormInput">
           <form:label path="destination" for="destination" class="form-label"><spring:message code="Destination"/></form:label>
           <form:errors path="destination" cssClass="formError" element="p"/>
-          <form:select class="form-select" path="destination" html:required="true">
+          <form:select class="form-select" path="destination">
             <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
             <form:options items="${cities}"/>
           </form:select>
@@ -58,21 +58,22 @@
         </div>
       </div>
       <div class="mb-3">
-        <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
-        <form:errors path="cargoType" cssClass="formError" element="p"/>
-        <form:select class="form-select" path="cargoType">
+        <form:label path="type" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
+        <form:errors path="type" cssClass="formError" element="p"/>
+        <form:select class="form-select" path="type">
           <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
-          <form:option value="Refrigerated"><spring:message code="CreateTripCargoTypeRefrigerated"/></form:option>
-          <form:option value="Hazardous"><spring:message code="CreateTripCargoTypeHazardous"/></form:option>
-          <form:option value="Normal"><spring:message code="CreateTripCargoTypeNormal"/></form:option>
+          <c:forEach var="cargoType" items="${cargoTypes}">
+            <spring:message code="${cargoType}" var="cargoTypeMsg"/>
+            <form:option value="${cargoType}">${cargoTypeMsg}</form:option>
+          </c:forEach>
         </form:select>
       </div>
       <div class="inlineFormInputContainer">
         <div class="mb-3 mr-3 inlineFormInput">
-          <form:label path="availableVolume"  class="form-label"><spring:message code="AvailableVolume"/></form:label>
-          <form:errors path="availableVolume" cssClass="formError" element="p"/>
+          <form:label path="minAvailableVolume"  class="form-label"><spring:message code="NecessaryVolume"/></form:label>
+          <form:errors path="minAvailableVolume" cssClass="formError" element="p"/>
           <div class="input-group">
-            <form:input type="number" min="0" step="1" class="form-control" path="availableVolume" placeholder="0"/>
+            <form:input path="minAvailableVolume" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0"  max="1000000" step="1" name="minAvailableVolume" class="form-control" id="minAvailableVolume" value="${minAvailableVolume}" placeholder="-"/>
             <div class="input-group-append">
               <span class="input-group-text inputSpan">m3</span>
             </div>
@@ -80,12 +81,35 @@
         </div>
 
         <div class="mb-3 mx-3 inlineFormInput">
-          <form:label path="availableWeight" for="origin" class="form-label"><spring:message code="AvailableWeight"/></form:label>
-          <form:errors path="availableWeight" cssClass="formError" element="p"/>
+          <form:label path="minAvailableWeight" for="origin" class="form-label"><spring:message code="NecessaryWeight"/></form:label>
+          <form:errors path="minAvailableWeight" cssClass="formError" element="p"/>
           <div class="input-group">
-            <form:input type="number" min="0" step="1" class="form-control" path="availableWeight" placeholder="0"/>
+            <form:input path="minAvailableWeight" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" max="1000000" step="1" class="form-control" name="minAvailableWeight" id="minAvailableWeight"  value="${minAvailableWeight}" placeholder="-"/>
             <div class="input-group-append">
               <span class="input-group-text inputSpan">kg</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="inlineFormInputContainer">
+        <div class="mb-3 mr-3 inlineFormInput">
+          <form:label path="minPrice"  class="form-label"><spring:message code="FiltersMinPrice"/></form:label>
+          <form:errors path="minPrice" cssClass="formError" element="p"/>
+          <div class="input-group">
+            <form:input path="minPrice" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0"  max="1000000" step="1" name="minPrice" class="form-control" id="minPrice" value="${minPrice}" placeholder="-"/>
+            <div class="input-group-append">
+              <span class="input-group-text inputSpan">ARS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3 mx-3 inlineFormInput">
+          <form:label path="maxPrice" for="origin" class="form-label"><spring:message code="FiltersMaxPrice"/></form:label>
+          <form:errors path="maxPrice" cssClass="formError" element="p"/>
+          <div class="input-group">
+            <form:input path="maxPrice" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" max="1000000" step="1" class="form-control" name="maxPrice" id="maxPrice"  value="${maxPrice}" placeholder="-"/>
+            <div class="input-group-append">
+              <span class="input-group-text inputSpan">ARS</span>
             </div>
           </div>
         </div>

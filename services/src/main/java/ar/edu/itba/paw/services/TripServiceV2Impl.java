@@ -1,15 +1,15 @@
 package ar.edu.itba.paw.services;
 
-import ar.edu.itba.paw.interfacesPersistence.ImageDao;
-import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
-import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
-import ar.edu.itba.paw.interfacesPersistence.UserDao;
+import ar.edu.itba.paw.interfacesPersistence.*;
+import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,13 +37,16 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     private final MailService ms;
 
+    private final AlertDao alertDao;
+
     @Autowired
-    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, @Qualifier("imageDaoJPA") ImageDao imageDao, MailService ms, ReviewDao reviewDao) {
+    public TripServiceV2Impl(TripDaoV2 tripDaoV2, UserDao userDao, @Qualifier("imageDaoJPA") ImageDao imageDao, MailService ms, ReviewDao reviewDao, AlertDao alertDao) {
         this.tripDaoV2 = tripDaoV2;
         this.userDao = userDao;
         this.imageDao = imageDao;
         this.reviewDao = reviewDao;
         this.ms = ms;
+        this.alertDao = alertDao;
     }
 
     @Transactional
@@ -74,7 +77,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
                               String type,
                               int price) {
         User user = userDao.getUserById(providerId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.createRequest(user, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
+        Trip trip =  tripDaoV2.createRequest(user, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
+
+        List<Alert> alerts = alertDao.getAlertsThatMatch(trip);
+
+        System.out.println("ALERTS THAT MATCH = " + alerts.size());
+
+        //TODO: enviar mail a los usuarios que tienen alertas que matchean con el trip
+
+        return trip;
     }
 
     @Transactional

@@ -40,104 +40,101 @@
   </symbol>
 </svg>
 
-<%--<c:url value="/trips/browse" var="getPath"/>--%>
-<%--<form:form method="get" modelAttribute="filterForm" action="${getPath}">--%>
+<c:url value="/trips/browse" var="postPath"/>
 
 <components:navBar/>
-<form:form method="get">
+<form:form modelAttribute="filterForm" action="${postPath}" method="get" enctype="multipart/form-data">
 <div class="d-flex pt-5" style="width: 100%; padding: 10% 10% ">
   <div class="filterCard" style="max-width: 18rem">
-      <div class="card">
-        <div class="card-header">
-          <h5 class="card-title"><b><spring:message code="Filters"/></b></h5>
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title"><b><spring:message code="Filters"/></b></h5>
+      </div>
+      <div class="card-body">
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <form:label path="origin" for="origin"><spring:message code="Origin"/>:</form:label>
+              <form:select path="origin" class="form-select" name="origin" id="origin">
+                <form:option value="" selected="true">-</form:option>
+                <form:options items="${cities}"/>
+              </form:select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <form:label path="destination" for="destination"><spring:message code="Destination"/>:</form:label>
+              <form:select path="destination" class="form-select" name="destination" id="destination">
+                <form:option value="" selected="true">-</form:option>
+                <form:options items="${cities}"/>
+              </form:select>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
-          <div class="row mb-3">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="origin"><spring:message code="Origin"/>:</label>
-                  <select class="form-select" name="origin" id="origin">
-                    <option value="" selected="true">-</option>
-                    <c:forEach items="${cities}" var="city">
-                      <option value="${city}" <c:if test="${origin == city}">selected="true"</c:if> >${city}</option>
-                    </c:forEach>
-                  </select>
-
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="destination"><spring:message code="Destination"/>:</label>
-                  <select class="form-select" name="destination" id="destination">
-                    <option value="" selected="true">-</option>
-                    <c:forEach items="${cities}" var="city">
-                      <option value="${city}" <c:if test="${destination == city}">selected="true"</c:if> >${city}</option>
-                    </c:forEach>
-                  </select>
-                </div>
-              </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="minPrice"><spring:message code="FiltersMinPrice"/>:</label>
-                <input class="form-control" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" name="minPrice" id="minPrice" <c:if test="${minPrice != null && minPrice != ''}">value="${minPrice}"</c:if> placeholder="-"/>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="maxPrice"><spring:message code="FiltersMaxPrice"/>:</label>
-                <input class="form-control" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" name="maxPrice" id="maxPrice" <c:if test="${maxPrice != null && maxPrice != ''}">value="${maxPrice}"</c:if> placeholder="-">
-              </div>
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <div class="form-group">
+              <form:label  path="minPrice" for="minPrice"><spring:message code="FiltersMinPrice"/>:</form:label>
+              <form:errors path="minPrice" cssClass="formError" element="p"/>
+              <form:input class="form-control" path="minPrice" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0"  max="1000000" step="1" name="minPrice" id="minPrice" value="${minPrice}" placeholder="-"/>
             </div>
           </div>
-          <div class="form-group mb-3">
-            <label for="minAvailableVolume"><spring:message code="FiltersMinVolume"/>:</label>
-            <input type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" name="minAvailableVolume" class="form-control" id="minAvailableVolume"
-                   <c:if test="${minAvailableVolume != null || minAvailableVolume != ''}">value="${minAvailableVolume}"</c:if> placeholder="-">
-          </div>
-          <div class="form-group mb-3">
-            <label for="minAvailableWeight"><spring:message code="FiltersMinWeight"/>:</label>
-            <input type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" step="1" class="form-control" name="minAvailableWeight" id="minAvailableWeight"
-                   <c:if test="${minAvailableWeight != null || minAvailableWeight != ''}">value="${minAvailableWeight}"</c:if> placeholder="-">
-          </div>
-          <div class="form-group row mb-3">
-            <div class="col-md-6">
-              <label for="departureDate"><spring:message code="FiltersDeparture"/>:</label>
-              <input type="datetime-local" class="form-control" id="departureDate" name="departureDate" <c:if test="${departureDate != null || departureDate != ''}">value="${departureDate}"</c:if>/>
-            </div>
-            <div class="col-md-6">
-              <label for="arrivalDate"><spring:message code="FiltersArrival"/>:</label>
-              <input type="datetime-local" class="form-control" id="arrivalDate" name="arrivalDate" <c:if test="${arrivalDate != null || arrivalDate != ''}">value="${arrivalDate}"</c:if> />
+          <div class="col-md-6">
+            <div class="form-group">
+              <form:label path="maxPrice" for="maxPrice"><spring:message code="FiltersMaxPrice"/>:</form:label>
+              <form:errors path="maxPrice" cssClass="formError" element="p"/>
+              <form:input path="maxPrice" class="form-control" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0"  max="1000000" step="1" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="-"/>
             </div>
           </div>
-            <div class="form-group mb-3">
-                <label for="type"><spring:message code="CreateTripCargoType"/></label>
-                <select class="form-select" name="type" id="type">
-                    <option value="" disabled <c:if test="${cargoType == null || cargoType == ''}">selected</c:if>><spring:message code="Select"/></option>
-                    <option value="Refrigerated" <c:if test="${cargoType == 'Refrigerated'}">selected</c:if>><spring:message code="CreateTripCargoTypeRefrigerated"/></option>
-                    <option value="Hazardous" <c:if test="${cargoType == 'Hazardous'}">selected</c:if>><spring:message code="CreateTripCargoTypeHazardous"/></option>
-                    <option value="Normal" <c:if test="${cargoType == 'Normal'}">selected</c:if>><spring:message code="CreateTripCargoTypeNormal"/></option>
-                </select>
-            </div>
-          <div class="form-group mb-3">
-            <label for="sortOrder"><spring:message code="FiltersSortBy"/>:</label>
-            <select class="form-control" name="sortOrder" id="sortOrder">
-                <option value="" disabled <c:if test="${sortOrder == null || sortOrder == ''}">selected</c:if>><spring:message code="Select"/></option>
-                <option value="departureDate ASC" <c:if test="${sortOrder == 'departureDate ASC'}">selected</c:if>><spring:message code="FiltersSortDepartureDateAsc"/></option>
-                <option value="departureDate DESC" <c:if test="${sortOrder == 'departureDate DESC'}">selected</c:if>><spring:message code="FiltersSortDepartureDateDesc"/></option>
-                <option value="arrivalDate ASC" <c:if test="${sortOrder == 'arrivalDate ASC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateAsc"/></option>
-                <option value="arrivalDate DESC" <c:if test="${sortOrder == 'arrivalDate DESC'}">selected</c:if>><spring:message code="FiltersSortArrivalDateDesc"/></option>
-                <option value="price ASC" <c:if test="${sortOrder == 'price ASC'}">selected</c:if>><spring:message code="FiltersSortPriceAsc"/></option>
-                <option value="price DESC" <c:if test="${sortOrder == 'price DESC'}">selected</c:if>><spring:message code="FiltersSortPriceDesc"/></option>
-            </select>
+        </div>
+        <div class="form-group mb-3">
+          <form:label path="minAvailableVolume" for="minAvailableVolume"><spring:message code="FiltersMinVolume"/>:</form:label>
+          <form:errors path="minAvailableVolume" cssClass="formError" element="p"/>
+          <form:input path="minAvailableVolume" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0"  max="1000000" step="1" name="minAvailableVolume" class="form-control" id="minAvailableVolume" value="${minAvailableVolume}" placeholder="-"/>
+        </div>
+        <div class="form-group mb-3">
+          <form:label path="minAvailableWeight" for="minAvailableWeight"><spring:message code="FiltersMinWeight"/>:</form:label>
+          <form:errors path="minAvailableWeight" cssClass="formError" element="p"/>
+          <form:input path="minAvailableWeight" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" max="1000000" step="1" class="form-control" name="minAvailableWeight" id="minAvailableWeight"  value="${minAvailableWeight}" placeholder="-"/>
+        </div>
+        <div class="form-group row mb-3">
+          <div class="col-md-6">
+            <form:label path="departureDate" for="departureDate"><spring:message code="FiltersDeparture"/>:</form:label>
+            <form:input path="departureDate" type="datetime-local" class="form-control" id="departureDate" name="departureDate" value="${departureDate}"/>
           </div>
-          <div class="d-flex w-100 flex-row justify-content-between">
-            <button type="submit" class="w-50 btn btn-color" ><spring:message code="FiltersApply"/></button>
-            <a href="<c:url value="/trips/browse"/>" class="w-25 btn btn-outline-secondary"><spring:message code="Clear"/></a>
+          <div class="col-md-6">
+            <form:label path="arrivalDate" for="arrivalDate"><spring:message code="FiltersArrival"/>:</form:label>
+            <form:input path="arrivalDate" type="datetime-local" class="form-control" id="arrivalDate" name="arrivalDate" value="${arrivalDate}"/>
           </div>
+        </div>
+        <div class="form-group mb-3">
+          <form:label path="type" for="type"><spring:message code="CreateTripCargoType"/></form:label>
+          <form:select path="type" class="form-control" name="type" id="type">
+            <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+            <c:forEach var="cargoType" items="${cargoTypes}">
+              <spring:message code="${cargoType}" var="cargoTypeMsg"/>
+              <form:option value="${cargoType}">${cargoTypeMsg}</form:option>
+            </c:forEach>
+          </form:select>
+        </div>
+        <div class="form-group mb-3">
+          <form:label path="sortOrder" for="sortOrder"><spring:message code="FiltersSortBy"/>:</form:label>
+          <form:select path="sortOrder" class="form-control" name="sortOrder" id="sortOrder">
+            <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+            <form:option value="departureDate ASC" ><spring:message code="FiltersSortDepartureDateAsc"/></form:option>
+            <form:option value="departureDate DESC" ><spring:message code="FiltersSortDepartureDateDesc"/></form:option>
+            <form:option value="arrivalDate ASC" ><spring:message code="FiltersSortArrivalDateAsc"/></form:option>
+            <form:option value="arrivalDate DESC" ><spring:message code="FiltersSortArrivalDateDesc"/></form:option>
+            <form:option value="price ASC" ><spring:message code="FiltersSortPriceAsc"/></form:option>
+            <form:option value="price DESC" ><spring:message code="FiltersSortPriceDesc"/></form:option>
+          </form:select>
+        </div>
+        <div class="d-flex w-100 flex-row justify-content-between">
+          <button type="submit" class="w-50 btn btn-color" ><spring:message code="FiltersApply"/></button>
+          <a type="submit" href="<c:url value="/trips/browse"/>" class="w-25 btn btn-outline-secondary" ><spring:message code="Clear"/></a type="submit">
         </div>
       </div>
+    </div>
   </div>
   <div class="w-100">
     <div class="d-flex">

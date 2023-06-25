@@ -107,6 +107,16 @@
                         </div>
                     </div>
                     <div class="form-group mb-3">
+                        <form:label path="type" for="type"><spring:message code="CreateTripCargoType"/></form:label>
+                        <form:select path="type" class="form-control" name="type" id="type">
+                            <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                            <c:forEach var="cargoType" items="${cargoTypes}">
+                                <spring:message code="${cargoType}" var="cargoTypeMsg"/>
+                                <form:option value="${cargoType}">${cargoTypeMsg}</form:option>
+                            </c:forEach>
+                        </form:select>
+                    </div>
+                    <div class="form-group mb-3">
                         <form:label path="sortOrder" for="sortOrder"><spring:message code="FiltersSortBy"/>:</form:label>
                         <form:select path="sortOrder" class="form-control" name="sortOrder" id="sortOrder">
                             <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>

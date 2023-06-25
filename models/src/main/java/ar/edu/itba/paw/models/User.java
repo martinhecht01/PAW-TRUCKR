@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.models;
 
+import com.sun.istack.internal.Nullable;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -38,14 +40,17 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Proposal> proposals;
 
-    @OneToMany(mappedBy = "trucker", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "trucker", fetch = FetchType.LAZY)
     private List<Trip> truckerTrips;
 
-    @OneToMany(mappedBy = "provider", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "provider", fetch = FetchType.LAZY)
     private List<Trip> providerTrips;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Review> reviews;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Alert alert;
 
     // Constructors, getters, and setters
 
@@ -102,6 +107,15 @@ public class User {
     }
 
 // Getters and setters
+
+
+    public Alert getAlert() {
+        return alert;
+    }
+
+    public void setAlert(Alert alert) {
+        this.alert = alert;
+    }
 
     public Integer getUserId() {
         return userId;

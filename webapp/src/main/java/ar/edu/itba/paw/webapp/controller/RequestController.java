@@ -170,6 +170,7 @@ public class RequestController {
         view.addObject("sortOrder",ff.getSortOrder());
         view.addObject("departureDate",ff.getDepartureDate());
         view.addObject("arrivalDate",ff.getArrivalDate());
+        view.addObject("type",ff.getType());
 
         view.addObject("offers", ts.getAllActiveRequests(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
 
@@ -185,7 +186,8 @@ public class RequestController {
                                       @RequestParam(required = false) Integer minAvailableWeight,
                                       @RequestParam(required = false) String departureDate,
                                       @RequestParam(required = false) String arrivalDate,
-                                      @RequestParam(required = false) String type) {
+                                      @RequestParam(required = false) String type,
+                                      @RequestParam(required = false) Integer suggestedPrice) {
         LOGGER.info("Accessing create requests page");
         final ModelAndView view = new ModelAndView("requests/create");
         view.addObject("origin",origin);
@@ -195,6 +197,7 @@ public class RequestController {
         view.addObject("departureDate",departureDate);
         view.addObject("arrivalDate", arrivalDate);
         view.addObject("type", type);
+        view.addObject("suggestedPrice",suggestedPrice);
         return view;
     }
 
@@ -208,7 +211,7 @@ public class RequestController {
     public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             LOGGER.info("Error in create request form");
-            return createRequest(form, form.getOrigin(), form.getDestination(), Integer.parseInt(form.getRequestedVolume()), Integer.parseInt(form.getRequestedWeight()), form.getMinDepartureDate(), form.getMaxArrivalDate(), form.getCargoType());
+            return createRequest(form, form.getOrigin(), form.getDestination(), Integer.parseInt(form.getRequestedVolume()), Integer.parseInt(form.getRequestedWeight()), form.getMinDepartureDate(), form.getMaxArrivalDate(), form.getCargoType(), Integer.parseInt(form.getMaxPrice()));
         }
 
         LocalDateTime departure = LocalDateTime.parse(form.getMinDepartureDate());
@@ -250,7 +253,8 @@ public class RequestController {
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
-        ts.confirmTrip(requestId, user.getUserId(),LocaleContextHolder.getLocale());
+        ts.confirmTrip(requestId, user.getUserId());
+
         if (Objects.equals(user.getRole(), "PROVIDER")) {
             LOGGER.info("Request with Id: {} confirmed successfully by provider", requestId);
             return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);

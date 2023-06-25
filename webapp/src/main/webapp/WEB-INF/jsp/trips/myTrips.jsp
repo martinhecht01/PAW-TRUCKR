@@ -87,7 +87,7 @@
                                     <div class="w-100 d-flex space-apart">
                                         <div class="text-truncate text-center" style="width: 35%">
                                             <h5><c:out value="${trip.origin}"/></h5>
-                                            ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
+                                                ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
                                         </div>
 
                                         <div style="width: 30%">
@@ -96,7 +96,7 @@
 
                                         <div class="text-truncate text-center" style="width: 35%">
                                             <h5><c:out value="${trip.destination}"/></h5>
-                                            ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                                ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
                                         </div>
                                     </div>
                                 </div>
@@ -154,15 +154,15 @@
                         </div>
                     </c:if>
                     <c:forEach var="trip" items="${expiredPublications}">
-                            <div class="card m-3" style="width: 25rem;">
-                                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="browseImg" alt="...">
-                                <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
-                                <div class="card-body">
-                                    <div class="w-100 d-flex space-apart">
-                                        <div class="text-truncate text-center" style="width: 35%">
-                                            <h5><c:out value="${trip.origin}"/></h5>
+                        <div class="card m-3" style="width: 25rem;">
+                            <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="browseImg" alt="...">
+                            <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${trip.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${trip.type}"></use></svg><spring:message code="${trip.type}" htmlEscape="true"/></span></h4>
+                            <div class="card-body">
+                                <div class="w-100 d-flex space-apart">
+                                    <div class="text-truncate text-center" style="width: 35%">
+                                        <h5><c:out value="${trip.origin}"/></h5>
                                             ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
-                                        </div>
+                                    </div>
 
                                     <div style="width: 30%">
                                         <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
@@ -170,7 +170,7 @@
 
                                     <div class="text-truncate text-center" style="width: 35%">
                                         <h5><c:out value="${trip.destination}"/></h5>
-                                        ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                            ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
                                     </div>
                                 </div>
                             </div>
@@ -220,7 +220,6 @@
             </div>
         </div>
     </div>
-
 </form:form>
 <div style="margin-top: auto">
     <components:waveDivider/>

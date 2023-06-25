@@ -29,6 +29,7 @@ import javax.validation.Valid;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,79 +53,61 @@ public class TripController {
     }
 
     @RequestMapping("/trips/search")
-    public ModelAndView searchGet(@ModelAttribute("searchTripForm") final SearchTripForm form){
+    public ModelAndView searchGet(@ModelAttribute("filterForm") final FilterForm form){
         final ModelAndView mav = new ModelAndView("trips/searchTrip");
         return mav;
     }
 
     @RequestMapping(value = "/trips/search", method = RequestMethod.POST)
-    public ModelAndView searchPost(@Valid @ModelAttribute("searchTripForm") final SearchTripForm form, final BindingResult result){
+    public ModelAndView searchPost(@Valid @ModelAttribute("filterForm") final FilterForm form, final BindingResult result){
         if(result.hasErrors()){
             return searchGet(form);
         }
 
-        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
-        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
-
-        return new ModelAndView("redirect:/trips/search/results?" +
-                "origin="
-                +form.getOrigin()
-                +"&destination=" + form.getDestination()
-                +"&minAvailableVolume=" + form.getAvailableVolume()
-                +"&minAvailableWeight=" + form.getAvailableWeight()
-                +"&departureDate=" + departure
-                +"&arrivalDate=" + arrival
-                +"&type=" + form.getCargoType()
-        );
+        return new ModelAndView("forward:/trips/search/results?");
     }
 
     @RequestMapping("/trips/search/results")
-    public ModelAndView searchResults(@RequestParam(defaultValue = "1") String page,
-                                      @RequestParam(required = false) String origin,
-                                      @RequestParam(required = false) String destination,
-                                      @RequestParam(required = false) Integer minAvailableVolume,
-                                      @RequestParam(required = false) Integer minAvailableWeight,
-                                      @RequestParam(required = false) Integer minPrice,
-                                      @RequestParam(required = false) Integer maxPrice,
-                                      @RequestParam(required = false) String sortOrder,
-                                      @RequestParam(required = false) String departureDate,
-                                      @RequestParam(required = false) String arrivalDate,
-                                      @RequestParam(required = false) String type){
+    public ModelAndView searchResults(@RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") final FilterForm ff, final BindingResult result){
         LOGGER.info("Accessing search results trips page");
-        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, null, null, type);
-        Integer currPage = Integer.parseInt(page);
-
-        if(currPage < 1 || currPage > maxPages ){
-            currPage = 1;
-        }
-
         final ModelAndView view = new ModelAndView("trips/results");
 
+        String arrDate;
+        String depDate;
+        if(ff.getArrivalDate() == null || ff.getArrivalDate().equals(""))
+            arrDate = "";
+        else
+            arrDate = ff.getArrivalDate();
+
+        if (ff.getDepartureDate() == null || ff.getDepartureDate().equals(""))
+            depDate = "";
+        else
+            depDate = ff.getDepartureDate();
+
+        Integer maxPages = ts.getActiveTripsTotalPages(ff.getOrigin(), ff.getDestination(),ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), depDate, arrDate, ff.getType());
+
+        Integer currPage = Integer.parseInt(page);
+        if(currPage < 1 || currPage > maxPages ){
+            page = "1";
+        }
+
         view.addObject("maxPage", maxPages);
-        view.addObject("currentPage", currPage);
-        view.addObject("origin",origin);
-        view.addObject("destination",destination);
-        view.addObject("minAvailableVolume",minAvailableVolume);
-        view.addObject("minAvailableWeight",minAvailableWeight);
-        view.addObject("minPrice",minPrice);
-        view.addObject("maxPrice",maxPrice);
-        view.addObject("sortOrder",sortOrder);
-        view.addObject("departureDate",departureDate);
-        view.addObject("arrivalDate", arrivalDate);
+        view.addObject("currentPage", page);
+        view.addObject("origin",ff.getOrigin());
+        view.addObject("destination",ff.getDestination());
+        view.addObject("minAvailableVolume",ff.getAvailableVolume());
+        view.addObject("minAvailableWeight",ff.getMinAvailableWeight());
+        view.addObject("minPrice",ff.getMinPrice());
+        view.addObject("maxPrice",ff.getMaxPrice());
+        view.addObject("sortOrder",ff.getSortOrder());
+        view.addObject("departureDate",ff.getDepartureDate());
+        view.addObject("arrivalDate",ff.getArrivalDate());
+        view.addObject("cargoType",ff.getType());
 
+        view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
 
-        //TODO: Agregar las fechas aca
-        List<Trip> trips = ts.getAllActiveTrips(origin, destination,minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, null, null, type, Integer.parseInt(page));
-        LOGGER.debug("TRIPS SIZE = {}",trips.size());
-        view.addObject("offers", trips);
         return view;
     }
-
-    @ModelAttribute("cities")
-    public List<String> getCities() {
-        return cs.getAllCities();
-    }
-
 
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
@@ -157,39 +140,53 @@ public class TripController {
     }
 
     @RequestMapping("/trips/browse")
-    public ModelAndView browse(@RequestParam(defaultValue = "1") String page,
-                               @RequestParam(required = false) String origin,
-                               @RequestParam(required = false) String destination,
-                               @RequestParam(required = false) Integer minAvailableVolume,
-                               @RequestParam(required = false) Integer minAvailableWeight,
-                               @RequestParam(required = false) Integer minPrice,
-                               @RequestParam(required = false) Integer maxPrice,
-                               @RequestParam(required = false) String sortOrder,
-                               @RequestParam(required = false) String departureDate,
-                               @RequestParam(required = false) String arrivalDate,
-                               @RequestParam(required = false) String type) {
+    public ModelAndView browse(@RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") FilterForm ff, final BindingResult errors) {
         LOGGER.info("Accessing browse trips page");
-        Integer maxPages = ts.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
-        Integer currPage = Integer.parseInt(page);
-        if (currPage < 1 || currPage > maxPages) {
-            page = "1";
-        }
 
         final ModelAndView view = new ModelAndView("trips/browse");
 
+        if(errors.hasErrors()){
+            List<Trip> requests = new ArrayList<>();
+            view.addObject("offers", requests);
+            view.addObject("errors", errors);
+            LOGGER.info("Error filtering requests");
+            return  view;
+        }
+
+        String arrDate;
+        String depDate;
+        if(ff.getArrivalDate() == null || ff.getArrivalDate().equals(""))
+            arrDate = "";
+        else
+            arrDate = ff.getArrivalDate();
+
+        if (ff.getDepartureDate() == null || ff.getDepartureDate().equals(""))
+            depDate = "";
+        else
+            depDate = ff.getDepartureDate();
+
+        Integer maxPages = ts.getActiveTripsTotalPages(ff.getOrigin(), ff.getDestination(),ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), depDate, arrDate, ff.getType());
+
+        Integer currPage = Integer.parseInt(page);
+        if(currPage < 1 || currPage > maxPages ){
+            page = "1";
+        }
+
         view.addObject("maxPage", maxPages);
-        view.addObject("currentPage", currPage);
-        view.addObject("origin", origin);
-        view.addObject("destination",destination);
-        view.addObject("minAvailableVolume",minAvailableVolume);
-        view.addObject("minAvailableWeight",minAvailableWeight);
-        view.addObject("minPrice",minPrice);
-        view.addObject("maxPrice",maxPrice);
-        view.addObject("sortOrder",sortOrder);
-        view.addObject("cargoType",type);
-        view.addObject("departureDate",departureDate);
-        view.addObject("arrivalDate", arrivalDate);
-        view.addObject("offers", ts.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, Integer.parseInt(page)));
+        view.addObject("currentPage", page);
+        view.addObject("origin",ff.getOrigin());
+        view.addObject("destination",ff.getDestination());
+        view.addObject("minAvailableVolume",ff.getAvailableVolume());
+        view.addObject("minAvailableWeight",ff.getMinAvailableWeight());
+        view.addObject("minPrice",ff.getMinPrice());
+        view.addObject("maxPrice",ff.getMaxPrice());
+        view.addObject("sortOrder",ff.getSortOrder());
+        view.addObject("departureDate",ff.getDepartureDate());
+        view.addObject("arrivalDate",ff.getArrivalDate());
+        view.addObject("type",ff.getType());
+
+        view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
+
         return view;
     }
 
@@ -306,6 +303,7 @@ public class TripController {
             return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
         }
         else {
+            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             return new ModelAndView("redirect:/trips/details?id=" + tripId);
         }

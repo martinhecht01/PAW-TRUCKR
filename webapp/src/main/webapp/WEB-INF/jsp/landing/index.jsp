@@ -22,17 +22,13 @@
                 <h1 class="display-6 mb-2 fw-medium lh-1"><spring:message code="LandingMainMessage"/></h1>
                 <p class="lead mt-3 light" ><spring:message code="LandingMainSubMessage"/></p>
                 <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <c:if test="${currentUser == null}">
-                        <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
-                    </c:if>
-                    <c:if test="${currentUser != null}">
-                        <a href="<c:url value="/explore"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="Explore"/></a>
-                    </c:if>
+                    <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="BookATrucker"/></a>
+                    <a href="<c:url value="/requests/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="DriveWithTruckr"/></a>
                 </div>
             </div>
-            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
-                <img class="rounded-lg-3" src="https://hips.hearstapps.com/hmg-prod/images/volvo-vnr-electric-6x2-with-reefer-trailer-passenger-side-view-on-the-road-daytime-shot-1607106606.jpg?crop=0.643xw:0.988xh;0.204xw,0&resize=1200:*"  alt="" width="780" style="transform: translate(-35%, 0)">
-            </div>
+<%--            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">--%>
+<%--                <img class="rounded-lg-3" src="https://hips.hearstapps.com/hmg-prod/images/volvo-vnr-electric-6x2-with-reefer-trailer-passenger-side-view-on-the-road-daytime-shot-1607106606.jpg?crop=0.643xw:0.988xh;0.204xw,0&resize=1200:*"  alt="" width="780" style="transform: translate(-35%, 0)">--%>
+<%--            </div>--%>
         </div>
     </div>
     <div style="margin-top: auto">
@@ -55,31 +51,115 @@
         <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path>
     </symbol>
 </svg>
-<div class="container px-4 pb-5" id="featured-3">
-    <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
-        <div class="feature col">
-            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#people"></use></svg>
+
+<div class="px-5 w-100 text-center m-5">
+    <h1 class="display-6 mb-3 fw-bold lh-1">How does Truckr work?</h1>
+    <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
+        <li class="nav-item mx-2" role="presentation">
+            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">For Truckers</button>
+        </li>
+        <li class="nav-item mx-2" role="presentation">
+            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">For Providers</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+            <!-- Content for Tab 1 goes here -->
+            <div class="tripCards w-50 px-5 pt-4 justify-content-center m-auto">
+
+                <div class="feature col">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">1. Browse cargo</h3>
+                            <p>Browse the cargo that is available. Filter however is more convinient for you</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">2. Select the best cargo option for you</h3>
+                            <p>Select the cargo that you want to ship and send an offer</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">3. One more step</h3>
+                            <p>Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">4. Ship it!</h3>
+                            <p>Once the order is confirmed, get in touch with the provider and ship the cargo</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="fs-2"><spring:message code="TrustworthyTruckers"/></h3>
-            <p class="light"><spring:message code="TrustworthyTruckersMessage"/></p>
+            <a href="<c:url value="/requests/browse"/>" type="button" class="btn btn-lg me-md-2 w-25" style="background-color: #142D4C; color: white;"><spring:message code="BrowseCargo"/></a>
         </div>
-        <div class="feature col">
-            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#piggy-bank"></use></svg>
+        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <!-- Content for Tab 2 goes here -->
+            <div class="tripCards w-50 px-5 pt-4 justify-content-center m-auto">
+                <div class="feature col">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3>1. Search for a trip</h3>
+                            <p>Create a custom search according to your needs</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="panel-title">2. Select the best trip for you</h3>
+                            <p>Select the trip that best fits your needs and send an offer</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3>3. One more step</h3>
+                            <p>Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want</p>
+                        </div>
+                    </div>
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3>4. Wait fot it!</h3>
+                            <p>Once the trucker confirms your offer you can get in touch with him and wait for your cargo</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <h3 class="fs-2"><spring:message code="EconomicSolutions"/></h3>
-            <p class="light"><spring:message code="EconomicSolutionsMessage"/></p>
-        </div>
-        <div class="feature col">
-            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-                <svg class="bi" width="1em" height="1em"><use xlink:href="#truck"></use></svg>
-            </div>
-            <h3 class="fs-2"><spring:message code="ExploitReturns"/></h3>
-            <p class="light"><spring:message code="ExploitReturnsMessage"/></p>
+            <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg me-md-2 w-25" style="background-color: #142D4C; color: white;"><spring:message code="BrowseTrips"/></a>
         </div>
     </div>
 </div>
+
+
+
+
+<%--<div class="container px-4 pb-5 pt-5" id="featured-3">--%>
+<%--    <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">--%>
+<%--        <div class="feature col">--%>
+<%--            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">--%>
+<%--                <svg class="bi" width="1em" height="1em"><use xlink:href="#people"></use></svg>--%>
+<%--            </div>--%>
+<%--            <h3 class="fs-2"><spring:message code="TrustworthyTruckers"/></h3>--%>
+<%--            <p class="light"><spring:message code="TrustworthyTruckersMessage"/></p>--%>
+<%--        </div>--%>
+<%--        <div class="feature col">--%>
+<%--            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">--%>
+<%--                <svg class="bi" width="1em" height="1em"><use xlink:href="#piggy-bank"></use></svg>--%>
+<%--            </div>--%>
+<%--            <h3 class="fs-2"><spring:message code="EconomicSolutions"/></h3>--%>
+<%--            <p class="light"><spring:message code="EconomicSolutionsMessage"/></p>--%>
+<%--        </div>--%>
+<%--        <div class="feature col">--%>
+<%--            <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">--%>
+<%--                <svg class="bi" width="1em" height="1em"><use xlink:href="#truck"></use></svg>--%>
+<%--            </div>--%>
+<%--            <h3 class="fs-2"><spring:message code="ExploitReturns"/></h3>--%>
+<%--            <p class="light"><spring:message code="ExploitReturnsMessage"/></p>--%>
+<%--        </div>--%>
+<%--    </div>--%>
+<%--</div>--%>
 </body>
 <components:footer/>
 </html>

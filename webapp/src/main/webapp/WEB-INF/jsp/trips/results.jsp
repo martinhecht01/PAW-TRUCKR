@@ -45,15 +45,54 @@
 
 <components:navBar/>
 <form:form method="get">
-  <div class="d-flex pt-5 w-100 justify-content-center p-5">
+  <div class="d-flex pt-4 w-100 justify-content-center p-5">
     <div class="w-75">
+      <c:if test="${offers.size() != 0}">
+        <div class="pb-2">
+          <span>
+            <c:if test="${origin != null && origin != ''}">
+              <spring:message code="Origin"/>: <b>${origin}</b>;
+            </c:if>
+            <c:if test="${destination  != null && destination != ''}">
+              <spring:message code="Destination"/>: <b>${destination}</b>;
+            </c:if>
+            <c:if test="${departureDate != null && departureDate != ''}">
+              <spring:message code="DepartureDate"/>: <b>${departureDate}</b>;
+            </c:if>
+            <c:if test="${arrivalDate != null && arrivalDate != ''}">
+              <spring:message code="ArrivalDate"/>: <b>${arrivalDate}</b>;
+            </c:if>
+            <c:if test="${cargoType != null && cargoType != ''}">
+              <spring:message code="CargoType"/>: <b>${cargoType}</b>;
+            </c:if>
+            <c:if test="${minAvailableVolume != null && minAvailableVolume != 0}">
+              <spring:message code="NecessaryVolume"/>: <b>${minAvailableVolume}</b>;
+            </c:if>
+            <c:if test="${minAvailableWeight != null && minAvailableWeight != 0}">
+              <spring:message code="NecessaryWeight"/>: <b>${minAvailableWeight}</b>;
+            </c:if>
+            <c:if test="${minPrice != null && minPrice != 0}">
+              <spring:message code="FiltersMinPrice"/>: <b>${maxPrice}</b>;
+            </c:if>
+            <c:if test="${maxPrice != null && maxPrice != 0}">
+              <spring:message code="FiltersMaxPrice"/>: <b>${maxPrice}</b>;
+            </c:if>
+          </span>
+        </div>
+      </c:if>
       <div class="d-flex">
         <div class="tripCards m-auto ml-5 justify-content-center">
           <c:if test="${offers.size() == 0}">
             <div class="pt-4">
               <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoResults"/></h2>
               <p><spring:message code="CreateTripPublication"/></p>
-              <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}"/>" type="submit" class="btn btn-color mt-3 formButton"><spring:message code="CreatePublication"/></a>
+              <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" type="submit" class="btn btn-color mt-3 formButton"><spring:message code="CreatePublication"/></a>
+              <div class="mt-3 d-flex justify-content-evenly w-100 flex-row">
+                <a type="submit" href="<c:url value="/explore"/>" class="w-25 btn btn-outline-secondary"><spring:message code="TryAgain"/></a>
+                <a type="submit" href="<c:url value="/trips/browse"/>" class="w-25 btn btn-outline-secondary"><spring:message code="SearchAllTrips"/></a>
+              </div>
+            </div>
+            <div class="pt-4">
             </div>
           </c:if>
           <c:forEach var="trip" items="${offers}">
@@ -122,11 +161,15 @@
             </li>
           </c:if>
         </ul>
+        <div class="w-100">
+          <h6 class="text-end"><spring:message code="DontLikeThem"/> <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="CreatePublication"/></a></h6>
+        </div>
       </c:if>
+      <div class="w-100">
+        <h6 class="text-start"><a href="<c:url value="/explore?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&minPrice=${minPrice}&maxPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="GoBack"/></a></h6>
+      </div>
     </div>
   </div>
-
-
 </form:form>
 <div style="margin-top: auto">
   <components:waveDivider/>
