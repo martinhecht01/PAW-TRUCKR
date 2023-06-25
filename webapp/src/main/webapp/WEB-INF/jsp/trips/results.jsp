@@ -161,9 +161,12 @@
             </li>
           </c:if>
         </ul>
+        <div class="w-100">
+          <h6 class="text-end"><spring:message code="DontLikeThem"/> <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="CreatePublication"/></a></h6>
+        </div>
       </c:if>
       <div class="w-100">
-        <h6 class="text-end"><spring:message code="DontLikeThem"/> <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="CreatePublication"/></a></h6>
+        <h6 class="text-start"><a href="<c:url value="/explore?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="GoBack"/></a></h6>
       </div>
     </div>
   </div>
