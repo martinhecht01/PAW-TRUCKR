@@ -32,9 +32,6 @@
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
   <div class="inlineFormInputContainer">
     <div class="card inlineFormInputContainer" style="width: 40rem;">
-      <div class="card-header">
-        <h4 class="card-title"><b><spring:message code="Details"/></b></h4>
-      </div>
       <div class="card-body">
         <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
         <table class="table">
@@ -59,7 +56,7 @@
             <td><c:out value="${request.weight}"/> kg</td>
           </tr>
           <tr>
-            <td><b><spring:message code="Price"/></b></td>
+            <td><b><spring:message code="SuggestedPrice"/></b></td>
             <td>$<c:out value="${request.price}"/></td>
           </tr>
         </table>
@@ -68,9 +65,6 @@
     <c:if test="${request.trucker != null}">
       <div class="justify-content-top align-items-top px-5" >
         <div class="card" style="width: 30rem;">
-          <div class="card-header">
-            <h4><spring:message code="Driver"/>: </h4>
-          </div>
           <div class="card-body p-3">
             <a class="text-decoration-none" href="<c:url value="/profile?id=${request.trucker.userId}"/>">
               <div class="d-flex justify-content-evenly">
@@ -121,8 +115,8 @@
         </c:if>
         <c:if test="${request.truckerConfirmation && request.providerConfirmation }">
           <c:if test="${request.review == null}">
-            <c:url value="/requests/sendReview" var="reviewPath"/>
-            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?requestid=${request.tripId}&userid=${request.trucker.userId}">
+            <c:url value="/reviews/sendReview" var="reviewPath"/>
+            <form:form method="post" modelAttribute="acceptForm" action="${reviewPath}?tripid=${request.tripId}&userid=${request.trucker.userId}">
               <div class="card mt-4" style="width: 30rem;">
                 <div class="card-header">
                   <h4>

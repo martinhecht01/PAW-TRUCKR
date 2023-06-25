@@ -8,7 +8,6 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,22 +21,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import javax.validation.Valid;
 import java.util.Objects;
-import java.util.Optional;
 
 @Controller
-public class offersController {
+public class OffersController {
 
     private final TripServiceV2 ts;
 
     private final UserService us;
-    private final static Logger LOGGER = LoggerFactory.getLogger(offersController.class);
+    private final static Logger LOGGER = LoggerFactory.getLogger(OffersController.class);
 
 
     @Autowired
-    public offersController(TripServiceV2 ts, UserService us) {
+    public OffersController(TripServiceV2 ts, UserService us) {
         this.ts = ts;
         this.us = us;
     }
