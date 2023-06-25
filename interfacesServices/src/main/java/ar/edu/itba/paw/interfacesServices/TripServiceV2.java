@@ -29,7 +29,8 @@ public interface TripServiceV2 {
                        String origin,
                        String destination,
                        String type,
-                       int price);
+                       int price,
+                       Locale locale);
 
     void confirmTrip(int tripId, int userId,Locale locale);
 

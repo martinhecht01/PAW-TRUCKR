@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -253,5 +252,36 @@ public class MailServiceImpl implements MailService {
         mailSender.send(message);
     }
 
+
+
+    private String generateAlertEmail(User user,Trip request, Locale locale) {
+        Context context = new Context();
+        context.setLocale(locale);
+        context.setVariable("user", user);
+        context.setVariable("request", request);
+        return templateEngine.process("alertrecieved.html", context);
+    }
+
+
+    @Override
+    public void sendAlertEmail(User user, Trip request, Locale locale) {
+        System.out.println("Sending alert email to: " + user.getEmail());
+        String htmlContent = generateAlertEmail(user, request, locale);
+        MimeMessage message = mailSender.createMimeMessage();
+
+        try {
+            LOGGER.info("Preparing alert email");
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+            helper.setTo(user.getEmail());
+            String subject = messageSource.getMessage("AlertSubject", null, locale);
+            helper.setSubject(subject);
+            helper.setText(htmlContent, true);
+        } catch (MessagingException e) {
+            LOGGER.error("Error while sending alert email to: " + user.getEmail());
+        }
+
+        LOGGER.info("Sending alert email to: " + user.getEmail());
+        mailSender.send(message);
+    }
 
 }

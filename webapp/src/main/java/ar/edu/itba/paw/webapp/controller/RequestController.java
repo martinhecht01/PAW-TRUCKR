@@ -229,7 +229,8 @@ public class RequestController {
                 form.getOrigin(),
                 form.getDestination(),
                 form.getCargoType(),
-                Integer.parseInt(form.getMaxPrice())
+                Integer.parseInt(form.getMaxPrice()),
+                LocaleContextHolder.getLocale()
         );
         int imageid=is.uploadImage(form.getTripImage().getBytes());
         ts.updateTripPicture(request.getTripId(),imageid);

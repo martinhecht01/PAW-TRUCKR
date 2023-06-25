@@ -75,7 +75,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
                               String origin,
                               String destination,
                               String type,
-                              int price) {
+                              int price,
+                              Locale locale) {
         User user = userDao.getUserById(providerId).orElseThrow(NoSuchElementException::new);
         Trip trip =  tripDaoV2.createRequest(user, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
 
@@ -84,6 +85,9 @@ public class TripServiceV2Impl implements TripServiceV2 {
         System.out.println("ALERTS THAT MATCH = " + alerts.size());
 
         //TODO: enviar mail a los usuarios que tienen alertas que matchean con el trip
+        for(Alert alert : alerts){
+            ms.sendAlertEmail(alert.getUser(), trip,locale);
+        }
 
         return trip;
     }

@@ -14,4 +14,6 @@ public interface MailService {
     void sendCompletionEmail(User user, Trip trip,Locale locale);
     void sendStatusEmail(User user, Trip trip,Locale locale);
     void sendSecureTokenEmail(User user, Integer tokenValue, Locale locale);
+
+    void sendAlertEmail(User user, Trip request, Locale locale);
 }
