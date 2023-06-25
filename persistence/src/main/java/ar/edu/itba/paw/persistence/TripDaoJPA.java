@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,8 +34,8 @@ public class TripDaoJPA implements TripDaoV2 {
                            final String licensePlate,
                            final int weight,
                            final int volume,
-                           final Timestamp departureDate,
-                           final Timestamp arrivalDate,
+                           final LocalDateTime departureDate,
+                           final LocalDateTime arrivalDate,
                            final String origin,
                            final String destination,
                            final String type,
@@ -52,8 +53,8 @@ public class TripDaoJPA implements TripDaoV2 {
     public Trip createRequest(final User provider,
                               final int weight,
                               final int volume,
-                              final Timestamp departureDate,
-                              final Timestamp arrivalDate,
+                              final LocalDateTime departureDate,
+                              final LocalDateTime arrivalDate,
                               final String origin,
                               final String destination,
                               final String type,
@@ -81,7 +82,7 @@ public class TripDaoJPA implements TripDaoV2 {
             }
         }
         if(!trip.getTruckerConfirmation() || !trip.getProviderConfirmation()){
-            trip.setConfirmationDate(Timestamp.valueOf(LocalDateTime.now()));
+            trip.setConfirmationDate(LocalDateTime.now());
         }
         entityManager.persist(trip);
 //

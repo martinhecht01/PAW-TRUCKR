@@ -62,7 +62,7 @@
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
                         <td>
                             <a class="text-decoration-none text-dark" href="<c:url value="/explore?departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}"/>">
-                                ${request.departureDate.toLocalDateTime().year}-${request.departureDate.toLocalDateTime().monthValue}-${request.departureDate.toLocalDateTime().dayOfMonth} - ${request.arrivalDate.toLocalDateTime().year}-${request.arrivalDate.toLocalDateTime().monthValue}-${request.arrivalDate.toLocalDateTime().dayOfMonth}
+                                ${request.departureDateString} - ${request.arrivalDateString}
                             </a>
                         </td>
                     </tr>
