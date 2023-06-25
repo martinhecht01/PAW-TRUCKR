@@ -24,7 +24,7 @@ public class UserForm {
 
     private String repeatPassword;
 
-    @Pattern(regexp = "20-[0-9]{8}-[0-9]")
+    @Pattern(regexp = "(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]")
     private String cuit;
 
     @NotNull
