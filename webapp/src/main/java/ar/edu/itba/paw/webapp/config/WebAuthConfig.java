@@ -60,7 +60,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
                     .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
                     .antMatchers("/login", "/register", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()
-                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/requests/create", "/requests/myRequests" ).hasRole("PROVIDER")
                     .antMatchers("/trips/create", "/trips/myTrips").hasRole("TRUCKER")
                     .antMatchers( "/","/trips/details", "/requests/details", "/explore", "/trips/{tripId}/tripPicture", "/user/{userId}/profilePicture").permitAll()
