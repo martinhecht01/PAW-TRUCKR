@@ -67,7 +67,7 @@ public class AlertDaoJPA implements AlertDao {
 
     @Override
     public List<Alert> getAlertsThatMatch(Trip trip) {
-        String jpql = "SELECT a FROM Alert a WHERE :city = a.city AND DATE(a.from) <= CAST( :departureDate AS DATE) AND (a.to = NULL OR a.to >= CAST( :departureDate AS DATE)) AND (a.maxWeight = null OR a.maxWeight >= :weight) AND (a.maxVolume = null OR a.maxVolume >= :volume)";
+        String jpql = "SELECT a FROM Alert a WHERE :city = a.city AND a.fromDate <= :departureDate AND (a.toDate IS NULL OR a.toDate >= :departureDate) AND (a.maxWeight IS NULL OR a.maxWeight >= :weight) AND (a.maxVolume IS NULL OR a.maxVolume >= :volume)";
 
         return entityManager.createQuery(jpql, Alert.class)
                 .setParameter("city", trip.getOrigin())
