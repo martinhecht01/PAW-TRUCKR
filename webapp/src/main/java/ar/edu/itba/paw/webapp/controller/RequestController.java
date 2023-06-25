@@ -253,7 +253,7 @@ public class RequestController {
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
-        ts.confirmTrip(requestId, user.getUserId());
+        ts.confirmTrip(requestId, user.getUserId(),LocaleContextHolder.getLocale());
 
         if (Objects.equals(user.getRole(), "PROVIDER")) {
             LOGGER.info("Request with Id: {} confirmed successfully by provider", requestId);
