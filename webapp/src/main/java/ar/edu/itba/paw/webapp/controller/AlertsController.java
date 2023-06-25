@@ -41,7 +41,7 @@ public class AlertsController {
         if(errors.hasErrors())
             return new ModelAndView("alerts/createAlert");
 
-        as.createAlert(getCurrentUser(), form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), form.getFromDate(), form.getToDate());
+        as.createAlert(getCurrentUser(), form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), form.getFromDate(), form.getToDate(), form.getCargoType());
         return new ModelAndView("redirect:/alerts/myAlerts");
     }
 

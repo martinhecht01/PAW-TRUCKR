@@ -22,24 +22,15 @@ public class AlertDaoJPA implements AlertDao {
 
 
     @Override
-    public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
+    public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to, String cargoType) {
         if(user == null || user.getAlert() != null)
             return Optional.empty();
 
-        Alert alert = new Alert(user, city, maxWeight, maxVolume, from, to);
+        Alert alert = new Alert(user, city, maxWeight, maxVolume, from, to, cargoType);
         entityManager.persist(alert);
         return Optional.of(alert);
     }
 
-//    @Override
-//    public Optional<Alert> getAlert(User user) {
-//        Alert alert = entityManager.find(Alert.class, user);
-//
-//        if(alert == null)
-//            return Optional.empty();
-//
-//        return Optional.of(alert);
-//    }
 
     @Override
     public void deleteAlert(Alert alert) {
@@ -67,14 +58,14 @@ public class AlertDaoJPA implements AlertDao {
 
     @Override
     public List<Alert> getAlertsThatMatch(Trip trip) {
-        String jpql = "SELECT a FROM Alert a WHERE :city = a.city AND a.fromDate <= :departureDate AND (a.toDate IS NULL OR a.toDate >= :departureDate) AND (a.maxWeight IS NULL OR a.maxWeight >= :weight) AND (a.maxVolume IS NULL OR a.maxVolume >= :volume)";
+        String jpql = "SELECT a FROM Alert a WHERE (a.cargoType IS NULL OR :type = a.cargoType) AND :city = a.city AND a.fromDate <= :departureDate AND (a.toDate IS NULL OR a.toDate >= :departureDate) AND (a.maxWeight IS NULL OR a.maxWeight >= :weight) AND (a.maxVolume IS NULL OR a.maxVolume >= :volume)";
 
         return entityManager.createQuery(jpql, Alert.class)
                 .setParameter("city", trip.getOrigin())
                 .setParameter("departureDate", trip.getDepartureDate())
                 .setParameter("weight", trip.getWeight() == null ? 0 : trip.getWeight())
                 .setParameter("volume", trip.getVolume() == null ? 0 : trip.getVolume())
-//                .setParameter("type", trip.getType())
+                .setParameter("type", trip.getType())
                 .getResultList();
     }
 

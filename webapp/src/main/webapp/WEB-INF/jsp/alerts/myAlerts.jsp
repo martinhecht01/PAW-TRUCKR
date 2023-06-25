@@ -39,49 +39,85 @@
       <h3><spring:message code="MyAlert"/></h3>
     </div>
     <div class="card-body">
-        <div class="d-flex justify-content-center w-100 align-items-center flex-column">
-          <c:if test="${currentUser.alert == null}">
-            <h5><spring:message code="NoAlert"/></h5>
-            <a class="w-25 mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/alerts/createAlert"/>"><spring:message code="CreateAlert"/></a>
-          </c:if>
-          <c:if test="${currentUser.alert != null}">
-             <div class="d-flex flex-row w-100 p-3 justify-content-between">
-                <div class="d-flex flex-column w-25 px-5">
-                  Ciudad
-                  <label class="form-label" for="text"></label>
-                  <input class="form-control bg-light" type="text" id="text" value="${currentUser.alert.city}" disabled="true">
+      <div class="d-flex justify-content-center w-100 align-items-center flex-column">
+        <c:if test="${currentUser.alert == null}">
+          <h5><spring:message code="NoAlert"/></h5>
+          <a class="w-25 mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/alerts/createAlert"/>"><spring:message code="CreateAlert"/></a>
+        </c:if>
+        <c:if test="${currentUser.alert != null}">
+          <div class="d-flex flex-row w-100 p-3 justify-content-between">
+            <div class="d-flex flex-column w-25 px-5">
+              <label class="form-label" for="text"><spring:message code="Origin"/></label>
+              <input class="form-control bg-light" type="text" id="text" value="${currentUser.alert.city}" disabled="true">
+            </div>
+            <div class="d-flex w-75 px-5">
+              <div class="d-flex flex-column px-3 w-50">
+                <label class="form-label" for="from">Desde</label>
+                <input class="form-control bg-light" type="datetime-local" id="from" value="${currentUser.alert.fromDate}" disabled>
+              </div>
+              <div class="d-flex flex-column px-3 w-50">
+                <label class="form-label" for="to">Hasta</label>
+                <input class="form-control bg-light" type="datetime-local" id="to" value="${currentUser.alert.toDate}" disabled>
+                <div class="form-check my-2">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" disabled <c:if test="${currentUser.alert.toDate == null}"> checked </c:if>>
+                  <label class="form-check-label" for="flexRadioDefault1">
+                    <spring:message code="Undefined"/>
+                  </label>
                 </div>
-               <div class="d-flex w-75 px-5">
-                 <div class="d-flex flex-column px-3" style="width: 40%">
-                   <label class="form-label" for="from">Desde</label>
-                   <input class="form-control bg-light" type="datetime-local" id="from" value="${currentUser.alert.fromDate}" disabled>
-                 </div>
-                 <div class="d-flex flex-column px-3" style="width: 40%">
-                   <label class="form-label" for="to">Hasta</label>
-                   <input class="form-control bg-light" type="datetime-local" id="to" value="${currentUser.alert.toDate}" disabled>
-                   <div class="form-check my-2">
-                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled <c:if test="${currentUser.alert.toDate == null}"> checked </c:if>>
-                     <label class="form-check-label" for="flexRadioDefault1">
-                       Indefinido
-                     </label>
-                   </div>
-                 </div>
-                 <div class="d-flex h-100 align-content-center justify-content-center pt-3" style="width: 20%">
-                   <c:url value="/alerts/delete" var="postPath"/>
-                   <form:form method="post" action="${postPath}">
-                     <spring:message code="Delete" var="Delete"/>
-                     <input type="submit" class="btn btn-outline-danger mx-2" value="${Delete}">
-                   </form:form>
-                 </div>
-               </div>
-             </div>
-          </c:if>
-        </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-row w-100 p-3 justify-content-start">
+            <div class="d-flex flex-column w-25 px-5">
+              <label class="form-label" for="maxWeight"><spring:message code="FiltersMaxWeight"/></label>
+              <input class="form-control bg-light" type="text" id="maxWeight" value="${currentUser.alert.maxWeight}" disabled="true">
+              <div class="form-check my-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault2" disabled <c:if test="${currentUser.alert.maxWeight == null}"> checked </c:if>>
+                <label class="form-check-label" for="flexRadioDefault2">
+                  <spring:message code="Undefined"/>
+                </label>
+              </div>
+            </div>
+            <div class="d-flex flex-column w-25 px-5 mx-3">
+              <label class="form-label" for="maxVolume"><spring:message code="FiltersMaxVolume"/></label>
+              <input class="form-control bg-light" type="text" id="maxVolume" value="${currentUser.alert.maxVolume}" disabled="true">
+              <div class="form-check my-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault3" id="flexRadioDefault3" disabled <c:if test="${currentUser.alert.maxVolume == null}"> checked </c:if>>
+                <label class="form-check-label" for="flexRadioDefault3">
+                  <spring:message code="Undefined"/>
+                </label>
+              </div>
+            </div>
+            <div class="d-flex flex-column w-25 px-5 mx-3">
+              <label class="form-label" for="cargoType"><spring:message code="CargoType"/></label>
+              <c:if test="${currentUser.alert.cargoType != null}">
+                <spring:message code="${currentUser.alert.cargoType}" var="cargoTypeMsg"/>
+              </c:if>
+              <input class="form-control bg-light" type="text" id="cargoType" value="${cargoTypeMsg == null ? "" : cargoTypeMsg}" disabled="true">
+              <div class="form-check my-2">
+                <input class="form-check-input" type="radio" name="flexRadioDefault4" id="flexRadioDefault4" disabled <c:if test="${currentUser.alert.cargoType == null}"> checked </c:if>>
+                <label class="form-check-label" for="flexRadioDefault4">
+                  <spring:message code="Undefined"/>
+                </label>
+              </div>
+            </div>
+            <div class="d-flex mt-3 w-25 align-content-center justify-content-center pt-3">
+              <c:url value="/alerts/delete" var="postPath"/>
+              <form:form method="post" action="${postPath}">
+                <spring:message code="Delete" var="Delete"/>
+                <input type="submit" class="btn btn-outline-danger mx-2" value="${Delete}">
+              </form:form>
+            </div>
+          </div>
+        </c:if>
+      </div>
     </div>
   </div>
   <div class="mt-5 w-75 d-flex justify-content-end m-auto">
-    <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="What is an Alert?" data-bs-content="Setup an alert and you will get notified when a cargo that matches your needs appears!">
-      Need help?
+    <spring:message code="WhatIsAlert" var="WhatIsAlert"/>
+    <spring:message code="AlertDescription" var="AlertDescription"/>
+    <button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="${WhatIsAlert}" data-bs-content="${AlertDescription}">
+      <spring:message code="NeedHelp"/>
     </button>
   </div>
 </div>

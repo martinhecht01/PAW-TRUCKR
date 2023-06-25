@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AlertService {
-    Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
+    Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to, String type);
 
 //    Optional<Alert> getAlert(User user);
 

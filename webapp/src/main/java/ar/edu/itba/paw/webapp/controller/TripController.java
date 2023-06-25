@@ -108,12 +108,6 @@ public class TripController {
         return view;
     }
 
-    @ModelAttribute("cities")
-    public List<String> getCities() {
-        return cs.getAllCities();
-    }
-
-
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
         if (errors.hasErrors() || Objects.requireNonNull(getUser()).getUserId() == null) {
@@ -308,6 +302,7 @@ public class TripController {
             return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
         }
         else {
+            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             return new ModelAndView("redirect:/trips/details?id=" + tripId);
         }

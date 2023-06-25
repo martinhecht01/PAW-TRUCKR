@@ -37,26 +37,30 @@ public class Alert {
     @Column(name = "toDate")
     private Timestamp toDate;
 
+    @Nullable
+    @Column(name = "cargoType")
+    private String cargoType;
+
     public Alert() {
         /* For Hibernate */
     }
-    public Alert(Integer alertId, User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate, Alert alert) {
-        this.alertId = alertId;
-        this.user = user;
-        this.city = city;
-        this.maxWeight = maxWeight;
-        this.maxVolume = maxVolume;
-        this.fromDate = Timestamp.valueOf(fromDate);
-        this.toDate = toDate == null ? null : Timestamp.valueOf(toDate);
-    }
 
-    public Alert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate) {
+    public Alert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime fromDate, LocalDateTime toDate, String cargoType) {
         this.user = user;
         this.city = city;
         this.maxWeight = maxWeight;
         this.maxVolume = maxVolume;
         this.fromDate = fromDate == null ? null : Timestamp.valueOf(fromDate);
         this.toDate = toDate == null ? null : Timestamp.valueOf(toDate);
+        this.cargoType = cargoType;
+    }
+
+    public String getCargoType() {
+        return cargoType;
+    }
+
+    public void setCargoType(String cargoType) {
+        this.cargoType = cargoType;
     }
 
     public Integer getAlertId() {

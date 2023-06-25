@@ -47,9 +47,10 @@
                     <form:errors path="cargoType" cssClass="formError" element="p"/>
                     <form:select class="form-select" path="cargoType">
                         <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
-                        <form:option value="Refrigerated"><spring:message code="CreateTripCargoTypeRefrigerated"/></form:option>
-                        <form:option value="Hazardous"><spring:message code="CreateTripCargoTypeHazardous"/></form:option>
-                        <form:option value="Normal"><spring:message code="CreateTripCargoTypeNormal"/></form:option>
+                        <c:forEach var="cargoType" items="${cargoTypes}">
+                            <spring:message code="${cargoType}" var="cargoTypeMsg"/>
+                            <form:option value="${cargoType}">${cargoTypeMsg}</form:option>
+                        </c:forEach>
                     </form:select>
                 </div>
             </div>

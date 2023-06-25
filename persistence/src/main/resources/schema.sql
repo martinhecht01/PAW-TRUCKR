@@ -77,6 +77,16 @@ CREATE TABLE IF NOT EXISTS cities(
         name TEXT UNIQUE
 );
 
+CREATE TABLE IF NOT EXISTS cargotypes(
+        id SERIAL PRIMARY KEY,
+        name TEXT UNIQUE
+);
+
+-- INSERT INTO cargotypes (name) VALUES
+--         ('Refrigerated'),
+--         ('Hazardous'),
+--         ('Normal');
+
 -- INSERT INTO cities (name) VALUES
 --     ('Azul'),
 --     ('Bahía Blanca'),
