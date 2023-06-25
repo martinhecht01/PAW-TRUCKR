@@ -26,10 +26,19 @@ public class AlertForm {
     @Pattern(regexp="^(\\s*|.+)$")
     //@PreventPast
     private  String toDate;
+    private String cargoType;
 
     @NotNull
     @Size(min = 1, max = 100)
     private  String origin;
+
+    public String getCargoType() {
+        return cargoType;
+    }
+
+    public void setCargoType(String cargoType) {
+        this.cargoType = cargoType;
+    }
 
     public Integer getMaxWeight() {
         return maxWeight;

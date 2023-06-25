@@ -20,10 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TripServiceV2Impl implements TripServiceV2 {
@@ -93,7 +90,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public void confirmTrip(int tripId, int userId) {
+    public void confirmTrip(int tripId, int userId,Locale locale) {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         tripDaoV2.confirmTrip(trip, user);
@@ -101,17 +98,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
         User trucker = trip.getTrucker();
         User provider = trip.getProvider();
         if(trip.getProviderConfirmation()){
-            ms.sendCompletionEmail(trucker, trip);
-            ms.sendCompletionEmail(provider,trip);
+            ms.sendCompletionEmail(trucker, trip,locale);
+            ms.sendCompletionEmail(provider,trip,locale);
         }else{
-            ms.sendStatusEmail(trucker, trip);
-            ms.sendStatusEmail(provider,trip);
+            ms.sendStatusEmail(trucker, trip,locale);
+            ms.sendStatusEmail(provider,trip,locale);
         }
     }
 
     @Transactional
     @Override
-    public Proposal createProposal(int tripId, int userId, String description, int price) {
+    public Proposal createProposal(int tripId, int userId, String description, int price, Locale locale) {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         Proposal proposal = tripDaoV2.createProposal(trip, user, description, price);
@@ -124,13 +121,13 @@ public class TripServiceV2Impl implements TripServiceV2 {
         else
             user = trip.getProvider();
 
-        ms.sendProposalEmail(user, proposal);
+        ms.sendProposalEmail(user, proposal, locale);
         return proposal;
     }
 
     @Transactional
     @Override
-    public void acceptProposal(int proposalId) {
+    public void acceptProposal(int proposalId, Locale locale) {
 
         Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(ProposalNotFoundException::new);
         tripDaoV2.acceptProposal(proposal);
@@ -143,8 +140,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
         User provider = trip.getProvider();
                 //userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
 
-        ms.sendTripEmail(trucker, provider,trip);
-        ms.sendTripEmail(provider, trucker,trip);
+        ms.sendTripEmail(trucker, provider,trip,locale);
+        ms.sendTripEmail(provider, trucker,trip, locale);
     }
 
     @Transactional(readOnly = true)

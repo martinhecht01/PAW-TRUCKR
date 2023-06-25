@@ -27,8 +27,8 @@ public class AlertServiceImpl implements AlertService{
 
 
     @Override
-    public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
-        return alertDao.createAlert(user, city, maxWeight, maxVolume, from, to);
+    public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to, String type) {
+        return alertDao.createAlert(user, city, maxWeight, maxVolume, from, to, type);
     }
 
 //    @Override

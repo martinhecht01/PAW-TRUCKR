@@ -17,6 +17,7 @@ import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -84,7 +85,7 @@ public class UserController {
             return register(false, "", form);
         }
 
-        User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword());
+        User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword(),LocaleContextHolder.getLocale());
         if(user == null){
             LOGGER.info("User with CUIT {} already exists", form.getCuit());
             errors.rejectValue("cuit", "alreadyExists");
@@ -165,7 +166,7 @@ public class UserController {
             return verifyAccountView(form);
         }
 
-        boolean success = us.verifyAccount(Integer.parseInt(form.getToken()));
+        boolean success = us.verifyAccount(Integer.parseInt(form.getToken()), LocaleContextHolder.getLocale());
         if(!success){
             LOGGER.info("Incorrect token");
             errors.rejectValue("token", "IncorrectToken");
@@ -201,7 +202,7 @@ public class UserController {
     public ModelAndView resetPasswordRequest(@RequestParam(value = "cuit", required = false) String cuit){
         User user;
         user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
-        us.createReset(user.getUserId());
+        us.createReset(user.getUserId(),LocaleContextHolder.getLocale());
         LOGGER.info("Reset password request sent for user with CUIT {}", cuit);
         return resetPasswordRequest("false", user.getEmail(), "true");
     }

@@ -15,6 +15,7 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -107,12 +108,6 @@ public class TripController {
 
         return view;
     }
-
-    @ModelAttribute("cities")
-    public List<String> getCities() {
-        return cs.getAllCities();
-    }
-
 
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
@@ -225,7 +220,7 @@ public class TripController {
         if(user == null)
             throw new UserNotFoundException();
 
-        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice());
+        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
         LOGGER.info("Proposal with Id: {} sent successfully", id);
         ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
         mav.addObject("id", id);
@@ -302,12 +297,13 @@ public class TripController {
     @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("id") int tripId) {
         User user = getUser();
-        ts.confirmTrip(tripId, user.getUserId());
+        ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
         if (Objects.equals(user.getRole(), "TRUCKER")) {
             LOGGER.info("Trip with Id: {} confirmed successfully by trucker", tripId);
             return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
         }
         else {
+            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             return new ModelAndView("redirect:/trips/details?id=" + tripId);
         }

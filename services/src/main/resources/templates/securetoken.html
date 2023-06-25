@@ -138,7 +138,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
     <tr>
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Open Sans',sans-serif;" align="left">
         
-  <h1 style="margin: 0px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word; font-family: 'Raleway',sans-serif; font-size: 39px; font-weight: 400;">Verify your Account</h1>
+  <h1 style="margin: 0px; color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word; font-family: 'Raleway',sans-serif; font-size: 39px; font-weight: 400;" th:text="#{VerifyTitle}"></h1>
 
       </td>
     </tr>
@@ -174,9 +174,9 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
   <div style="color: #333333; line-height: 130%; text-align: left; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 130%;"><strong><span style="font-size: 16px; line-height: 20.8px;" th:text="${user.name}"></span></strong></p>
 <p style="font-size: 14px; line-height: 130%;"> </p>
-<p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;">Please confirm your new Truckr account.</span></p>
+<p style="font-size: 14px; line-height: 130%;"><span th:text= "#{PleaseConfirm}" style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;"></span></p>
 <p style="font-size: 14px; line-height: 130%;"> </p>
-<p style="font-size: 14px; line-height: 130%;"><span style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;">Your Secure Token is:</span><span style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;"></span></p>
+<p style="font-size: 14px; line-height: 130%;"><span th:text= "#{TokenIs}" style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;"></span><span style="font-size: 16px; line-height: 20.8px; font-family: Lato, sans-serif;"></span></p>
   </div>
 
       </td>
@@ -225,7 +225,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
       <td style="overflow-wrap:break-word;word-break:break-word;padding:0px 10px 30px 20px;font-family:'Open Sans',sans-serif;" align="left">
         
   <div style="color: #333333; line-height: 160%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px; font-family: Lato, sans-serif;">Happy Trucking!</span></p>
+    <p style="font-size: 14px; line-height: 160%;"><span style="font-size: 16px; line-height: 25.6px; font-family: Lato, sans-serif;" th:text="${HappyTrucking}"></span></p>
   </div>
 
       </td>
@@ -263,7 +263,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 <div align="center">
   <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://tripdetails.com" style="height:41px; v-text-anchor:middle; width:172px;" arcsize="5%"  stroke="f" fillcolor="#142d4c"><w:anchorlock/><center style="color:#FFFFFF;font-family:'Open Sans',sans-serif;"><![endif]-->  
     <a th:href="@{http://pawserver.it.itba.edu.ar/paw-2023a-08/verifyAccount}" target="_blank" class="v-button" style="box-sizing: border-box;display: inline-block;font-family:'Open Sans',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #142d4c; border-radius: 2px;-webkit-border-radius: 2px; -moz-border-radius: 2px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;font-size: 14px;">
-      <span style="display:block;padding:12px 35px;line-height:120%;"><span style="line-height: 16.8px;"><strong><span style="line-height: 16.8px;">Verify Account</span></strong></span></span>
+      <span style="display:block;padding:12px 35px;line-height:120%;"><span style="line-height: 16.8px;"><strong><span style="line-height: 16.8px;" th:text="#{VerifyTitle}"></span></strong></span></span>
     </a>
   <!--[if mso]></center></v:roundrect><![endif]-->
 </div>

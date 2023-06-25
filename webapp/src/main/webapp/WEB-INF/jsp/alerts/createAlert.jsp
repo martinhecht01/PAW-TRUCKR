@@ -26,26 +26,28 @@
             <h4 class="card-title"><b><spring:message code="CreateAlert"/></b></h4>
         </div>
         <div class="card-body">
-<%--            <div class="inlineFormInputContainer">--%>
-<%--                <div class="mb-3 inlineFormInput">--%>
-<%--                    <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>--%>
-<%--                    <form:errors path="cargoType" cssClass="formError" element="p"/>--%>
-<%--                    <form:select class="form-select" path="cargoType">--%>
-<%--                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>--%>
-<%--                        <form:option value="Refrigerated"><spring:message code="CreateTripCargoTypeRefrigerated"/></form:option>--%>
-<%--                        <form:option value="Hazardous"><spring:message code="CreateTripCargoTypeHazardous"/></form:option>--%>
-<%--                        <form:option value="Normal"><spring:message code="CreateTripCargoTypeNormal"/></form:option>--%>
-<%--                    </form:select>--%>
-<%--                </div>--%>
-<%--            </div>--%>
-            <div class="mb-3">
-                <form:label path="origin" class="form-label"><spring:message code="Origin"/></form:label>
-                <form:errors path="origin" cssClass="formError" element="p"/>
-                <form:select class="form-select" path="origin" html:required="true">
-                    <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
-                    <form:options items="${cities}"/>
-                </form:select>
+            <div class="inlineFormInputContainer">
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
+                    <form:errors path="cargoType" cssClass="formError" element="p"/>
+                    <form:select class="form-select" path="cargoType">
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <c:forEach var="cargoType" items="${cargoTypes}">
+                            <spring:message code="${cargoType}" var="cargoTypeMsg"/>
+                            <form:option value="${cargoType}">${cargoTypeMsg}</form:option>
+                        </c:forEach>
+                    </form:select>
+                </div>
+                <div class="mb-3 inlineFormInput">
+                    <form:label path="origin" class="form-label"><spring:message code="Origin"/></form:label>
+                    <form:errors path="origin" cssClass="formError" element="p"/>
+                    <form:select class="form-select" path="origin" html:required="true">
+                        <form:option value="" disabled="true" selected="true"><spring:message code="Select"/></form:option>
+                        <form:options items="${cities}"/>
+                    </form:select>
+                </div>
             </div>
+
             <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">

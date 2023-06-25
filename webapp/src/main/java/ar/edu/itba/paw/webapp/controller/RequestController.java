@@ -14,6 +14,7 @@ import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -252,7 +253,8 @@ public class RequestController {
     @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
     public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
         User user = getUser();
-        ts.confirmTrip(requestId, user.getUserId());
+        ts.confirmTrip(requestId, user.getUserId(),LocaleContextHolder.getLocale());
+
         if (Objects.equals(user.getRole(), "PROVIDER")) {
             LOGGER.info("Request with Id: {} confirmed successfully by provider", requestId);
             return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);
@@ -273,7 +275,7 @@ public class RequestController {
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
-        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice());
+        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
         LOGGER.info("Proposal created successfully");
         ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 
