@@ -90,6 +90,29 @@
           </div>
         </div>
       </div>
+      <div class="inlineFormInputContainer">
+        <div class="mb-3 mr-3 inlineFormInput">
+          <form:label path="minPrice"  class="form-label"><spring:message code="FiltersMinPrice"/></form:label>
+          <form:errors path="minPrice" cssClass="formError" element="p"/>
+          <div class="input-group">
+            <form:input path="minPrice" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0"  max="1000000" step="1" name="minPrice" class="form-control" id="minPrice" value="${minPrice}" placeholder="-"/>
+            <div class="input-group-append">
+              <span class="input-group-text inputSpan">ARS</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3 mx-3 inlineFormInput">
+          <form:label path="maxPrice" for="origin" class="form-label"><spring:message code="FiltersMaxPrice"/></form:label>
+          <form:errors path="maxPrice" cssClass="formError" element="p"/>
+          <div class="input-group">
+            <form:input path="maxPrice" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" min="0" max="1000000" step="1" class="form-control" name="maxPrice" id="maxPrice"  value="${maxPrice}" placeholder="-"/>
+            <div class="input-group-append">
+              <span class="input-group-text inputSpan">ARS</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <input type="submit" value="Search Trips" class="btn btn-color mt-3 formButton"/>
     </div>

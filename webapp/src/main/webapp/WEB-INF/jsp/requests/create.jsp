@@ -110,7 +110,7 @@
                     <form:label path="maxPrice" class="form-label"><spring:message code="SuggestedPrice"/></form:label>
                     <form:errors path="maxPrice" min="0" step="1" cssClass="formError" element="p"/>
                     <div class="input-group">
-                        <form:input type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" class="form-control" path="maxPrice" placeholder="0"/>
+                        <form:input value="${suggestedPrice}" type="number" onkeydown="return ((event.keyCode >= 48 && event.keyCode <= 57) || event.keyCode === 8)" class="form-control" path="maxPrice" placeholder="0"/>
                         <div class="input-group-append">
                             <span class="input-group-text inputSpan">ARS</span>
                         </div>
