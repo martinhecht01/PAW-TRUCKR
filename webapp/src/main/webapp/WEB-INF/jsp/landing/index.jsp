@@ -51,83 +51,106 @@
         <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path>
     </symbol>
 </svg>
-<div class="container px-4 pb-5" id="featured-3">
-    <div style="align-content: center">
-        <h1 class="display-6 mb-2 fw-medium lh-1">How Truckr works</h1>
-        <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
-            <div class="feature col">
-                <p class="lead mt-3 light" >For cargo providers</p>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Search for a trip</h3>
-                    </div>
-                    <div class="panel-body">
-                        Create a custom search according to your needs
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Select the best trip for you</h3>
-                    </div>
-                    <div class="panel-body">
-                        Select the trip that best fits your needs and send an offer
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">One more step...</h3>
-                    </div>
-                    <div class="panel-body">
-                        Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Ship it!</h3>
-                    </div>
-                    <div class="panel-body">
-                        Once the trucker confirms your offer you can get in touch with him and ship your cargo
-                    </div>
-                </div>
-            </div>
-            <div class="feature col">
-                <p class="lead mt-3 light" >For truckers</p>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Browse cargo</h3>
-                    </div>
-                    <div class="panel-body">
-                        Browse the cargo that is available. Filter however is more convinient for you
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Select the best cargo option for you</h3>
-                    </div>
-                    <div class="panel-body">
-                        Select the cargo that you want to ship and send an offer
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">One more step...</h3>
-                    </div>
-                    <div class="panel-body">
-                        Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Ship it!</h3>
-                    </div>
-                    <div class="panel-body">
-                        Once the order is confirmed, get in touch with the provider and ship the cargo
-                    </div>
-                </div>
-            </div>
 
+<div class="px-5 w-100 text-center">
+    <h1 class="display-6 mb-2 fw-medium lh-1">How Truckr works</h1>
+    <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
+        <li class="nav-item mx-2" role="presentation">
+            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">For Truckers</button>
+        </li>
+        <li class="nav-item mx-2" role="presentation">
+            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">For Providers</button>
+        </li>
+    </ul>
+
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+            <!-- Content for Tab 1 goes here -->
+            <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
+
+                <div class="feature col">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Browse cargo</h3>
+                        </div>
+                        <div class="panel-body">
+                            Browse the cargo that is available. Filter however is more convinient for you
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Select the best cargo option for you</h3>
+                        </div>
+                        <div class="panel-body">
+                            Select the cargo that you want to ship and send an offer
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">One more step...</h3>
+                        </div>
+                        <div class="panel-body">
+                            Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ship it!</h3>
+                        </div>
+                        <div class="panel-body">
+                            Once the order is confirmed, get in touch with the provider and ship the cargo
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+            <!-- Content for Tab 2 goes here -->
+            <div class="tripCards w-100 px-5 pt-5 justify-content-center m-auto">
+                <div class="feature col">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Search for a trip</h3>
+                        </div>
+                        <div class="panel-body">
+                            Create a custom search according to your needs
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Select the best trip for you</h3>
+                        </div>
+                        <div class="panel-body">
+                            Select the trip that best fits your needs and send an offer
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">One more step...</h3>
+                        </div>
+                        <div class="panel-body">
+                            Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Ship it!</h3>
+                        </div>
+                        <div class="panel-body">
+                            Once the trucker confirms your offer you can get in touch with him and ship your cargo
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
+
+
+
+
+<div class="container px-4 pb-5" id="featured-3">
     <div class="row g-4 row-cols-1 pb-5 row-cols-lg-3">
         <div class="feature col">
             <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
