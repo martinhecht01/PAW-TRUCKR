@@ -12,6 +12,7 @@ import ar.edu.itba.paw.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -44,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User createUser(String email, String name, String id, String role, String password){
+    public User createUser(String email, String name, String id, String role, String password, Locale locale){
         this.email = email;
 
         if(id == null) {
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
 
-        createSecureToken(us);
+        createSecureToken(us,locale);
 
         return us;
     }
@@ -90,10 +92,10 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createReset(Integer userId){
+    public void createReset(Integer userId, Locale locale){
 
         Integer hash = userDao.createReset(userId, Objects.hash(LocalDateTime.now() + userId.toString()) ).get();
-        ms.sendResetEmail(userDao.getUserById(userId).get(), hash);
+        ms.sendResetEmail(userDao.getUserById(userId).get(), hash,locale);
     }
 
     private static int hashTo6Digits(Object obj1, Object obj2) {
@@ -105,15 +107,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void createSecureToken(User user) {
+    public void createSecureToken(User user, Locale locale) {
 //        User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
         Integer tokenValue = userDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
-        ms.sendSecureTokenEmail(user, tokenValue);
+        ms.sendSecureTokenEmail(user, tokenValue,locale);
     }
 
     @Transactional
     @Override
-    public boolean verifyAccount(Integer tokenValue){
+    public boolean verifyAccount(Integer tokenValue, Locale locale){
         Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
         if(!token.isPresent()) {
             LOGGER.warn("Account not verified. Token missing.");
@@ -125,7 +127,7 @@ public class UserServiceImpl implements UserService {
             return false;
         } else {
             userDao.verifyAccount(token.get().getUser());
-            ms.sendConfirmationEmail(token.get().getUser());
+            ms.sendConfirmationEmail(token.get().getUser(), locale);
         }
         return true;
     }

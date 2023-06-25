@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public interface TripServiceV2 {
@@ -30,9 +31,9 @@ public interface TripServiceV2 {
                        String type,
                        int price);
 
-    void confirmTrip(int tripId, int userId);
+    void confirmTrip(int tripId, int userId,Locale locale);
 
-    Proposal createProposal(int tripId, int userId, String description, int price);
+    Proposal createProposal(int tripId, int userId, String description, int price, Locale locale);
 
     List<Proposal> getAllProposalsForTripId(int tripId);
 
@@ -48,7 +49,7 @@ public interface TripServiceV2 {
 
     Optional<Trip> getTripOrRequestById(int tripid);
 
-    void acceptProposal(int proposalId);
+    void acceptProposal(int proposalId, Locale locale);
 
     List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId, Integer pag);
 

@@ -11,6 +11,7 @@ import ar.edu.itba.paw.webapp.form.AcceptForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class OffersController {
 
     @RequestMapping(value = "/offers/acceptOffer", method = { RequestMethod.POST })
     public ModelAndView acceptOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") int tripId) {
-        ts.acceptProposal(offerId);
+        ts.acceptProposal(offerId, LocaleContextHolder.getLocale());
 
 
         Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
