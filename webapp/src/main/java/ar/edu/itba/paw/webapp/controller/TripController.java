@@ -101,6 +101,7 @@ public class TripController {
         view.addObject("sortOrder",ff.getSortOrder());
         view.addObject("departureDate",ff.getDepartureDate());
         view.addObject("arrivalDate",ff.getArrivalDate());
+        view.addObject("cargoType",ff.getType());
 
         view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
 
@@ -187,6 +188,7 @@ public class TripController {
         view.addObject("sortOrder",ff.getSortOrder());
         view.addObject("departureDate",ff.getDepartureDate());
         view.addObject("arrivalDate",ff.getArrivalDate());
+        view.addObject("type",ff.getType());
 
         view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
 

@@ -53,7 +53,7 @@
             <div class="pt-4">
               <h2 class="display-5 fw-bold text-body-emphasis text-center"><spring:message code="NoResults"/></h2>
               <p><spring:message code="CreateTripPublication"/></p>
-              <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}"/>" type="submit" class="btn btn-color mt-3 formButton"><spring:message code="CreatePublication"/></a>
+              <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}"/>" type="submit" class="btn btn-color mt-3 formButton"><spring:message code="CreatePublication"/></a>
             </div>
           </c:if>
           <c:forEach var="trip" items="${offers}">

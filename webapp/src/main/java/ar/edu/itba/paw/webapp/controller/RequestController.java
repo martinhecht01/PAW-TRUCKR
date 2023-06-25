@@ -169,6 +169,7 @@ public class RequestController {
         view.addObject("sortOrder",ff.getSortOrder());
         view.addObject("departureDate",ff.getDepartureDate());
         view.addObject("arrivalDate",ff.getArrivalDate());
+        view.addObject("type",ff.getType());
 
         view.addObject("offers", ts.getAllActiveRequests(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
 
