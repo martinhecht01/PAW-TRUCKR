@@ -95,7 +95,7 @@
                                                 <div class="w-50 d-flex justify-content-center">
                                                     <div class="w-25 text-truncate text-center">
                                                         <h5>${trip.origin}</h5>
-                                                            ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
+                                                            ${trip.departureDateString}
                                                     </div>
 
                                                     <div class="w-25 text-center">
@@ -104,7 +104,7 @@
 
                                                     <div class="w-25 text-truncate text-center">
                                                         <h5>${trip.destination}</h5>
-                                                            ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                                            ${trip.arrivalDateString}
                                                     </div>
                                                 </div>
                                                 <div class="vr"></div>

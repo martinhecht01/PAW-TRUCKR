@@ -49,7 +49,7 @@
                     </tr>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-                        <td>${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth} - ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}</td>
+                        <td>${trip.departureDateString} - ${trip.arrivalDateString}</td>
                     </tr>
                     <tr>
                         <td><b><spring:message code="AvailableVolume"/></b></td>
@@ -104,7 +104,7 @@
                             </c:if>
                             <c:if test="${trip.confirmationDate != null}">
                                 <div class="pt-2 pb-0 w-100 text-center">
-                                    <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmationDate}</span>
+                                    <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${trip.confirmationDateString}</span>
                                 </div>
                             </c:if>
                         </div>

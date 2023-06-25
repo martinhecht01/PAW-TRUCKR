@@ -1,6 +1,9 @@
 package ar.edu.itba.paw.models;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -80,23 +83,23 @@ public class Trip {
     // Constructors, getters, and setters
 
     //constructor completo
-    public Trip(int tripId, User trucker, User provider, String licensePlate, Integer weight, Integer volume, Timestamp departureDate, Timestamp arrivalDate, String origin, String destination, String type,
-                Integer price, Boolean truckerConfirmation, Boolean providerConfirmation, Timestamp confirmationDate, Image image, int proposalCount) {
+    public Trip(int tripId, User trucker, User provider, String licensePlate, Integer weight, Integer volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
+                Integer price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, Image image, int proposalCount) {
         this.tripId = tripId;
         this.provider = provider;
         this.trucker = trucker;
         this.licensePlate = licensePlate;
         this.weight = weight;
         this.volume = volume;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate == null ? null : Timestamp.valueOf(departureDate);
+        this.arrivalDate = arrivalDate == null ? null : Timestamp.valueOf(arrivalDate);
         this.origin = origin;
         this.destination = destination;
         this.type = type;
         this.price = price;
         this.truckerConfirmation = truckerConfirmation;
         this.providerConfirmation = providerConfirmation;
-        this.confirmationDate = confirmationDate;
+        this.confirmationDate = confirmationDate == null ? null : Timestamp.valueOf(confirmationDate);
         this.proposalCount = proposalCount;
         this.image= image;
     }
@@ -107,8 +110,8 @@ public class Trip {
                 String licensePlate,
                 Integer weight,
                 Integer volume,
-                Timestamp departureDate,
-                Timestamp arrivalDate,
+                LocalDateTime departureDate,
+                LocalDateTime arrivalDate,
                 String origin,
                 String destination,
                 String type,
@@ -119,8 +122,8 @@ public class Trip {
         this.licensePlate = licensePlate;
         this.weight = weight;
         this.volume = volume;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate == null ? null : Timestamp.valueOf(departureDate);
+        this.arrivalDate = arrivalDate == null ? null : Timestamp.valueOf(arrivalDate);
         this.origin = origin;
         this.destination = destination;
         this.type = type;
@@ -137,8 +140,8 @@ public class Trip {
                 User provider,
                 Integer weight,
                 Integer volume,
-                Timestamp departureDate,
-                Timestamp arrivalDate,
+                LocalDateTime departureDate,
+                LocalDateTime arrivalDate,
                 String origin,
                 String destination,
                 String type,
@@ -149,8 +152,8 @@ public class Trip {
         this.licensePlate = null;
         this.weight = weight;
         this.volume = volume;
-        this.departureDate = departureDate;
-        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate == null ? null : Timestamp.valueOf(departureDate);
+        this.arrivalDate = arrivalDate == null ? null : Timestamp.valueOf(arrivalDate);
         this.origin = origin;
         this.destination = destination;
         this.type = type;
@@ -225,16 +228,19 @@ public class Trip {
         this.volume = volume;
     }
 
-    public Timestamp getDepartureDate() {
-        return departureDate;
+    public LocalDateTime getDepartureDate() {
+        if (departureDate == null) return null;
+        return departureDate.toLocalDateTime();
     }
 
-    public void setDepartureDate(Timestamp departureDate) {
-        this.departureDate = departureDate;
+    public void setDepartureDate(LocalDateTime departureDate) {
+        if (departureDate == null) this.departureDate = null;
+        else this.departureDate = Timestamp.valueOf(departureDate);
     }
 
-    public Timestamp getArrivalDate() {
-        return arrivalDate;
+    public LocalDateTime getArrivalDate() {
+        if (arrivalDate == null) return null;
+        return arrivalDate.toLocalDateTime();
     }
 
     public void setArrivalDate(Timestamp arrivalDate) {
@@ -289,12 +295,14 @@ public class Trip {
         this.providerConfirmation = providerConfirmation;
     }
 
-    public Timestamp getConfirmationDate() {
-        return confirmationDate;
+    public LocalDateTime getConfirmationDate() {
+        if(confirmationDate == null) return null;
+        return confirmationDate.toLocalDateTime();
     }
 
-    public void setConfirmationDate(Timestamp confirmationDate) {
-        this.confirmationDate = confirmationDate;
+    public void setConfirmationDate(LocalDateTime confirmationDate) {
+        if(confirmationDate == null) this.confirmationDate = null;
+        else this.confirmationDate = Timestamp.valueOf(confirmationDate);
     }
 
     public Image getImage() {
@@ -343,5 +351,20 @@ public class Trip {
 
     public void setReview(Review review) {
         this.review = review;
+    }
+
+    public String getDepartureDateString() {
+        if (departureDate == null) return null;
+        return departureDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    public String getArrivalDateString() {
+        if (arrivalDate == null) return null;
+        return arrivalDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    public String getConfirmationDateString() {
+        if (confirmationDate == null) return null;
+        return confirmationDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 }

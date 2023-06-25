@@ -6,6 +6,7 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -15,8 +16,8 @@ public interface TripDaoV2 {
                     String licensePlate,
                     int weight,
                     int volume,
-                    Timestamp departureDate,
-                    Timestamp arrivalDate,
+                    LocalDateTime departureDate,
+                    LocalDateTime arrivalDate,
                     String origin,
                     String destination,
                     String type,
@@ -25,8 +26,8 @@ public interface TripDaoV2 {
     Trip createRequest(User provider,
                        int weight,
                        int volume,
-                       Timestamp departureDate,
-                       Timestamp arrivalDate,
+                       LocalDateTime departureDate,
+                       LocalDateTime arrivalDate,
                        String origin,
                        String destination,
                        String type,

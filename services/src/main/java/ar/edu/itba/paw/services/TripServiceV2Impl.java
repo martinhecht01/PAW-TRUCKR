@@ -62,7 +62,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
                            String type,
                            int price) {
         User user = userDao.getUserById(truckerId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.createTrip(user, licensePlate, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
+        return tripDaoV2.createTrip(user, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
     }
 
     @Transactional
@@ -78,7 +78,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
                               int price,
                               Locale locale) {
         User user = userDao.getUserById(providerId).orElseThrow(NoSuchElementException::new);
-        Trip trip =  tripDaoV2.createRequest(user, weight, volume, Timestamp.valueOf(departureDate), Timestamp.valueOf(arrivalDate), origin, destination, type, price);
+        Trip trip =  tripDaoV2.createRequest(user, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
 
         List<Alert> alerts = alertDao.getAlertsThatMatch(trip);
 

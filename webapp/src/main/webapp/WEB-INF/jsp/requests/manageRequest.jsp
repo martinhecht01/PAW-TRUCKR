@@ -45,7 +45,7 @@
           </tr>
           <tr>
             <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
-            <td>${request.departureDate.toLocalDateTime().year}-${request.departureDate.toLocalDateTime().monthValue}-${request.departureDate.toLocalDateTime().dayOfMonth} - ${request.arrivalDate.toLocalDateTime().year}-${request.arrivalDate.toLocalDateTime().monthValue}-${request.arrivalDate.toLocalDateTime().dayOfMonth}</td>
+            <td>${request.departureDateString} - ${request.arrivalDateString}</td>
           </tr>
           <tr>
             <td><b><spring:message code="AvailableVolume"/></b></td>
@@ -100,7 +100,7 @@
               </c:if>
               <c:if test="${request.confirmationDate != null}">
                 <div class="pt-2 pb-0 w-100 text-center">
-                  <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmationDate}</span>
+                  <span class="text-center fw-lighter"><spring:message code="LastUpdate"/>: ${request.confirmationDateString}</span>
                 </div>
               </c:if>
             </div>

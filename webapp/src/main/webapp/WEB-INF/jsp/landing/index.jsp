@@ -71,26 +71,26 @@
                 <div class="feature col">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3 class="card-title">1. Browse cargo</h3>
-                            <p>Browse the cargo that is available. Filter however is more convinient for you</p>
+                            <h3 class="card-title">1. <spring:message code="BrowseCargo"/></h3>
+                            <p><spring:message code="NewLanding1"/></p>
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3 class="card-title">2. Select the best cargo option for you</h3>
-                            <p>Select the cargo that you want to ship and send an offer</p>
+                            <h3 class="card-title">2. <spring:message code="NewLanding2"/></h3>
+                            <p><spring:message code="NewLanding3"/></p>
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3 class="card-title">3. One more step</h3>
-                            <p>Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want</p>
+                            <h3 class="card-title">3. <spring:message code="OneMoreStep"/></h3>
+                            <p><spring:message code="NewLanding4"/></p>
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3 class="card-title">4. Ship it!</h3>
-                            <p>Once the order is confirmed, get in touch with the provider and ship the cargo</p>
+                            <h3 class="card-title">4. <spring:message code="ShipitE"/></h3>
+                            <p><spring:message code="NewLanding5"/></p>
                         </div>
                     </div>
                 </div>
@@ -103,26 +103,26 @@
                 <div class="feature col">
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3>1. Search for a trip</h3>
-                            <p>Create a custom search according to your needs</p>
+                            <h3>1. <spring:message code="SearchTrips"/></h3>
+                            <p><spring:message code="CreateCustomSearch"/></p>
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3 class="panel-title">2. Select the best trip for you</h3>
-                            <p>Select the trip that best fits your needs and send an offer</p>
+                            <h3 class="panel-title">2. <spring:message code="SelectBestTrip"/></h3>
+                            <p><spring:message code="SelectBestTripsOffer"/></p>
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3>3. One more step</h3>
-                            <p>Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want</p>
+                            <h3>3. <spring:message code="OneMoreStep"/></h3>
+                            <p><spring:message code="WaitForConfirmation"/></p>
                         </div>
                     </div>
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h3>4. Wait fot it!</h3>
-                            <p>Once the trucker confirms your offer you can get in touch with him and wait for your cargo</p>
+                            <h3>4. <spring:message code="WaitForItE"/></h3>
+                            <p><spring:message code="GetInTouch"/></p>
                         </div>
                     </div>
                 </div>
