@@ -55,238 +55,243 @@
 </svg>
 
 <form:form method="get">
-<div class="px-5 w-100 text-center">
-    <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
-        <li class="nav-item mx-2" role="presentation">
-            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true"><spring:message code="OngoingTrips"/></button>
-        </li>
-        <li class="nav-item mx-2" role="presentation">
-            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false"><spring:message code="FutureTrips"/></button>
-        </li>
-    </ul>
+    <div class="d-flex justify-content-end pt-5 pb-2 px-5"></div>
+    <div class="px-5 w-100 text-center">
+        <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
+            <li class="nav-item mx-2" role="presentation">
+                <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true"><spring:message code="OngoingTrips"/></button>
+            </li>
+            <li class="nav-item mx-2" role="presentation">
+                <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false"><spring:message code="FutureTrips"/></button>
+            </li>
+        </ul>
 
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-            <!-- Content for Tab 1 goes here -->
-            <div class="w-80 px-5 pt-5 justify-content-center m-auto">
-                <div class="row">
-                    <div class="col-lg">
-                        <div class="my-3 mx-3 card">
-                            <c:if test="${ongoingTrips.size() == 0}">
-                                <div>
-                                    <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoOngoingTrips"/></h3>
-                                    <a class="mt-3 mb-5 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
-                                </div>
-                            </c:if>
-                            <c:forEach var="trip" items="${ongoingTrips}">
-                                <c:if test="${trip != ongoingTrips[0]}">
-                                    <hr class="py-2">
-                                </c:if>
-                                <a <c:if test="${currentUser.role == 'TRUCKER'}">
-                                    href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
-                                </c:if>
-                                        <c:if test="${currentUser.role == 'PROVIDER'}">
-                                            href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+                <!-- Content for Tab 1 goes here -->
+                <div class="w-80 px-5 pt-5 justify-content-center m-auto">
+                    <div class="row">
+                        <div class="col-lg">
+                            <div class="my-3 mx-3 card">
+                                <div class="card-body">
+                                    <c:if test="${futureTrips.size() == 0}">
+                                        <div class="text-center my-3">
+                                            <h5><spring:message code="NoOngoingTrips"/></h5>
+                                        </div>
+                                    </c:if>
+                                    <c:forEach var="trip" items="${ongoingTrips}">
+                                        <c:if test="${trip != ongoingTrips[0]}">
+                                            <hr class="py-2">
                                         </c:if>
-                                        class="text-decoration-none text-dark"
-                                >
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="w-50 d-flex justify-content-center">
-                                            <div class="w-25 text-truncate text-center">
-                                                <h5>${trip.origin}</h5>
-                                                    ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
-                                            </div>
+                                        <a <c:if test="${currentUser.role == 'TRUCKER'}">
+                                            href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
+                                        </c:if>
+                                                <c:if test="${currentUser.role == 'PROVIDER'}">
+                                                    href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
+                                                </c:if>
+                                                class="text-decoration-none text-dark"
+                                        >
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="w-50 d-flex justify-content-center">
+                                                    <div class="w-25 text-truncate text-center">
+                                                        <h5>${trip.origin}</h5>
+                                                            ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
+                                                    </div>
 
-                                            <div class="w-25 text-center">
-                                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                            </div>
+                                                    <div class="w-25 text-center">
+                                                        <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                                    </div>
 
-                                            <div class="w-25 text-truncate text-center">
-                                                <h5>${trip.destination}</h5>
-                                                    ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                                    <div class="w-25 text-truncate text-center">
+                                                        <h5>${trip.destination}</h5>
+                                                            ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                                    </div>
+                                                </div>
+                                                <div class="vr"></div>
+                                                <div class="w-50 d-flex flex-row align-items-center justify-content-evenly">
+                                                    <c:if test="${currentUser.role == 'TRUCKER'}">
+                                                        <div class="text-center mx-2 align-items-center">
+                                                            <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><c:out value="${trip.provider.name}"/></h5>
+                                                            <p><spring:message code="${trip.provider.role}"/></p>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                                <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if>
+                                                                <c:if test="${trip.provider.reviews.size() == 0}">-</c:if>
+                                                            </h5>
+                                                        </div>
+                                                    </c:if>
+                                                    <c:if test="${currentUser.role == 'PROVIDER'}">
+                                                        <div class="text-center mx-2 align-items-center">
+                                                            <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><c:out value="${trip.trucker.name}"/></h5>
+                                                            <p><spring:message code="${trip.trucker.role}"/></p>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                                <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if>
+                                                                <c:if test="${trip.trucker.reviews.size() == 0}">-</c:if>
+                                                            </h5>
+                                                        </div>
+                                                    </c:if>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="vr"></div>
-                                        <div class="w-50 d-flex flex-row align-items-center justify-content-evenly">
-                                            <c:if test="${currentUser.role == 'TRUCKER'}">
-                                                <div class="text-center mx-2 align-items-center">
-                                                    <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><c:out value="${trip.provider.name}"/></h5>
-                                                    <p><spring:message code="${trip.provider.role}"/></p>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                        <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if>
-                                                        <c:if test="${trip.provider.reviews.size() == 0}">-</c:if>
-                                                    </h5>
-                                                </div>
-                                            </c:if>
-                                            <c:if test="${currentUser.role == 'PROVIDER'}">
-                                                <div class="text-center mx-2 align-items-center">
-                                                    <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><c:out value="${trip.trucker.name}"/></h5>
-                                                    <p><spring:message code="${trip.trucker.role}"/></p>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                        <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if>
-                                                        <c:if test="${trip.trucker.reviews.size() == 0}">-</c:if>
-                                                    </h5>
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                </a>
-                            </c:forEach>
+                                        </a>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            <c:if test="${ongoingTrips.size() > 0}">
+                                <ul class="pagination justify-content-center pt-3">
+                                    <c:if test="${currentPageActive > 2}">
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${currentPageActive != 1}">
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
+                                        </li>
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
+                                    </c:if>
+                                    <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
+                                    <c:if test="${currentPageActive < maxActivePage}">
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${currentPageActive < maxActivePage - 1}">
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </c:if>
                         </div>
-                        <c:if test="${ongoingTrips.size() > 0}">
-                            <ul class="pagination justify-content-center pt-3">
-                                <c:if test="${currentPageActive > 2}">
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="page" value="${1}">First</button>
-                                    </li>
-                                </c:if>
-                                <c:if test="${currentPageActive != 1}">
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
-                                    </li>
-                                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
-                                </c:if>
-                                <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
-                                <c:if test="${currentPageActive < maxActivePage}">
-                                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
-                                    </li>
-                                </c:if>
-                                <c:if test="${currentPageActive < maxActivePage - 1}">
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
-                                    </li>
-                                </c:if>
-                            </ul>
-                        </c:if>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+                <!-- Content for Tab 1 goes here -->
+                <div class="w-80 px-5 pt-5 justify-content-center m-auto">
+                    <div class="row">
+                        <div class="col-lg">
+                            <div class="my-3 mx-3 card">
+                                <div class="card-body">
+                                    <c:if test="${futureTrips.size() == 0}">
+                                        <div class="text-center my-3">
+                                            <h5><spring:message code="NoFutureTrips"/></h5>
+                                        </div>
+                                    </c:if>
+                                    <c:forEach var="trip" items="${futureTrips}">
+                                        <c:if test="${trip != futureTrips[0]}">
+                                            <hr class="py-2">
+                                        </c:if>
+                                        <a <c:if test="${currentUser.role == 'TRUCKER'}">
+                                            href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
+                                        </c:if>
+                                                <c:if test="${currentUser.role == 'PROVIDER'}">
+                                                    href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
+                                                </c:if>
+                                                class="text-decoration-none text-dark"
+                                        >
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <div class="w-50 d-flex justify-content-center">
+                                                    <div class="w-25 text-truncate text-center">
+                                                        <h5>${trip.origin}</h5>
+                                                            ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
+                                                    </div>
+
+                                                    <div class="w-25 text-center">
+                                                        <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
+                                                    </div>
+
+                                                    <div class="w-25 text-truncate text-center">
+                                                        <h5>${trip.destination}</h5>
+                                                            ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
+                                                    </div>
+                                                </div>
+                                                <div class="vr"></div>
+                                                <div class="w-50 d-flex flex-row align-items-center justify-content-evenly">
+                                                    <c:if test="${currentUser.role == 'TRUCKER'}">
+                                                        <div class="text-center mx-2 align-items-center">
+                                                            <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><c:out value="${trip.provider.name}"/></h5>
+                                                            <p><spring:message code="${trip.provider.role}"/></p>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                                <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if>
+                                                                <c:if test="${trip.provider.reviews.size() == 0}">-</c:if>
+                                                            </h5>
+                                                        </div>
+                                                    </c:if>
+                                                    <c:if test="${currentUser.role == 'PROVIDER'}">
+                                                        <div class="text-center mx-2 align-items-center">
+                                                            <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><c:out value="${trip.trucker.name}"/></h5>
+                                                            <p><spring:message code="${trip.trucker.role}"/></p>
+                                                        </div>
+                                                        <div class="text-center align-items-center">
+                                                            <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
+                                                                <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if>
+                                                                <c:if test="${trip.trucker.reviews.size() == 0}">-</c:if>
+                                                            </h5>
+                                                        </div>
+                                                    </c:if>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </c:forEach>
+                                </div>
+                            </div>
+                            <c:if test="${futureTrips.size() > 0}">
+                                <ul class="pagination justify-content-center pt-3">
+                                    <c:if test="${currentPageActive > 2}">
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${currentPageActive != 1}">
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
+                                        </li>
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
+                                    </c:if>
+                                    <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
+                                    <c:if test="${currentPageActive < maxActivePage}">
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${currentPageActive < maxActivePage - 1}">
+                                        <li class="page-item">
+                                            <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                                        </li>
+                                    </c:if>
+                                </ul>
+                            </c:if>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
-            <!-- Content for Tab 1 goes here -->
-            <div class="w-80 px-5 pt-5 justify-content-center m-auto">
-                <div class="row">
-                    <div class="col-lg">
-                        <div class="my-3 mx-3 card">
-                            <c:if test="${futureTrips.size() == 0}">
-                                <div>
-                                    <h3 class="mt-5 fw-bold text-body-emphasis text-center"><spring:message code="NoFutureTrips"/></h3>
-                                    <a class="mt-3 mb-5 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/explore"/>"><spring:message code="Explore"/></a>
-                                </div>
-                            </c:if>
-                            <c:forEach var="trip" items="${futureTrips}">
-                                <c:if test="${trip != futureTrips[0]}">
-                                    <hr class="py-2">
-                                </c:if>
-                                <a <c:if test="${currentUser.role == 'TRUCKER'}">
-                                    href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
-                                </c:if>
-                                        <c:if test="${currentUser.role == 'PROVIDER'}">
-                                            href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
-                                        </c:if>
-                                        class="text-decoration-none text-dark"
-                                >
-                                    <div class="d-flex align-items-center justify-content-between">
-                                        <div class="w-50 d-flex justify-content-center">
-                                            <div class="w-25 text-truncate text-center">
-                                                <h5>${trip.origin}</h5>
-                                                    ${trip.departureDate.toLocalDateTime().year}-${trip.departureDate.toLocalDateTime().monthValue}-${trip.departureDate.toLocalDateTime().dayOfMonth}
-                                            </div>
-
-                                            <div class="w-25 text-center">
-                                                <svg width="5em" height="3em"><use xlink:href="#arrow"></use></svg>
-                                            </div>
-
-                                            <div class="w-25 text-truncate text-center">
-                                                <h5>${trip.destination}</h5>
-                                                    ${trip.arrivalDate.toLocalDateTime().year}-${trip.arrivalDate.toLocalDateTime().monthValue}-${trip.arrivalDate.toLocalDateTime().dayOfMonth}
-                                            </div>
-                                        </div>
-                                        <div class="vr"></div>
-                                        <div class="w-50 d-flex flex-row align-items-center justify-content-evenly">
-                                            <c:if test="${currentUser.role == 'TRUCKER'}">
-                                                <div class="text-center mx-2 align-items-center">
-                                                    <img src="<c:url value="/user/${trip.provider.userId}/profilePicture"/>" class="profileImageNavbar"/>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><c:out value="${trip.provider.name}"/></h5>
-                                                    <p><spring:message code="${trip.provider.role}"/></p>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                        <c:if test="${trip.provider.reviews.size() != 0}"><c:out value="${trip.provider.rating}"/></c:if>
-                                                        <c:if test="${trip.provider.reviews.size() == 0}">-</c:if>
-                                                    </h5>
-                                                </div>
-                                            </c:if>
-                                            <c:if test="${currentUser.role == 'PROVIDER'}">
-                                                <div class="text-center mx-2 align-items-center">
-                                                    <img src="<c:url value="/user/${trip.trucker.userId}/profilePicture"/>" class="profileImageNavbar"/>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><c:out value="${trip.trucker.name}"/></h5>
-                                                    <p><spring:message code="${trip.trucker.role}"/></p>
-                                                </div>
-                                                <div class="text-center align-items-center">
-                                                    <h5><svg width="1em" height="1em"><use class="star" xlink:href="#star-fill"></use></svg>
-                                                        <c:if test="${trip.trucker.reviews.size() != 0}"><c:out value="${trip.trucker.rating}"/></c:if>
-                                                        <c:if test="${trip.trucker.reviews.size() == 0}">-</c:if>
-                                                    </h5>
-                                                </div>
-                                            </c:if>
-                                        </div>
-                                    </div>
-                                </a>
-                            </c:forEach>
-                        </div>
-                        <c:if test="${futureTrips.size() > 0}">
-                            <ul class="pagination justify-content-center pt-3">
-                                <c:if test="${currentPageActive > 2}">
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="page" value="${1}">First</button>
-                                    </li>
-                                </c:if>
-                                <c:if test="${currentPageActive != 1}">
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
-                                    </li>
-                                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
-                                </c:if>
-                                <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
-                                <c:if test="${currentPageActive < maxActivePage}">
-                                    <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
-                                    </li>
-                                </c:if>
-                                <c:if test="${currentPageActive < maxActivePage - 1}">
-                                    <li class="page-item">
-                                        <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
-                                    </li>
-                                </c:if>
-                            </ul>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
-
-            </form:form>
-            <div style="margin-top: auto">
-                <components:waveDivider/>
-                <components:footer/>
-            </div>
+    </div>
+</form:form>
+<div style="margin-top: auto">
+    <components:waveDivider/>
+    <components:footer/>
+</div>
 </body>
 </html>
