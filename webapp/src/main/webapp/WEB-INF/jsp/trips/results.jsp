@@ -166,7 +166,7 @@
         </div>
       </c:if>
       <div class="w-100">
-        <h6 class="text-start"><a href="<c:url value="/explore?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="GoBack"/></a></h6>
+        <h6 class="text-start"><a href="<c:url value="/explore?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&minPrice=${minPrice}&maxPrice=${maxPrice}"/>" class="text-decoration-underline"><spring:message code="GoBack"/></a></h6>
       </div>
     </div>
   </div>
