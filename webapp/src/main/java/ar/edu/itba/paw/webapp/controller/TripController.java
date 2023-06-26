@@ -64,7 +64,7 @@ public class TripController {
             return searchGet(form);
         }
 
-        return new ModelAndView("forward:/trips/search/results?");
+        return new ModelAndView("forward:/trips/search/results");
     }
 
     @RequestMapping("/trips/search/results")
