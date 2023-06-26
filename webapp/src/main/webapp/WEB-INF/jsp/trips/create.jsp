@@ -27,7 +27,9 @@
         </div>
         <div class="card-body">
             <a href="#" id="imageLink">
-                <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="image-wrapper-create rounded-start p-3"  alt="TruckImg">
+                <div class="w-100 d-flex justify-content-center">
+                    <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="createImg card-img rounded-start mb-4"  alt="TruckImg">
+                </div>
             </a>
             <div>
                 <form:label path="tripImage" class="form-label"><spring:message code="uploadTrip"/></form:label>

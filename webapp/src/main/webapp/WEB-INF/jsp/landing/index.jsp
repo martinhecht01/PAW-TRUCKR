@@ -14,27 +14,7 @@
     <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png"></head>
 <body>
 <components:navBar/>
-<div class="card-container heroColor">
-    <div class="container">
-        <div class="row p-4 pt-5 pb-0 pe-lg-0 align-items-center rounded-3">
-            <div class="col-lg-7 p-3 p-lg-5">
-                <h1 class="display-1 mb-2 fw-bolder lh-1"><spring:message code="Truckr"/></h1>
-                <h1 class="display-6 mb-2 fw-medium lh-1"><spring:message code="LandingMainMessage"/></h1>
-                <p class="lead mt-3 light" ><spring:message code="LandingMainSubMessage"/></p>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
-                    <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="BookATrucker"/></a>
-                    <a href="<c:url value="/requests/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="DriveWithTruckr"/></a>
-                </div>
-            </div>
-<%--            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">--%>
-<%--                <img class="rounded-lg-3" src="https://hips.hearstapps.com/hmg-prod/images/volvo-vnr-electric-6x2-with-reefer-trailer-passenger-side-view-on-the-road-daytime-shot-1607106606.jpg?crop=0.643xw:0.988xh;0.204xw,0&resize=1200:*"  alt="" width="780" style="transform: translate(-35%, 0)">--%>
-<%--            </div>--%>
-        </div>
-    </div>
-    <div style="margin-top: auto">
-        <components:waveDivider/>
-    </div>
-</div>
+
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="bootstrap" viewBox="0 0 118 94">
         <title>Bootstrap</title>
@@ -50,9 +30,38 @@
     <symbol id="people" viewBox="0 0 16 16">
         <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8Zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022ZM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816ZM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0Zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"></path>
     </symbol>
+    <symbol id="arrow" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1.553 6.776a.5.5 0 0 1 .67-.223L8 9.44l5.776-2.888a.5.5 0 1 1 .448.894l-6 3a.5.5 0 0 1-.448 0l-6-3a.5.5 0 0 1-.223-.67z"></path>
+    </symbol>
 </svg>
+<div class="card-container heroColor">
+    <div class="container">
+        <div class="row p-4 pt-5 pb-0 pe-lg-0 align-items-center rounded-3">
+            <div class="col-lg-7 p-3 p-lg-5">
+                <h1 class="display-1 mb-2 fw-bolder lh-1"><spring:message code="Truckr"/></h1>
+                <h1 class="display-6 mb-2 fw-medium lh-1"><spring:message code="LandingMainMessage"/></h1>
+                <p class="lead mt-3 light" ><spring:message code="LandingMainSubMessage"/></p>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                    <a href="<c:url value="/trips/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="BookATrucker"/></a>
+                    <a href="<c:url value="/requests/browse"/>" type="button" class="btn btn-lg px-4 me-md-2 w-75" style="background-color: #142D4C; color: white;"><spring:message code="DriveWithTruckr"/></a>
+                </div>
+            </div>
+            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+                <img class="rounded-lg-3" src="https://hips.hearstapps.com/hmg-prod/images/volvo-vnr-electric-6x2-with-reefer-trailer-passenger-side-view-on-the-road-daytime-shot-1607106606.jpg?crop=0.643xw:0.988xh;0.204xw,0&resize=1200:*"  alt="" width="780" style="transform: translate(-35%, 0); height:40rem; object-fit:cover">
+            </div>
+        </div>
+        <div class="w-100 d-flex justify-content-center">
+            <a href="#info">
+                <svg width="5em" height="5em" style="fill:grey"><use xlink:href="#arrow"></use></svg>
+            </a>
+        </div>
+    </div>
+    <div style="margin-top: auto">
+        <components:waveDivider/>
+    </div>
+</div>
 
-<div class="px-5 w-100 text-center m-5">
+<div class="px-5 w-100 text-center mb-5" id="info">
     <h1 class="display-6 mb-3 fw-bold lh-1">How does Truckr work?</h1>
     <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
         <li class="nav-item mx-2" role="presentation">

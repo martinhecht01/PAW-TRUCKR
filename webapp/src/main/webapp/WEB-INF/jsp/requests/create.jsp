@@ -21,13 +21,15 @@
 <components:navBar/>
 <%--Formulario--%>
 <form:form modelAttribute="requestForm" action="${postPath}" method="post" enctype="multipart/form-data">
-    <div class="card w-75 mb-3 mt-5 formCard">
+    <div class="card mb-3 mt-5 d-flex m-auto" style="width: 50rem">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="CreatePublication"/></b></h4>
         </div>
         <div class="card-body">
             <a href="#" id="imageLink">
-            <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="card-img rounded-start p-3"  alt="TruckImg">
+                <div class="w-100 d-flex justify-content-center">
+                    <img id="imagePreview" src="https://us.123rf.com/450wm/yehorlisnyi/yehorlisnyi2104/yehorlisnyi210400016/167492439-no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image.jpg?ver=6" class="createImg card-img rounded-start mb-4"  alt="TruckImg">
+                </div>
             </a>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
