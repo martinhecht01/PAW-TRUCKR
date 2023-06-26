@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 
 //@DateValidation(start="departureDate", end="arrivalDate")
+@AlertDateValidation(start="fromDate", end="toDate")
 public class AlertForm {
     @Range(min=1, max=100000)
     private Integer maxWeight;
@@ -19,13 +20,12 @@ public class AlertForm {
     @Range(min=1, max=10000)
     private Integer maxVolume;
 
-    @Pattern(regexp="^(?!\\s*$).+")
+
     @PreventPast
     private String fromDate;
-    
-    @Pattern(regexp="^(\\s*|.+)$")
-    //@PreventPast
+
     private  String toDate;
+
     private String cargoType;
 
     @NotNull
@@ -56,22 +56,16 @@ public class AlertForm {
         this.maxVolume = maxVolume;
     }
 
-    public LocalDateTime getFromDate() {
-        if(fromDate == null || fromDate.isEmpty()){
-            return null;
-        }
-        return LocalDateTime.parse(fromDate);
+    public String getFromDate() {
+        return fromDate;
     }
 
     public void setFromDate(String fromDate) {
         this.fromDate = fromDate;
     }
 
-    public LocalDateTime getToDate() {
-        if (toDate == null || toDate.isEmpty()) {
-            return null;
-        }
-        return LocalDateTime.parse(toDate);
+    public String getToDate() {
+        return toDate;
     }
 
     public void setToDate(String toDate) {

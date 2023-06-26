@@ -38,27 +38,22 @@ public class AlertsController {
 
     @RequestMapping(value = "/alerts/create", method = RequestMethod.POST)
     public ModelAndView createAlert(@Valid @ModelAttribute("alertForm") final AlertForm form, final BindingResult errors) {
-        if(errors.hasErrors())
-            return new ModelAndView("alerts/createAlert");
+//        ModelAndView mav = new ModelAndView("alerts/createAlert");
+        if(errors.hasErrors()) {
+//            createAlertForm(form);
+            return createAlertGet(form);
+//            mav.addObject("alertForm", form);
+//            return mav;
+        }
 
-        as.createAlert(getCurrentUser(), form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), form.getFromDate(), form.getToDate(), form.getCargoType());
+        as.createAlert(getCurrentUser(), form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), (form.getFromDate() == null || form.getFromDate().isEmpty()) ? null : LocalDateTime.parse(form.getFromDate()), (form.getToDate() == null || form.getToDate().isEmpty()) ? null : LocalDateTime.parse(form.getToDate()), form.getCargoType());
         return new ModelAndView("redirect:/alerts/myAlerts");
     }
 
     @RequestMapping(value = "/alerts/createAlert", method = RequestMethod.GET)
-    public ModelAndView createAlertForm(@ModelAttribute("alertForm") final AlertForm form) {
+    public ModelAndView createAlertGet(@ModelAttribute("alertForm") final AlertForm form) {
         return new ModelAndView("alerts/createAlert");
     }
-
-//    @RequestMapping(value = "/alerts/editAlert", method = RequestMethod.POST)
-//    public ModelAndView editAlert(@Valid @ModelAttribute("alertForm") final AlertForm form, final BindingResult errors) {
-//
-//    }
-
-//    @RequestMapping(value = "/alerts/editAlert", method = RequestMethod.GET)
-//    public ModelAndView editAlertForm() {
-//
-//    }
 
     @RequestMapping("/alerts/myAlerts")
     public ModelAndView myAlerts() {
