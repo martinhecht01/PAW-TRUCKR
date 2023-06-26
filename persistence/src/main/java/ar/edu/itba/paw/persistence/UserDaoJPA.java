@@ -16,6 +16,7 @@ import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Repository
@@ -106,8 +107,8 @@ public class UserDaoJPA implements UserDao {
     }
 
     @Override
-    public User create(String email, String name, String cuit, String role, String password) {
-        User user = new User(email, name, cuit, role, password, false, new Image(1,null));
+    public User create(String email, String name, String cuit, String role, String password, Locale locale) {
+        User user = new User(email, name, cuit, role, password, false, new Image(1,null), locale);
         LOGGER.info("Creating user. CUIT: {}, EMAIL: {}, NAME: {}", cuit, email, name);
         entityManager.persist(user);
         return user;
@@ -167,5 +168,12 @@ public class UserDaoJPA implements UserDao {
         LOGGER.info("Updating user name. UserID: {}, Name: {}", userId, name);
         User user = entityManager.find(User.class, userId);
         user.setName(name);
+    }
+
+    @Override
+    public void setLocale(int userId, Locale locale){
+        LOGGER.info("Updating user locale. UserID: {}, Locale: {}", userId, locale);
+        User user = entityManager.find(User.class, userId);
+        user.setLocale(locale);
     }
 }

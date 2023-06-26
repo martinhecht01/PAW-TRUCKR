@@ -33,6 +33,10 @@ public class User {
     @Column(name = "accountverified")
     private Boolean accountVerified;
 
+    @Column(name = "locale")
+    private Locale locale;
+
+
     @ManyToOne
     @JoinColumn(name = "imageid")
     private Image image;
@@ -82,7 +86,8 @@ public class User {
                 String role,
                 String password,
                 Boolean accountVerified,
-                Image image) {
+                Image image,
+                Locale locale) {
         this.userId = null;
         this.cuit = cuit;
         this.email = email;
@@ -91,6 +96,7 @@ public class User {
         this.password = password;
         this.accountVerified = accountVerified;
         this.image = image;
+        this.locale = locale;
     }
 
     @Override
@@ -179,6 +185,14 @@ public class User {
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    public Locale getLocale() {
+        return locale;
+    }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
     }
 
     public List<Proposal> getProposals() {

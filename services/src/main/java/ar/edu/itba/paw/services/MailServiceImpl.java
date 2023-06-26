@@ -264,6 +264,7 @@ public class MailServiceImpl implements MailService {
 
 
     @Override
+    @Async
     public void sendAlertEmail(User user, Trip request, Locale locale) {
         System.out.println("Sending alert email to: " + user.getEmail());
         String htmlContent = generateAlertEmail(user, request, locale);

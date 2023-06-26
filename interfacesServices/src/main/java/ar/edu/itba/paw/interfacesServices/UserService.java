@@ -29,4 +29,6 @@ public interface UserService {
     byte[] getProfilePicture(Integer userId);
 
     void updateProfileName(Integer userId, String name);
+
+    void updateLocale(Integer userId, Locale locale);
 }

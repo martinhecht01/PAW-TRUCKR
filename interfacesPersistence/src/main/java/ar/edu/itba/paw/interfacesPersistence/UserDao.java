@@ -4,12 +4,14 @@ import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
+
+import java.util.Locale;
 import java.util.Optional;
 
 public interface UserDao {
     void resetPassword(Integer hash, String newPassword);
 
-    User create(final String email, final String name, final String cuit, final String password, final String role);
+    User create(String email, String name, String cuit, String role, String password, Locale locale);
 
     Optional<User> getUserByCuit(String userCuit);
 
@@ -34,4 +36,6 @@ public interface UserDao {
     Image getImage(int userId);
 
     void setUserName(int userId, String name);
+
+    void setLocale(int userId, Locale locale);
 }

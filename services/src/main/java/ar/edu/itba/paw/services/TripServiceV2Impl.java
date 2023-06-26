@@ -86,7 +86,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
         //TODO: enviar mail a los usuarios que tienen alertas que matchean con el trip
         for(Alert alert : alerts){
-            ms.sendAlertEmail(alert.getUser(), trip,locale);
+            ms.sendAlertEmail(alert.getUser(), trip,alert.getUser().getLocale());
         }
 
         return trip;

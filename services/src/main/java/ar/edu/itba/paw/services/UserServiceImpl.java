@@ -12,7 +12,6 @@ import ar.edu.itba.paw.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,7 +58,7 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
-        User us= userDao.create(email,name,id, role, passwordEncoder.encode(password));
+        User us= userDao.create(email,name,id, role, passwordEncoder.encode(password),locale);
 
         createSecureToken(us,locale);
 
@@ -170,5 +169,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateProfileName(Integer userId, String name) {
     	userDao.setUserName(userId, name);
+    }
+
+    @Transactional
+    @Override
+    public void updateLocale(Integer userId, Locale locale) {
+    	userDao.setLocale(userId, locale);
     }
 }

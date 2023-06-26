@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class AlertDaoJPA implements AlertDao {
 
         return entityManager.createQuery(jpql, Alert.class)
                 .setParameter("city", trip.getOrigin())
-                .setParameter("departureDate", trip.getDepartureDate())
+                .setParameter("departureDate", Timestamp.valueOf(trip.getDepartureDate()))
                 .setParameter("weight", trip.getWeight() == null ? 0 : trip.getWeight())
                 .setParameter("volume", trip.getVolume() == null ? 0 : trip.getVolume())
                 .setParameter("type", trip.getType())
