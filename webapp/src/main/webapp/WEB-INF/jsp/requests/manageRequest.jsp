@@ -44,7 +44,7 @@
             <td><c:out value="${request.origin}-${request.destination}"/></td>
           </tr>
           <tr>
-            <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
+            <td><b><spring:message code="FiltersMinDeparture"/> - <spring:message code="FiltersMaxArrival"/></b></td>
             <td>${request.departureDateString} - ${request.arrivalDateString}</td>
           </tr>
           <tr>

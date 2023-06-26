@@ -61,7 +61,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
+                        <td><b><spring:message code="FiltersMinDeparture"/> - <spring:message code="FiltersMaxArrival"/></b></td>
                         <td>
                             <a class="text-decoration-none text-dark" href="<c:url value="/explore?departureDate=${request.departureDate}&arrivalDate=${request.arrivalDate}"/>">
                                 ${request.departureDateString} - ${request.arrivalDateString}
