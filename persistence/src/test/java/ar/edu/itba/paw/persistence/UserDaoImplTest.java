@@ -35,7 +35,7 @@ public class UserDaoImplTest {
     private static final String PASSWORD = "1234567890";
     private static final String ROLE = "PROVIDER";
     private static final int USERID_EXISTENT = 1;
-    private static final int USERID_NOT_EXISTENT = 2;
+    private static final int USERID_NOT_EXISTENT = 25;
 
     private static final String EMAIL_NEW = "testingnew@email.com";
     private static final String NAME_NEW = "Testing Testez";
@@ -90,9 +90,14 @@ public class UserDaoImplTest {
     @Rollback
     @Test
     public void testCreate(){
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "passwordresets");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "proposals");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "reviews");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "trips");
+        JdbcTestUtils.deleteFromTables(jdbcTemplate, "users");
+
         // 2. Ejercitar
         User user = userDao.create(EMAIL_NEW, NAME_NEW, CUIT_NEW, ROLE, PASSWORD, Locale.ENGLISH);
-
         em.flush();
 
         // 3. Postcondiciones
@@ -102,7 +107,8 @@ public class UserDaoImplTest {
         Assert.assertEquals(CUIT_NEW, user.getCuit());
         Assert.assertEquals(NAME_NEW, user.getName());
         Assert.assertEquals(ROLE, user.getRole());
-        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
+
     }
 
     @Rollback
@@ -122,7 +128,6 @@ public class UserDaoImplTest {
         User user = userDao.create(EMAIL_NEW, NAME_NEW, CUIT_EXISTENT, ROLE, PASSWORD, Locale.ENGLISH);
 
         // 3. Postcondiciones
-        //Assert.assertEquals(1, JdbcTestUtils.countRowsInTable(jdbcTemplate, "users"));
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "cuit = '" + CUIT_EXISTENT + "'"));
     }
 
@@ -165,16 +170,18 @@ public class UserDaoImplTest {
         Assert.assertTrue(exists);
     }
 
-//    @Rollback
-//    @Test
-//    public void testVerifyAccount(){
-//        //2 - Ejercitar
-//        User user = new User(1, "martinh563@email.com" , "Testing Testalez", "20-12345678-9", "PROVIDER", "1234567890" , false, null);
-//        userDao.verifyAccount(user);
-//
-//        //3 - Postcondiciones
-//        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "accountverified = true AND userid = 1"));
-//    }
+    @Rollback
+    @Test
+    public void testVerifyAccount(){
+        //1 - Precondiciones
+        User user = em.find(User.class, 1);
+
+        //2 - Ejercitar
+        userDao.verifyAccount(user);
+
+        //3 - Postcondiciones
+        Assert.assertEquals(true, user.getAccountVerified());
+    }
 
 }
 

@@ -72,15 +72,11 @@ public class TripDaoImplTest {
         LocalDateTime arrDate = depDate.plusDays(7);
 
         //2 Ejercitar
-        User user = new User.Builder("martinh563@email.com" , "Testing Testalez", "20-12345678-9", "PROVIDER" , "1234567890" , false, null, Locale.ENGLISH).userId(1).build();
-
-        em.flush();
-        //User user = new User(1,"martinh563@email.com" , "Testing Testalez", "20-12345678-9", "PROVIDER","1234567890", false, null);
+        User user = em.find(User.class, 1);
         Trip trip = tripDao.createTrip(user,  LICENSE_PLATE_NEW, WEIGHT, VOLUME, depDate,arrDate,  ORIGIN, DESTINATION, "Refrigerated", 200);
+
         //3 Postcondiciones
         Assert.assertEquals(LICENSE_PLATE_NEW, trip.getLicensePlate());
-       // Assert.assertEquals(WEIGHT, trip.getWeight());
-       // Assert.assertEquals(VOLUME, trip.getVolume());
         Assert.assertEquals(ORIGIN, trip.getOrigin());
         Assert.assertEquals(DESTINATION, trip.getDestination());
         Assert.assertEquals(TYPE, trip.getType());
@@ -98,14 +94,11 @@ public class TripDaoImplTest {
         LocalDateTime arrDate = depDate.plusDays(7);
 
         //2 Ejercitar
-        User user = new User.Builder("martinh563@email.com" , "Testing Testalez", "20-12345678-9", "TRUCKER" , "1234567890" , false, null, Locale.ENGLISH).userId(1).build();
-        em.flush();
+        User user = em.find(User.class, 1);
         Trip trip = tripDao.createRequest(user, WEIGHT, VOLUME, depDate,arrDate, ORIGIN, DESTINATION, TYPE, 200);
 
         //3 Postcondiciones
         Assert.assertNull(trip.getLicensePlate());
-//        Assert.assertEquals(WEIGHT, trip.getWeight());
-//        Assert.assertEquals(VOLUME, trip.getVolume());
         Assert.assertEquals(ORIGIN, trip.getOrigin());
         Assert.assertEquals(DESTINATION, trip.getDestination());
         Assert.assertEquals(TYPE, trip.getType());
@@ -134,46 +127,48 @@ public class TripDaoImplTest {
         Assert.assertFalse(trip.isPresent());
     }
 
-//    @Rollback
-//    @Test
-//    public void testConfirmTrip(){
-//        // 2 Ejercitar
-//        tripDao.confirmTrip(TRIP_ID_EXISTENT, 1);
-//
-//        // 3 Postcondiciones
-//        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_confirmation = true" ));
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testConfirmTripNotExistent(){
-//        //2 Ejercitar
-//        tripDao.confirmTrip(TRIP_ID_NOT_EXISTENT, 1);
-//
-//        //3 Postcondiciones
-//        Assert.assertEquals(0, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_confirmation = true" ));
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testCreateProposal(){
-//        //2 Ejercitar
-//        tripDao.createProposal(TRIP_ID_EXISTENT, 1, MESSAGE);
-//
-//        //3 Postcondiciones
-//        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "proposals"));
-//    }
-//
-//    @Rollback
-//    @Test
-//    public void testAcceptProposal(){
-//
-//        tripDao.acceptProposal(new Proposal(PROPOSAL_ID_EXISTENT, TRIP4_ID_EXISTENT, 1, PROPOSALDESC_EXISTENT,""));
-//
-//        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_id IS NOT NULL AND trucker_id IS NOT NULL AND trip_id = " + TRIP4_ID_EXISTENT));
-//
-//    }
-//
+    @Rollback
+    @Test
+    public void testConfirmTrip(){
 
+        User trucker = em.find(User.class, 2);
+        Trip trip = em.find(Trip.class, 1);
+
+        // 2 Ejercitar
+        tripDao.confirmTrip(trip, trucker);
+        em.flush();
+
+
+        // 3 Postcondiciones
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_confirmation = true" ));
+    }
+
+    @Rollback
+    @Test
+    public void testCreateProposal(){
+        //1 Precondiciones
+        User trucker = em.find(User.class, 1);
+        Trip trip = em.find(Trip.class, 2);
+
+        //2 Ejercitar
+        tripDao.createProposal(trip, trucker, MESSAGE, 200);
+
+        //3 Postcondiciones
+        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "proposals"));
+    }
+
+    @Rollback
+    @Test
+    public void testAcceptProposal(){
+        //precondiciones
+        Proposal proposal = em.find(Proposal.class, 1);
+
+        //2 Ejercitar
+        tripDao.acceptProposal(proposal);
+
+        //3 Postcondiciones
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "provider_id IS NOT NULL AND trucker_id IS NOT NULL AND trip_id = " + TRIP_ID_EXISTENT));
+
+    }
 
 }
