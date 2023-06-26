@@ -46,7 +46,6 @@ public class MailServiceImpl implements MailService {
     private String generateEmailConfirmation(User confirmed, Locale locale) {
         Context context = new Context();
         context.setLocale(locale);
-        System.out.println(locale.toString());
         context.setVariable("user", confirmed);
         return templateEngine.process("emailconfirmation.html", context);
     }
@@ -266,7 +265,6 @@ public class MailServiceImpl implements MailService {
     @Override
     @Async
     public void sendAlertEmail(User user, Trip request, Locale locale) {
-        System.out.println("Sending alert email to: " + user.getEmail());
         String htmlContent = generateAlertEmail(user, request, locale);
         MimeMessage message = mailSender.createMimeMessage();
 

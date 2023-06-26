@@ -116,7 +116,6 @@ public class UserController {
             mav.addObject("userRating", revs.getUserRating(currUser.getUserId()));
             mav.addObject("userReviews", revs.getUserReviews(currUser.getUserId()));
             mav.addObject("completedTrips", ts.getCompletedTripsCount(currUser.getUserId()));
-            System.out.println("COMPLETED TRIPS = " + ts.getCompletedTripsCount(currUser.getUserId()));
             mav.addObject("currUser", currUser);
         }
         return mav;
