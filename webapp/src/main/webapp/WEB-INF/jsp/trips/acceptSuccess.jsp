@@ -43,7 +43,7 @@
                 <td><c:out value="${trip.licensePlate}"/></td>
             </tr>
             <tr>
-                <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
+                <td><b><spring:message code="DepartureDate"/> - <spring:message code="ArrivalDate"/></b></td>
                 <td>${trip.departureDateString} - ${trip.arrivalDateString}</td>
             </tr>
             <tr>
