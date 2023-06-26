@@ -148,27 +148,27 @@
                             </div>
                             <c:if test="${ongoingTrips.size() > 0}">
                                 <ul class="pagination justify-content-center pt-3">
-                                    <c:if test="${currentPageActive > 2}">
+                                    <c:if test="${currentOngoingPage > 2}">
                                         <li class="page-item">
                                             <button type="submit" class="page-link" name="page" value="${1}">First</button>
                                         </li>
                                     </c:if>
-                                    <c:if test="${currentPageActive != 1}">
+                                    <c:if test="${currentOngoingPage != 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
+                                            <button type="submit" class="page-link" name="activePage" value="${currentOngoingPage-1}">Previous</button>
                                         </li>
-                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentOngoingPage-1}">${currentOngoingPage-1}</button></li>
                                     </c:if>
-                                    <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
-                                    <c:if test="${currentPageActive < maxActivePage}">
-                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
+                                    <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentOngoingPage}">${currentOngoingPage}</button></li>
+                                    <c:if test="${currentOngoingPage < maxOngoingPage}">
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentOngoingPage+1}">${currentOngoingPage + 1}</button></li>
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                                            <button type="submit" class="page-link" name="activePage" value="${currentOngoingPage+1}">Next</button>
                                         </li>
                                     </c:if>
-                                    <c:if test="${currentPageActive < maxActivePage - 1}">
+                                    <c:if test="${currentOngoingPage < maxOngoingPage - 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                                            <button type="submit" class="page-link" name="activePage" value="${maxOngoingPage}">Last</button>
                                         </li>
                                     </c:if>
                                 </ul>
@@ -258,27 +258,27 @@
                             </div>
                             <c:if test="${futureTrips.size() > 0}">
                                 <ul class="pagination justify-content-center pt-3">
-                                    <c:if test="${currentPageActive > 2}">
+                                    <c:if test="${currentFuturePage > 2}">
                                         <li class="page-item">
                                             <button type="submit" class="page-link" name="page" value="${1}">First</button>
                                         </li>
                                     </c:if>
-                                    <c:if test="${currentPageActive != 1}">
+                                    <c:if test="${currentFuturePage != 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
+                                            <button type="submit" class="page-link" name="activePage" value="${currentFuturePage-1}">Previous</button>
                                         </li>
-                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentFuturePage-1}">${currentFuturePage-1}</button></li>
                                     </c:if>
-                                    <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentPageActive}">${currentPageActive}</button></li>
-                                    <c:if test="${currentPageActive < maxActivePage}">
-                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
+                                    <li class="page-item disabled"><button type="submit" class="page-link" name="activePage" value="${currentFuturePage}">${currentFuturePage}</button></li>
+                                    <c:if test="${currentFuturePage < maxFuturePage}">
+                                        <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentFuturePage+1}">${currentFuturePage + 1}</button></li>
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                                            <button type="submit" class="page-link" name="activePage" value="${currentFuturePage+1}">Next</button>
                                         </li>
                                     </c:if>
-                                    <c:if test="${currentPageActive < maxActivePage - 1}">
+                                    <c:if test="${currentFuturePage < maxFuturePage - 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                                            <button type="submit" class="page-link" name="activePage" value="${maxFuturePage}">Last</button>
                                         </li>
                                     </c:if>
                                 </ul>

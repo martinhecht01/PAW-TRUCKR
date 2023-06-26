@@ -126,12 +126,21 @@ public class UserController {
     }
 
     @RequestMapping("/myItinerary")
-    public ModelAndView myIntinerary() {
+    public ModelAndView myIntinerary(@RequestParam(required = false) Integer ongoingPage, @RequestParam(required = false) Integer futurePage) {
         LOGGER.info("Accessing intinerary page");
         final ModelAndView mav = new ModelAndView("user/myItinerary");
-        mav.addObject("currentUser", getCurrentUser());
-        mav.addObject("ongoingTrips", ts.getAllOngoingTrips(getCurrentUser().getUserId(),1));
-        mav.addObject("futureTrips", ts.getAllFutureTrips(getCurrentUser().getUserId()));
+
+        Integer maxOngoingPage = ts.getTotalPagesAllOngoingTrips(getCurrentUser().getUserId());
+        Integer maxFuturePage = ts.getTotalPagesAllFutureTrips(getCurrentUser().getUserId());
+
+        mav.addObject("maxOngoingPage", maxOngoingPage);
+        mav.addObject("currentOngoingPage", ongoingPage == null || ongoingPage > maxOngoingPage ? 1 : ongoingPage);
+
+        mav.addObject("maxFuturePage", maxFuturePage);
+        mav.addObject("currentFuturePage", futurePage == null || futurePage > maxFuturePage ? 1 : futurePage);
+//        mav.addObject("currentUser", getCurrentUser());
+        mav.addObject("ongoingTrips", ts.getAllOngoingTrips(getCurrentUser().getUserId(), ongoingPage == null || ongoingPage > maxOngoingPage ? 1 : ongoingPage));
+        mav.addObject("futureTrips", ts.getAllFutureTrips(getCurrentUser().getUserId(), futurePage == null || futurePage > maxFuturePage ? 1 : futurePage));
         return mav;
     }
 
