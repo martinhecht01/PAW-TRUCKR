@@ -150,7 +150,7 @@
                                 <ul class="pagination justify-content-center pt-3">
                                     <c:if test="${currentOngoingPage > 2}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                                            <button type="submit" class="page-link" name="ongoingPage" value="${1}">First</button>
                                         </li>
                                     </c:if>
                                     <c:if test="${currentOngoingPage != 1}">
@@ -260,25 +260,41 @@
                                 <ul class="pagination justify-content-center pt-3">
                                     <c:if test="${currentFuturePage > 2}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                                            <a href="<c:url value="/myItinerary"/>?futurePage=1&&activeSecondTab=true" class="page-link">
+                                                <spring:message code="First"/>
+                                            </a>
                                         </li>
                                     </c:if>
                                     <c:if test="${currentFuturePage != 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="futurePage" value="${currentFuturePage-1}">Previous</button>
+                                            <a href="<c:url value="/myItinerary"/>?futurePage=${currentFuturePage-1}&&activeSecondTab=true" class="page-link">
+                                                <spring:message code="Previous"/>
+                                            </a>
                                         </li>
-                                        <li class="page-item"><button type="submit" class="page-link" name="futurePage" value="${currentFuturePage-1}">${currentFuturePage-1}</button></li>
+                                        <li class="page-item">
+                                            <a href="<c:url value="/myItinerary"/>?futurePage=${currentFuturePage-1}&&activeSecondTab=true" class="page-link">
+                                                ${currentFuturePage-1}
+                                            </a>
+                                        </li>
                                     </c:if>
                                     <li class="page-item disabled"><button type="submit" class="page-link" name="futurePage" value="${currentFuturePage}">${currentFuturePage}</button></li>
                                     <c:if test="${currentFuturePage < maxFuturePage}">
-                                        <li class="page-item"><button type="submit" class="page-link" name="futurePage" value="${currentFuturePage+1}">${currentFuturePage + 1}</button></li>
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="futurePage" value="${currentFuturePage+1}">Next</button>
+                                            <a href="<c:url value="/myItinerary"/>?futurePage=${currentFuturePage+1}&&activeSecondTab=true" class="page-link">
+                                                ${currentFuturePage + 1}
+                                            </a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a href="<c:url value="/myItinerary"/>?futurePage=${currentFuturePage+1}&&activeSecondTab=true" class="page-link">
+                                                <spring:message code="Next"/>
+                                            </a>
                                         </li>
                                     </c:if>
                                     <c:if test="${currentFuturePage < maxFuturePage - 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="futurePage" value="${maxFuturePage}">Last</button>
+                                            <a href="<c:url value="/myItinerary"/>?futurePage=${maxFuturePage}&&activeSecondTab=true" class="page-link">
+                                                <spring:message code="Last"/>
+                                            </a>
                                         </li>
                                     </c:if>
                                 </ul>
@@ -296,3 +312,36 @@
 </div>
 </body>
 </html>
+
+<script>
+    // Get the tab buttons
+    const tabButtons = document.querySelectorAll('.nav-link');
+
+    // Get the tab content elements
+    const tabContents = document.querySelectorAll('.tab-pane');
+
+    // Function to activate the second tab
+    const activateSecondTab = () => {
+        // Remove "active" class from all tab buttons
+        //.tab('show')
+        const tab1Content = document.getElementById("tab1");
+        tab1Content.classList.remove("active");
+        tab1Content.classList.remove("show");
+
+        const tab1Button = document.getElementById("tab1-tab");
+        tab1Button.classList.remove("active");
+
+        const tab2Content = document.getElementById("tab2");
+        tab2Content.classList.add("active");
+        tab2Content.classList.add("show");
+
+        const tab2Button = document.getElementById("tab2-tab");
+        tab2Button.classList.add("active");
+    };
+
+    // Check if the secondTab parameter is true
+    if (${activeSecondTab}) {
+        activateSecondTab();
+    }
+
+</script>

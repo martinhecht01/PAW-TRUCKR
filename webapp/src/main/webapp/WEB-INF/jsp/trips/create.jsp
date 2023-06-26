@@ -21,7 +21,7 @@
 <components:navBar/>
 <%--Formulario--%>
 <form:form modelAttribute="tripForm" action="${postPath}" method="post" enctype="multipart/form-data">
-    <div class="card w-75 mb-3 mt-5 formCard">
+    <div class="card mb-3 mt-5 d-flex m-auto" style="width: 50em">
         <div class="card-header">
             <h4 class="card-title"><b><spring:message code="CreateTrip"/></b></h4>
         </div>
