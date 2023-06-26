@@ -22,17 +22,18 @@ public class ImageDaoJPA implements ImageDao {
     private EntityManager entityManager;
 
     @Override
-    public int uploadImage(Image image) {
-        LOGGER.info("Uploading image with imageId {}", image.getImageid());
-        entityManager.persist(image);
-        return image.getImageid();
+    public int uploadImage(byte[] image) {
+        Image im = new Image(image);
+        LOGGER.info("Uploading image with imageId {}", im.getImageid());
+        entityManager.persist(im);
+        return im.getImageid();
     }
 
     @Override
     public Optional<Image> getImage(int imageid) {
         Image image = entityManager.find(Image.class, imageid);
         LOGGER.info("Getting image with imageId {}", imageid);
-        return Optional.of(image);
+        return Optional.ofNullable(image);
     }
 
     @Override

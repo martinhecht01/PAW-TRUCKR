@@ -33,7 +33,7 @@ INSERT INTO reviews(userid, tripid, rating, review)
 VALUES (1,4,2,'Mediocre trabajo. No llego a tiempo.');
 
 INSERT INTO images(imageid, image)
-VALUES(1, X'A0010203040506');
+VALUES(2, X'A0010203040506');
 
 INSERT INTO proposals(proposal_id, trip_id, user_id, description)
 VALUES (1,2,1,'Quiero que lleves mi carga.')
