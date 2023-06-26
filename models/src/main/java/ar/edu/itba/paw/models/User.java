@@ -1,9 +1,9 @@
 package ar.edu.itba.paw.models;
 
-import com.sun.istack.internal.Nullable;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Entity

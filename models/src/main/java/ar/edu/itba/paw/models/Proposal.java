@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.models;
 
 
-    import com.sun.istack.internal.Nullable;
 
     import javax.persistence.*;
 
@@ -14,12 +13,10 @@ package ar.edu.itba.paw.models;
         private Integer proposalId;
 
         @ManyToOne
-        @Nullable
         @JoinColumn(name = "trip_id")
         private Trip trip;
 
         @ManyToOne
-        @Nullable
         @JoinColumn(name = "user_id")
         private User user;
 

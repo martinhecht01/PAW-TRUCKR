@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models;
 
-import com.sun.istack.internal.Nullable;
+
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -22,22 +22,19 @@ public class Alert {
     @Column(name = "city", nullable = false)
     private String city;
 
-    @Nullable
     @Column(name = "maxWeight")
     private Integer maxWeight;
 
-    @Nullable
     @Column(name = "maxVolume")
     private Integer maxVolume;
 
     @Column(name = "fromDate", nullable = false)
     private Timestamp fromDate;
 
-    @Nullable
     @Column(name = "toDate")
     private Timestamp toDate;
 
-    @Nullable
+
     @Column(name = "cargoType")
     private String cargoType;
 
