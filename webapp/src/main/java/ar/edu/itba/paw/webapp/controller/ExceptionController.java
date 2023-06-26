@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import org.slf4j.Logger;
@@ -54,20 +55,31 @@ public class ExceptionController {
         LOGGER.info("Handling NoHandlerFoundException");
         ModelAndView mv = new ModelAndView();
         mv.addObject("errorCode", 404);
-        mv.addObject("errorMsgCode", "PageNotFound");
+        mv.addObject("errorMsgCode", "404UserMsg");
         mv.setViewName("landing/error");
 
         return mv;
     }
 
-//    @ExceptionHandler({RuntimeException.class, NullPointerException.class})
-//    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ModelAndView internalServerError(){
-//        ModelAndView mv = new ModelAndView();
-//        mv.addObject("errorCode", 500);
-//        mv.addObject("errorMsgCode", "500ErrorCode");
-//        mv.setViewName("landing/error");
-//        return mv;
-//    }
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)
+    public ModelAndView noSuchUser() {
+        LOGGER.info("Handling UserNotFoundException");
+        final ModelAndView view = new ModelAndView("landing/error");
+        view.addObject("errorCode", 404);
+        view.addObject("errorMsgCode", "404UserMsg");
+        view.setViewName("landing/error");
+        return view;
+    }
+
+    @ExceptionHandler({RuntimeException.class, NullPointerException.class})
+    @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ModelAndView internalServerError(){
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("errorCode", 500);
+        mv.addObject("errorMsgCode", "500ErrorCode");
+        mv.setViewName("landing/error");
+        return mv;
+    }
 
 }

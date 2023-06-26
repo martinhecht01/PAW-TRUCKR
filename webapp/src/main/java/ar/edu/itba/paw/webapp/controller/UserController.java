@@ -19,15 +19,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -55,7 +61,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView login(@RequestParam(value = "error", required = false) final String error){
+    public ModelAndView login(@RequestParam(value = "error", required = false) final String error, @RequestParam(value = "successVerification", required = false) final Boolean success) {
         LOGGER.info("Accessing login page");
         ModelAndView mav = new ModelAndView("landing/login");
 
@@ -65,6 +71,7 @@ public class UserController {
         } else{
             mav.addObject("error", false);
         }
+        mav.addObject("successVerification", success != null && success);
         return mav;
     }
 
@@ -153,9 +160,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/verifyAccount", method = RequestMethod.GET)
-    public ModelAndView verifyAccountView(@ModelAttribute("verifyAccountForm") final VerifyAccountForm form){
+    public ModelAndView verifyAccountView(@ModelAttribute("verifyAccountForm") final VerifyAccountForm form, @RequestParam(required = false) String token){
+
+        if(token != null){
+            form.setToken(token);
+            return verifyAccount(form, validateForm(form));
+        }
+
         LOGGER.info("Accessing verify account page");
         return new ModelAndView("user/verifyAccount");
+    }
+
+    private BindingResult validateForm(@Valid VerifyAccountForm form){
+        return new BeanPropertyBindingResult(form, "verifyAccountForm");
     }
 
     @RequestMapping(value = "/verifyAccount", method = RequestMethod.POST)
@@ -163,17 +180,19 @@ public class UserController {
 
         if (errors.hasErrors()) {
             LOGGER.info("Error in verify account form");
-            return verifyAccountView(form);
+            return verifyAccountView(form, null);
         }
 
         boolean success = us.verifyAccount(Integer.parseInt(form.getToken()), LocaleContextHolder.getLocale());
-        if(!success){
+
+        if(!success) {
             LOGGER.info("Incorrect token");
             errors.rejectValue("token", "IncorrectToken");
-            return verifyAccountView(form);
+            return verifyAccountView(form, null);
         }
+
         LOGGER.info("Account verified for token {}", form.getToken());
-        return new ModelAndView("redirect:/login");
+        return new ModelAndView("redirect:/login?successVerification=" + true);
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
