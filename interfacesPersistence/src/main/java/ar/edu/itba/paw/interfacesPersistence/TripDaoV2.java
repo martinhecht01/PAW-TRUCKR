@@ -65,6 +65,10 @@ public interface TripDaoV2 {
 
     List<Trip> getAllExpiredPublications(Integer userId, Integer pag);
 
+    Integer getTotalPagesAllOngoingTrips(User user);
+
+    List<Trip> getAllOngoingTrips(User user, Integer page);
+
     List<Trip> getAllOngoingPublications(Integer userId);
 
     List<Trip> getAllAcceptedTripsAndRequestsByUserId(Integer userid, Integer pag);
@@ -81,7 +85,6 @@ public interface TripDaoV2 {
 
     void deleteOffer(Proposal proposal);
 
-    List<Trip> getAllOngoingTrips(User user);
 
     List<Trip> getAllPastTrips(User user);
 

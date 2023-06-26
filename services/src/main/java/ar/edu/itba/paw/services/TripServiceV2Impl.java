@@ -287,11 +287,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
         tripDaoV2.deleteOffer(offer);
     }
 
+    @Transactional
+    @Override
+    public Integer getTotalPagesAllOngoingTrips(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesAllOngoingTrips(user);
+    }
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllOngoingTrips(Integer userId) {
+    public List<Trip> getAllOngoingTrips(Integer userId,Integer pag) {
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllOngoingTrips(user);
+        return tripDaoV2.getAllOngoingTrips(user,pag);
     }
 
     @Transactional(readOnly = true)

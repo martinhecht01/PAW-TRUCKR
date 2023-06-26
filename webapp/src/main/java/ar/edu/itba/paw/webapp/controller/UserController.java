@@ -130,7 +130,7 @@ public class UserController {
         LOGGER.info("Accessing intinerary page");
         final ModelAndView mav = new ModelAndView("user/myItinerary");
         mav.addObject("currentUser", getCurrentUser());
-        mav.addObject("ongoingTrips", ts.getAllOngoingTrips(getCurrentUser().getUserId()));
+        mav.addObject("ongoingTrips", ts.getAllOngoingTrips(getCurrentUser().getUserId(),1));
         mav.addObject("futureTrips", ts.getAllFutureTrips(getCurrentUser().getUserId()));
         return mav;
     }

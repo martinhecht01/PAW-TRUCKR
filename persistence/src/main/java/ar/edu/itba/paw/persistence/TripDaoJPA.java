@@ -564,12 +564,22 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         Proposal offer = entityManager.find(Proposal.class, proposal.getProposalId());
         entityManager.remove(offer);
     }
-
     @Override
-    public List<Trip> getAllOngoingTrips(User user) {
+    public Integer getTotalPagesAllOngoingTrips(User user) {
+        String query = "SELECT COUNT(*) as total FROM Trip t WHERE (( t.provider = :user AND t.trucker IS NOT NULL ) OR (t.trucker = :user AND t.provider IS NOT NULL)) AND t.departureDate < now() AND (t.truckerConfirmation = false OR t.providerConfirmation = false )";
+        TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
+        typedQuery.setParameter("user", user);
+
+        Long total = typedQuery.getSingleResult();
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+    }
+    @Override
+    public List<Trip> getAllOngoingTrips(User user, Integer page) {
         String jpql = "SELECT r FROM Trip r WHERE (( r.provider = :user AND r.trucker IS NOT NULL ) OR (r.trucker = :user AND r.provider IS NOT NULL)) AND r.departureDate < now() AND (r.truckerConfirmation = false OR r.providerConfirmation = false )";
         return entityManager.createQuery(jpql, Trip.class)
                 .setParameter("user", user)
+                .setFirstResult((page - 1) * ITEMS_PER_PAGE)
+                .setMaxResults(ITEMS_PER_PAGE)
                 .getResultList();
     }
 
