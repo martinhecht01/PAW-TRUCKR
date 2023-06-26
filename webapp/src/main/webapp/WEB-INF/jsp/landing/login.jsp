@@ -77,8 +77,14 @@
 
 <script>
     const tele = document.querySelector('#cuit');
-    tele.addEventListener('keyup', function(e){
-        if (e.key !== 'Backspace' && (tele.value.length === 2 || tele.value.length === 11)){
+    tele.addEventListener('input', function(e) {
+        if (e.inputType === 'deleteContentBackward') {
+            if (tele.value.length === 12 ) {
+                tele.value = tele.value.slice(0, 10);
+            } else if (tele.value.length === 3) {
+                tele.value = tele.value.slice(0, 1);
+            }
+        } else if (tele.value.length === 2 || tele.value.length === 11) {
             tele.value += '-';
         }
     });
