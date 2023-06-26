@@ -248,12 +248,6 @@ public class RequestController {
         Integer maxActivePage = ts.getTotalPagesActivePublications(user);
         Integer maxAcceptPage = ts.getTotalPagesExpiredPublications(user);
 
-        System.out.println("activePage: " + activePage);
-        System.out.println("maxActivePage: " + maxActivePage);
-
-        System.out.println("acceptPage: " + acceptPage);
-        System.out.println("maxAcceptPage: " + maxAcceptPage);
-
         final ModelAndView mav = new ModelAndView("requests/myRequests");
         mav.addObject("currentPageActive", activePage < 0 || activePage > maxActivePage ? 1 : activePage);
         mav.addObject("maxActivePage", maxActivePage);
