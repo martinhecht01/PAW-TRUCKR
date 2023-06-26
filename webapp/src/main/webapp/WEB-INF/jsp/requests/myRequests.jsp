@@ -76,10 +76,11 @@
               <div class="card m-3" style="width: 25rem;">
                 <c:if test="${request.proposals.size() > 0}">
                   <h5 class="position-absolute top-0 end-0 M-3 ">
-                                <span class="badge rounded-pill bg-danger">
-                                    ${request.proposals.size()} <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
-                                <span class="visually-hidden">unread messages</span>
-                            </span>
+                    <span class="badge rounded-pill bg-danger">
+                              ${request.proposals.size()}
+                              <svg width="1em" height="1em"><use fill="white" xlink:href="#notification"></use></svg>
+                              <span class="visually-hidden">unread messages</span>
+                    </span>
                   </h5>
                 </c:if>
                 <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="browseImg" alt="...">
@@ -122,12 +123,12 @@
           <ul class="pagination justify-content-center pt-3">
             <c:if test="${currentPageActive > 2}">
               <li class="page-item">
-                <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                <button type="submit" class="page-link" name="page" value="${1}"><spring:message code="First"/></button>
               </li>
             </c:if>
             <c:if test="${currentPageActive != 1}">
               <li class="page-item">
-                <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">Previous</button>
+                <button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}"><spring:message code="Previous"/></button>
               </li>
               <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive-1}">${currentPageActive-1}</button></li>
             </c:if>
@@ -135,12 +136,12 @@
             <c:if test="${currentPageActive < maxActivePage}">
               <li class="page-item"><button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">${currentPageActive + 1}</button></li>
               <li class="page-item">
-                <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}">Next</button>
+                <button type="submit" class="page-link" name="activePage" value="${currentPageActive+1}"><spring:message code="Next"/></button>
               </li>
             </c:if>
             <c:if test="${currentPageActive < maxActivePage - 1}">
               <li class="page-item">
-                <button type="submit" class="page-link" name="activePage" value="${maxActivePage}">Last</button>
+                <button type="submit" class="page-link" name="activePage" value="${maxActivePage}"><spring:message code="Last"/></button>
               </li>
             </c:if>
           </ul>
@@ -155,65 +156,85 @@
             </div>
           </c:if>
           <c:forEach var="request" items="${expiredPublications}">
-              <div class="card m-3" style="width: 25rem;">
-                <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="browseImg" alt="...">
-                <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${request.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${request.type}"></use></svg><spring:message code="${request.type}" htmlEscape="true"/></span></h4>
-                <div class="card-body">
-                  <div class="w-100 d-flex space-apart">
-                    <div class="text-truncate text-center" style="width: 35%">
-                      <h5><c:out value="${request.origin}"/></h5>
-                        ${request.departureDateString}
-                    </div>
+            <div class="card m-3" style="width: 25rem;">
+              <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="browseImg" alt="...">
+              <h4 class="mx-4 my-3 w-25 position-absolute top-0 start-0"><span class="badge rounded-pill ${request.type}"><svg class="mx-2" fill="white" width="1em" height="1em"><use xlink:href="#${request.type}"></use></svg><spring:message code="${request.type}" htmlEscape="true"/></span></h4>
+              <div class="card-body">
+                <div class="w-100 d-flex space-apart">
+                  <div class="text-truncate text-center" style="width: 35%">
+                    <h5><c:out value="${request.origin}"/></h5>
+                      ${request.departureDateString}
+                  </div>
 
-                    <div style="width: 30%">
-                      <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
-                    </div>
+                  <div style="width: 30%">
+                    <svg width="9em" height="3em"><use xlink:href="#arrow"></use></svg>
+                  </div>
 
-                    <div class="text-truncate text-center" style="width: 35%">
-                      <h5><c:out value="${request.destination}"/></h5>
-                        ${request.arrivalDateString}
-                    </div>
+                  <div class="text-truncate text-center" style="width: 35%">
+                    <h5><c:out value="${request.destination}"/></h5>
+                      ${request.arrivalDateString}
                   </div>
                 </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
-                    <div class="text-center">
-                      <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${request.weight}"/> KG </h5>
-                      <p><spring:message code="AvailableWeight"/></p>
-                    </div>
-                    <div class="text-center">
-                      <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${request.volume}"/> M3 </h5>
-                      <p><spring:message code="AvailableVolume"/></p>
-                    </div>
-                  </li>
-                  <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.price}"/></h4></li>
-                </ul>
               </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item px-5 pt-4 d-flex justify-content-between align-items-center">
+                  <div class="text-center">
+                    <h5><svg width="1em" height="1em"><use xlink:href="#heavy"></use></svg> <c:out value="${request.weight}"/> KG </h5>
+                    <p><spring:message code="AvailableWeight"/></p>
+                  </div>
+                  <div class="text-center">
+                    <h5><svg width="1em" height="1em"><use xlink:href="#volume"></use></svg> <c:out value="${request.volume}"/> M3 </h5>
+                    <p><spring:message code="AvailableVolume"/></p>
+                  </div>
+                </li>
+                <li class="list-group-item text-truncate text-center"><h4>$<c:out value="${request.price}"/></h4></li>
+              </ul>
+            </div>
           </c:forEach>
         </div>
         <c:if test="${expiredPublications.size() > 0}">
           <ul class="pagination justify-content-center pt-3">
             <c:if test="${currentPageAccepted > 2}">
               <li class="page-item">
-                <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                <a href="<c:url value="/requests/myRequests"/>?acceptPage=1&&activeSecondTab=true" class="page-link">
+                  <spring:message code="First"/>
+                </a>
               </li>
             </c:if>
             <c:if test="${currentPageAccepted != 1}">
               <li class="page-item">
-                <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">Previous</button>
+                <a href="<c:url value="/requests/myRequests"/>?acceptPage=${currentPageAccepted-1}&&activeSecondTab=true" class="page-link">
+                  <spring:message code="Previous"/>
+                </a>
               </li>
-              <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted-1}">${currentPageAccepted-1}</button></li>
-            </c:if>
-            <li class="page-item disabled"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted}">${currentPageAccepted}</button></li>
-            <c:if test="${currentPageAccepted < maxAcceptedPage}">
-              <li class="page-item"><button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted + 1}">${currentPageAccepted + 1}</button></li>
               <li class="page-item">
-                <button type="submit" class="page-link" name="acceptPage" value="${currentPageAccepted+1}">Next</button>
+                <a href="<c:url value="/requests/myRequests"/>?acceptPage=${currentPageAccepted-1}&&activeSecondTab=true" class="page-link">
+                    ${currentPageAccepted-1}
+                </a>
+              </li>
+            </c:if>
+            <li class="page-item disabled">
+              <a href="<c:url value="/requests/myRequests"/>?acceptPage=${currentPageAccepted}&&activeSecondTab=true" class="page-link">
+                  ${currentPageAccepted}
+              </a>
+            </li>
+            <c:if test="${currentPageAccepted < maxAcceptedPage}">
+              <li class="page-item">
+                <a href="<c:url value="/requests/myRequests"/>?acceptPage=${currentPageAccepted+1}&&activeSecondTab=true" class="page-link">
+                    ${currentPageAccepted + 1}
+                </a>
+              </li>
+              <li class="page-item">
+                <a href="<c:url value="/requests/myRequests"/>?acceptPage=${currentPageAccepted+1}&&activeSecondTab=true" class="page-link">
+                  <spring:message code="Next"/>
+                </a>
               </li>
             </c:if>
             <c:if test="${currentPageAccepted < maxAcceptedPage - 1}">
               <li class="page-item">
-                <button type="submit" class="page-link" name="acceptPage" value="${maxAcceptedPage}">Last</button>
+                <a href="<c:url value="/requests/myRequests"/>?acceptPage=${maxAcceptedPage}&&activeSecondTab=true" class="page-link">
+                  <spring:message code="Last"/>
+                </a>
               </li>
             </c:if>
           </ul>
@@ -229,3 +250,36 @@
 </div>
 </body>
 </html>
+
+<script>
+  // Get the tab buttons
+  const tabButtons = document.querySelectorAll('.nav-link');
+
+  // Get the tab content elements
+  const tabContents = document.querySelectorAll('.tab-pane');
+
+  // Function to activate the second tab
+  const activateSecondTab = () => {
+    // Remove "active" class from all tab buttons
+    //.tab('show')
+    const tab1Content = document.getElementById("tab1");
+    tab1Content.classList.remove("active");
+    tab1Content.classList.remove("show");
+
+    const tab1Button = document.getElementById("tab1-tab");
+    tab1Button.classList.remove("active");
+
+    const tab2Content = document.getElementById("tab2");
+    tab2Content.classList.add("active");
+    tab2Content.classList.add("show");
+
+    const tab2Button = document.getElementById("tab2-tab");
+    tab2Button.classList.add("active");
+  };
+
+  // Check if the secondTab parameter is true
+  if (${activeSecondTab}) {
+    activateSecondTab();
+  }
+
+</script>
