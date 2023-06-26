@@ -43,10 +43,12 @@
                         <td><b><spring:message code="Origin"/>-<spring:message code="Destination"/></b></td>
                         <td><c:out value="${trip.origin}-${trip.destination}"/></td>
                     </tr>
-                    <tr>
-                        <td><b><spring:message code="LicensePlate"/></b></td>
-                        <td><c:out value="${trip.licensePlate}"/></td>
-                    </tr>
+                    <c:if test="${trip.licensePlate != null}">
+                        <tr>
+                            <td><b><spring:message code="LicensePlate"/></b></td>
+                            <td><c:out value="${trip.licensePlate}"/></td>
+                        </tr>
+                    </c:if>
                     <tr>
                         <td><b><spring:message code="DepartureDate"/> - <spring:message code="FiltersArrival"/></b></td>
                         <td>${trip.departureDateString} - ${trip.arrivalDateString}</td>
