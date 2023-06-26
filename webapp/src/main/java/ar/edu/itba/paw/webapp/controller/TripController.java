@@ -289,7 +289,7 @@ public class TripController {
         int userId = Objects.requireNonNull(getUser()).getUserId();
         mav.addObject("trip", trip);
         mav.addObject("userId", userId);
-        mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
+        mav.addObject("now", LocalDateTime.now());
 
         return mav;
     }

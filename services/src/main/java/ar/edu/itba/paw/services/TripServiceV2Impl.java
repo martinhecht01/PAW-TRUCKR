@@ -125,7 +125,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         else
             user = trip.getProvider();
 
-        ms.sendProposalEmail(user, proposal, locale);
+        ms.sendProposalEmail(user, proposal, user.getLocale());
         return proposal;
     }
 
@@ -287,11 +287,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
         tripDaoV2.deleteOffer(offer);
     }
 
+    @Transactional
+    @Override
+    public Integer getTotalPagesAllOngoingTrips(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesAllOngoingTrips(user);
+    }
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllOngoingTrips(Integer userId) {
+    public List<Trip> getAllOngoingTrips(Integer userId,Integer pag) {
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllOngoingTrips(user);
+        return tripDaoV2.getAllOngoingTrips(user,pag);
     }
 
     @Transactional(readOnly = true)
@@ -303,9 +309,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllFutureTrips(Integer userId) {
+    public Integer getTotalPagesAllFutureTrips(Integer userId){
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllFutureTrips(user);
+        return tripDaoV2.getTotalPagesAllFutureTrips(user);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllFutureTrips(Integer userId, Integer page){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllFutureTrips(user, page);
     }
 
 

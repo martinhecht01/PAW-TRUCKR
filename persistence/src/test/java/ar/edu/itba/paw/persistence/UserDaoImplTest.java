@@ -169,7 +169,8 @@ public class UserDaoImplTest {
 //    @Test
 //    public void testVerifyAccount(){
 //        //2 - Ejercitar
-//        userDao.verifyAccount(USERID_EXISTENT);
+//        User user = new User(1, "martinh563@email.com" , "Testing Testalez", "20-12345678-9", "PROVIDER", "1234567890" , false, null);
+//        userDao.verifyAccount(user);
 //
 //        //3 - Postcondiciones
 //        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "accountverified = true AND userid = 1"));

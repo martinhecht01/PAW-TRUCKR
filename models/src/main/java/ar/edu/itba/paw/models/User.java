@@ -62,22 +62,16 @@ public class User {
         // Default constructor required by Hibernate
     }
 
-    public User(Integer userId,
-                String email,
-                String name,
-                String cuit,
-                String role,
-                String password,
-                Boolean accountVerified,
-                Image image) {
-        this.userId = userId;
-        this.cuit = cuit;
-        this.email = email;
-        this.name = name;
-        this.role = role;
-        this.password = password;
-        this.accountVerified = accountVerified;
-        this.image = image;
+    public User(Builder builder) {
+        this.userId = builder.userId;
+        this.cuit = builder.cuit;
+        this.email = builder.email;
+        this.name = builder.name;
+        this.role = builder.role;
+        this.password = builder.password;
+        this.accountVerified = builder.accountVerified;
+        this.image = builder.image;
+        this.locale= builder.locale;
     }
 
     public User(String email,
@@ -233,4 +227,37 @@ public class User {
         }
         return reviews.stream().mapToDouble(Review::getRating).sum() / reviews.size();
     }
+
+    public static class Builder {
+        private Integer userId;
+        private String cuit;
+        private String email;
+        private String name;
+        private String role;
+        private String password;
+        private Boolean accountVerified;
+        private Image image;
+        private Locale locale;
+
+        public Builder(String email, String name, String cuit, String role, String password,
+                       Boolean accountVerified, Image image, Locale locale) {
+            this.email = email;
+            this.name = name;
+            this.cuit = cuit;
+            this.role = role;
+            this.password = password;
+            this.accountVerified = accountVerified;
+            this.image = image;
+        }
+
+        public Builder userId(Integer userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+
 }
