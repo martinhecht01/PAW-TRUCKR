@@ -185,12 +185,12 @@
                 <ul class="pagination justify-content-center pt-3">
                     <c:if test="${currentPage > 2}">
                         <li class="page-item">
-                            <button type="submit" class="page-link" name="page" value="${1}">First</button>
+                            <button type="submit" class="page-link" name="page" value="${1}"><spring:message code="First"/></button>
                         </li>
                     </c:if>
                     <c:if test="${currentPage != 1}">
                         <li class="page-item">
-                            <button type="submit" class="page-link" name="page" value="${currentPage-1}">Previous</button>
+                            <button type="submit" class="page-link" name="page" value="${currentPage-1}"><spring:message code="Previous"/></button>
                         </li>
                         <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage-1}">${currentPage-1}</button></li>
                     </c:if>
@@ -198,12 +198,12 @@
                     <c:if test="${currentPage < maxPage}">
                         <li class="page-item"><button type="submit" class="page-link" name="page" value="${currentPage+1}">${currentPage + 1}</button></li>
                         <li class="page-item">
-                            <button type="submit" class="page-link" name="page" value="${currentPage+1}">Next</button>
+                            <button type="submit" class="page-link" name="page" value="${currentPage+1}"><spring:message code="Next"/></button>
                         </li>
                     </c:if>
                     <c:if test="${currentPage < maxPage - 1}">
                         <li class="page-item">
-                            <button type="submit" class="page-link" name="page" value="${maxPage}">Last</button>
+                            <button type="submit" class="page-link" name="page" value="${maxPage}"><spring:message code="Last"/></button>
                         </li>
                     </c:if>
                 </ul>
