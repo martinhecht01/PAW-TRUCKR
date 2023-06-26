@@ -150,12 +150,12 @@
                                 <ul class="pagination justify-content-center pt-3">
                                     <c:if test="${currentOngoingPage > 2}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="ongoingPage" value="${1}">First</button>
+                                            <button type="submit" class="page-link" name="ongoingPage" value="${1}"><spring:message code="First"/></button>
                                         </li>
                                     </c:if>
                                     <c:if test="${currentOngoingPage != 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="ongoingPage" value="${currentOngoingPage-1}">Previous</button>
+                                            <button type="submit" class="page-link" name="ongoingPage" value="${currentOngoingPage-1}"><spring:message code="Previous"/></button>
                                         </li>
                                         <li class="page-item"><button type="submit" class="page-link" name="ongoingPage" value="${currentOngoingPage-1}">${currentOngoingPage-1}</button></li>
                                     </c:if>
@@ -163,12 +163,12 @@
                                     <c:if test="${currentOngoingPage < maxOngoingPage}">
                                         <li class="page-item"><button type="submit" class="page-link" name="ongoingPage" value="${currentOngoingPage+1}">${currentOngoingPage + 1}</button></li>
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="ongoingPage" value="${currentOngoingPage+1}">Next</button>
+                                            <button type="submit" class="page-link" name="ongoingPage" value="${currentOngoingPage+1}"><spring:message code="Next"/></button>
                                         </li>
                                     </c:if>
                                     <c:if test="${currentOngoingPage < maxOngoingPage - 1}">
                                         <li class="page-item">
-                                            <button type="submit" class="page-link" name="ongoingPage" value="${maxOngoingPage}">Last</button>
+                                            <button type="submit" class="page-link" name="ongoingPage" value="${maxOngoingPage}"><spring:message code="Last"/></button>
                                         </li>
                                     </c:if>
                                 </ul>

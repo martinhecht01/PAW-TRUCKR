@@ -308,29 +308,30 @@ public class RequestController {
     }
 
     @RequestMapping("/requests/myRequests")
-    public ModelAndView myRequests(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage){
+    public ModelAndView myRequests(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage, @RequestParam(required = false) Boolean activeSecondTab){
         User user = getUser();
 
-        Integer maxActivePage = ts.getTotalPagesActiveTripsOrRequests(user.getUserId());
-        Integer maxAcceptPage = ts.getTotalPagesAcceptedTripsAndRequests(user.getUserId());
+        Integer maxActivePage = ts.getTotalPagesActivePublications(user);
+        Integer maxAcceptPage = ts.getTotalPagesExpiredPublications(user);
 
-        if(activePage > maxActivePage || activePage < 1){
-            maxActivePage = 1;
-        }
+        System.out.println("activePage: " + activePage);
+        System.out.println("maxActivePage: " + maxActivePage);
 
-        if(acceptPage > maxAcceptPage || acceptPage < 1){
-            maxAcceptPage = 1;
-        }
+        System.out.println("acceptPage: " + acceptPage);
+        System.out.println("maxAcceptPage: " + maxAcceptPage);
 
         final ModelAndView mav = new ModelAndView("requests/myRequests");
-        mav.addObject("currentPageActive", activePage);
+        mav.addObject("currentPageActive", activePage < 0 || activePage > maxActivePage ? 1 : activePage);
         mav.addObject("maxActivePage", maxActivePage);
 
-        mav.addObject("currentPageAccepted", acceptPage);
+        mav.addObject("currentPageAccepted", acceptPage < 0 || acceptPage > maxAcceptPage ? 1 : acceptPage);
         mav.addObject("maxAcceptedPage", maxAcceptPage);
 
-        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId(), acceptPage));
-        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId(), activePage));
+        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId(), acceptPage < 0 || acceptPage > maxAcceptPage ? 1 : acceptPage));
+        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId(), activePage < 0 || activePage > maxActivePage ? 1 : activePage));
+
+        mav.addObject("activeSecondTab", activeSecondTab != null && activeSecondTab);
+
         return mav;
     }
 

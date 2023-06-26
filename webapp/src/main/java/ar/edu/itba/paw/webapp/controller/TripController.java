@@ -249,27 +249,21 @@ public class TripController {
     }
 
     @RequestMapping("/trips/myTrips")
-    public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage){
+    public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage, @RequestParam(required = false) Boolean activeSecondTab){
         User user = getUser();
         Integer maxActivePage = ts.getTotalPagesActivePublications(user);
         Integer maxAcceptPage = ts.getTotalPagesExpiredPublications(user);
 
-        if(activePage > maxActivePage || activePage < 1){
-            maxActivePage = 1;
-        }
-
-        if(acceptPage > maxAcceptPage || acceptPage < 1){
-            maxAcceptPage = 1;
-        }
-
         final ModelAndView mav = new ModelAndView("trips/myTrips");
-        mav.addObject("currentPageActive", activePage);
+        mav.addObject("currentPageActive", activePage < 0 || activePage > maxActivePage ? 1 : activePage);
         mav.addObject("maxActivePage", maxActivePage);
 
-        mav.addObject("currentPageAccepted", acceptPage);
+        mav.addObject("currentPageAccepted", acceptPage < 0 || acceptPage > maxAcceptPage ? 1 : acceptPage);
         mav.addObject("maxAcceptedPage", maxAcceptPage);
-        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId(), acceptPage));
-        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId(), activePage));
+        mav.addObject("expiredPublications",ts.getAllExpiredPublications(user.getUserId(), acceptPage < 0 || acceptPage > maxAcceptPage ? 1 : acceptPage));
+        mav.addObject("activePublications", ts.getAllActivePublications(user.getUserId(), activePage < 0 || activePage > maxActivePage ? 1 : activePage));
+
+        mav.addObject("activeSecondTab", activeSecondTab != null && activeSecondTab);
         return mav;
     }
 
