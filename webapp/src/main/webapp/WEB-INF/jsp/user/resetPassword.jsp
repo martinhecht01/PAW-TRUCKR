@@ -28,14 +28,14 @@
                     <h1 class="h3 mb-3 text-center"><spring:message code="ResetPassword" /></h1>
                     <input hidden="hidden" value="${hash}" name="hash">
                     <div class="mb-3">
-                        <form:label path="password" class="form-label">Password</form:label>
+                        <form:label path="password" class="form-label"><spring:message code="Password"/></form:label>
                         <form:errors cssClass="formError" path="password" element="p"/>
-                        <form:input type="password" class="form-control" path="password" placeholder="Password"/>
+                        <form:input type="password" class="form-control" path="password"/>
                     </div>
                     <div class="mb-3">
-                        <form:label path="repeatPassword" class="form-label">Confirm Password</form:label>
+                        <form:label path="repeatPassword" class="form-label"><spring:message code="ConfirmPassword"/></form:label>
                         <form:errors cssClass="formError" path="repeatPassword" element="p"/>
-                        <form:input type="password" class="form-control" path="repeatPassword" placeholder="Confirm Password"/>
+                        <form:input type="password" class="form-control" path="repeatPassword"/>
                         <form:errors cssClass="formError"/>
                     </div>
                     <spring:message code="ResetPassword" var="value"/>
