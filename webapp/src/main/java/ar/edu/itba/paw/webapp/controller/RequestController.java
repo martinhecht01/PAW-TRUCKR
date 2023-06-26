@@ -135,7 +135,7 @@ public class RequestController {
             List<Trip> trips = new ArrayList<>();
             view.addObject("offers", trips);
             view.addObject("errors", errors);
-            LOGGER.info("Error filtering trips");
+            LOGGER.debug("Error filtering trips");
             return view;
         }
 
@@ -188,7 +188,6 @@ public class RequestController {
                                       @RequestParam(required = false) String arrivalDate,
                                       @RequestParam(required = false) String type,
                                       @RequestParam(required = false) Integer suggestedPrice) {
-        LOGGER.info("Accessing create requests page");
         final ModelAndView view = new ModelAndView("requests/create");
         view.addObject("origin",origin);
         view.addObject("destination",destination);
@@ -235,7 +234,7 @@ public class RequestController {
         int imageid=is.uploadImage(form.getTripImage().getBytes());
         ts.updateTripPicture(request.getTripId(),imageid);
 
-        LOGGER.info("Request created successfully");
+        LOGGER.info("Request created successfully for user: {}, requestId: {}", user.getUserId(), request.getTripId());
 
         ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getTripId());
         return view;
@@ -243,7 +242,6 @@ public class RequestController {
 
     @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve) {
-        LOGGER.info("Accessing request details page");
         final ModelAndView mav = new ModelAndView("requests/details");
         LOGGER.info("Accessing request details page with id: {} ", id);
         Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
@@ -269,7 +267,7 @@ public class RequestController {
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
     public ModelAndView sendProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
-            LOGGER.info("Error in accept form");
+            LOGGER.debug("Error in accept form");
             return requestDetail(id, form);
         }
 
@@ -277,7 +275,7 @@ public class RequestController {
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
         ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
-        LOGGER.info("Proposal created successfully");
+        LOGGER.info("Proposal created successfully for requestId: {} and userId: {}", id, user.getUserId());
         ModelAndView mav = new ModelAndView("redirect:/requests/reserveSuccess");
 
         mav.addObject("id",id);
@@ -294,7 +292,6 @@ public class RequestController {
 
     @RequestMapping("/requests/success")
     public ModelAndView requestDetail(@RequestParam("id") int id) {
-        LOGGER.info("Accessing request success page");
         final ModelAndView mav = new ModelAndView("requests/success");
         Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
@@ -304,7 +301,6 @@ public class RequestController {
 
     @RequestMapping("/requests/reserveSuccess")
     public ModelAndView requestReserveSuccess(@RequestParam("id") int id) {
-        LOGGER.info("Accessing request reserve success page");
         final ModelAndView mav = new ModelAndView("requests/reserveSuccess");
         Trip request = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
         mav.addObject("request", request);
@@ -314,7 +310,6 @@ public class RequestController {
     @RequestMapping("/requests/myRequests")
     public ModelAndView myRequests(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage){
         User user = getUser();
-        LOGGER.info("User: {} accessing my requests page", user.getCuit());
 
         Integer maxActivePage = ts.getTotalPagesActiveTripsOrRequests(user.getUserId());
         Integer maxAcceptPage = ts.getTotalPagesAcceptedTripsAndRequests(user.getUserId());

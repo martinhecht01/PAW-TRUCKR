@@ -69,7 +69,6 @@ public class TripController {
 
     @RequestMapping("/trips/search/results")
     public ModelAndView searchResults(@RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") final FilterForm ff, final BindingResult result){
-        LOGGER.info("Accessing search results trips page");
         final ModelAndView view = new ModelAndView("trips/results");
 
         String arrDate;
@@ -112,7 +111,6 @@ public class TripController {
     @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
         if (errors.hasErrors() || Objects.requireNonNull(getUser()).getUserId() == null) {
-            LOGGER.info("Error creating trip");
             return createTrip(form);
         }
 
@@ -135,21 +133,18 @@ public class TripController {
         );
         int imageid=is.uploadImage(form.getTripImage().getBytes());
         ts.updateTripPicture(trip.getTripId(),imageid);
-        LOGGER.info("Trip created successfully");
+        LOGGER.info("Trip created successfully for user: {}, tripid: {} ", user.getUserId(), trip.getTripId());
         return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
     }
 
     @RequestMapping("/trips/browse")
     public ModelAndView browse(@RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") FilterForm ff, final BindingResult errors) {
-        LOGGER.info("Accessing browse trips page");
-
         final ModelAndView view = new ModelAndView("trips/browse");
 
         if(errors.hasErrors()){
             List<Trip> requests = new ArrayList<>();
             view.addObject("offers", requests);
             view.addObject("errors", errors);
-            LOGGER.info("Error filtering requests");
             return  view;
         }
 
@@ -256,8 +251,6 @@ public class TripController {
     @RequestMapping("/trips/myTrips")
     public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage){
         User user = getUser();
-        LOGGER.info("User with id: {} accessing my trips page", user.getUserId());
-
         Integer maxActivePage = ts.getTotalPagesActivePublications(user);
         Integer maxAcceptPage = ts.getTotalPagesExpiredPublications(user);
 
