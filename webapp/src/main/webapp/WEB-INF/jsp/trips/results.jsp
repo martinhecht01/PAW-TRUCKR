@@ -88,7 +88,7 @@
               <p><spring:message code="CreateTripPublication"/></p>
               <a href="<c:url value="/requests/create?origin=${origin}&destination=${destination}&minAvailableVolume=${minAvailableVolume}&minAvailableWeight=${minAvailableWeight}&departureDate=${departureDate}&arrivalDate=${arrivalDate}&cargoType=${cargoType}&suggestedPrice=${maxPrice}"/>" type="submit" class="btn btn-color mt-3 formButton"><spring:message code="CreatePublication"/></a>
               <div class="mt-3 d-flex justify-content-evenly w-100 flex-row">
-                <a type="submit" href="<c:url value="/explore"/>" class="w-25 btn btn-outline-secondary"><spring:message code="TryAgain"/></a>
+                <a type="submit" href="<c:url value="/explore"/>" class="w-25 btn btn-outline-secondary"><spring:message code="NewSearch"/></a>
                 <a type="submit" href="<c:url value="/trips/browse"/>" class="w-25 btn btn-outline-secondary"><spring:message code="SearchAllTrips"/></a>
               </div>
             </div>
