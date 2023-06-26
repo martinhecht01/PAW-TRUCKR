@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.*;
+import java.time.LocalDateTime;
 
 
 @DateValidation(start="minDepartureDate", end="maxArrivalDate")
@@ -78,10 +79,11 @@ public class RequestForm {
         this.maxPrice = price;
     }
 
+
+
     public String getMaxPrice() {
         return maxPrice;
     }
-
 
     public String getRequestedWeight() {
         return requestedWeight;
@@ -114,6 +116,7 @@ public class RequestForm {
     public String getMaxArrivalDate() {
         return maxArrivalDate;
     }
+
 
     public void setMaxArrivalDate(String arrivalDate) {
         this.maxArrivalDate = arrivalDate;

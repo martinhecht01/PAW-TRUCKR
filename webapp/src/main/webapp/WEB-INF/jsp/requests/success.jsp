@@ -59,7 +59,7 @@
         </table>
     </div>
 </div>
-<a href="<c:url value='/explore'/>" class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
+<a href="<c:url value='/requests/manageRequest?requestId=${request.tripId}'/>" class="btn btn-color mt-3 formButton"><spring:message code="Continue"/></a>
 <div style="margin-top: auto">
     <components:waveDivider/>
     <components:footer/>
