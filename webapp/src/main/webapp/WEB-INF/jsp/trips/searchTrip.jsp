@@ -16,9 +16,9 @@
   <link rel="icon" type="image/x-icon" href="https://i.ibb.co/Qb69pVJ/Truckr-Favicon.png">
 </head>
 <body class="bodyContent">
-<c:url value="/trips/search" var="postPath"/>
 
 <components:navBar/>
+<c:url value="/trips/search" var="postPath"/>
 <%--Formulario--%>
 <form:form modelAttribute="filterForm" action="${postPath}" method="post" enctype="multipart/form-data">
   <div class="card w-75 mb-3 mt-5 formCard">
