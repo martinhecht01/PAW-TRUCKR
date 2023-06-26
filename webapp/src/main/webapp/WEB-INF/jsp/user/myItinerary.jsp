@@ -74,7 +74,7 @@
                         <div class="col-lg">
                             <div class="my-3 mx-3 card">
                                 <div class="card-body">
-                                    <c:if test="${futureTrips.size() == 0}">
+                                    <c:if test="${ongoingTrips.size() == 0}">
                                         <div class="text-center my-3">
                                             <h5><spring:message code="NoOngoingTrips"/></h5>
                                         </div>
@@ -83,9 +83,10 @@
                                         <c:if test="${trip != ongoingTrips[0]}">
                                             <hr class="py-2">
                                         </c:if>
-                                        <a <c:if test="${currentUser.role == 'TRUCKER'}">
-                                            href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
-                                        </c:if>
+                                        <a
+                                                <c:if test="${currentUser.role == 'TRUCKER'}">
+                                                    href="<c:url value="/trips/manageTrip?tripId=${trip.tripId}"/>"
+                                                </c:if>
                                                 <c:if test="${currentUser.role == 'PROVIDER'}">
                                                     href="<c:url value="/requests/manageRequest?requestId=${trip.tripId}"/>"
                                                 </c:if>

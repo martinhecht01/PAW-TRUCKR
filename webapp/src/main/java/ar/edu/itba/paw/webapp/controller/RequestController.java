@@ -346,7 +346,7 @@ public class RequestController {
         int userId = Objects.requireNonNull(getUser()).getUserId();
         Trip request = ts.getTripOrRequestByIdAndUserId(requestId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
 
-        mav.addObject("now", Timestamp.valueOf(LocalDateTime.now()));
+        mav.addObject("now", LocalDateTime.now());
         mav.addObject("request", request);
         mav.addObject("userId", userId);
         return mav;
