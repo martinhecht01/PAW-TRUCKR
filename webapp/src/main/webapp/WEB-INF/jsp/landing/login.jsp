@@ -18,8 +18,23 @@
 <body class="bodyContent">
 <c:url var="loginUrl" value="/login"/>
 <components:navBar/>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol id="success" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+    </symbol>
+</svg>
 <div class="w-100 h-50 d-flex justify-content-center align-items-center m-auto pt-2">
     <main class="w-25 mt-5 m-auto">
+        <c:if test="${successVerification}">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex flex-row justify-content-evenly align-items-center py-1">
+                        <svg style="fill: green" width="3em" height="3em"><use xlink:href="#success"></use></svg>
+                        <h5><spring:message code="AccountVerifiedSuccessfully"/></h5>
+                    </div>
+                </div>
+            </div>
+        </c:if>
         <div class="card py-2">
             <div class="card-body">
                 <form:form action="${loginUrl}" method="post">

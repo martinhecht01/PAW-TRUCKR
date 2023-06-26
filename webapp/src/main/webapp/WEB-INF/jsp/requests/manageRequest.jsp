@@ -77,7 +77,7 @@
             </a>
           </div>
         </div>
-        <c:if test="${request.departureDate.before(now)}">
+        <c:if test="${request.departureDate.isBefore(now)}">
           <div class="card mt-4" style="width: 30rem;">
             <div class="card-header">
               <h4><spring:message code="Status"/>:</h4>

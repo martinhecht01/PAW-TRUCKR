@@ -81,11 +81,15 @@ public interface TripServiceV2 {
 
     void deleteOffer(int offerId);
 
-    List<Trip> getAllOngoingTrips(Integer userId);
+    Integer getTotalPagesAllOngoingTrips(Integer userId);
+
+    List<Trip> getAllOngoingTrips(Integer userId,Integer pag);
 
     List<Trip> getAllPastTrips(Integer userId);
 
-    List<Trip> getAllFutureTrips(Integer userId);
+    List<Trip> getAllFutureTrips(Integer userId, Integer page);
+
+    Integer getTotalPagesAllFutureTrips(Integer userId);
 
     Integer getCompletedTripsCount(Integer userId);
 
