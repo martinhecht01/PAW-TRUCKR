@@ -31,9 +31,11 @@
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
     <div class="inlineFormInputContainer">
-        <div class="card inlineFormInputContainer" style="width: 40rem;">
+        <div class="card inlineFormInputContainer" style="width: 50rem;">
             <div class="card-body">
-                <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
+                <div class="d-flex w-100 justify-content-center">
+                    <img src="<c:url value="/trips/${trip.tripId}/tripPicture"/>" class="card-img rounded-start p-3 createImg"  alt="TruckImg">
+                </div>
                 <table class="table">
                     <tr>
                         <td><b><spring:message code="CargoType"/></b></td>
@@ -196,14 +198,17 @@
                             <div class="d-flex justify-content-between">
                                 <c:url value="/offers/acceptOffer" var="postPath"/>
                                 <form:form action="${postPath}?offerId=${offer.proposalId}&tripId=${trip.tripId}" method="post">
-                                    <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                                    <spring:message code="Accept" var="accept"/>
+                                    <input type="submit" class="btn btn-outline-success mx-2" value="${accept}"/>
                                 </form:form>
                                 <a href="<c:url value="/offers/sendCounterOffer?offerId=${offer.proposalId}"/>">
-                                    <input type="submit" class="btn btn-outline-warning mx-2" value="Contraoferta"/>
+                                    <spring:message code="CounterOffer" var="counterOffer"/>
+                                    <input type="submit" class="btn btn-outline-warning mx-2" value="${counterOffer}"/>
                                 </a>
                                 <c:url value="/offers/rejectOffer" var="postPath2"/>
                                 <form:form action="${postPath2}?offerId=${offer.proposalId}&tripId=${trip.tripId}" method="post">
-                                    <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                                    <spring:message code="Reject" var="reject"/>
+                                    <input type="submit" class="btn btn-outline-danger mx-2" value="${reject}"/>
                                 </form:form>
                             </div>
                         </c:if>
