@@ -128,6 +128,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", true);
         props.put("mail.smtp.starttls.enable", true);
+        props.put("mail.debug", false);
 
         return mailSender;
     }
@@ -154,7 +155,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML");
         templateResolver.setCharacterEncoding("UTF-8");
-        templateResolver.setCacheable(false); // Disable template caching for development
+        templateResolver.setCacheable(true);
         return templateResolver;
     }
 
@@ -200,9 +201,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         final Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
-        // Si ponen esto en prod, hay tabla!!! SACAR ANTES DE ENTREGA TODO TODO
-        properties.setProperty("hibernate.show_sql", "true");
-        properties.setProperty("format_sql", "true");
+//        // Si ponen esto en prod, hay tabla!!! SACAR ANTES DE ENTREGA TODO TODO
+//        properties.setProperty("hibernate.show_sql", "true");
+//        properties.setProperty("format_sql", "true");
         factoryBean.setJpaProperties(properties);
         return factoryBean;
     }
