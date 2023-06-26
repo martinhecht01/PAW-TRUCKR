@@ -127,11 +127,13 @@
                                     <div class="d-flex flex-row justify-content-center align-items-center">
                                         <c:url value="/offers/acceptCounterOffer" var="postPath"/>
                                         <form:form action="${postPath}?offerId=${offer.counterProposal.proposalId}&tripId=${offer.trip.tripId}" method="post">
-                                            <input type="submit" class="btn btn-outline-success mx-2" value="Aceptar"/>
+                                            <spring:message code="Accept" var="accept"/>
+                                            <input type="submit" class="btn btn-outline-success mx-2" value="${accept}"/>
                                         </form:form>
                                         <c:url value="/offers/rejectCounterOffer" var="postPath2"/>
                                         <form:form action="${postPath2}?offerId=${offer.counterProposal.proposalId}" method="post">
-                                            <input type="submit" class="btn btn-outline-danger mx-2" value="Rechazar"/>
+                                            <spring:message code="Reject" var="reject"/>
+                                            <input type="submit" class="btn btn-outline-danger mx-2" value="${reject}"/>
                                         </form:form>
                                     </div>
                             </div>
