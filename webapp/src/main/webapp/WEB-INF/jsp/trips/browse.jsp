@@ -99,11 +99,11 @@
         </div>
         <div class="form-group row mb-3">
           <div class="col-md-6">
-            <form:label path="departureDate" for="departureDate"><spring:message code="FiltersDeparture"/>:</form:label>
+            <form:label path="departureDate" for="departureDate"><spring:message code="FiltersMinDeparture"/>:</form:label>
             <form:input path="departureDate" type="datetime-local" class="form-control" id="departureDate" name="departureDate" value="${departureDate}"/>
           </div>
           <div class="col-md-6">
-            <form:label path="arrivalDate" for="arrivalDate"><spring:message code="FiltersArrival"/>:</form:label>
+            <form:label path="arrivalDate" for="arrivalDate"><spring:message code="FiltersMaxArrival"/>:</form:label>
             <form:input path="arrivalDate" type="datetime-local" class="form-control" id="arrivalDate" name="arrivalDate" value="${arrivalDate}"/>
           </div>
         </div>

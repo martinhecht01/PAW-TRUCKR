@@ -47,12 +47,12 @@
       </div>
       <div class="inlineFormInputContainer">
         <div class="mb-3 inlineFormInput">
-          <form:label for="departureDate" path="departureDate" class="form-label"><spring:message code="DepartureDate"/></form:label>
+          <form:label for="departureDate" path="departureDate" class="form-label"><spring:message code="MinDepartureDate"/></form:label>
           <form:errors path="departureDate" cssClass="formError" element="p"/>
           <form:input type="datetime-local" class="form-control" path="departureDate" placeholder="DD/MM/AAAA"/>
         </div>
         <div class="mb-3 inlineFormInput">
-          <form:label for="arrivalDate" path="arrivalDate" class="form-label"><spring:message code="ArrivalDate"/></form:label>
+          <form:label for="arrivalDate" path="arrivalDate" class="form-label"><spring:message code="MaxArrivalDate"/></form:label>
           <form:errors path="arrivalDate" cssClass="formError" element="p"/>
           <form:input type="datetime-local" class="form-control" path="arrivalDate" placeholder="DD/MM/AAAA"/>
         </div>
