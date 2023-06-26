@@ -83,8 +83,6 @@ public class TripServiceV2Impl implements TripServiceV2 {
         List<Alert> alerts = alertDao.getAlertsThatMatch(trip);
 
         System.out.println("ALERTS THAT MATCH = " + alerts.size());
-
-        //TODO: enviar mail a los usuarios que tienen alertas que matchean con el trip
         for(Alert alert : alerts){
             ms.sendAlertEmail(alert.getUser(), trip,alert.getUser().getLocale());
         }
