@@ -13,7 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -592,10 +591,22 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     }
 
     @Override
-    public List<Trip> getAllFutureTrips(User user) {
+    public Integer getTotalPagesAllFutureTrips(User user){
+        String query = "SELECT COUNT(*) as total FROM Trip t WHERE (( t.provider = :user AND t.trucker IS NOT NULL ) OR (t.trucker = :user AND t.provider IS NOT NULL)) AND t.departureDate > now()";
+        TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
+        typedQuery.setParameter("user", user);
+
+        Long total = typedQuery.getSingleResult();
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+    }
+
+    @Override
+    public List<Trip> getAllFutureTrips(User user, Integer page) {
         String jpql = "SELECT r FROM Trip r WHERE ((r.provider = :user AND r.trucker IS NOT NULL ) OR (r.trucker = :user AND r.provider IS NOT NULL)) AND r.departureDate > now()";
         return entityManager.createQuery(jpql, Trip.class)
                 .setParameter("user", user)
+                .setFirstResult((page - 1) * ITEMS_PER_PAGE)
+                .setMaxResults(ITEMS_PER_PAGE)
                 .getResultList();
     }
 

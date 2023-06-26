@@ -87,7 +87,9 @@ public interface TripServiceV2 {
 
     List<Trip> getAllPastTrips(Integer userId);
 
-    List<Trip> getAllFutureTrips(Integer userId);
+    List<Trip> getAllFutureTrips(Integer userId, Integer page);
+
+    Integer getTotalPagesAllFutureTrips(Integer userId);
 
     Integer getCompletedTripsCount(Integer userId);
 

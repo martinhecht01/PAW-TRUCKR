@@ -309,9 +309,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllFutureTrips(Integer userId) {
+    public Integer getTotalPagesAllFutureTrips(Integer userId){
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllFutureTrips(user);
+        return tripDaoV2.getTotalPagesAllFutureTrips(user);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllFutureTrips(Integer userId, Integer page){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllFutureTrips(user, page);
     }
 
 

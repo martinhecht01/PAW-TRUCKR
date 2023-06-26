@@ -88,7 +88,9 @@ public interface TripDaoV2 {
 
     List<Trip> getAllPastTrips(User user);
 
-    List<Trip> getAllFutureTrips(User user);
+    List<Trip> getAllFutureTrips(User user, Integer page);
+
+    Integer getTotalPagesAllFutureTrips(User user);
 
     Integer getCompletedTripsCount(User user);
 
