@@ -125,7 +125,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         else
             user = trip.getProvider();
 
-        ms.sendProposalEmail(user, proposal, locale);
+        ms.sendProposalEmail(user, proposal, user.getLocale());
         return proposal;
     }
 
