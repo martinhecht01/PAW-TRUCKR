@@ -114,8 +114,8 @@
           </div>
         </div>
       </div>
-
-      <input type="submit" value="Search Trips" class="btn btn-color mt-3 formButton"/>
+      <spring:message code="SearchTrips" var="searchTripMsg"/>
+      <input type="submit" value="${searchTripMsg}" class="btn btn-color mt-3 formButton"/>
     </div>
   </div>
   <div class="w-75 d-flex justify-content-end formCard">

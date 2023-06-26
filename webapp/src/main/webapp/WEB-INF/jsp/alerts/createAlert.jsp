@@ -26,6 +26,7 @@
             <h4 class="card-title"><b><spring:message code="CreateAlert"/></b></h4>
         </div>
         <div class="card-body">
+            <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="cargoType" class="form-label"><spring:message code="CreateTripCargoType"/></form:label>
@@ -47,8 +48,6 @@
                     </form:select>
                 </div>
             </div>
-
-            <form:errors cssClass="formError"/>
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="fromDate" class="form-label"><spring:message code="FromDate"/></form:label>
@@ -56,12 +55,11 @@
                     <form:input type="datetime-local" class="form-control" path="fromDate" placeholder="DD/MM/AAAA"/>
                 </div>
                 <div class="mb-3 inlineFormInput">
-                    <form:label path="fromDate" class="form-label"><spring:message code="ToDate"/></form:label>
+                    <form:label path="toDate" class="form-label"><spring:message code="ToDate"/></form:label>
                     <form:errors path="toDate" cssClass="formError" element="p"/>
                     <form:input type="datetime-local" class="form-control" path="toDate" placeholder="DD/MM/AAAA"/>
                 </div>
             </div>
-
             <div class="inlineFormInputContainer">
                 <div class="mb-3 inlineFormInput">
                     <form:label path="maxVolume" class="form-label"><spring:message code="FiltersMaxVolume"/></form:label>
