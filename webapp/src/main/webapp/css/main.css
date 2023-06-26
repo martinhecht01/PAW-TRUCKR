@@ -169,6 +169,12 @@ footer{
     object-fit: cover;
 }
 
+.createImg{
+    width: 45rem;
+    height: 36rem;
+    object-fit: cover;
+}
+
 .rating-stars {
     cursor: pointer;
 }

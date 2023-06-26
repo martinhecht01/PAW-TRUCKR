@@ -31,9 +31,11 @@
 <components:navBar/>
 <div class="formCard justify-content-center align-items-center pt-5 mb-n5">
     <div class="inlineFormInputContainer">
-        <div class="card inlineFormInputContainer" style="width: 40rem;">
+        <div class="card inlineFormInputContainer" style="width: 50rem">
             <div class="card-body">
-                <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
+                <div class="w-100 d-flex justify-content-center">
+                    <img src="<c:url value="/trips/${request.tripId}/tripPicture"/>" class="card-img rounded-start p-3"  alt="TruckImg">
+                </div>
                 <table class="table table-srequested">
                         <tr>
                             <td>
