@@ -44,7 +44,7 @@
                     </form:select>
                 </div>
                 <div class="mb-3 inlineFormInput">
-                    <form:label path="tripImage" class="form-label"><spring:message code="uploadTrip"/></form:label><br>
+                    <form:label path="tripImage" class="form-label"><spring:message code="UploadCargo"/></form:label><br>
                     <form:errors cssClass="formError" path="tripImage" element="p"/>
                     <div  class="input-group">
                         <form:input  path="tripImage" id="inputGroupFile01" class= "form-control" type="file" accept="image/png, image/jpeg" onchange="previewImage()"/>

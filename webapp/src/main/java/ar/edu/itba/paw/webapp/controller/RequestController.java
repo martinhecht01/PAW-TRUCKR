@@ -210,25 +210,30 @@ public class RequestController {
     public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
             LOGGER.info("Error in create request form");
-            return createRequest(form, form.getOrigin(), form.getDestination(), Integer.parseInt(form.getRequestedVolume()), Integer.parseInt(form.getRequestedWeight()), form.getMinDepartureDate(), form.getMaxArrivalDate(), form.getCargoType(), Integer.parseInt(form.getMaxPrice()));
+            return createRequest(form,
+                    form.getOrigin(),
+                    form.getDestination(),
+                    (form.getRequestedVolume() == null || form.getRequestedVolume().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedVolume()),
+                    (form.getRequestedWeight() == null || form.getRequestedWeight().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedWeight()),
+                    (form.getMinDepartureDate() == null || form.getMinDepartureDate().isEmpty()) ? null : form.getMinDepartureDate(),
+                    (form.getMaxArrivalDate() == null || form.getMaxArrivalDate().isEmpty()) ? null : form.getMaxArrivalDate(),
+                    form.getCargoType(),
+                    (form.getMaxPrice() == null || form.getMaxPrice().isEmpty()) ? 0 : Integer.parseInt(form.getMaxPrice()));
         }
-
-        LocalDateTime departure = LocalDateTime.parse(form.getMinDepartureDate());
-        LocalDateTime arrival = LocalDateTime.parse(form.getMaxArrivalDate());
 
         AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
 
         Trip request = ts.createRequest(
                 user.getUserId(),
-                Integer.parseInt(form.getRequestedWeight()),
-                Integer.parseInt(form.getRequestedVolume()),
-                departure,
-                arrival,
+                (form.getRequestedWeight() == null || form.getRequestedWeight().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedWeight()),
+                (form.getRequestedVolume() == null || form.getRequestedVolume().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedVolume()),
+                (form.getMinDepartureDate() == null || form.getMinDepartureDate().isEmpty()) ? null : LocalDateTime.parse(form.getMinDepartureDate()),
+                (form.getMaxArrivalDate() == null || form.getMaxArrivalDate().isEmpty()) ? null : LocalDateTime.parse(form.getMaxArrivalDate()),
                 form.getOrigin(),
                 form.getDestination(),
                 form.getCargoType(),
-                Integer.parseInt(form.getMaxPrice()),
+                (form.getMaxPrice() == null || form.getMaxPrice().isEmpty()) ? 0 : Integer.parseInt(form.getMaxPrice()),
                 LocaleContextHolder.getLocale()
         );
         int imageid=is.uploadImage(form.getTripImage().getBytes());
