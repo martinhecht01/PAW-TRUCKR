@@ -43,7 +43,12 @@
             <c:if test="${offers.size() == 0}">
                 <div class="d-flex justify-content-center align-items-center flex-column">
                     <h5><spring:message code="NoOffersSent"/></h5>
-                    <a class="w-25 mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/explore"/>"><spring:message code="BrowseCargo"/></a>
+                    <c:if test="${currentUser.role == 'TRUCKER'}">
+                        <a class="w-25 mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/explore"/>"><spring:message code="BrowseCargo"/></a>
+                    </c:if>
+                    <c:if test="${currentUser.role == 'PROVIDER'}">
+                        <a class="w-25 mt-3 btn btn-lg btn-color btn-outline-primary" href="<c:url value="/explore"/>"><spring:message code="BrowseTrips"/></a>
+                    </c:if>
                 </div>
             </c:if>
             <c:if test="${offers.size() > 0}">

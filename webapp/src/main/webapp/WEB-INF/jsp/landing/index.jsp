@@ -62,13 +62,13 @@
 </div>
 
 <div class="px-5 w-100 text-center mb-5" id="info">
-    <h1 class="display-6 mb-3 fw-bold lh-1">How does Truckr work?</h1>
+    <h1 class="display-6 mb-3 fw-bold lh-1"><spring:message code="HowTruckrWorks"/></h1>
     <ul class="nav nav-underline justify-content-center" id="myTabs" role="tablist">
         <li class="nav-item mx-2" role="presentation">
-            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true">For Truckers</button>
+            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button" role="tab" aria-controls="tab1" aria-selected="true"><spring:message code="ForTrucker"/></button>
         </li>
         <li class="nav-item mx-2" role="presentation">
-            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false">For Providers</button>
+            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab" aria-controls="tab2" aria-selected="false"><spring:message code="ForProvider"/></button>
         </li>
     </ul>
 

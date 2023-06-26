@@ -58,7 +58,7 @@
         </table>
     </div>
 </div>
-<a href="<c:url value='/explore'/>" class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
+<a onclick="window.history.back()"  class="btn btn-color mt-3 formButton"><spring:message code="GoBack"/></a>
 <div style="margin-top: auto">
     <components:waveDivider/>
     <components:footer/>
