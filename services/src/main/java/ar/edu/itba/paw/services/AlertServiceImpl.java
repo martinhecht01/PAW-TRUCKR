@@ -6,6 +6,8 @@ import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.models.Alert;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,9 @@ public class AlertServiceImpl implements AlertService{
 
     private final AlertDao alertDao;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlertServiceImpl.class);
+
+
     @Autowired
     public AlertServiceImpl(TripServiceV2 ts, AlertDao alertDao) {
         this.ts = ts;
@@ -28,6 +33,7 @@ public class AlertServiceImpl implements AlertService{
 
     @Override
     public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to, String type) {
+        LOGGER.info("Creating alert for user {} in city {}", user.getUserId(), city);
         return alertDao.createAlert(user, city, maxWeight, maxVolume, from, to, type);
     }
 
@@ -38,11 +44,13 @@ public class AlertServiceImpl implements AlertService{
 
     @Override
     public void deleteAlert(User user) {
+        LOGGER.info("Deleting alert for user {}", user.getUserId());
         alertDao.deleteAlert(user.getAlert());
     }
 
     @Override
     public Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
+        LOGGER.info("Updating alert for user {}", user.getUserId());
         return alertDao.updateAlert(user, city, maxWeight, maxVolume, from, to);
     }
 

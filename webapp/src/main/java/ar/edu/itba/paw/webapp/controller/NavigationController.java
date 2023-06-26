@@ -14,13 +14,12 @@ public class NavigationController {
 
     @RequestMapping("/create")
     public ModelAndView create(){
-        LOGGER.info("Accessing create page");
         String role = UserControllerAdvice.getCurrentRole();
         if(role.equals("TRUCKER")){
-            LOGGER.info("Redirecting to /trips/create");
+            LOGGER.debug("Accessing to /trips/create");
             return new ModelAndView("forward:/trips/create");
         } else if(role.equals("PROVIDER")){
-            LOGGER.info("Redirecting to /requests/create");
+            LOGGER.debug("Redirecting to /requests/create");
             return new ModelAndView("forward:/requests/create");
         }
         return new ModelAndView("redirect:/");
@@ -28,13 +27,12 @@ public class NavigationController {
 
     @RequestMapping("/explore")
     public ModelAndView explore() {
-        LOGGER.info("Accessing explore page");
         String role = UserControllerAdvice.getCurrentRole();
         if(role.equals("TRUCKER")){
-            LOGGER.info("Redirecting to /requests/browse");
+            LOGGER.debug("Redirecting to /requests/browse");
             return new ModelAndView("forward:/requests/browse");
         } else if(role.equals("PROVIDER")){
-            LOGGER.info("Redirecting to /trips/browse");
+            LOGGER.debug("Redirecting to /trips/browse");
             return new ModelAndView("forward:/trips/search");
         }
         return new ModelAndView("redirect:/");

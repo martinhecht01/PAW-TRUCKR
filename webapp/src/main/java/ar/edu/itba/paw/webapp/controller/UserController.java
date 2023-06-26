@@ -55,7 +55,6 @@ public class UserController {
 
     @RequestMapping("/")
     public ModelAndView landing() {
-        LOGGER.info("Accessing landing page");
         return new ModelAndView("landing/index");
     }
 
@@ -88,7 +87,6 @@ public class UserController {
     @RequestMapping(value = "/register", method = { RequestMethod.POST })
     public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
         if (errors.hasErrors()) {
-            LOGGER.info("Error in register form");
             return register(false, "", form);
         }
 
@@ -105,7 +103,6 @@ public class UserController {
 
     @RequestMapping("/profile")
     public ModelAndView profile(@RequestParam(required = false) Integer id) {
-        LOGGER.info("Accessing profile page");
         final ModelAndView mav = new ModelAndView("user/profile");
 
         if (id == null){
@@ -127,7 +124,6 @@ public class UserController {
 
     @RequestMapping("/myItinerary")
     public ModelAndView myIntinerary(@RequestParam(required = false) Integer ongoingPage, @RequestParam(required = false) Integer futurePage) {
-        LOGGER.info("Accessing intinerary page");
         final ModelAndView mav = new ModelAndView("user/myItinerary");
 
         Integer maxOngoingPage = ts.getTotalPagesAllOngoingTrips(getCurrentUser().getUserId());
@@ -146,7 +142,6 @@ public class UserController {
 
     @RequestMapping("/pastTrips")
     public ModelAndView pastTrips() {
-        LOGGER.info("Accessing past trips page");
         final ModelAndView mav = new ModelAndView("user/pastTrips");
         mav.addObject("currentUser", getCurrentUser());
         mav.addObject("pastTrips", ts.getAllPastTrips(getCurrentUser().getUserId()));
@@ -155,7 +150,6 @@ public class UserController {
 
     @RequestMapping("/myOffers")
     public ModelAndView myOffers() {
-        LOGGER.info("Accessing myOffers page");
         final ModelAndView mav = new ModelAndView("user/myOffers");
         mav.addObject("offers", getCurrentUser().getProposals());
         return mav;
@@ -188,7 +182,6 @@ public class UserController {
     public ModelAndView verifyAccount(@Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,final BindingResult errors){
 
         if (errors.hasErrors()) {
-            LOGGER.info("Error in verify account form");
             return verifyAccountView(form, null);
         }
 
@@ -207,7 +200,6 @@ public class UserController {
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
     public ModelAndView resetPassword(@ModelAttribute("userForm") final ResetPasswordForm form, @RequestParam(value = "hash") Integer hash){
         us.getResetByHash(hash).orElseThrow(ResetErrorException::new);
-        LOGGER.info("Accessing reset password page");
         ModelAndView mv = new ModelAndView("user/resetPassword");
         mv.addObject("hash", hash);
         return mv;
@@ -218,11 +210,10 @@ public class UserController {
     @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
     public ModelAndView resetPassword(@RequestParam("hash") Integer hash, @Valid @ModelAttribute("userForm") final ResetPasswordForm form, final BindingResult errors){
         if(errors.hasErrors()){
-            LOGGER.info("Error in reset password form");
             return resetPassword(form, hash);
         }
         us.resetPassword(hash, form.getPassword());
-        LOGGER.info("Password reset");
+        LOGGER.info("Password reset with hash: {}", hash);
         return new ModelAndView("user/resetPasswordSuccess");
     }
 
@@ -231,13 +222,12 @@ public class UserController {
         User user;
         user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
         us.createReset(user.getUserId(),LocaleContextHolder.getLocale());
-        LOGGER.info("Reset password request sent for user with CUIT {}", cuit);
+        LOGGER.info("Reset password request sent for user with CUIT: {}", cuit);
         return resetPasswordRequest("false", user.getEmail(), "true");
     }
 
     @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.GET)
     public ModelAndView resetPasswordRequest(@RequestParam(value = "error", required = false) String error,@RequestParam(value = "email", required = false) String email, @RequestParam(value = "emailSent", required = false) String emailSent){
-        LOGGER.info("Accessing reset password request page");
         ModelAndView mv = new ModelAndView("user/sendResetRequest");
         mv.addObject("email", email);
         mv.addObject("emailSent", Boolean.parseBoolean(emailSent));
