@@ -52,11 +52,11 @@
             </div>
             <div class="d-flex w-75 px-5">
               <div class="d-flex flex-column px-3 w-50">
-                <label class="form-label" for="from">Desde</label>
+                <label class="form-label" for="from"><spring:message code="FromDate"/></label>
                 <input class="form-control bg-light" type="datetime-local" id="from" value="${currentUser.alert.fromDate}" disabled>
               </div>
               <div class="d-flex flex-column px-3 w-50">
-                <label class="form-label" for="to">Hasta</label>
+                <label class="form-label" for="to"><spring:message code="ToDate"/></label>
                 <input class="form-control bg-light" type="datetime-local" id="to" value="${currentUser.alert.toDate}" disabled>
                 <div class="form-check my-2">
                   <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault1" disabled <c:if test="${currentUser.alert.toDate == null}"> checked </c:if>>
