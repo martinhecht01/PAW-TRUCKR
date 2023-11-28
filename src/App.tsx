@@ -1,9 +1,10 @@
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import NavBar from './components/navbar';
-import { App, ConfigProvider, Layout } from 'antd';
+import { App, ConfigProvider, Image, Layout } from 'antd';
 import Landing from './pages/landing';
 import Login from './pages/login';
-import Register from './pages/register';
+import TripCard from './components/tripCard';
+import BrowseTrips from './pages/browse';
 
 const WebApp = () => (
   <ConfigProvider
@@ -12,7 +13,7 @@ const WebApp = () => (
         token: {
           "colorPrimary": "#142d4c",
           "colorInfo": "#142d4c",
-          "colorLink": "#9fd3c7",
+          "colorLink": "#385170",
           "colorBgBase": "#ececec"
         }
       
@@ -23,9 +24,11 @@ const WebApp = () => (
           <NavBar></NavBar>
         </Header>
         <Content className="site-layout" style={{ padding: '40px 50px' }}>
-          <Landing></Landing>
+          <BrowseTrips></BrowseTrips>
         </Content>
-        <Footer style={{ textAlign: 'left', paddingLeft: '5%' }}>© 2023 Truckr, Inc</Footer>
+        <Footer style={{ textAlign: 'left', paddingLeft: '5%', backgroundColor: 'white', height: 'auto' }}>
+          <Image src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" height={24} style={{paddingRight: 15}}></Image>© 2023 Truckr, Inc
+        </Footer>
       </Layout>
     </App>
   </ConfigProvider>
