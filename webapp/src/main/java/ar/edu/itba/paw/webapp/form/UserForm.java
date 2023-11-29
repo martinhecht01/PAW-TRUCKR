@@ -10,10 +10,12 @@ import javax.validation.constraints.Size;
 @ConfirmPasswordValidation(passwordFieldName = "password", confirmPasswordFieldName = "repeatPassword")
 public class UserForm {
 
+    @NotNull
     @Size(min = 6, max = 100)
     @Pattern(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$")
     private String email;
 
+    @NotNull
     @Size(min = 6, max = 100)
     @Pattern(regexp = "^[A-Za-z]+(\\s[A-Za-z]*)+$")
     private String name;
