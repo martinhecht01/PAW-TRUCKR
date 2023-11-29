@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import java.util.Optional;
 
 @Path("users")
@@ -28,6 +31,9 @@ public class UserControllerApi {
     private final ImageService is;
     private final TripServiceV2 ts;
     private final ReviewService revs;
+
+    @Context
+    private UriInfo uriInfo;
 
     @Autowired
     public UserControllerApi(final UserService us, ImageService is, ReviewService revs, TripServiceV2 ts){
@@ -63,12 +69,12 @@ public class UserControllerApi {
 
     @GET
     @Path("/{id}")
-    public Response getUser(@PathParam("id") String id){
-        Optional<User> maybeUser = us.getUserByCuit(id);
+    public Response getUser(@PathParam("id") final Integer id){
+        Optional<User> maybeUser = us.getUserById(id);
         if(!maybeUser.isPresent()){
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(maybeUser.get()).build();
+        return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get())).build();
     }
 
 //    @PUT
