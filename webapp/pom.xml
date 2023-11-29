@@ -100,8 +100,8 @@
       <groupId>org.thymeleaf</groupId>
       <artifactId>thymeleaf-spring4</artifactId>
     </dependency>
-<!--    logging  -->
-<!--    si quiero loggear algo en otra parte me llevo solo esta primera dependencia-->
+    <!--    logging  -->
+    <!--    si quiero loggear algo en otra parte me llevo solo esta primera dependencia-->
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -131,6 +131,58 @@
       <groupId>org.springframework</groupId>
       <artifactId>spring-orm</artifactId>
     </dependency>
+
+
+    <!--    DEPENDENCIAS AGREGADAS PARA EL FINAL   -->
+
+    <!--     JERSEY    -->
+    <dependency>
+      <groupId>org.glassfish.jersey.containers</groupId>
+      <artifactId>jersey-container-servlet-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.ext</groupId>
+      <artifactId>jersey-spring4</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.hk2</groupId>
+      <artifactId>hk2</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+    </dependency>
+
+    <!--    TODO: ver si es necesario   -->
+    <!--    <dependency>-->
+    <!--      <groupId>org.glassfish.jersey.ext</groupId>-->
+    <!--      <artifactId>jersey-bean-validation</artifactId>-->
+    <!--    </dependency>-->
+
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-moxy</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-jaxb</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.persistence</groupId>
+      <artifactId>org.eclipse.persistence.moxy</artifactId>
+    </dependency>
+
+    <!--JERSEY Multipart -->
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-multipart</artifactId>
+    </dependency>
+    <!-- Version added for compatibility with @PATCH -->
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+    </dependency>
+
   </dependencies>
 
   <build>

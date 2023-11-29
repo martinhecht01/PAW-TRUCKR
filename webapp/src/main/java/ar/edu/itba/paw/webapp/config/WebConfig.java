@@ -49,7 +49,6 @@ import java.util.Properties;
 
 
 @EnableTransactionManagement
-@EnableWebMvc
 @ComponentScan({"ar.edu.itba.paw.webapp.controller", "ar.edu.itba.paw.services", "ar.edu.itba.paw.persistence"})
 @Configuration
 @EnableScheduling
@@ -80,16 +79,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return messageSource;
     }
 
-    @Bean
-    public ViewResolver viewResolver(){
-        final InternalResourceViewResolver vr = new InternalResourceViewResolver();
-        vr.setViewClass(JstlView.class);
-        vr.setExposeContextBeansAsAttributes(true);
-        vr.setPrefix("/WEB-INF/jsp/");
-        vr.setSuffix(".jsp");
-
-        return vr;
-    }
 
     @Bean
     public DataSource dataSource() {
@@ -133,11 +122,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return mailSender;
     }
 
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry){
-        super.addResourceHandlers(registry);
-        registry.addResourceHandler("/css/**").addResourceLocations("/css/");
-    }
     @Autowired
     private ClassLoaderTemplateResolver templateResolver;
 
@@ -208,5 +192,3 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     }
 
 }
-
-

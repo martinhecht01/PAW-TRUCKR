@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>ar.edu.itba.paw</groupId>
   <artifactId>paw-2023a-08</artifactId>
@@ -31,7 +31,20 @@
     <commons-fileupload.version>1.4</commons-fileupload.version>
     <hibernate-orm.version>5.1.0.Final</hibernate-orm.version>
     <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
+    <jersey.version>3.0-SNAPSHOT</jersey.version>
+    <javax.ws.rs.version>2.1</javax.ws.rs.version>
   </properties>
+
+  <repositories>
+    <repository>
+      <id>jersey-snapshot</id>
+      <url>https://maven.java.net/content/repositories/snapshots/</url>
+      <name>Jersey Snapshots</name>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
@@ -96,12 +109,12 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator</artifactId>
         <version>${org.hibernate.validator}</version>
-<!--        <exclusions>-->
-<!--          <exclusion>-->
-<!--            <groupId>org.jboss.logging</groupId>-->
-<!--            <artifactId>jboss-logging</artifactId>-->
-<!--          </exclusion>-->
-<!--        </exclusions>-->
+        <!--        <exclusions>-->
+        <!--          <exclusion>-->
+        <!--            <groupId>org.jboss.logging</groupId>-->
+        <!--            <artifactId>jboss-logging</artifactId>-->
+        <!--          </exclusion>-->
+        <!--        </exclusions>-->
       </dependency>
       <dependency>
         <groupId>com.sun.mail</groupId>
@@ -128,7 +141,7 @@
         <artifactId>spring-context-support</artifactId>
         <version>${spring.version}</version>
       </dependency>
-<!--      Logging-->
+      <!--      Logging-->
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
@@ -155,13 +168,13 @@
         <version>${logback-ext-spring.version}</version>
         <scope>runtime</scope>
       </dependency>
-<!--      AOP-->
+      <!--      AOP-->
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-tx</artifactId>
         <version>${spring.version}</version>
       </dependency>
-<!--      Testing-->
+      <!--      Testing-->
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
@@ -180,7 +193,7 @@
         <version>${org.hsqldb.version}</version>
         <scope>test</scope>
       </dependency>
-<!--      JPA-->
+      <!--      JPA-->
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-orm</artifactId>
@@ -206,9 +219,133 @@
         <artifactId>hibernate-java8</artifactId>
         <version>${hibernate-orm.version}</version>
       </dependency>
+
+      <!--      DEPENDENCIAS AGREGADAS PARA EL FINAL    -->
+
+      <!--JERSEY -->
+      <dependency>
+        <groupId>org.glassfish.jersey.containers</groupId>
+        <artifactId>jersey-container-servlet-core</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.ext</groupId>
+        <artifactId>jersey-spring4</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <exclusion>
+            <!-- La versión incluida requiere Java 9+ -->
+            <groupId>org.glassfish.hk2</groupId>
+            <artifactId>hk2</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.hk2</groupId>
+        <artifactId>hk2</artifactId>
+        <version>2.5.0-b05</version> <!-- última versión compatible con Java 8 -->
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.hk2</groupId>
+        <artifactId>hk2-config</artifactId>
+        <version>2.5.0-b05</version> <!-- última versión compatible con Java 8 -->
+
+        <!--    TODO REVISAR EXCLUSION    -->
+        <!--        <exclusions>-->
+        <!--          <exclusion>-->
+        <!--            <groupId>org.glassfish.hk2.external</groupId>-->
+        <!--            <artifactId>bean-validator</artifactId>-->
+        <!--          </exclusion>-->
+        <!--        </exclusions>-->
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-server</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <!--      TODO REVISAR   -->
+      <!--      <dependency>-->
+      <!--        <groupId>org.glassfish.jersey.ext</groupId>-->
+      <!--        <artifactId>jersey-bean-validation</artifactId>-->
+      <!--        <version>${jersey.version}</version>-->
+      <!--        <exclusions>-->
+      <!--          <exclusion>-->
+      <!--            <groupId>org.jboss.logging</groupId>-->
+      <!--            <artifactId>jboss-logging</artifactId>-->
+      <!--          </exclusion>-->
+      <!--        </exclusions>-->
+      <!--      </dependency>-->
+
+      <!--JERSEY JSON -->
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-moxy</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <!--Not Java 10 compliant -->
+          <exclusion>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>org.eclipse.persistence.moxy</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <!--Java 10 compatible -->
+      <dependency>
+        <groupId>org.eclipse.persistence</groupId>
+        <artifactId>org.eclipse.persistence.moxy</artifactId>
+        <version>2.7.2</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-jaxb</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+
+      <!--JERSEY Multipart -->
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-multipart</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+
+      <!-- JWT https://github.com/jwtk/jjwt -->
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-api</artifactId>
+        <version>${io.jwt.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-impl</artifactId>
+        <version>${io.jwt.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+      <dependency>
+        <groupId>io.jsonwebtoken</groupId>
+        <artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+        <version>${io.jwt.version}</version>
+        <scope>runtime</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
+      <!-- Version added for compatibility with @PATCH -->
+      <dependency>
+        <groupId>javax.ws.rs</groupId>
+        <artifactId>javax.ws.rs-api</artifactId>
+        <version>${javax.ws.rs.version}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
-  
+
   <modules>
     <module>webapp</module>
     <module>models</module>

@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -54,32 +55,21 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
         String MyKey = props.getProperty("KEY");
 
+//        TODO revisar, sotuyo dijo que esta parte capaz falta cosas sobre los tokens que esta en i
         http.sessionManagement()
-                .invalidSessionUrl("/login")
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
-                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
-                    .antMatchers("/login", "/register", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()
-                    .antMatchers("/requests/create", "/requests/myRequests" ).hasRole("PROVIDER")
-                    .antMatchers("/trips/create", "/trips/myTrips").hasRole("TRUCKER")
-                    .antMatchers( "/","/trips/details", "/requests/details", "/explore", "/trips/{tripId}/tripPicture", "/user/{userId}/profilePicture").permitAll()
-                    .antMatchers("/**").authenticated()
-                .and().formLogin()
-                    .usernameParameter("cuit")
-                    .passwordParameter("password")
-                    .defaultSuccessUrl("/explore", false)
-                    .loginPage("/login")
-                    .failureHandler(authenticationFailureHandler())
-                .and().rememberMe()
-                    .rememberMeParameter("rememberme")
-                    .userDetailsService(userDetailsService)
-                .key(MyKey)
-                        .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
-                    .and().logout()
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                .and().exceptionHandling().accessDeniedPage("/errors/403")
-                    .and().csrf().disable();
+//                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
+//                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
+//                    .antMatchers("/login", "/register", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()
+//                    .antMatchers("/requests/create", "/requests/myRequests" ).hasRole("PROVIDER")
+//                    .antMatchers("/trips/create", "/trips/myTrips").hasRole("TRUCKER")
+//                    .antMatchers( "/","/trips/details", "/requests/details", "/explore", "/trips/{tripId}/tripPicture", "/user/{userId}/profilePicture").permitAll()
+//                    .antMatchers("/**").authenticated()
+                .antMatchers("/**").permitAll()
+                .and().exceptionHandling()
+                .accessDeniedPage("/errors/403")
+                .and().csrf().disable();
     }
 
     @Bean
