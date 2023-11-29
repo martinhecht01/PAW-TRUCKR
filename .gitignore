@@ -20,7 +20,7 @@ dist/
 *.jar
 
 #properties
-**/application.properties
+#**/application.properties
 
 # Maven
 target/
