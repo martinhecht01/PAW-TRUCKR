@@ -26,11 +26,11 @@ public class UserDto {
         dto.cuit = user.getCuit();
         dto.name = user.getName();
         dto.email = user.getEmail();
-        dto.trips = uri.getAbsolutePathBuilder().path("/trips/").path(user.getUserId().toString()).build();
-        dto.itinerary = uri.getAbsolutePathBuilder().path("/itinerary/").path(user.getUserId().toString()).build();
-        dto.reviews = uri.getAbsolutePathBuilder().path("/reviews/").path(user.getUserId().toString()).build();
+        dto.trips = uri.getBaseUriBuilder().path("/trips/").path(user.getUserId().toString()).build();
+        dto.itinerary = uri.getBaseUriBuilder().path("/itinerary/").path(user.getUserId().toString()).build();
+        dto.reviews = uri.getBaseUriBuilder().path("/reviews/").path(user.getUserId().toString()).build();
         if(user.getImage() != null){
-            dto.image = uri.getAbsolutePathBuilder().path("/images/").path(user.getImage().toString()).build();
+            dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(user.getImage().getImageid())).build();
         }
         return dto;
     }
