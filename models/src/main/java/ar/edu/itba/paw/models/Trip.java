@@ -243,8 +243,9 @@ public class Trip {
         return arrivalDate.toLocalDateTime();
     }
 
-    public void setArrivalDate(Timestamp arrivalDate) {
-        this.arrivalDate = arrivalDate;
+    public void setArrivalDate(LocalDateTime arrivalDate) {
+        if(arrivalDate == null) this.arrivalDate = null;
+        else this.arrivalDate = Timestamp.valueOf(arrivalDate);
     }
 
     public String getOrigin() {
