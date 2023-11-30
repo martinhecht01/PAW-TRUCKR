@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.form.EditUserForm;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -65,20 +67,20 @@ public class UserControllerApi {
         return fun.curry(fun,uriInfo);
     }
 
+
     @POST
+    @Consumes("application/vnd.user.v1+json")
     public Response createUser(@Valid UserForm form){
         final User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword(), LocaleContextHolder.getLocale());
         return Response.created(uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(user.getUserId())).build()).build();
     }
 
     @GET
+    @Produces("application/vnd.user.v1+json")
     @Path("/{id}")
     public Response getUser(@PathParam("id") final Integer id){
-        Optional<User> maybeUser = us.getUserById(id);
-        if(!maybeUser.isPresent()){
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        return Response.ok(UserDto.fromUser(uriInfo, maybeUser.get())).build();
+        User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
+        return Response.ok(UserDto.fromUser(uriInfo, user)).build();
     }
 
 //    @PUT
