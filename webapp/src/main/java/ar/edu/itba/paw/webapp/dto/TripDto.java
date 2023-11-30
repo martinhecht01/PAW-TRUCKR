@@ -73,8 +73,9 @@ public class TripDto {
         TripDto dto = new TripDto();
         dto.self = uri.getAbsolutePathBuilder().path("/trips/").path(String.valueOf(trip.getTripId())).build();
         dto.tripId = trip.getTripId();
-        dto.provider = trip.getProvider();
-        dto.trucker = trip.getTrucker();
+//        TODO hacer link a usuarios
+//        dto.provider = trip.getProvider();
+//        dto.trucker = trip.getTrucker();
         dto.licensePlate = trip.getLicensePlate();
         dto.weight = trip.getWeight();
         dto.volume = trip.getVolume();
