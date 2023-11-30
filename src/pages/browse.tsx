@@ -6,7 +6,7 @@ import '../styles/main.scss';
 
 const {Text, Title} = Typography;
 
-const formatter = (value: number) => `$${value}`;
+const formatter = (value: number | undefined) => `$${value}`;
 
 const {RangePicker} = DatePicker;
 
