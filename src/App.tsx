@@ -1,12 +1,22 @@
 import { Content, Footer, Header } from 'antd/es/layout/layout';
 import NavBar from './components/navbar';
 import { App, ConfigProvider, Image, Layout } from 'antd';
-import Landing from './pages/landing';
 import Login from './pages/login';
-import TripCard from './components/tripCard';
-import BrowseTrips from './pages/browse';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
+import './i18n';
 
-const WebApp = () => (
+
+const WebApp = () => {
+
+  const { t, i18n } = useTranslation();
+
+  useEffect(() => {
+    const lng = navigator.language;
+    i18n.changeLanguage(lng);
+  }, [])
+
+  return(
   <ConfigProvider
     theme={{
       
@@ -24,7 +34,7 @@ const WebApp = () => (
           <NavBar></NavBar>
         </Header>
         <Content className="site-layout" style={{ padding: '40px 50px' }}>
-          <BrowseTrips></BrowseTrips>
+          <Login></Login>
         </Content>
         <Footer style={{ textAlign: 'left', paddingLeft: '5%', backgroundColor: 'white', height: 'auto' }}>
           <Image src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" height={24} style={{paddingRight: 15}}></Image>© 2023 Truckr, Inc
@@ -32,7 +42,7 @@ const WebApp = () => (
       </Layout>
     </App>
   </ConfigProvider>
-  
-);
+  );
+};
 
 export default WebApp;
