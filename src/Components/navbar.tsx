@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Image, Menu } from 'antd';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 const sections = [
   {
@@ -19,20 +20,21 @@ const NavBar: React.FC = () => {
 
   const {t} = useTranslation();
 
+  const navigate = useNavigate();
+
   const onClick: MenuProps['onClick'] = (e) => {
-    //router(`/${e.key}`)
-    console.log('click ', e);
+    navigate(`/${e.key}`)
     setCurrent(e.key);
   };
 
 return (
     <Menu mode="horizontal" style={{display: 'flex', alignItems: 'center', backgroundColor: 'white'}}>
-        <Menu.Item key="" style={{width: 200, display: 'flex',  justifyContent: 'center'}} ><Image preview={false} src='https://i.ibb.co/JmB4xhT/Truckr-Logo.png'></Image></Menu.Item>
+        <Menu.Item key="" style={{width: 200, display: 'flex',  justifyContent: 'center'}} onClick={() => navigate('/')} ><Image preview={false} src='https://i.ibb.co/JmB4xhT/Truckr-Logo.png'></Image></Menu.Item>
         {sections.map((item) => (
-        item == null ? null :  <Menu.Item key={item.key}>{item.label}</Menu.Item>
+        item == null ? null :  <Menu.Item key={item.key} onClick={onClick}>{item.label}</Menu.Item>
         ))}
-        <Menu.Item key="login" style={{marginLeft: 'auto'}}>Ingresar</Menu.Item>
-        <Menu.Item key="register" style={{fontWeight: 'normal'}}>Crear cuenta</Menu.Item>
+        <Menu.Item key="login" style={{marginLeft: 'auto'}} onClick={() => navigate('/login')}>Ingresar</Menu.Item>
+        <Menu.Item key="register" style={{fontWeight: 'normal'}} onClick={() => navigate('/register')}>Crear cuenta</Menu.Item>
     </Menu>
 );
 }
