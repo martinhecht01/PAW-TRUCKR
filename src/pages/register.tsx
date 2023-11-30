@@ -1,5 +1,6 @@
-import { Button, Card, Checkbox, Col, Input, Radio, Switch } from 'antd';
+import { Button, Card, Col, Input, Radio } from 'antd';
 import React from 'react';
+import '../styles/main.scss';
 
 const Register: React.FC = () => {
 return (
@@ -12,17 +13,17 @@ return (
                         <span>Already a user? <a>Login</a></span>
                     </div>
                     
-                    <Input placeholder='CUIT 00-00000000-0' style={{marginBottom: '1vh', marginTop: '1vh' }}></Input>
-                    <Input placeholder='Name' style={{marginBottom: '1vh'}}></Input>
-                    <Input placeholder='Email' type='email' style={{marginBottom: '1vh'}}></Input>
+                    <Input placeholder='CUIT 00-00000000-0' className='mb-1vh mt-1vh'></Input>
+                    <Input placeholder='Name' className='mb-1vh'></Input>
+                    <Input placeholder='Email' type='email'className='mb-1vh'></Input>
                     
-                    <Radio.Group onChange={(e) => {e.target.value}} style={{marginBottom: '1vh'}}>
+                    <Radio.Group onChange={(e) => {e.target.value}} className='mb-1vh'>
                         <Radio.Button value={1}>Trucker</Radio.Button>
                         <Radio.Button value={2}>Provider</Radio.Button>
                     </Radio.Group>
                     
-                    <Input.Password placeholder='Password' style={{marginBottom: '1vh' }}></Input.Password>
-                    <Input.Password placeholder='Confirm Password' style={{marginBottom: '1vh' }}></Input.Password>
+                    <Input.Password placeholder='Password' className='mb-1vh'></Input.Password>
+                    <Input.Password placeholder='Confirm Password' className='mb-1vh'></Input.Password>
                                         
                     <Button type='primary' style={{width: '100%'}}>Create Account</Button>
                 </Card>

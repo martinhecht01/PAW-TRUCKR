@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Image, Menu } from 'antd';
+import { useTranslation } from 'react-i18next';
 
 const sections = [
   {
@@ -15,6 +16,8 @@ const sections = [
 
 const NavBar: React.FC = () => {
   const [current, setCurrent] = useState('recorded');
+
+  const {t} = useTranslation();
 
   const onClick: MenuProps['onClick'] = (e) => {
     //router(`/${e.key}`)

@@ -5,6 +5,7 @@ import Login from './pages/login';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import './i18n';
+import BrowseTrips from './pages/browse';
 
 
 const WebApp = () => {
@@ -34,7 +35,7 @@ const WebApp = () => {
           <NavBar></NavBar>
         </Header>
         <Content className="site-layout" style={{ padding: '40px 50px' }}>
-          <Login></Login>
+          <BrowseTrips></BrowseTrips>
         </Content>
         <Footer style={{ textAlign: 'left', paddingLeft: '5%', backgroundColor: 'white', height: 'auto' }}>
           <Image src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" height={24} style={{paddingRight: 15}}></Image>© 2023 Truckr, Inc
