@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.*;
+import org.glassfish.jersey.server.Uri;
 
 import javax.persistence.*;
 import javax.ws.rs.core.UriInfo;
@@ -69,7 +70,7 @@ public class TripDto {
     private Review review;
 
     public static TripDto fromTrip(final UriInfo uri, final Trip trip){
-        final TripDto dto = new TripDto();
+        TripDto dto = new TripDto();
         dto.self = uri.getAbsolutePathBuilder().path("/trips/").path(String.valueOf(trip.getTripId())).build();
         dto.tripId = trip.getTripId();
         dto.provider = trip.getProvider();
@@ -85,13 +86,39 @@ public class TripDto {
         dto.price = trip.getPrice();
         dto.truckerConfirmation = trip.getTruckerConfirmation();
         dto.providerConfirmation = trip.getProviderConfirmation();
-        dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
+        if(trip.getConfirmationDate() != null)
+            dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
+        else dto.confirmationDate = null;
         dto.image = trip.getImage();
         dto.proposals = uri.getBaseUriBuilder().path("/proposals/").path(String.valueOf(trip.getTripId())).build();
         dto.proposalCount = trip.getProposalCount();
         dto.offer = trip.getOffer();
         dto.review = trip.getReview();
         return dto;
+    }
+
+    protected static void fillFromTrip(final TripDto dto, final UriInfo uri, final Trip trip){
+        dto.tripId = trip.getTripId();
+        dto.provider = trip.getProvider();
+        dto.trucker = trip.getTrucker();
+        dto.licensePlate = trip.getLicensePlate();
+        dto.weight = trip.getWeight();
+        dto.volume = trip.getVolume();
+        dto.departureDate = Timestamp.valueOf(trip.getDepartureDate());
+        dto.arrivalDate = Timestamp.valueOf(trip.getArrivalDate());
+        dto.origin = trip.getOrigin();
+        dto.destination = trip.getDestination();
+        dto.type = trip.getType();
+        dto.price = trip.getPrice();
+        dto.truckerConfirmation = trip.getTruckerConfirmation();
+        dto.providerConfirmation = trip.getProviderConfirmation();
+        if(trip.getConfirmationDate() != null)
+            dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
+        else dto.confirmationDate = null;
+        dto.image = trip.getImage();
+        dto.proposalCount = trip.getProposalCount();
+        dto.offer = trip.getOffer();
+        dto.review = trip.getReview();
     }
 
     public String getLicensePlate() {

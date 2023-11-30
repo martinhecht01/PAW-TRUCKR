@@ -4,28 +4,24 @@ import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.webapp.dto.PastTripDto;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
-import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.Optional;
+import java.util.List;
 import java.util.function.Function;
 
 @Path("users")
@@ -35,6 +31,9 @@ public class UserControllerApi {
     private final ImageService is;
     private final TripServiceV2 ts;
     private final ReviewService revs;
+
+    private final String PAGE_SIZE = "12";
+    private final String PAGE = "1";
 
     @Context
     private UriInfo uriInfo;
@@ -84,44 +83,16 @@ public class UserControllerApi {
         return Response.ok(UserDto.fromUser(uriInfo, user)).build();
     }
 
-//    @PUT
-//    @Path("/{id}")
-//    public
+    @GET
+    @Path("/{id}/past-trips")
+    public Response getPastTrips(@PathParam("id") final Integer id,
+                                 @QueryParam("page") @DefaultValue(PAGE) int page,
+                                 @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
+        final User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
+        final List<Trip> pastTrips = ts.getAllPastTrips(user.getUserId());
+        List<PastTripDto> pastTripsList = PastTripDto.fromPastTripList(uriInfo, pastTrips, user);
 
-//    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
-//    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form, final BindingResult errors){
-//        if (errors.hasErrors()) {
-//            return editUserView(form);
-//        }
-//        if(!form.getProfileImage().isEmpty()) {
-//            int imgId = is.uploadImage(form.getProfileImage().getBytes());
-//            us.updateProfilePicture(getCurrentUser().getUserId(), imgId);
-//        }
-//        us.updateProfileName(getCurrentUser().getUserId(), form.getName());
-//
-//
-//        return new ModelAndView("redirect:/profile");
-//    }
-
-
-
-//    @RequestMapping(value = "/register", method = { RequestMethod.POST })
-//    public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
-//        if (errors.hasErrors()) {
-//            return register(false, "", form);
-//        }
-//
-//        User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword(),LocaleContextHolder.getLocale());
-//        if(user == null){
-//            LOGGER.info("User with CUIT {} already exists", form.getCuit());
-//            errors.rejectValue("cuit", "alreadyExists");
-//            return register(false, "", form);
-//        }
-//        LOGGER.info("User created with CUIT {} ", form.getCuit());
-//        return new ModelAndView("redirect:/register?success=true&email=" + user.getEmail());
-//    }
-//
-
-//    public void deleteUser(){}
+        return Response.ok(new GenericEntity<List<PastTripDto>>(pastTripsList) {}).build();
+    }
 
 }
