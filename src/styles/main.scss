@@ -13,6 +13,18 @@
     flex-direction: row;
 }
 
+.space-between {
+    justify-content: space-between;
+}
+
+.space-around {
+    justify-content: space-around;
+}
+
+.space-evenly {
+    justify-content: space-evenly;
+}
+
 .w-100 {
     width: 100%;
 }

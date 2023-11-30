@@ -9,6 +9,7 @@ import BrowseTrips from './pages/browse';
 import Login from './pages/login';
 import Register from './pages/register';
 import NotFound404 from './pages/404';
+import MyItinerary from './pages/myItinerary';
 
 
 const WebApp = () => {
@@ -40,6 +41,7 @@ const WebApp = () => {
           <Route path="/cargo" element={<BrowseTrips/>}/>
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
+          <Route path="/myItinerary" element={<MyItinerary/>} />
           <Route path="*" element={<NotFound404/>} />
         </Routes>
       </CustomLayout>
