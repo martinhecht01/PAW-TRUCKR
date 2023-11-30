@@ -26,7 +26,7 @@ const NavBar: React.FC = () => {
   };
 
 return (
-    <Menu mode="horizontal" style={{display: 'flex', alignItems: 'center'}}>
+    <Menu mode="horizontal" style={{display: 'flex', alignItems: 'center', backgroundColor: 'white'}}>
         <Menu.Item key="" style={{width: 200, display: 'flex',  justifyContent: 'center'}} ><Image preview={false} src='https://i.ibb.co/JmB4xhT/Truckr-Logo.png'></Image></Menu.Item>
         {sections.map((item) => (
         item == null ? null :  <Menu.Item key={item.key}>{item.label}</Menu.Item>
