@@ -1,6 +1,26 @@
 {
-    "greeting": {
-      "hello": "¡Hola Mundo!"
-    }
+  "greeting": {
+    "hello": "¡Hola Mundo!"
+  },
+
+  "myalert": {
+    "help": "¿Necesitas ayuda?",
+    "alertExplanation": "Una alerta es una notificación que se te enviará cuando se cree un cargamento que coincida con tus criterios.",
+    "alertQuestion": "Que es una alerta?"
+  },
+
+  "common": {
+    "date": "Fecha",
+    "time": "Hora",
+    "search": "Buscar",
+    "origin": "Origen",
+    "destination": "Destino",
+    "from": "Desde",
+    "to": "Hasta",
+    "maxVolume": "Volumen Máximo",
+    "maxWeight": "Peso Máximo",
+    "delete": "Borrar",
+    "cargoType": "Tipo de Carga"
   }
+}
   

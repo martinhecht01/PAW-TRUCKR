@@ -1,6 +1,27 @@
 {
     "greeting": {
       "hello": "Hello World!"
+    },
+
+    "common": {
+      "date": "Date",
+      "time": "Time",
+      "search": "Search",
+      "origin": "Origin",
+      "destination": "Destination",
+      "from": "From",
+      "to": "To",
+      "maxVolume": "Max Volume",
+      "maxWeight": "Max Weight",
+      "delete": "Delete",
+      "cargoType": "Cargo Type"
+    },
+
+    "myalert": {
+      "help": "Need Help?",
+      "alertExplanation": "An alert is a notification that will be sent to you when a cargo that matches your criteria is created.",
+      "alertQuestion": "What is an alert?"
     }
-  }
+
+}
   
