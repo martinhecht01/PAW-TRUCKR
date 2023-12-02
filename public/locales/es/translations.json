@@ -21,6 +21,19 @@
     "maxWeight": "Peso Máximo",
     "delete": "Borrar",
     "cargoType": "Tipo de Carga"
+  },
+
+  "profile": {
+    "cuit": "Cuit/Cuil",
+    "name": "Nombre",
+    "email": "Email",
+    "editProfile":"Editar Perfil",
+    "completedTrips": "Viajes completos",
+    "profile": "Perfil"
+  },
+
+  "review": {
+    "review": "Reseña",
   }
 }
   

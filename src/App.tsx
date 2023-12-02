@@ -10,6 +10,8 @@ import Login from './pages/login';
 import Register from './pages/register';
 import NotFound404 from './pages/404';
 import MyItinerary from './pages/myItinerary';
+import MyAlert from "./pages/myAlert";
+import Profile from "./pages/profile";
 
 
 const WebApp = () => {
@@ -42,6 +44,8 @@ const WebApp = () => {
           <Route path="/login" element={<Login/>} />
           <Route path="/register" element={<Register/>} />
           <Route path="/myItinerary" element={<MyItinerary/>} />
+          <Route path="/myAlert" element={<MyAlert/>} />
+          <Route path="/profile" element={<Profile/>} />
           <Route path="*" element={<NotFound404/>} />
         </Routes>
       </CustomLayout>

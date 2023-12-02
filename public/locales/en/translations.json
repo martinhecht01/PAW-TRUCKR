@@ -21,6 +21,19 @@
       "help": "Need Help?",
       "alertExplanation": "An alert is a notification that will be sent to you when a cargo that matches your criteria is created.",
       "alertQuestion": "What is an alert?"
+    },
+
+    "profile": {
+      "cuit": "Cuit/Cuil",
+      "name": "Name",
+      "email": "Email",
+      "editProfile"d:"Edit Profile",
+      "completedTrips": "Completed Trips",
+      "profile": "Profile"
+    },
+
+    "review": {
+        "review": "Review"
     }
 
 }
