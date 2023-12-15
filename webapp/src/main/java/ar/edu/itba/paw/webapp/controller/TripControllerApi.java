@@ -91,28 +91,12 @@ public class TripControllerApi {
         return Response.ok(TripDto.fromTrip(uriInfo,trip)).build();
     }
 
-    //    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    otra manera con un costom mimetype
-//    @Produces("applictation/vnd.userlist.v1+json")
-//    public Response listUsers(final int page){
-//          final List<User> userList = us.getAll(page);
-//          if (userList.isEmpty()){
-//              return Response.noContent().build();
-//          }
-//          return Response.ok(userList).
-//              .link("", "next")
-//              .link("", "prev")
-//              .link("", "first")
-//              .link("", "last")
-//              .build();
-//    }
-
     private <T,R> Function<T,R> currifyUriInfo(CurryingFunction<UriInfo, T,R> fun) {
         return fun.curry(fun,uriInfo);
     }
 
     @GET
+    @Produces("application/vnd.tripList.v1+json")
     public Response getActivePublications(@QueryParam("userId") int userId,
                                           @QueryParam("page") @DefaultValue(PAGE) int page,
                                           @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
