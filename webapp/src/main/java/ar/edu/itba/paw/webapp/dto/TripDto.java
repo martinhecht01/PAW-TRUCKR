@@ -55,7 +55,7 @@ public class TripDto {
     private Timestamp confirmationDate;
 
 
-    private Image image;
+    private URI image;
 
 
     private URI proposals;
@@ -71,7 +71,7 @@ public class TripDto {
 
     public static TripDto fromTrip(final UriInfo uri, final Trip trip){
         TripDto dto = new TripDto();
-        dto.self = uri.getAbsolutePathBuilder().path("/trips/").path(String.valueOf(trip.getTripId())).build();
+        dto.self = uri.getAbsolutePathBuilder().path(String.valueOf(trip.getTripId())).build();
         dto.tripId = trip.getTripId();
 //        TODO hacer link a usuarios
 //        dto.provider = trip.getProvider();
@@ -90,7 +90,7 @@ public class TripDto {
         if(trip.getConfirmationDate() != null)
             dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
         else dto.confirmationDate = null;
-        dto.image = trip.getImage();
+        dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
         dto.proposals = uri.getBaseUriBuilder().path("/proposals/").path(String.valueOf(trip.getTripId())).build();
         dto.proposalCount = trip.getProposalCount();
         dto.offer = trip.getOffer();
@@ -98,35 +98,11 @@ public class TripDto {
         return dto;
     }
 
-    protected static void fillFromTrip(final TripDto dto, final UriInfo uri, final Trip trip){
-        dto.tripId = trip.getTripId();
-        dto.provider = trip.getProvider();
-        dto.trucker = trip.getTrucker();
-        dto.licensePlate = trip.getLicensePlate();
-        dto.weight = trip.getWeight();
-        dto.volume = trip.getVolume();
-        dto.departureDate = Timestamp.valueOf(trip.getDepartureDate());
-        dto.arrivalDate = Timestamp.valueOf(trip.getArrivalDate());
-        dto.origin = trip.getOrigin();
-        dto.destination = trip.getDestination();
-        dto.type = trip.getType();
-        dto.price = trip.getPrice();
-        dto.truckerConfirmation = trip.getTruckerConfirmation();
-        dto.providerConfirmation = trip.getProviderConfirmation();
-        if(trip.getConfirmationDate() != null)
-            dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
-        else dto.confirmationDate = null;
-        dto.image = trip.getImage();
-        dto.proposalCount = trip.getProposalCount();
-        dto.offer = trip.getOffer();
-        dto.review = trip.getReview();
-    }
-
     public String getLicensePlate() {
         return licensePlate;
     }
 
-    public void setImage(Image image) {
+    public void setImage(URI image) {
         this.image = image;
     }
 
@@ -254,7 +230,7 @@ public class TripDto {
         this.confirmationDate = confirmationDate;
     }
 
-    public Image getImage() {
+    public URI getImage() {
         return image;
     }
 

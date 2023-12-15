@@ -83,16 +83,6 @@ public class UserControllerApi {
         return Response.ok(UserDto.fromUser(uriInfo, user)).build();
     }
 
-    @GET
-    @Path("/{id}/past-trips")
-    public Response getPastTrips(@PathParam("id") final Integer id,
-                                 @QueryParam("page") @DefaultValue(PAGE) int page,
-                                 @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
-        final User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
-        final List<Trip> pastTrips = ts.getAllPastTrips(user.getUserId());
-        List<PastTripDto> pastTripsList = PastTripDto.fromPastTripList(uriInfo, pastTrips, user);
 
-        return Response.ok(new GenericEntity<List<PastTripDto>>(pastTripsList) {}).build();
-    }
 
 }
