@@ -27,13 +27,13 @@
       "cuit": "Cuit/Cuil",
       "name": "Name",
       "email": "Email",
-      "editProfile"d:"Edit Profile",
+      "editProfile":"Edit Profile",
       "completedTrips": "Completed Trips",
       "profile": "Profile"
     },
 
     "review": {
-        "review": "Review"
+        "reviews": "Reviews"
     }
 
 }
