@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.webapp.controller.utils.PaginationHelper;
 import ar.edu.itba.paw.webapp.dto.TripDto;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
@@ -111,17 +112,8 @@ public class TripControllerApi {
         List<TripDto> dtoList = tripList.stream().map(currifyUriInfo(TripDto::fromTrip)).collect(Collectors.toList());
         int maxPages = ts.getTotalPagesActivePublications(user);
 
-        Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<TripDto>>(dtoList) {})
-                .link(uriInfo.getRequestUriBuilder().replaceQueryParam("page", 1).build(), "first")
-                .link(uriInfo.getRequestUriBuilder().replaceQueryParam("page", maxPages).build(), "last");
-
-        if(page != maxPages){
-            toReturn.link(uriInfo.getRequestUriBuilder().replaceQueryParam("page", page + 1).build(), "next");
-        }
-
-        if(page != 1){
-            toReturn.link(uriInfo.getRequestUriBuilder().replaceQueryParam("page", page - 1).build(), "prev");
-        }
+        Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<TripDto>>(dtoList) {});
+        PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
 
         return toReturn.build();
     }
