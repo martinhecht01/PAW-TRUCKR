@@ -98,26 +98,26 @@ public class TripControllerApi {
 
     @GET
     @Produces("application/vnd.tripList.v1+json")
-    public Response getActivePublications(@QueryParam("userId") int userId,
+    public Response getPublications(@QueryParam("userId") int userId,
+                                          @QueryParam("status") @DefaultValue("ongoing") String status,
                                           @QueryParam("page") @DefaultValue(PAGE) int page,
                                           @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
 
         final User user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        List<Trip> tripList = ts.getAllActivePublications(user.getUserId(),page);
+        List<Trip> tripList = ts.getPublications(user.getUserId(), status,  page);
 
-        if(tripList.isEmpty()){
+        if (tripList.isEmpty()) {
             return Response.noContent().build();
         }
 
         List<TripDto> dtoList = tripList.stream().map(currifyUriInfo(TripDto::fromTrip)).collect(Collectors.toList());
-        int maxPages = ts.getTotalPagesActivePublications(user);
+        int maxPages = ts.getTotalPagesPublications(user, status);
 
         Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<TripDto>>(dtoList) {});
         PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
 
         return toReturn.build();
     }
-
 
 //    @RequestMapping("/trips/manageTrip")
 //    public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {

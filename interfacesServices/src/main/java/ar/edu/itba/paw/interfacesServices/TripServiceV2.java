@@ -62,14 +62,15 @@ public interface TripServiceV2 {
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
 
+    List<Trip> getPublications(Integer userId, String status, Integer pag);
 
     List<Trip> getAllActivePublications(Integer userId, Integer pag);
 
-
     List<Trip> getAllExpiredPublications(Integer userId, Integer pag);
 
-
     Integer getTotalPagesExpiredPublications(User user);
+
+    Integer getTotalPagesPublications(User user, String status);
 
     Integer getTotalPagesActivePublications(User user);
 
@@ -94,7 +95,9 @@ public interface TripServiceV2 {
     Integer getCompletedTripsCount(Integer userId);
 
     Optional<Proposal> getOffer(User user, Trip trip);
+
     Optional<Proposal> sendCounterOffer(Integer originalId, User user, String description, Integer price);
+
     void rejectCounterOffer(Integer offerId);
 
     void acceptCounterOffer(Integer offerId);

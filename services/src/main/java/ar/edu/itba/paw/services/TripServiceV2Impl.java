@@ -240,6 +240,23 @@ public class TripServiceV2Impl implements TripServiceV2 {
         optionalTrip.get().setOffer(tripDaoV2.getOffer(user, optionalTrip.get()).orElse(null));
         return optionalTrip;
     }
+
+//    Get Publications
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getPublications(Integer userId, String status, Integer pag){
+        String st = status.toLowerCase();
+        switch (st) {
+            case "expired":
+                return tripDaoV2.getAllExpiredPublications(userId, pag);
+            case "active":
+                return tripDaoV2.getAllActivePublications(userId, pag);
+            default:
+                return new ArrayList<>();
+        }
+    }
+
     @Transactional(readOnly = true)
     @Override
     public List<Trip> getAllActivePublications(Integer userId, Integer pag){
@@ -251,6 +268,29 @@ public class TripServiceV2Impl implements TripServiceV2 {
     public List<Trip> getAllExpiredPublications(Integer userId, Integer pag){
         return tripDaoV2.getAllExpiredPublications(userId, pag);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllOngoingPublications(Integer userId){
+        return tripDaoV2.getAllOngoingPublications(userId);
+    }
+
+//    Get Pages:
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesPublications(User user, String status){
+        String st = status.toLowerCase();
+        switch (st) {
+            case "expired":
+                return tripDaoV2.getTotalPagesExpiredPublications(user);
+            case "active":
+                return tripDaoV2.getTotalPagesActivePublications(user);
+            default:
+                return 0;
+        }
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Integer getTotalPagesExpiredPublications(User user){
@@ -262,11 +302,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.getTotalPagesActivePublications(user);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllOngoingPublications(Integer userId){
-        return tripDaoV2.getAllOngoingPublications(userId);
-    }
+//   --------------
 
 
     @Transactional
