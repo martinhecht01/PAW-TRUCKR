@@ -10,10 +10,7 @@ import ar.edu.itba.paw.webapp.dto.TripDto;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
-import ar.edu.itba.paw.webapp.form.AcceptForm;
-import ar.edu.itba.paw.webapp.form.EditUserForm;
-import ar.edu.itba.paw.webapp.form.TripForm;
-import ar.edu.itba.paw.webapp.form.UserForm;
+import ar.edu.itba.paw.webapp.form.*;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -50,6 +47,10 @@ public class TripControllerApi {
     private final ImageService is;
     private final TripServiceV2 ts;
     private final ReviewService revs;
+
+    private <T,R> Function<T,R> currifyUriInfo(CurryingFunction<UriInfo, T,R> fun) {
+        return fun.curry(fun,uriInfo);
+    }
 
     @Context
     private UriInfo uriInfo;
@@ -92,59 +93,56 @@ public class TripControllerApi {
         return Response.ok(TripDto.fromTrip(uriInfo,trip)).build();
     }
 
-    private <T,R> Function<T,R> currifyUriInfo(CurryingFunction<UriInfo, T,R> fun) {
-        return fun.curry(fun,uriInfo);
-    }
-
     @GET
     @Produces("application/vnd.tripList.v1+json")
-    public Response getPublications(@QueryParam("userId") int userId,
-                                          @QueryParam("status") @DefaultValue("ongoing") String status,
-                                          @QueryParam("page") @DefaultValue(PAGE) int page,
-                                          @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
+    public Response getPublications(
+            @QueryParam("userId") Integer userId,
+            @QueryParam("status") @DefaultValue("ongoing") String status,
+            @QueryParam("page") @DefaultValue(PAGE) int page,
+            @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize,
+            @QueryParam("origin") String origin,
+            @QueryParam("destination") String destination,
+            @QueryParam("minAvailableVolume") Integer minAvailableVolume,
+            @QueryParam("minAvailableWeight") Integer minAvailableWeight,
+            @QueryParam("minPrice") Integer minPrice,
+            @QueryParam("maxPrice") Integer maxPrice,
+            @QueryParam("sortOrder") String sortOrder,
+            @QueryParam("departureDate") String departureDate,
+            @QueryParam("arrivalDate") String arrivalDate,
+            @QueryParam("type") String type)
+    {
 
-        final User user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        List<Trip> tripList = ts.getPublications(user.getUserId(), status,  page);
+        List <Trip> tripList;
+        final User user;
+        int maxPages;
+
+        if(userId == null ){
+            tripList = ts.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, page, pageSize);
+            maxPages = ts.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+        }else {
+            user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
+            tripList = ts.getPublications(user.getUserId(), status, page);
+            maxPages = ts.getTotalPagesPublications(user, status);
+        }
 
         if (tripList.isEmpty()) {
             return Response.noContent().build();
         }
 
         List<TripDto> dtoList = tripList.stream().map(currifyUriInfo(TripDto::fromTrip)).collect(Collectors.toList());
-        int maxPages = ts.getTotalPagesPublications(user, status);
-
         Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<TripDto>>(dtoList) {});
         PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
 
         return toReturn.build();
     }
 
-//    @RequestMapping("/trips/manageTrip")
-//    public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {
-//        LOGGER.info("Accessing manage trip page with trip Id: {}", tripId);
-//        final ModelAndView mav = new ModelAndView("trips/manageTrip");
-//        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-//
-//        int userId = Objects.requireNonNull(getUser()).getUserId();
-//        mav.addObject("trip", trip);
-//        mav.addObject("userId", userId);
-//        mav.addObject("now", LocalDateTime.now());
-//
-//        return mav;
-//    }
-    @POST
-    @Path("/confirmTrip")
-    public ModelAndView confirmTrip(@RequestParam("id") int tripId) {
+    @PUT
+    @Path("/{id}")
+    public Response confirmTrip(@PathParam("id") int tripId) {
         User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);
-        ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
-        if (Objects.equals(user.getRole(), "TRUCKER")) {
-//            LOGGER.info("Trip with Id: {} confirmed successfully by trucker", tripId);
-            return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
-        }
-        else {
-//            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
-//            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
-            return new ModelAndView("redirect:/trips/details?id=" + tripId);
-        }
+
+        Trip trip = ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
+
+        return Response.ok(TripDto.fromTrip(uriInfo, trip)).build();
     }
 }

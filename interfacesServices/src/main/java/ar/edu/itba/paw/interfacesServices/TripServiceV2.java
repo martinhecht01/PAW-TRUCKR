@@ -32,7 +32,7 @@ public interface TripServiceV2 {
                        int price,
                        Locale locale);
 
-    void confirmTrip(int tripId, int userId,Locale locale);
+    Trip confirmTrip(int tripId, int userId,Locale locale);
 
     Proposal createProposal(int tripId, int userId, String description, int price, Locale locale);
 
@@ -40,7 +40,7 @@ public interface TripServiceV2 {
 
     Optional<Proposal> getProposalById(int proposalId);
 
-    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag);
+    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer page, Integer pageSize);
 
     List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag);
 
@@ -62,7 +62,7 @@ public interface TripServiceV2 {
 
     Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
 
-    List<Trip> getPublications(Integer userId, String status, Integer pag);
+    List<Trip> getPublications(Integer userId, String status, Integer page);
 
     List<Trip> getAllActivePublications(Integer userId, Integer pag);
 

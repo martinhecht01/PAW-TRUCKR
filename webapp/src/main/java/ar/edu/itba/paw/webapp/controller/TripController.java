@@ -103,7 +103,7 @@ public class TripController {
         view.addObject("arrivalDate",ff.getArrivalDate());
         view.addObject("cargoType",ff.getType());
 
-        view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
+        view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page), 12));
 
         return view;
     }
@@ -138,7 +138,9 @@ public class TripController {
     }
 
     @RequestMapping("/trips/browse")
-    public ModelAndView browse(@RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") FilterForm ff, final BindingResult errors) {
+    public ModelAndView browse(@RequestParam(defaultValue = "1") String page,
+                               @Valid @ModelAttribute("filterForm") FilterForm ff,
+                               final BindingResult errors) {
         final ModelAndView view = new ModelAndView("trips/browse");
 
         if(errors.hasErrors()){
@@ -180,7 +182,7 @@ public class TripController {
         view.addObject("arrivalDate",ff.getArrivalDate());
         view.addObject("type",ff.getType());
 
-        view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
+        view.addObject("offers", ts.getAllActiveTrips(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page), 12));
 
         return view;
     }
@@ -249,7 +251,9 @@ public class TripController {
     }
 
     @RequestMapping("/trips/myTrips")
-    public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage, @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage, @RequestParam(required = false) Boolean activeSecondTab){
+    public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage,
+                                @RequestParam(value = "activePage", required = false, defaultValue = "1") final Integer activePage,
+                                @RequestParam(required = false) Boolean activeSecondTab){
         User user = getUser();
         Integer maxActivePage = ts.getTotalPagesActivePublications(user);
         Integer maxAcceptPage = ts.getTotalPagesExpiredPublications(user);
@@ -290,7 +294,6 @@ public class TripController {
             return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
         }
         else {
-            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
             return new ModelAndView("redirect:/trips/details?id=" + tripId);
         }

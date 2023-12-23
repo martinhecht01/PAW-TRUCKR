@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.*;
 import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -91,7 +92,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public void confirmTrip(int tripId, int userId,Locale locale) {
+    public Trip confirmTrip(int tripId, int userId,Locale locale) {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
         tripDaoV2.confirmTrip(trip, user);
@@ -105,6 +106,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
             ms.sendStatusEmail(trucker, trip,locale);
             ms.sendStatusEmail(provider,trip,locale);
         }
+        return trip;
     }
 
     @Transactional
@@ -161,8 +163,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type,  Integer pag) {
-        return tripDaoV2.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, pag);
+    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type,  Integer page, Integer pageSize) {
+        return tripDaoV2.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, page);
     }
 
     @Transactional(readOnly = true)
@@ -245,13 +247,13 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Trip> getPublications(Integer userId, String status, Integer pag){
+    public List<Trip> getPublications(Integer userId, String status, Integer page){
         String st = status.toLowerCase();
         switch (st) {
             case "expired":
-                return tripDaoV2.getAllExpiredPublications(userId, pag);
+                return tripDaoV2.getAllExpiredPublications(userId, page);
             case "active":
-                return tripDaoV2.getAllActivePublications(userId, pag);
+                return tripDaoV2.getAllActivePublications(userId, page);
             default:
                 return new ArrayList<>();
         }
