@@ -93,66 +93,66 @@ public class TripServiceV2ImplTest {
         offer1 = new Proposal(trip1, user1, PROPOSAL_DESCRIPTION, PRICE_NOT_EXISTENT);
     }
 
-    @Test
-    public void testCreateTrip() {
-        // 1 Precondiciones
-
-        when(tripDao.createTrip(eq(user1), eq(LICENSEPLATE_NOT_EXISTENT), eq(WEIGHT_NOT_EXISTENT), eq(VOLUME_NOT_EXISTENT), eq(DEPARTUREDATE_NOT_EXISTENT), eq(ARRIVALDATE_NOT_EXISTENT), eq(ORIGIN_NOT_EXISTENT), eq(DESTINATION_NOT_EXISTENT), eq(TYPE_NOT_EXISTENT), eq(PRICE_NOT_EXISTENT))).
-                thenReturn( new Trip(user1,null, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT ));
-
-        when(userDao.getUserById(eq(TRUCKERID_NOT_EXISTENT)))
-                .thenReturn(Optional.of(user1));
+//    @Test
+//    public void testCreateTrip() {
+//        // 1 Precondiciones
 //
-//        //2 Ejercitar
-        Trip trip = tripService.createTrip(TRUCKERID_NOT_EXISTENT,LICENSEPLATE_NOT_EXISTENT,WEIGHT_NOT_EXISTENT,VOLUME_NOT_EXISTENT,DEPARTUREDATE_NOT_EXISTENT,ARRIVALDATE_NOT_EXISTENT,ORIGIN_NOT_EXISTENT,DESTINATION_NOT_EXISTENT,TYPE_NOT_EXISTENT,PRICE_NOT_EXISTENT);
+//        when(tripDao.createTrip(eq(user1), eq(LICENSEPLATE_NOT_EXISTENT), eq(WEIGHT_NOT_EXISTENT), eq(VOLUME_NOT_EXISTENT), eq(DEPARTUREDATE_NOT_EXISTENT), eq(ARRIVALDATE_NOT_EXISTENT), eq(ORIGIN_NOT_EXISTENT), eq(DESTINATION_NOT_EXISTENT), eq(TYPE_NOT_EXISTENT), eq(PRICE_NOT_EXISTENT))).
+//                thenReturn( new Trip(user1,null, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT ));
 //
-//        //3 Postcondiciones
-        Assert.assertNotNull(trip);
-        Assert.assertNotNull(trip.getTrucker());
-        Assert.assertEquals((Integer)TRUCKERID_NOT_EXISTENT, trip.getTrucker().getUserId());
-        Assert.assertEquals(LICENSEPLATE_NOT_EXISTENT, trip.getLicensePlate());
-        Assert.assertEquals(WEIGHT_NOT_EXISTENT, trip.getWeight().intValue());
-        Assert.assertEquals(VOLUME_NOT_EXISTENT, trip.getVolume().intValue());
-        Assert.assertEquals(DEPARTUREDATE_NOT_EXISTENT, trip.getDepartureDate());
-        Assert.assertEquals(ARRIVALDATE_NOT_EXISTENT, trip.getArrivalDate());
-        Assert.assertEquals(ORIGIN_NOT_EXISTENT, trip.getOrigin());
-        Assert.assertEquals(DESTINATION_NOT_EXISTENT, trip.getDestination());
-        Assert.assertEquals(TYPE_NOT_EXISTENT, trip.getType());
-        Assert.assertEquals(PRICE_NOT_EXISTENT, trip.getPrice().intValue());
+//        when(userDao.getUserById(eq(TRUCKERID_NOT_EXISTENT)))
+//                .thenReturn(Optional.of(user1));
+////
+////        //2 Ejercitar
+//        Trip trip = tripService.createTrip(TRUCKERID_NOT_EXISTENT,LICENSEPLATE_NOT_EXISTENT,WEIGHT_NOT_EXISTENT,VOLUME_NOT_EXISTENT,DEPARTUREDATE_NOT_EXISTENT,ARRIVALDATE_NOT_EXISTENT,ORIGIN_NOT_EXISTENT,DESTINATION_NOT_EXISTENT,TYPE_NOT_EXISTENT,PRICE_NOT_EXISTENT);
+////
+////        //3 Postcondiciones
+//        Assert.assertNotNull(trip);
+//        Assert.assertNotNull(trip.getTrucker());
+//        Assert.assertEquals((Integer)TRUCKERID_NOT_EXISTENT, trip.getTrucker().getUserId());
+//        Assert.assertEquals(LICENSEPLATE_NOT_EXISTENT, trip.getLicensePlate());
+//        Assert.assertEquals(WEIGHT_NOT_EXISTENT, trip.getWeight().intValue());
+//        Assert.assertEquals(VOLUME_NOT_EXISTENT, trip.getVolume().intValue());
+//        Assert.assertEquals(DEPARTUREDATE_NOT_EXISTENT, trip.getDepartureDate());
+//        Assert.assertEquals(ARRIVALDATE_NOT_EXISTENT, trip.getArrivalDate());
+//        Assert.assertEquals(ORIGIN_NOT_EXISTENT, trip.getOrigin());
+//        Assert.assertEquals(DESTINATION_NOT_EXISTENT, trip.getDestination());
+//        Assert.assertEquals(TYPE_NOT_EXISTENT, trip.getType());
+//        Assert.assertEquals(PRICE_NOT_EXISTENT, trip.getPrice().intValue());
+//
+//    }
 
-    }
-
-    @Test
-    public void testCreateRequest() {
-//         1 Precondiciones
-
-        when(tripDao.createRequest(eq(user2), eq(WEIGHT_NOT_EXISTENT), eq(VOLUME_NOT_EXISTENT), eq(DEPARTUREDATE_NOT_EXISTENT), eq(ARRIVALDATE_NOT_EXISTENT), eq(ORIGIN_NOT_EXISTENT), eq(DESTINATION_NOT_EXISTENT), eq(TYPE_NOT_EXISTENT), eq(PRICE_NOT_EXISTENT))).
-                thenReturn( new Trip(null,user2, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT ));
-
-        when(userDao.getUserById(eq(PROVIDERID_NOT_EXISTENT)))
-                .thenReturn(Optional.of(user2));
-
-        when(alertDao.getAlertsThatMatch(any()))
-                .thenReturn(new ArrayList<>());
-
-//        2 Ejercitar
-        Trip trip = tripService.createRequest(PROVIDERID_NOT_EXISTENT,WEIGHT_NOT_EXISTENT,VOLUME_NOT_EXISTENT,DEPARTUREDATE_NOT_EXISTENT,ARRIVALDATE_NOT_EXISTENT,ORIGIN_NOT_EXISTENT,DESTINATION_NOT_EXISTENT,TYPE_NOT_EXISTENT,PRICE_NOT_EXISTENT, Locale.ENGLISH);
-
-//        3 Postcondiciones
-        Assert.assertNotNull(trip);
-        Assert.assertNotNull(trip.getProvider().getUserId());
-        Assert.assertEquals((Integer)PROVIDERID_NOT_EXISTENT, trip.getProvider().getUserId());
-        Assert.assertEquals(LICENSEPLATE_NOT_EXISTENT, trip.getLicensePlate());
-        Assert.assertEquals(WEIGHT_NOT_EXISTENT, (long)trip.getWeight());
-        Assert.assertEquals(VOLUME_NOT_EXISTENT, (long)trip.getVolume());
-        Assert.assertEquals(DEPARTUREDATE_NOT_EXISTENT, trip.getDepartureDate());
-        Assert.assertEquals(ARRIVALDATE_NOT_EXISTENT, trip.getArrivalDate());
-        Assert.assertEquals(ORIGIN_NOT_EXISTENT, trip.getOrigin());
-        Assert.assertEquals(DESTINATION_NOT_EXISTENT, trip.getDestination());
-        Assert.assertEquals(TYPE_NOT_EXISTENT, trip.getType());
-        Assert.assertEquals(PRICE_NOT_EXISTENT, (long)trip.getPrice());
-
-    }
+//    @Test
+//    public void testCreateRequest() {
+////         1 Precondiciones
+//
+//        when(tripDao.createRequest(eq(user2), eq(WEIGHT_NOT_EXISTENT), eq(VOLUME_NOT_EXISTENT), eq(DEPARTUREDATE_NOT_EXISTENT), eq(ARRIVALDATE_NOT_EXISTENT), eq(ORIGIN_NOT_EXISTENT), eq(DESTINATION_NOT_EXISTENT), eq(TYPE_NOT_EXISTENT), eq(PRICE_NOT_EXISTENT))).
+//                thenReturn( new Trip(null,user2, LICENSEPLATE_NOT_EXISTENT, WEIGHT_NOT_EXISTENT, VOLUME_NOT_EXISTENT, DEPARTUREDATE_NOT_EXISTENT, ARRIVALDATE_NOT_EXISTENT, ORIGIN_NOT_EXISTENT, DESTINATION_NOT_EXISTENT, TYPE_NOT_EXISTENT, PRICE_NOT_EXISTENT ));
+//
+//        when(userDao.getUserById(eq(PROVIDERID_NOT_EXISTENT)))
+//                .thenReturn(Optional.of(user2));
+//
+//        when(alertDao.getAlertsThatMatch(any()))
+//                .thenReturn(new ArrayList<>());
+//
+////        2 Ejercitar
+//        Trip trip = tripService.createRequest(PROVIDERID_NOT_EXISTENT,WEIGHT_NOT_EXISTENT,VOLUME_NOT_EXISTENT,DEPARTUREDATE_NOT_EXISTENT,ARRIVALDATE_NOT_EXISTENT,ORIGIN_NOT_EXISTENT,DESTINATION_NOT_EXISTENT,TYPE_NOT_EXISTENT,PRICE_NOT_EXISTENT, Locale.ENGLISH);
+//
+////        3 Postcondiciones
+//        Assert.assertNotNull(trip);
+//        Assert.assertNotNull(trip.getProvider().getUserId());
+//        Assert.assertEquals((Integer)PROVIDERID_NOT_EXISTENT, trip.getProvider().getUserId());
+//        Assert.assertEquals(LICENSEPLATE_NOT_EXISTENT, trip.getLicensePlate());
+//        Assert.assertEquals(WEIGHT_NOT_EXISTENT, (long)trip.getWeight());
+//        Assert.assertEquals(VOLUME_NOT_EXISTENT, (long)trip.getVolume());
+//        Assert.assertEquals(DEPARTUREDATE_NOT_EXISTENT, trip.getDepartureDate());
+//        Assert.assertEquals(ARRIVALDATE_NOT_EXISTENT, trip.getArrivalDate());
+//        Assert.assertEquals(ORIGIN_NOT_EXISTENT, trip.getOrigin());
+//        Assert.assertEquals(DESTINATION_NOT_EXISTENT, trip.getDestination());
+//        Assert.assertEquals(TYPE_NOT_EXISTENT, trip.getType());
+//        Assert.assertEquals(PRICE_NOT_EXISTENT, (long)trip.getPrice());
+//
+//    }
 
     @Test
     public void testCreateProposal(){

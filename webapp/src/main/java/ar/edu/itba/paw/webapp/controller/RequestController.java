@@ -135,46 +135,46 @@ public class RequestController {
     }
 
 
-    @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
-    public ModelAndView createRequest(
-            @Valid @ModelAttribute("requestForm") final RequestForm form,
-            final BindingResult errors) {
-        if (errors.hasErrors()) {
-            LOGGER.info("Error in create request form");
-            return createRequest(form,
-                    form.getOrigin(),
-                    form.getDestination(),
-                    (form.getRequestedVolume() == null || form.getRequestedVolume().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedVolume()),
-                    (form.getRequestedWeight() == null || form.getRequestedWeight().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedWeight()),
-                    (form.getMinDepartureDate() == null || form.getMinDepartureDate().isEmpty()) ? null : form.getMinDepartureDate(),
-                    (form.getMaxArrivalDate() == null || form.getMaxArrivalDate().isEmpty()) ? null : form.getMaxArrivalDate(),
-                    form.getCargoType(),
-                    (form.getMaxPrice() == null || form.getMaxPrice().isEmpty()) ? 0 : Integer.parseInt(form.getMaxPrice()));
-        }
-
-        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-
-        Trip request = ts.createRequest(
-                user.getUserId(),
-                (form.getRequestedWeight() == null || form.getRequestedWeight().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedWeight()),
-                (form.getRequestedVolume() == null || form.getRequestedVolume().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedVolume()),
-                (form.getMinDepartureDate() == null || form.getMinDepartureDate().isEmpty()) ? null : LocalDateTime.parse(form.getMinDepartureDate()),
-                (form.getMaxArrivalDate() == null || form.getMaxArrivalDate().isEmpty()) ? null : LocalDateTime.parse(form.getMaxArrivalDate()),
-                form.getOrigin(),
-                form.getDestination(),
-                form.getCargoType(),
-                (form.getMaxPrice() == null || form.getMaxPrice().isEmpty()) ? 0 : Integer.parseInt(form.getMaxPrice()),
-                LocaleContextHolder.getLocale()
-        );
-        int imageid=is.uploadImage(form.getTripImage().getBytes());
-        ts.updateTripPicture(request.getTripId(),imageid);
-
-        LOGGER.info("Request created successfully for user: {}, requestId: {}", user.getUserId(), request.getTripId());
-
-        ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getTripId());
-        return view;
-    }
+//    @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
+//    public ModelAndView createRequest(
+//            @Valid @ModelAttribute("requestForm") final RequestForm form,
+//            final BindingResult errors) {
+//        if (errors.hasErrors()) {
+//            LOGGER.info("Error in create request form");
+//            return createRequest(form,
+//                    form.getOrigin(),
+//                    form.getDestination(),
+//                    (form.getRequestedVolume() == null || form.getRequestedVolume().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedVolume()),
+//                    (form.getRequestedWeight() == null || form.getRequestedWeight().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedWeight()),
+//                    (form.getMinDepartureDate() == null || form.getMinDepartureDate().isEmpty()) ? null : form.getMinDepartureDate(),
+//                    (form.getMaxArrivalDate() == null || form.getMaxArrivalDate().isEmpty()) ? null : form.getMaxArrivalDate(),
+//                    form.getCargoType(),
+//                    (form.getMaxPrice() == null || form.getMaxPrice().isEmpty()) ? 0 : Integer.parseInt(form.getMaxPrice()));
+//        }
+//
+//        AuthUserDetailsImpl userDetails = (AuthUserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        User user = us.getUserByCuit(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
+//
+//        Trip request = ts.createRequest(
+//                user.getUserId(),
+//                (form.getRequestedWeight() == null || form.getRequestedWeight().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedWeight()),
+//                (form.getRequestedVolume() == null || form.getRequestedVolume().isEmpty()) ? 0 : Integer.parseInt(form.getRequestedVolume()),
+//                (form.getMinDepartureDate() == null || form.getMinDepartureDate().isEmpty()) ? null : LocalDateTime.parse(form.getMinDepartureDate()),
+//                (form.getMaxArrivalDate() == null || form.getMaxArrivalDate().isEmpty()) ? null : LocalDateTime.parse(form.getMaxArrivalDate()),
+//                form.getOrigin(),
+//                form.getDestination(),
+//                form.getCargoType(),
+//                (form.getMaxPrice() == null || form.getMaxPrice().isEmpty()) ? 0 : Integer.parseInt(form.getMaxPrice()),
+//                LocaleContextHolder.getLocale()
+//        );
+//        int imageid=is.uploadImage(form.getTripImage().getBytes());
+//        ts.updateTripPicture(request.getTripId(),imageid);
+//
+//        LOGGER.info("Request created successfully for user: {}, requestId: {}", user.getUserId(), request.getTripId());
+//
+//        ModelAndView view = new ModelAndView("redirect:/requests/success?id="+request.getTripId());
+//        return view;
+//    }
 
     @RequestMapping("/requests/details")
     public ModelAndView requestDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm formReserve) {

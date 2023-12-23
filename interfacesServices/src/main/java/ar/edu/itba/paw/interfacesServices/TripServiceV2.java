@@ -10,7 +10,7 @@ import java.util.Locale;
 import java.util.Optional;
 
 public interface TripServiceV2 {
-    Trip createTrip(int truckerId,
+    Trip createTrip(User user,
                     String licensePlate,
                     int weight,
                     int volume,
@@ -21,7 +21,7 @@ public interface TripServiceV2 {
                     String type,
                     int price);
 
-    Trip createRequest(int providerId,
+    Trip createRequest(User user,
                        int weight,
                        int volume,
                        LocalDateTime departureDate,

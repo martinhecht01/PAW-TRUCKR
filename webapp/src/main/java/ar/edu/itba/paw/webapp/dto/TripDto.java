@@ -71,9 +71,12 @@ public class TripDto {
 
     public static TripDto fromTrip(final UriInfo uri, final Trip trip){
         TripDto dto = new TripDto();
-        dto.self = uri.getBaseUriBuilder().path(String.valueOf(trip.getTripId())).build();        dto.tripId = trip.getTripId();
-        dto.provider = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getProvider().getUserId())).build();
-        dto.trucker = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getTrucker().getUserId())).build();
+        dto.self = uri.getBaseUriBuilder().path(String.valueOf(trip.getTripId())).build();
+        dto.tripId = trip.getTripId();
+        if(trip.getProvider() != null)
+            dto.provider = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getProvider().getUserId())).build();
+        if(trip.getTrucker() != null)
+            dto.trucker = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getTrucker().getUserId())).build();
         dto.licensePlate = trip.getLicensePlate();
         dto.weight = trip.getWeight();
         dto.volume = trip.getVolume();
@@ -88,7 +91,7 @@ public class TripDto {
         if(trip.getConfirmationDate() != null)
             dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
         else dto.confirmationDate = null;
-        dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
+//        dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
         dto.proposals = uri.getBaseUriBuilder().path("/proposals/").path(String.valueOf(trip.getTripId())).build();
         dto.proposalCount = trip.getProposalCount();
         dto.offer = trip.getOffer();

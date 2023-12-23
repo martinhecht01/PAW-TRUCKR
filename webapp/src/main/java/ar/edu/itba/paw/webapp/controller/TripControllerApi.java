@@ -72,7 +72,7 @@ public class TripControllerApi {
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
         final User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);//TODO: get user from session ver como hacemos
         final Trip trip = ts.createTrip(
-                user.getUserId(),
+                user,
                 form.getLicensePlate(),
                 Integer.parseInt(form.getAvailableWeight()),
                 Integer.parseInt(form.getAvailableVolume()),

@@ -50,9 +50,11 @@ public class TripServiceV2Impl implements TripServiceV2 {
         this.alertDao = alertDao;
     }
 
+
+    //TODO validation of cargo type and error handling
     @Transactional
     @Override
-    public Trip createTrip(int truckerId,
+    public Trip createTrip(User user,
                            String licensePlate,
                            int weight,
                            int volume,
@@ -62,13 +64,18 @@ public class TripServiceV2Impl implements TripServiceV2 {
                            String destination,
                            String type,
                            int price) {
-        User user = userDao.getUserById(truckerId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.createTrip(user, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
+
+        if(Objects.equals(user.getRole(), "TRUCKER")) {
+            if(licensePlate == null || licensePlate.isEmpty())
+                throw new IllegalArgumentException("License plate cannot be null or empty");
+            return tripDaoV2.createTrip(user, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
+        }else
+            return createRequest(user, weight, volume, departureDate, arrivalDate, origin, destination, type, price, user.getLocale());
     }
 
     @Transactional
     @Override
-    public Trip createRequest(int providerId,
+    public Trip createRequest(User user,
                               int weight,
                               int volume,
                               LocalDateTime departureDate,
@@ -78,7 +85,6 @@ public class TripServiceV2Impl implements TripServiceV2 {
                               String type,
                               int price,
                               Locale locale) {
-        User user = userDao.getUserById(providerId).orElseThrow(NoSuchElementException::new);
         Trip trip =  tripDaoV2.createRequest(user, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
 
         List<Alert> alerts = alertDao.getAlertsThatMatch(trip);

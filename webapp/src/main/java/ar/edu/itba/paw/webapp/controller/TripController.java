@@ -108,34 +108,37 @@ public class TripController {
         return view;
     }
 
-    @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
-    public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
-        if (errors.hasErrors() || Objects.requireNonNull(getUser()).getUserId() == null) {
-            return createTrip(form);
-        }
 
-        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
-        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
+    // Se comento esta funcion porque cambio el signature y ya no se usa
 
-        User user = getUser();
-
-        Trip trip = ts.createTrip(
-                user.getUserId(),
-                form.getLicensePlate(),
-                Integer.parseInt(form.getAvailableWeight()),
-                Integer.parseInt(form.getAvailableVolume()),
-                departure,
-                arrival,
-                form.getOrigin(),
-                form.getDestination(),
-                form.getCargoType(),
-                Integer.parseInt(form.getPrice())
-        );
-        int imageid=is.uploadImage(form.getTripImage().getBytes());
-        ts.updateTripPicture(trip.getTripId(),imageid);
-        LOGGER.info("Trip created successfully for user: {}, tripid: {} ", user.getUserId(), trip.getTripId());
-        return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
-    }
+//    @RequestMapping(value = "/trips/create", method = { RequestMethod.POST })
+//    public ModelAndView create(@Valid @ModelAttribute("tripForm") final TripForm form, final BindingResult errors) {
+//        if (errors.hasErrors() || Objects.requireNonNull(getUser()).getUserId() == null) {
+//            return createTrip(form);
+//        }
+//
+//        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
+//        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
+//
+//        User user = getUser();
+//
+//        Trip trip = ts.createTrip(
+//                user.getUserId(),
+//                form.getLicensePlate(),
+//                Integer.parseInt(form.getAvailableWeight()),
+//                Integer.parseInt(form.getAvailableVolume()),
+//                departure,
+//                arrival,
+//                form.getOrigin(),
+//                form.getDestination(),
+//                form.getCargoType(),
+//                Integer.parseInt(form.getPrice())
+//        );
+//        int imageid=is.uploadImage(form.getTripImage().getBytes());
+//        ts.updateTripPicture(trip.getTripId(),imageid);
+//        LOGGER.info("Trip created successfully for user: {}, tripid: {} ", user.getUserId(), trip.getTripId());
+//        return new ModelAndView("redirect:/trips/success?id="+trip.getTripId());
+//    }
 
     @RequestMapping("/trips/browse")
     public ModelAndView browse(@RequestParam(defaultValue = "1") String page,

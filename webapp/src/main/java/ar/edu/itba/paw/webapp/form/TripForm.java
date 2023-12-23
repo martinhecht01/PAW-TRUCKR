@@ -12,7 +12,7 @@ import javax.validation.constraints.*;
 @DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
 
-    @Pattern(regexp="^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
+    @Pattern(regexp="^$|^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
     private  String licensePlate;
 
     @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$")
@@ -41,18 +41,18 @@ public class TripForm {
     @Size(min = 1, max = 100)
     private String destination;
 
-    @RequireImage
-    @MaxFileSize(8)
-    @ImageType(types = {"image/jpeg", "image/png"})
-    private CommonsMultipartFile tripImage;
-
-    public CommonsMultipartFile getTripImage() {
-        return tripImage;
-    }
-
-    public void setTripImage(CommonsMultipartFile tripImage) {
-        this.tripImage = tripImage;
-    }
+//    @RequireImage
+//    @MaxFileSize(8)
+//    @ImageType(types = {"image/jpeg", "image/png"})
+//    private CommonsMultipartFile tripImage;
+//
+//    public CommonsMultipartFile getTripImage() {
+//        return tripImage;
+//    }
+//
+//    public void setTripImage(CommonsMultipartFile tripImage) {
+//        this.tripImage = tripImage;
+//    }
 
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
