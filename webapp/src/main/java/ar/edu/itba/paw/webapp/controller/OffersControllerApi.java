@@ -54,6 +54,10 @@ public class OffersControllerApi {
     @Context
     private UriInfo uriInfo;
 
+    private <T,R> Function<T,R> currifyUriInfo(CurryingFunction<UriInfo, T,R> fun) {
+        return fun.curry(fun,uriInfo);
+    }
+
     @Autowired
     public OffersControllerApi(final UserService us, TripServiceV2 ts){
         this.us = us;
@@ -61,13 +65,19 @@ public class OffersControllerApi {
     }
 
     @POST
-//    @Consumes("application/vnd.proposal.v1+json");
-//    @Produces("application/vnd.proposal.v1+json");
-    public Response createOffer(@Valid AcceptForm form,@QueryParam ("tripId") int tripId){
-        User user = us.getUserById(1).get();//TODO: get user from session
-        final Proposal proposal = ts.createProposal(tripId,user.getUserId(), form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
+    @Consumes("application/vnd.proposal.v1+json")
+    @Produces("application/vnd.proposal.v1+json")
+    public Response createOffer(@Valid AcceptForm form, @QueryParam ("tripId") int tripId){
+        User user = us.getUserById(1).orElseThrow(UserNotFoundException:: new);//TODO: get user from session
+        final Proposal proposal = ts.createProposal(
+                tripId,user.getUserId(),
+                form.getDescription(),
+                form.getPrice(),
+                LocaleContextHolder.getLocale());
+
         return Response.created(uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getProposalId())).build()).entity(ProposalDto.fromProposal(uriInfo,proposal)).build();
     }
+
     @GET
     @Path("/{id}")
     @Produces("application/vnd.proposal.v1+json")
@@ -75,9 +85,7 @@ public class OffersControllerApi {
         final Proposal proposal = ts.getProposalById(id).get();
         return Response.ok(ProposalDto.fromProposal(uriInfo,proposal)).build();
     }
-    private <T,R> Function<T,R> currifyUriInfo(CurryingFunction<UriInfo, T,R> fun) {
-        return fun.curry(fun,uriInfo);
-    }
+
     @GET
     @Produces("application/vnd.proposalList.v1+json")
     public Response getOffers(@QueryParam("tripId") int tripId, @QueryParam("page") @DefaultValue(PAGE) int page, @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){

@@ -136,7 +136,9 @@ public class RequestController {
 
 
     @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
-    public ModelAndView createRequest(@Valid @ModelAttribute("requestForm") final RequestForm form, final BindingResult errors) {
+    public ModelAndView createRequest(
+            @Valid @ModelAttribute("requestForm") final RequestForm form,
+            final BindingResult errors) {
         if (errors.hasErrors()) {
             LOGGER.info("Error in create request form");
             return createRequest(form,
@@ -199,7 +201,10 @@ public class RequestController {
     }
 
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
-    public ModelAndView sendProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
+    public ModelAndView sendProposal(
+            @RequestParam("id") int id,
+            @Valid @ModelAttribute("acceptForm") final AcceptForm form,
+            final BindingResult errors) throws MessagingException {
         if (errors.hasErrors()) {
             LOGGER.debug("Error in accept form");
             return requestDetail(id, form);

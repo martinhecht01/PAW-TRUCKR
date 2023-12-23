@@ -136,6 +136,7 @@ public class TripControllerApi {
         return toReturn.build();
     }
 
+    //TODO error handling (si le mandas ids distintos a los que espera entra a tirar errores como loco)
     @PUT
     @Path("/{id}")
     public Response confirmTrip(@PathParam("id") int tripId) {
