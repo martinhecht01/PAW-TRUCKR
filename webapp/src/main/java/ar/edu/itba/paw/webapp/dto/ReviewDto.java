@@ -1,42 +1,46 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 
 import javax.persistence.*;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 public class ReviewDto {
 
-    private User user;
-
-    private Trip trip;
+    private URI user;
+    private URI self;
+    private URI trip;
 
     private float rating;
 
     private String review;
 
-    public static ReviewDto fromReview(Trip trip, User user, float rating, String review){
+    public static ReviewDto fromReview(UriInfo uriInfo, Review review){
         ReviewDto dto = new ReviewDto();
-        dto.rating = rating;
-        dto.review = review;
-        dto.user = user;
-        dto.trip = trip;
+        dto.user = uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(review.getUser().getUserId())).build();
+        dto.self = uriInfo.getBaseUriBuilder().path("reviews").path(String.valueOf(review.getUserId())).path(String.valueOf(review.getTripId())).build();
+        dto.trip = uriInfo.getBaseUriBuilder().path("trips").path(String.valueOf(review.getTrip().getTripId())).build();
+        dto.rating = review.getRating();
+        dto.review = review.getReview();
         return dto;
     }
 
-    public User getUser() {
+    public URI getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(URI user) {
         this.user = user;
     }
 
-    public Trip getTrip() {
+    public URI getTrip() {
         return trip;
     }
 
-    public void setTrip(Trip trip) {
+    public void setTrip(URI trip) {
         this.trip = trip;
     }
 

@@ -102,6 +102,12 @@ public class OffersControllerApi {
 
         return toReturn.build();
     }
+    @PUT
+    @Path("/{id}")
+    public Response acceptOffer(@PathParam("id") int id){
+        ts.acceptProposal(id,LocaleContextHolder.getLocale());
+        return Response.ok().build();
+    }
 
 
 

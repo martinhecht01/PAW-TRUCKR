@@ -52,14 +52,15 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional
     @Override
-    public void createReview(int tripid, int userid, float rating, String comment) {
+    public Review createReview(int tripid, int userid, float rating, String comment) {
         Optional<User> user = userDao.getUserById(userid);
         Optional<Trip> trip = tripDao.getTripOrRequestById(tripid);
         LOGGER.info("Creating review for user {} in trip {}", userid, tripid);
 
         if (user.isPresent() && trip.isPresent())
-            reviewDao.createReview(trip.get(),user.get(),rating,comment);
+            return reviewDao.createReview(trip.get(),user.get(),rating,comment);
         LOGGER.warn("Trip {} or user {} not present", tripid, userid);
+        return null;
     }
 
     @Transactional(readOnly = true)

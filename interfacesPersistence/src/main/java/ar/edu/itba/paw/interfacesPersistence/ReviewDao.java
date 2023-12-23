@@ -12,7 +12,7 @@ public interface ReviewDao {
     Optional<Review> getReviewByTripAndUserId(Trip trip, User user);
 
 
-    void createReview(Trip trip, User user, float rating, String comment);
+    Review createReview(Trip trip, User user, float rating, String comment);
 
     Double getUserRating(User user);
 

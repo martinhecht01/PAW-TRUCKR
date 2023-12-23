@@ -40,10 +40,11 @@ public class ReviewDaoJPA implements ReviewDao {
     }
 
     @Override
-    public void createReview(Trip trip, User user, float rating, String comment) {
+    public Review createReview(Trip trip, User user, float rating, String comment) {
         Review review = new Review(trip, user, rating, comment);
         LOGGER.info("Creating review token for user {} in trip {}", user.getUserId(), trip.getTripId());
         entityManager.persist(review);
+        return review;
     }
 
     @Override
