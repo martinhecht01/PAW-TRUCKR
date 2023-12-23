@@ -15,10 +15,10 @@ public class TripDto {
 
     private URI self;
 
-    private User provider;
+    private URI provider;
 
 
-    private User trucker;
+    private URI trucker;
 
 
     private String licensePlate;
@@ -71,11 +71,9 @@ public class TripDto {
 
     public static TripDto fromTrip(final UriInfo uri, final Trip trip){
         TripDto dto = new TripDto();
-        dto.self = uri.getAbsolutePathBuilder().path(String.valueOf(trip.getTripId())).build();
-        dto.tripId = trip.getTripId();
-//        TODO hacer link a usuarios
-//        dto.provider = trip.getProvider();
-//        dto.trucker = trip.getTrucker();
+        dto.self = uri.getBaseUriBuilder().path(String.valueOf(trip.getTripId())).build();        dto.tripId = trip.getTripId();
+        dto.provider = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getProvider().getUserId())).build();
+        dto.trucker = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getTrucker().getUserId())).build();
         dto.licensePlate = trip.getLicensePlate();
         dto.weight = trip.getWeight();
         dto.volume = trip.getVolume();
@@ -122,19 +120,19 @@ public class TripDto {
         this.self = self;
     }
 
-    public User getProvider() {
+    public URI getProvider() {
         return provider;
     }
 
-    public void setProvider(User provider) {
+    public void setProvider(URI provider) {
         this.provider = provider;
     }
 
-    public User getTrucker() {
+    public URI getTrucker() {
         return trucker;
     }
 
-    public void setTrucker(User trucker) {
+    public void setTrucker(URI trucker) {
         this.trucker = trucker;
     }
 

@@ -5,14 +5,19 @@ import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 
 import javax.persistence.*;
+import javax.ws.rs.core.UriInfo;
+import java.net.URI;
 
 public class ProposalDto {
 
+
     private Integer proposalId;
 
-    private Trip trip;
+    private URI self;
 
-    private User user;
+    private URI trip;
+
+    private URI user;
 
     private String description;
 
@@ -21,11 +26,13 @@ public class ProposalDto {
     private String userName;
     private Proposal counterProposal;
 
-    public static ProposalDto fromProposal(Proposal proposal){
+    public static ProposalDto fromProposal(final UriInfo uriInfo, Proposal proposal){
         ProposalDto dto = new ProposalDto();
         dto.proposalId = proposal.getProposalId();
-        dto.trip = proposal.getTrip();
-        dto.user = proposal.getUser();
+        dto.self = uriInfo.getBaseUriBuilder().path("proposals").path(String.valueOf(proposal.getProposalId())).build();
+        dto.trip = uriInfo.getBaseUriBuilder().path("trips").path(String.valueOf(proposal.getTrip().getTripId())).build();
+        dto.user = uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(proposal.getUser().getUserId())).build();
+        dto.self = uriInfo.getBaseUriBuilder().path("proposals").path(String.valueOf(proposal.getProposalId())).build();
         dto.description = proposal.getDescription();
         dto.price = proposal.getPrice();
         dto.userName = proposal.getUserName();
@@ -41,19 +48,19 @@ public class ProposalDto {
         this.proposalId = proposalId;
     }
 
-    public Trip getTrip() {
+    public URI getTrip() {
         return trip;
     }
 
-    public void setTrip(Trip trip) {
+    public void setTrip(URI trip) {
         this.trip = trip;
     }
 
-    public User getUser() {
+    public URI getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(URI user) {
         this.user = user;
     }
 
