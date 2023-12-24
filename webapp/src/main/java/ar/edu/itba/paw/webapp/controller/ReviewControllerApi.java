@@ -52,7 +52,9 @@ public class ReviewControllerApi {
     @GET
     @Path("/{userId}/{tripId}")
     @Produces("application/vnd.review.v1+json")
-    public Response getReview(@PathParam("userId") final int userId, @PathParam("tripId") final int tripId) {
+    public Response getReview(
+            @PathParam("userId") final int userId,
+            @PathParam("tripId") final int tripId) {
         final Review review = revs.getReviewByTripAndUserId(tripId, userId).orElseThrow(()->new RuntimeException("Review not found"));//TODO crear exeption
         return Response.ok(ReviewDto.fromReview(uriInfo,review)).build();
     }
@@ -68,7 +70,10 @@ public class ReviewControllerApi {
 
     @GET
     @Produces("application/vnd.reviewList.v1+json")//trae las reviews por user
-    public Response getReviews(@QueryParam("userId") int userId, @QueryParam("page") @DefaultValue(PAGE) int page, @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
+    public Response getReviews(
+            @QueryParam("userId") int userId,
+            @QueryParam("page") @DefaultValue(PAGE) int page,
+            @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
         final User user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
         final List<Review> reviewList = revs.getUserReviews(user.getUserId());
         if(reviewList.isEmpty()){
