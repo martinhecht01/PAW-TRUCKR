@@ -84,21 +84,21 @@ public class UserController {
         return mav;
     }
 
-    @RequestMapping(value = "/register", method = { RequestMethod.POST })
-    public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
-        if (errors.hasErrors()) {
-            return register(false, "", form);
-        }
-
-        User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword(),LocaleContextHolder.getLocale());
-        if(user == null){
-            LOGGER.info("User with CUIT {} already exists", form.getCuit());
-            errors.rejectValue("cuit", "alreadyExists");
-            return register(false, "", form);
-        }
-        LOGGER.info("User created with CUIT {} ", form.getCuit());
-        return new ModelAndView("redirect:/register?success=true&email=" + user.getEmail());
-    }
+//    @RequestMapping(value = "/register", method = { RequestMethod.POST })
+//    public ModelAndView create(@Valid @ModelAttribute("userForm") final UserForm form, final BindingResult errors) {
+//        if (errors.hasErrors()) {
+//            return register(false, "", form);
+//        }
+//
+//        User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword(),LocaleContextHolder.getLocale());
+//        if(user == null){
+//            LOGGER.info("User with CUIT {} already exists", form.getCuit());
+//            errors.rejectValue("cuit", "alreadyExists");
+//            return register(false, "", form);
+//        }
+//        LOGGER.info("User created with CUIT {} ", form.getCuit());
+//        return new ModelAndView("redirect:/register?success=true&email=" + user.getEmail());
+//    }
 
 
     @RequestMapping("/profile")
@@ -252,7 +252,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
-    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form,final BindingResult errors){
+    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form,
+                                 final BindingResult errors){
         if (errors.hasErrors()) {
             return editUserView(form);
         }

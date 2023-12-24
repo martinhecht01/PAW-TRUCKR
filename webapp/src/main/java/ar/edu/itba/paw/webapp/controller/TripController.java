@@ -288,19 +288,19 @@ public class TripController {
         return mav;
     }
 
-    @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })
-    public ModelAndView confirmTrip(@RequestParam("id") int tripId) {
-        User user = getUser();
-        ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
-        if (Objects.equals(user.getRole(), "TRUCKER")) {
-            LOGGER.info("Trip with Id: {} confirmed successfully by trucker", tripId);
-            return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
-        }
-        else {
-            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
-            return new ModelAndView("redirect:/trips/details?id=" + tripId);
-        }
-    }
+//    @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })
+//    public ModelAndView confirmTrip(@RequestParam("id") int tripId) {
+//        User user = getUser();
+//        ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
+//        if (Objects.equals(user.getRole(), "TRUCKER")) {
+//            LOGGER.info("Trip with Id: {} confirmed successfully by trucker", tripId);
+//            return new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
+//        }
+//        else {
+//            LOGGER.info("Trip with Id: {} confirmed successfully by provider", tripId);
+//            return new ModelAndView("redirect:/trips/details?id=" + tripId);
+//        }
+//    }
 
     private User getUser() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
