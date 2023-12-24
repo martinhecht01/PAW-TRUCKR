@@ -55,84 +55,87 @@ public class RequestController {
 
 
 
-    @RequestMapping("/requests/browse")
-    public ModelAndView browse( @RequestParam(defaultValue = "1") String page, @Valid @ModelAttribute("filterForm") FilterForm ff, final BindingResult errors){
+//    @RequestMapping("/requests/browse")
+//    public ModelAndView browse(
+//            @RequestParam(defaultValue = "1") String page,
+//            @Valid @ModelAttribute("filterForm") FilterForm ff,
+//            final BindingResult errors){
+//
+//        final ModelAndView view = new ModelAndView("requests/browse");
+//
+//        if(errors.hasErrors()){
+//            List<Trip> trips = new ArrayList<>();
+//            view.addObject("offers", trips);
+//            view.addObject("errors", errors);
+//            LOGGER.debug("Error filtering trips");
+//            return view;
+//        }
+//
+//        String arrDate;
+//        String depDate;
+//        if(ff.getArrivalDate() == null || ff.getArrivalDate().equals(""))
+//            arrDate = "";
+//        else
+//            arrDate = ff.getArrivalDate();
+//
+//        if (ff.getDepartureDate() == null || ff.getDepartureDate().equals(""))
+//            depDate = "";
+//        else
+//            depDate = ff.getDepartureDate();
+//
+//       // String page= "1";
+//        Integer maxPages = ts.getActiveRequestsTotalPages(ff.getOrigin(), ff.getDestination(),ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), depDate, arrDate, ff.getType());
+//
+//        Integer currPage = Integer.parseInt(page);
+//        if(currPage < 1 || currPage > maxPages ){
+//            page = "1";
+//        }
+//
+//        view.addObject("maxPage", maxPages);
+//        view.addObject("currentPage", page);
+//        view.addObject("origin",ff.getOrigin());
+//        view.addObject("destination",ff.getDestination());
+//        view.addObject("minAvailableVolume",ff.getAvailableVolume());
+//        view.addObject("minAvailableWeight",ff.getMinAvailableWeight());
+//        view.addObject("minPrice",ff.getMinPrice());
+//        view.addObject("maxPrice",ff.getMaxPrice());
+//        view.addObject("sortOrder",ff.getSortOrder());
+//        view.addObject("departureDate",ff.getDepartureDate());
+//        view.addObject("arrivalDate",ff.getArrivalDate());
+//        view.addObject("type",ff.getType());
+//
+//        view.addObject("offers", ts.getAllActiveRequests(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
+//
+//        return view;
+//    }
 
-        final ModelAndView view = new ModelAndView("requests/browse");
 
-        if(errors.hasErrors()){
-            List<Trip> trips = new ArrayList<>();
-            view.addObject("offers", trips);
-            view.addObject("errors", errors);
-            LOGGER.debug("Error filtering trips");
-            return view;
-        }
+//    @RequestMapping("/requests/create")
+//    public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form,
+//                                      @RequestParam(required = false) String origin,
+//                                      @RequestParam(required = false) String destination,
+//                                      @RequestParam(required = false) Integer minAvailableVolume,
+//                                      @RequestParam(required = false) Integer minAvailableWeight,
+//                                      @RequestParam(required = false) String departureDate,
+//                                      @RequestParam(required = false) String arrivalDate,
+//                                      @RequestParam(required = false) String type,
+//                                      @RequestParam(required = false) Integer suggestedPrice) {
+//        final ModelAndView view = new ModelAndView("requests/create");
+//        view.addObject("origin",origin);
+//        view.addObject("destination",destination);
+//        view.addObject("minAvailableVolume",minAvailableVolume);
+//        view.addObject("minAvailableWeight",minAvailableWeight);
+//        view.addObject("departureDate",departureDate);
+//        view.addObject("arrivalDate", arrivalDate);
+//        view.addObject("type", type);
+//        view.addObject("suggestedPrice",suggestedPrice);
+//        return view;
+//    }
 
-        String arrDate;
-        String depDate;
-        if(ff.getArrivalDate() == null || ff.getArrivalDate().equals(""))
-            arrDate = "";
-        else
-            arrDate = ff.getArrivalDate();
-
-        if (ff.getDepartureDate() == null || ff.getDepartureDate().equals(""))
-            depDate = "";
-        else
-            depDate = ff.getDepartureDate();
-
-       // String page= "1";
-        Integer maxPages = ts.getActiveRequestsTotalPages(ff.getOrigin(), ff.getDestination(),ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), depDate, arrDate, ff.getType());
-
-        Integer currPage = Integer.parseInt(page);
-        if(currPage < 1 || currPage > maxPages ){
-            page = "1";
-        }
-
-        view.addObject("maxPage", maxPages);
-        view.addObject("currentPage", page);
-        view.addObject("origin",ff.getOrigin());
-        view.addObject("destination",ff.getDestination());
-        view.addObject("minAvailableVolume",ff.getAvailableVolume());
-        view.addObject("minAvailableWeight",ff.getMinAvailableWeight());
-        view.addObject("minPrice",ff.getMinPrice());
-        view.addObject("maxPrice",ff.getMaxPrice());
-        view.addObject("sortOrder",ff.getSortOrder());
-        view.addObject("departureDate",ff.getDepartureDate());
-        view.addObject("arrivalDate",ff.getArrivalDate());
-        view.addObject("type",ff.getType());
-
-        view.addObject("offers", ts.getAllActiveRequests(ff.getOrigin(), ff.getDestination(), ff.getAvailableVolume(), ff.getMinAvailableWeight(), ff.getMinPrice(), ff.getMaxPrice(), ff.getSortOrder(), depDate, arrDate, ff.getType(), Integer.parseInt(page)));
-
-        return view;
-    }
-
-
-    @RequestMapping("/requests/create")
-    public ModelAndView createRequest(@ModelAttribute("requestForm") final RequestForm form,
-                                      @RequestParam(required = false) String origin,
-                                      @RequestParam(required = false) String destination,
-                                      @RequestParam(required = false) Integer minAvailableVolume,
-                                      @RequestParam(required = false) Integer minAvailableWeight,
-                                      @RequestParam(required = false) String departureDate,
-                                      @RequestParam(required = false) String arrivalDate,
-                                      @RequestParam(required = false) String type,
-                                      @RequestParam(required = false) Integer suggestedPrice) {
-        final ModelAndView view = new ModelAndView("requests/create");
-        view.addObject("origin",origin);
-        view.addObject("destination",destination);
-        view.addObject("minAvailableVolume",minAvailableVolume);
-        view.addObject("minAvailableWeight",minAvailableWeight);
-        view.addObject("departureDate",departureDate);
-        view.addObject("arrivalDate", arrivalDate);
-        view.addObject("type", type);
-        view.addObject("suggestedPrice",suggestedPrice);
-        return view;
-    }
-
-    @ModelAttribute("cities")
-    public List<String> getCities() {
-        return cs.getAllCities();
-    }
+//    @ModelAttribute("cities")
+//    public List<String> getCities() {
+//        return cs.getAllCities();
+//    }
 
 
 //    @RequestMapping(value = "/requests/create", method = { RequestMethod.POST })
