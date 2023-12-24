@@ -109,7 +109,9 @@ public class TripControllerApi {
             @QueryParam("sortOrder") String sortOrder,
             @QueryParam("departureDate") String departureDate,
             @QueryParam("arrivalDate") String arrivalDate,
-            @QueryParam("type") String type)
+            @QueryParam("cargoType") String cargoType,
+            @QueryParam("tripType") @DefaultValue("trip") String tripType
+            )
     {
 
         List <Trip> tripList;
@@ -117,8 +119,8 @@ public class TripControllerApi {
         int maxPages;
 
         if(userId == null ){
-            tripList = ts.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, page, pageSize);
-            maxPages = ts.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+            tripList = ts.getAllActiveTripsOrRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, cargoType, tripType, page, pageSize);
+            maxPages = ts.getActiveTripsOrRequestsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, cargoType, tripType);
         }else {
             user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
             tripList = ts.getPublications(user.getUserId(), status, page);
