@@ -188,20 +188,20 @@ public class RequestController {
         return mav;
     }
 
-    @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
-    public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
-        User user = getUser();
-        ts.confirmTrip(requestId, user.getUserId(),LocaleContextHolder.getLocale());
-
-        if (Objects.equals(user.getRole(), "PROVIDER")) {
-            LOGGER.info("Request with Id: {} confirmed successfully by provider", requestId);
-            return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);
-        }
-        else {
-            LOGGER.info("Request with Id: {} confirmed successfully by trucker", requestId);
-            return new ModelAndView("redirect:/requests/details?id=" + requestId);
-        }
-    }
+//    @RequestMapping(value = "/requests/confirmRequest", method = { RequestMethod.POST })
+//    public ModelAndView confirmTrip(@RequestParam("requestId") int requestId) {
+//        User user = getUser();
+//        ts.confirmTrip(requestId, user.getUserId(),LocaleContextHolder.getLocale());
+//
+//        if (Objects.equals(user.getRole(), "PROVIDER")) {
+//            LOGGER.info("Request with Id: {} confirmed successfully by provider", requestId);
+//            return new ModelAndView("redirect:/requests/manageRequest?requestId="+ requestId);
+//        }
+//        else {
+//            LOGGER.info("Request with Id: {} confirmed successfully by trucker", requestId);
+//            return new ModelAndView("redirect:/requests/details?id=" + requestId);
+//        }
+//    }
 
     @RequestMapping(value = "/requests/sendProposal", method = { RequestMethod.POST })
     public ModelAndView sendProposal(
