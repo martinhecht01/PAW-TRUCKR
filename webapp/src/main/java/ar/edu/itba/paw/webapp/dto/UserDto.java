@@ -4,6 +4,8 @@ import ar.edu.itba.paw.models.User;
 
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDto {
     private String cuit;
@@ -14,7 +16,7 @@ public class UserDto {
 
     private URI image;
 
-    private URI trips;
+    private List<URI> trips;
 
     private URI itinerary;
 
@@ -26,7 +28,14 @@ public class UserDto {
         dto.cuit = user.getCuit();
         dto.name = user.getName();
         dto.email = user.getEmail();
-        dto.trips = uri.getBaseUriBuilder().path("/trips/").path(user.getUserId().toString()).build();
+        String role = user.getRole();
+
+        if(role.equals("TRUCKER"))
+            dto.trips = user.getTruckerTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
+        else if(role.equals("PROVIDER"))
+            dto.trips = user.getProviderTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
+
+        //dto.trips = uri.getBaseUriBuilder().path("/trips/").path(user.getUserId().toString()).build();
         dto.itinerary = uri.getBaseUriBuilder().path("/itinerary/").path(user.getUserId().toString()).build();
         dto.reviews = uri.getBaseUriBuilder().path("/reviews/").path(user.getUserId().toString()).build();
         if(user.getImage() != null){
@@ -60,7 +69,7 @@ public class UserDto {
         return reviews;
     }
 
-    public URI getTrips() {
+    public List<URI> getTrips() {
         return trips;
     }
 
@@ -88,7 +97,7 @@ public class UserDto {
         this.reviews = reviews;
     }
 
-    public void setTrips(URI trips) {
+    public void setTrips(List<URI> trips) {
         this.trips = trips;
     }
 
