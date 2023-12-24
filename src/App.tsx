@@ -12,6 +12,7 @@ import NotFound404 from './pages/404';
 import MyItinerary from './pages/myItinerary';
 import MyAlert from "./pages/myAlert";
 import Profile from "./pages/profile";
+import PastTrips from "./pages/pastTrips.tsx";
 
 
 const WebApp = () => {
@@ -46,6 +47,7 @@ const WebApp = () => {
           <Route path="/myItinerary" element={<MyItinerary/>} />
           <Route path="/myAlert" element={<MyAlert/>} />
           <Route path="/profile" element={<Profile/>} />
+          <Route path="/pastTrips" element={<PastTrips/>}></Route>
           <Route path="*" element={<NotFound404/>} />
         </Routes>
       </CustomLayout>

@@ -34,6 +34,10 @@
 
     "review": {
         "reviews": "Reviews"
+    },
+
+    "pastTrips": {
+        "lastUpdate": "Last Update"
     }
 
 }
