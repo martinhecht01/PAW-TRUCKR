@@ -4,8 +4,6 @@ import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.webapp.dto.PastTripDto;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
@@ -18,10 +16,8 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.util.List;
 import java.util.function.Function;
 
 @Path("users")
