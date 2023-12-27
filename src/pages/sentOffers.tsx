@@ -1,7 +1,7 @@
 import React from 'react';
 import {Typography} from 'antd';
-import OfferCard from "../Components/offerCard.tsx";
 import '../styles/main.scss';
+import OfferCard from '../components/offerCard';
 
 const { Title } =Typography;
 

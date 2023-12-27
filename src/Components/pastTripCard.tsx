@@ -56,8 +56,9 @@ const PastTripCard = (props: TripCardProps) => {
                         <Divider style={{margin: 7}}></Divider>
                         <div style={{display: 'flex'}}>
                             <div style={{width: '100%'}}>
-                                <Title level={5} style={{margin: 0}}>{props.lastUpdate.toUTCString()}</Title>
                                 <Text>{t('pastTrips.lastUpdate')}</Text>
+                                <Title level={5} style={{margin: 0, fontWeight: 'normal'}}>{props.lastUpdate.toUTCString()}</Title>
+                                
                             </div>
                         </div>
                         <Divider style={{margin: 7}}></Divider>

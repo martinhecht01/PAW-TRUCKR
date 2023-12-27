@@ -2,7 +2,7 @@ import {Button, Col, Flex, Image, Row, Tabs, TabsProps} from 'antd';
 import React from 'react';
 import {DownOutlined} from "@ant-design/icons";
 import { Typography } from 'antd';
-import LandingCard from "../Components/landingCard.tsx";
+import LandingCard from '../components/landingCard';
 
 const { Title } =Typography;
 
@@ -10,7 +10,7 @@ const Landing: React.FC = () => {
 
     const contentForTruckers: () => React.ReactNode = () => {
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
-                <LandingCard  title='1. Browse Cargo' subtitle='Browse the cargo that is available. Filter however is more convinient for you.'></LandingCard>
+            <LandingCard  title='1. Browse Cargo' subtitle='Browse the cargo that is available. Filter however is more convinient for you.'></LandingCard>
             <LandingCard title='2. Select the best cargo option for you' subtitle='Select the cargo that you want to ship and send an offer.'></LandingCard>
             <LandingCard title='3. One more step' subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
             <LandingCard title='4. Ship it!' subtitle='Once the order is confirmed, get in touch with the provider and ship the cargo.'></LandingCard>

@@ -3,7 +3,7 @@ import React from "react";
 import { Typography } from 'antd';
 const {Title} = Typography;
 
-const landingCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
+const LandingCard: React.FC<{ title: string; subtitle: string }> = ({ title, subtitle }) => {
     return (
         <Card style={{ textAlign: 'center', width: '80%', marginBottom:'1vh' }}>
             <Title style={{ marginTop: '0vh' }} level={2}>
@@ -14,4 +14,4 @@ const landingCard: React.FC<{ title: string; subtitle: string }> = ({ title, sub
     );
 };
 
-export default landingCard;
+export default LandingCard;
