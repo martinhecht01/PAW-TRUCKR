@@ -13,6 +13,7 @@ import MyItinerary from './pages/myItinerary';
 import MyAlert from "./pages/myAlert";
 import Profile from "./pages/profile";
 import PastTrips from "./pages/pastTrips.tsx";
+import MyPublications from './pages/myPublications.tsx';
 
 
 const WebApp = () => {
@@ -48,6 +49,7 @@ const WebApp = () => {
           <Route path="/myAlert" element={<MyAlert/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/pastTrips" element={<PastTrips/>}></Route>
+          <Route path="/myPublications" element={<MyPublications/>}></Route>
           <Route path="*" element={<NotFound404/>} />
         </Routes>
       </CustomLayout>
