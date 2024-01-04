@@ -80,7 +80,7 @@ public interface TripServiceV2 {
 
     List<Trip> getAllOngoingPublications(Integer userId);
 
-    void updateTripPicture(Integer userId, Integer imageId);
+    void updateTripPicture(Integer tripId, Integer imageId);
 
     byte[] getTripPicture(Integer userId);
 

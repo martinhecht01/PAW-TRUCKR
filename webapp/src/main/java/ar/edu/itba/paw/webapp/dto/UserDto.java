@@ -35,7 +35,6 @@ public class UserDto {
         else if(role.equals("PROVIDER"))
             dto.trips = user.getProviderTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
 
-        //dto.trips = uri.getBaseUriBuilder().path("/trips/").path(user.getUserId().toString()).build();
         dto.itinerary = uri.getBaseUriBuilder().path("/itinerary/").path(user.getUserId().toString()).build();
         dto.reviews = uri.getBaseUriBuilder().path("/reviews/").path(user.getUserId().toString()).build();
         if(user.getImage() != null){

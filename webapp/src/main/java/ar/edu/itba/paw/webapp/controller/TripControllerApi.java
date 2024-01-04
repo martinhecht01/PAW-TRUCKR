@@ -12,23 +12,26 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.form.*;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
+import org.apache.commons.io.IOUtils;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+
+
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
+import javax.ws.rs.core.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -65,9 +68,8 @@ public class TripControllerApi {
 
 
     @POST
-    @Consumes("application/vnd.trip.v1+json")
-    @Produces("application/vnd.trip.v1+json")
-    public Response createTrip(@Valid TripForm form){
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+    public Response createTrip( @Valid @BeanParam TripForm form ) {
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
         final User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);//TODO: get user from session ver como hacemos
@@ -82,8 +84,22 @@ public class TripControllerApi {
                 form.getDestination(),
                 form.getCargoType(),
                 Integer.parseInt(form.getPrice()));
+
+        int imageId = is.uploadImage(form.getBytes());
+        ts.updateTripPicture(trip.getTripId(), imageId);
         return Response.created(uriInfo.getBaseUriBuilder().path("/trips/" ).path(String.valueOf(trip.getTripId())).build()).entity(TripDto.fromTrip(uriInfo,trip)).build();
     }
+
+//    @POST
+//    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+//    public Response createTrip(@FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) {
+//
+//        final User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);//TODO: get user from session ver como hacemos
+//
+//        int imageId = is.uploadImage(imageBytes);
+//        ts.updateTripPicture(1, imageId);
+//        return Response.ok().build();
+//    }
 
     @GET
     @Produces("application/vnd.trip.v1+json")

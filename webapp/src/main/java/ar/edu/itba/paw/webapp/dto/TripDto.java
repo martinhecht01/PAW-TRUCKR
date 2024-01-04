@@ -91,7 +91,7 @@ public class TripDto {
         if(trip.getConfirmationDate() != null)
             dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
         else dto.confirmationDate = null;
-//        dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
+        dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
         dto.proposals = uri.getBaseUriBuilder().path("/proposals/").path(String.valueOf(trip.getTripId())).build();
         dto.proposalCount = trip.getProposalCount();
         dto.offer = trip.getOffer();

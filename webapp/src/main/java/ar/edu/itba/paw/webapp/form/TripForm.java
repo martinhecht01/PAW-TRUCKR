@@ -5,54 +5,80 @@ import ar.edu.itba.paw.webapp.form.constraints.annotations.PreventPast;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.*;
+import java.io.InputStream;
 
 @DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
 
     @Pattern(regexp="^$|^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
+    @FormDataParam("licensePlate")
     private  String licensePlate;
 
     @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$")
+    @FormDataParam("availableWeight")
     private String availableWeight;
 
     @Pattern(regexp="^[1-9][0-9]*$")
+    @FormDataParam("availableVolume")
     private String availableVolume;
 
     @Pattern(regexp="^[1-9][0-9]*$")
+    @FormDataParam("price")
     private String price;
 
     @Pattern(regexp="^(?!\\s*$).+")
     @PreventPast
+    @FormDataParam("departureDate")
     private String departureDate;
 
     @PreventPast
     @Pattern(regexp="^(?!\\s*$).+")
+    @FormDataParam("arrivalDate")
     private  String arrivalDate;
 
     @NotNull
+    @FormDataParam("cargoType")
     private String cargoType;
 
     @Size(min = 1, max = 100)
+    @FormDataParam("origin")
     private  String origin;
 
     @Size(min = 1, max = 100)
+    @FormDataParam("destination")
     private String destination;
 
-//    @RequireImage
-//    @MaxFileSize(8)
+    @RequireImage
+    @MaxFileSize(8)
+    //TODO chequeo de tipo de imagen
 //    @ImageType(types = {"image/jpeg", "image/png"})
-//    private CommonsMultipartFile tripImage;
-//
-//    public CommonsMultipartFile getTripImage() {
-//        return tripImage;
-//    }
-//
-//    public void setTripImage(CommonsMultipartFile tripImage) {
-//        this.tripImage = tripImage;
-//    }
+    @FormDataParam("tripImage")
+    private FormDataBodyPart tripImage;
+
+    @FormDataParam("tripImage")
+    private byte[] bytes;
+
+    public FormDataBodyPart getTripImage() {
+        return tripImage;
+    }
+
+    public void setTripImage(FormDataBodyPart tripImage) {
+        this.tripImage = tripImage;
+    }
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
 
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
