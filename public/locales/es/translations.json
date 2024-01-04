@@ -20,7 +20,13 @@
     "maxVolume": "Volumen Máximo",
     "maxWeight": "Peso Máximo",
     "delete": "Borrar",
-    "cargoType": "Tipo de Carga"
+    "cargoType": "Tipo de Carga",
+    "availableWeight": "Peso Disponible",
+    "availableVolume": "Volumen Disponible",
+    "suggestedPrice": "Precio Sugerido",
+    "arrivalDate": "Fecha de Llegada",
+    "departureDate": "Fecha de Salida",
+    "licensePlate": "Patente"
   },
 
   "profile": {
@@ -38,6 +44,10 @@
 
   "pastTrips": {
     "lastUpdate": "Ultima actualización"
+  },
+
+  "trip": {
+    "create": "Crear Viaje"
   }
 }
   

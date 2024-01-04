@@ -14,7 +14,13 @@
       "maxVolume": "Max Volume",
       "maxWeight": "Max Weight",
       "delete": "Delete",
-      "cargoType": "Cargo Type"
+      "cargoType": "Cargo Type",
+      "availableWeight": "Available Weight",
+      "availableVolume": "Available Volume",
+      "suggestedPrice": "Suggested Price",
+      "arrivalDate": "Arrival Date",
+      "departureDate": "Departure Date",
+      "licensePlate": "License Plate"
     },
 
     "myalert": {
@@ -38,6 +44,10 @@
 
     "pastTrips": {
         "lastUpdate": "Last Update"
+    },
+
+    "trip": {
+      "create": "Create Trip"
     }
 
 }
