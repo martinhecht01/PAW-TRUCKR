@@ -48,6 +48,13 @@
 
     "trip": {
       "create": "Create Trip"
+    },
+
+    "create": {
+      "uploadClick": "Click to Upload",
+      "uploadSuccessful": "File uploaded successfully",
+      "uploadError": "File uploaded failed",
+      "notPng": "File is not a png"
     }
 
 }

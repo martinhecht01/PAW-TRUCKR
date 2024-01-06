@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Button,
     Card, Cascader,
-    DatePicker,
+    DatePicker, Image,
     Input,
     InputNumber,
     message,
@@ -15,14 +15,25 @@ import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
 import {UploadOutlined} from "@ant-design/icons";
 import type { DefaultOptionType } from 'antd/es/cascader';
+import {RcFile} from "antd/es/upload";
 
 
 const { Title, Text } = Typography;
+
+const getBase64 = (file: RcFile): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
+
 
 const CreateTrip: React.FC = () => {
 
     const {t} = useTranslation();
 
+    const [uploadPreviewSrc, setUploadPreviewSrc] = useState('');
 
     const filter = (inputValue: string, path: DefaultOptionType[]) =>
         path.some(
@@ -74,30 +85,48 @@ const CreateTrip: React.FC = () => {
         headers: {
             authorization: 'authorization-text',
         },
-        onChange(info) {
-            if (info.file.status !== 'uploading') {
-                console.log(info.file, info.fileList);
-            }
+        async onChange(info) {
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
+                message.success(`${info.file.name} ${t('create.uploadSuccessful')}`);
             } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
+                message.error(`${info.file.name} ${t('create.uploadError')}`);
             }
+
+            if (!info.file.url && info.file.status !== 'removed') {
+                setUploadPreviewSrc(await getBase64(info.file.originFileObj as RcFile));
+            }
+            else {
+                setUploadPreviewSrc("");
+            }
+
         },
+        beforeUpload: (file) => {
+            const isPNG = file.type === 'image/png';
+            if (!isPNG) {
+                message.error(`${file.name} ${t('create.notPng')}`);
+            }
+            return isPNG || Upload.LIST_IGNORE;
+        },
+        maxCount: 1,
     };
 
     return (
         <div className="flex-center">
             <Card title={t("trip.create")} className="w-50">
-                <div className="flex-center space-around">
+                <div className="flex-center space-around mb-2vh">
+                    {uploadPreviewSrc !== '' && (
+                        <Image height='25vh' src={uploadPreviewSrc} defaultValue='' />
+                    )}
+                </div>
+                <div className="flex-center">
                     <Upload {...props}>
-                        <Button icon={<UploadOutlined/>}>Click to Upload</Button>
+                        <Button icon={<UploadOutlined/>}>{t('create.upload')}</Button>
                     </Upload>
                 </div>
                 <div className="flex-center space-around">
                     <div>
                         <Title level={5}>{t("common.licensePlate")}</Title>
-                        <Input placeholder={t("common.licensePlate")}/>
+                        <Input/>
                     </div>
                     <div>
                         <Title level={5}>{t("common.cargoType")}</Title>
@@ -125,11 +154,11 @@ const CreateTrip: React.FC = () => {
                 <div className="flex-center space-around">
                     <div>
                         <Title level={5}>{t("common.departureDate")}</Title>
-                        <DatePicker></DatePicker>
+                        <DatePicker showTime></DatePicker>
                     </div>
                     <div>
                         <Title level={5}>{t("common.arrivalDate")}</Title>
-                        <DatePicker></DatePicker>
+                        <DatePicker showTime></DatePicker>
                     </div>
                 </div>
                 <div className="flex-center space-around">
@@ -144,7 +173,7 @@ const CreateTrip: React.FC = () => {
                     <div>
                         <Title level={5}>{t('common.availableWeight')}</Title>
                         <InputNumber
-                            min={0}
+                            min={1}
                             formatter={(value) => `${value} kg`}
                             parser={(value) => value!.replace('kg', '')}
                         />

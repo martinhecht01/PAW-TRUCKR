@@ -48,6 +48,13 @@
 
   "trip": {
     "create": "Crear Viaje"
+  },
+
+  "create": {
+    "uploadClick": "Click para subir",
+    "uploadSuccessful": "Archivo subido exitosamente",
+    "uploadError": "Error al subir el archivo",
+    "notPng": "El archivo debe ser una imagen .png"
   }
 }
   
