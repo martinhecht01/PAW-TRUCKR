@@ -15,6 +15,7 @@ import Profile from "./pages/profile";
 import PastTrips from "./pages/pastTrips.tsx";
 import MyPublications from './pages/myPublications.tsx';
 import CreateTrip from "./pages/createTrip.tsx";
+import ManageTrip from "./pages/manageTrip.tsx";
 
 
 const WebApp = () => {
@@ -52,7 +53,9 @@ const WebApp = () => {
           <Route path="/pastTrips" element={<PastTrips/>}></Route>
           <Route path="/myPublications" element={<MyPublications/>}></Route>
           <Route path="/trips/create" element={<CreateTrip/>}></Route>
+          <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
           <Route path="*" element={<NotFound404/>} />
+
         </Routes>
       </CustomLayout>
     </Router>
