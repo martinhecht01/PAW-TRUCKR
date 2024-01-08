@@ -1,0 +1,61 @@
+{
+    "greeting": {
+      "hello": "Hello World!"
+    },
+
+    "common": {
+      "date": "Date",
+      "time": "Time",
+      "search": "Search",
+      "origin": "Origin",
+      "destination": "Destination",
+      "from": "From",
+      "to": "To",
+      "maxVolume": "Max Volume",
+      "maxWeight": "Max Weight",
+      "delete": "Delete",
+      "cargoType": "Cargo Type",
+      "availableWeight": "Available Weight",
+      "availableVolume": "Available Volume",
+      "suggestedPrice": "Suggested Price",
+      "arrivalDate": "Arrival Date",
+      "departureDate": "Departure Date",
+      "licensePlate": "License Plate"
+    },
+
+    "myalert": {
+      "help": "Need Help?",
+      "alertExplanation": "An alert is a notification that will be sent to you when a cargo that matches your criteria is created.",
+      "alertQuestion": "What is an alert?"
+    },
+
+    "profile": {
+      "cuit": "Cuit/Cuil",
+      "name": "Name",
+      "email": "Email",
+      "editProfile":"Edit Profile",
+      "completedTrips": "Completed Trips",
+      "profile": "Profile"
+    },
+
+    "review": {
+        "reviews": "Reviews"
+    },
+
+    "pastTrips": {
+        "lastUpdate": "Last Update"
+    },
+
+    "trip": {
+      "create": "Create Trip"
+    },
+
+    "create": {
+      "uploadClick": "Click to Upload",
+      "uploadSuccessful": "File uploaded successfully",
+      "uploadError": "File uploaded failed",
+      "notPng": "File is not a png"
+    }
+
+}
+  
