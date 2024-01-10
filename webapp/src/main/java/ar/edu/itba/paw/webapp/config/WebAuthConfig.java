@@ -1,10 +1,16 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.webapp.auth.JwtTokenFilter;
 import ar.edu.itba.paw.webapp.auth.UserDetailsServiceImpl;
+import ar.edu.itba.paw.webapp.auth.handlers.TruckrAccessDeniedHandler;
+import ar.edu.itba.paw.webapp.auth.handlers.TruckrAuthenticationEntryPoint;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -22,8 +28,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Properties;
-import java.util.concurrent.TimeUnit;
+import org.springframework.core.io.Resource;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +49,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private JwtTokenFilter jwtTokenFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -42,6 +62,39 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+
+    @Bean(name = "jwtKey")
+    public static Key jwtKey(@Value("classpath:jwt.key") Resource jwtKeyResource) throws IOException {
+        return Keys.hmacShaKeyFor(FileCopyUtils.copyToString(new InputStreamReader(jwtKeyResource.getInputStream())).getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration cors = new CorsConfiguration();
+        cors.setAllowedOrigins(Collections.singletonList("*"));
+        cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        cors.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
+        cors.setExposedHeaders(Arrays.asList("X-JWT", "X-Refresh-Token", "X-Content-Type-Options", "X-XSS-Protection", "X-Frame-Options", "authorization", "Location", "Content-Disposition", "Link"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cors);
+        return source;
+    }
+
+    @Bean
+    public TruckrAuthenticationEntryPoint authenticationEntryPoint() {
+        return new TruckrAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public TruckrAccessDeniedHandler accessDeniedHandler() {
+        return new TruckrAccessDeniedHandler();
+    }
+
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
@@ -55,10 +108,13 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
         String MyKey = props.getProperty("KEY");
 
-//        TODO revisar, sotuyo dijo que esta parte capaz falta cosas sobre los tokens que esta en i
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests()
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().exceptionHandling()
+                .authenticationEntryPoint(new TruckrAuthenticationEntryPoint())
+                .accessDeniedHandler(new TruckrAccessDeniedHandler())
+                .and()
+                .authorizeRequests()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
 //                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
 //                    .antMatchers("/login", "/register", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()
@@ -67,9 +123,9 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //                    .antMatchers( "/","/trips/details", "/requests/details", "/explore", "/trips/{tripId}/tripPicture", "/user/{userId}/profilePicture").permitAll()
 //                    .antMatchers("/**").authenticated()
                 .antMatchers("/**").permitAll()
-                .and().exceptionHandling()
-                .accessDeniedPage("/errors/403")
-                .and().csrf().disable();
+                .and().cors().and().csrf().disable()
+
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
@@ -87,7 +143,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
             }
         };
     }
-
 
 
     @Override

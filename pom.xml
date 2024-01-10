@@ -9,8 +9,8 @@
   <name>paw-2023a-08</name>
 
   <properties>
-    <spring-security.version>4.0.4.RELEASE</spring-security.version>
-    <spring.version>4.2.5.RELEASE</spring.version>
+    <spring-security.version>4.2.11.RELEASE</spring-security.version>
+    <spring.version>4.3.22.RELEASE</spring.version>
     <org.postgresql.version>42.2.5</org.postgresql.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -32,6 +32,7 @@
     <hibernate-orm.version>5.1.0.Final</hibernate-orm.version>
     <hibernate-jpa.version>1.0.0.Final</hibernate-jpa.version>
     <jersey.version>3.0-SNAPSHOT</jersey.version>
+    <io.jwt.version>0.11.2</io.jwt.version>
     <javax.ws.rs.version>2.1</javax.ws.rs.version>
   </properties>
 
