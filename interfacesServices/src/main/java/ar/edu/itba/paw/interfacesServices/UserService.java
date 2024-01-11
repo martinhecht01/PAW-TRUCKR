@@ -31,4 +31,6 @@ public interface UserService {
     void updateProfileName(Integer userId, String name);
 
     void updateLocale(Integer userId, Locale locale);
+
+    Optional<User> getCurrentUser();
 }

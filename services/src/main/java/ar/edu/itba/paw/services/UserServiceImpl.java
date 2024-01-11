@@ -12,6 +12,8 @@ import ar.edu.itba.paw.models.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -175,5 +177,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateLocale(Integer userId, Locale locale) {
     	userDao.setLocale(userId, locale);
+    }
+
+    @Transactional
+    @Override
+    public Optional<User> getCurrentUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null)
+            return Optional.empty();
+        return getUserByCuit(auth.getName());
     }
 }
