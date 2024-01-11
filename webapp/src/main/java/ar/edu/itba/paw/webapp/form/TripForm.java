@@ -54,10 +54,7 @@ public class TripForm {
     @FormDataParam("destination")
     private String destination;
 
-//    @RequireImage
-//    @MaxFileSize(8)
-    //TODO chequeo de tipo de imagen
-//    @ImageType(types = {"image/jpeg", "image/png"})
+    @RequireImage
     @FormDataParam("tripImage")
     private FormDataBodyPart tripImage;
 

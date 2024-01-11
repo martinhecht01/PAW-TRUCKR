@@ -2,15 +2,11 @@ package ar.edu.itba.paw.webapp.form.constraints.validators;
 
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 
-public class RequireImageValidator implements ConstraintValidator<RequireImage, CommonsMultipartFile> {
+public class RequireImageValidator implements ConstraintValidator<RequireImage, FormDataBodyPart> {
 
     @Override
     public void initialize(RequireImage requireImage) {
@@ -18,10 +14,7 @@ public class RequireImageValidator implements ConstraintValidator<RequireImage, 
     }
 
     @Override
-    public boolean isValid(CommonsMultipartFile image, ConstraintValidatorContext constraintValidatorContext) {
-        if(image==null)
-            return false;
-        else
-            return !image.isEmpty();
+    public boolean isValid(FormDataBodyPart image, ConstraintValidatorContext constraintValidatorContext) {
+        return image != null && image.getMediaType().toString().contains("image/");
     }
 }
