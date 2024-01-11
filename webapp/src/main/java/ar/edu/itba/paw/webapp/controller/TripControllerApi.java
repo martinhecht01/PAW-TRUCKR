@@ -72,7 +72,7 @@ public class TripControllerApi {
     public Response createTrip( @Valid @BeanParam TripForm form ) {
         LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
         LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
-        final User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);//TODO: get user from session ver como hacemos
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
         final Trip trip = ts.createTrip(
                 user,
                 form.getLicensePlate(),
@@ -89,17 +89,6 @@ public class TripControllerApi {
         ts.updateTripPicture(trip.getTripId(), imageId);
         return Response.created(uriInfo.getBaseUriBuilder().path("/trips/" ).path(String.valueOf(trip.getTripId())).build()).entity(TripDto.fromTrip(uriInfo,trip)).build();
     }
-
-//    @POST
-//    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-//    public Response createTrip(@FormDataParam("image") final FormDataBodyPart image, @FormDataParam("image") byte[] imageBytes) {
-//
-//        final User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);//TODO: get user from session ver como hacemos
-//
-//        int imageId = is.uploadImage(imageBytes);
-//        ts.updateTripPicture(1, imageId);
-//        return Response.ok().build();
-//    }
 
     @GET
     @Produces("application/vnd.trip.v1+json")
@@ -158,7 +147,7 @@ public class TripControllerApi {
     @PUT
     @Path("/{id}")
     public Response confirmTrip(@PathParam("id") int tripId) {
-        User user = us.getUserById(1).orElseThrow(UserNotFoundException::new);
+        User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
 
         Trip trip = ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
 

@@ -68,7 +68,7 @@ public class OffersControllerApi {
     @Consumes("application/vnd.proposal.v1+json")
     @Produces("application/vnd.proposal.v1+json")
     public Response createOffer(@Valid AcceptForm form, @QueryParam ("tripId") int tripId){
-        User user = us.getUserById(1).orElseThrow(UserNotFoundException:: new);//TODO: get user from session
+        User user = us.getCurrentUser().orElseThrow(UserNotFoundException:: new);
         final Proposal proposal = ts.createProposal(
                 tripId,user.getUserId(),
                 form.getDescription(),
@@ -105,7 +105,7 @@ public class OffersControllerApi {
     @PUT
     @Path("/{id}")
     public Response acceptOffer(@PathParam("id") int id){
-        ts.acceptProposal(id,LocaleContextHolder.getLocale());
+        ts.acceptProposal(id, LocaleContextHolder.getLocale());
         return Response.ok().build();
     }
 

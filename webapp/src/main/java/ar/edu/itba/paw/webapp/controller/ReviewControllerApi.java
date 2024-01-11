@@ -63,7 +63,7 @@ public class ReviewControllerApi {
     @Consumes("application/vnd.review.v1+json")
     @Produces("application/vnd.review.v1+json")
     public Response createReview(@Valid ReviewForm form){
-        User user = us.getUserById(1).orElseThrow(UserNotFoundException:: new);//TODO: get user from session
+        User user = us.getCurrentUser().orElseThrow(UserNotFoundException:: new);
         Review review = revs.createReview(form.getTripId(), user.getUserId(), form.getRating(), form.getReview());
         return Response.created(uriInfo.getBaseUriBuilder().path("/reviews/").build(review.getUserId(),review.getTripId())).entity(ReviewDto.fromReview(uriInfo,review)).build();
     }
