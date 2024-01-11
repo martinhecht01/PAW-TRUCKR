@@ -25,9 +25,6 @@ public class JwtTokenUtil {
     public JwtTokenUtil() {
     }
 
-    /**
-     * jws: Json Web Signature (https://datatracker.ietf.org/doc/html/rfc7515)
-     */
     public UserDetails parseToken(String jws) {
         try {
             final Claims claims = Jwts.parserBuilder().setSigningKey(jwtKey).build().parseClaimsJws(jws).getBody();
@@ -44,12 +41,13 @@ public class JwtTokenUtil {
         }
     }
 
-    public String createToken(User user) {
+    public String createToken(User user, String baseUrl) {
         Claims claims = Jwts.claims();
 
         claims.setSubject(user.getCuit());
+        claims.put("userURL", baseUrl + "/users/" + user.getUserId());
         claims.put("authorization", user.getRole());
-        return "Bearer " + Jwts.builder()
+        return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRY_TIME))
