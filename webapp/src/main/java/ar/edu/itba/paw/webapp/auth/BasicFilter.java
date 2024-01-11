@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class BasicFilter extends OncePerRequestFilter {
 
-    private static final int USER = 0;
+    private static final int CUIT = 0;
     private static final int PASSWORD = 1;
 
     @Autowired
@@ -51,10 +51,10 @@ public class BasicFilter extends OncePerRequestFilter {
             String[] credentials = extractAndDecodeHeader(header);
 
             final Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(credentials[USER], credentials[PASSWORD])
+                    new UsernamePasswordAuthenticationToken(credentials[CUIT], credentials[PASSWORD])
             );
 
-            userService.getUserByCuit(credentials[USER]).ifPresent(user -> response.setHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request))));
+            userService.getUserByCuit(credentials[CUIT]).ifPresent(user -> response.setHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request))));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (AuthenticationException failed) {
             SecurityContextHolder.clearContext();
