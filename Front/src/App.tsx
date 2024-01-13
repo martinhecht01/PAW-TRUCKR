@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import './i18n';
 import CustomLayout from './components/customLayout';
-import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from './pages/landing';
 import BrowseTrips from './pages/browse';
 import Login from './pages/login';
@@ -16,6 +16,8 @@ import PastTrips from "./pages/pastTrips.tsx";
 import MyPublications from './pages/myPublications.tsx';
 import CreateTrip from "./pages/createTrip.tsx";
 import ManageTrip from "./pages/manageTrip.tsx";
+import ResetPasswordRequest from './pages/resetPasswordRequest.tsx';
+import ResetPassword from './pages/resetPassword.tsx';
 
 
 const WebApp = () => {
@@ -54,6 +56,8 @@ const WebApp = () => {
           <Route path="/myPublications" element={<MyPublications/>}></Route>
           <Route path="/trips/create" element={<CreateTrip/>}></Route>
           <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
+          <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}/>
+          <Route path="/resetPassword" element={<ResetPassword/>}/>
           <Route path="*" element={<NotFound404/>} />
 
         </Routes>
