@@ -18,6 +18,8 @@ import CreateTrip from "./pages/createTrip.tsx";
 import ManageTrip from "./pages/manageTrip.tsx";
 import ResetPasswordRequest from './pages/resetPasswordRequest.tsx';
 import ResetPassword from './pages/resetPassword.tsx';
+import SearchTrips from './pages/searchTrips.tsx';
+import PublicationDetails from './pages/publicationDetails.tsx';
 
 
 const WebApp = () => {
@@ -58,6 +60,8 @@ const WebApp = () => {
           <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
           <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}/>
           <Route path="/resetPassword" element={<ResetPassword/>}/>
+          <Route path="/searchTrips" element={<SearchTrips/>}/>
+          <Route path="/details" element={<PublicationDetails/>}/>
           <Route path="*" element={<NotFound404/>} />
 
         </Routes>

@@ -14,14 +14,20 @@
 }
 
 .space-between {
+    display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 
 .space-around {
+    display: flex;
+    align-items: center;
     justify-content: space-around;
 }
 
 .space-evenly {
+    display: flex;
+    align-items: center;
     justify-content: space-evenly;
 }
 
@@ -61,6 +67,22 @@
     padding: 10%;
 }
 
+.mt-5 {
+    margin-top: 5%;
+}
+
+.mb-5 {
+    margin-bottom: 5%;
+}
+
+.ml-5 {
+    margin-left: 5%;
+}
+
+.mr-5 {
+    margin-right: 5%;
+}
+
 .mt-10 {
     margin-top: 10%;
 }
@@ -75,6 +97,27 @@
 
 .mr-10 {
     margin-right: 10%;
+}
+
+.inline-input {
+    margin-inline: 10%;
+    width: 40%;
+}
+
+.pt-5 {
+    padding-top: 5%;
+}
+
+.pb-5 {
+    padding-bottom: 5%;
+}
+
+.pl-5 {
+    padding-left: 5%;
+}
+
+.pr-5 {
+    padding-right: 5%;
 }
 
 .pt-10 {
