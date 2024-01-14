@@ -1,6 +1,6 @@
 import { Button, Card, Col, DatePicker, Divider, Grid, Input, Pagination, Row, Select, Slider, Switch, Typography } from "antd"
 import { useState } from "react";
-import TripCard, { TripCardProps } from "../components/tripCard";
+import TripCard, { TripCardProps } from "../Components/tripCard";
 import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import '../styles/main.scss';
 
