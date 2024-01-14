@@ -4,7 +4,7 @@ import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
 import {StarFilled, UserOutlined} from "@ant-design/icons";
-import ReviewContainer from '../components/reviewContainer';
+import ReviewContainer from '../Components/reviewContainer';
 
 const { Title, Text } = Typography;
 

@@ -2,7 +2,6 @@ import { ConfigProvider } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import './i18n';
-import CustomLayout from './components/customLayout';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Landing from './pages/landing';
 import BrowseTrips from './pages/browse';
@@ -20,6 +19,8 @@ import ResetPasswordRequest from './pages/resetPasswordRequest.tsx';
 import ResetPassword from './pages/resetPassword.tsx';
 import SearchTrips from './pages/searchTrips.tsx';
 import PublicationDetails from './pages/publicationDetails.tsx';
+import EditProfile from './pages/editProfile.tsx';
+import CustomLayout from './Components/customLayout.tsx';
 
 
 const WebApp = () => {
@@ -62,6 +63,7 @@ const WebApp = () => {
           <Route path="/resetPassword" element={<ResetPassword/>}/>
           <Route path="/searchTrips" element={<SearchTrips/>}/>
           <Route path="/details" element={<PublicationDetails/>}/>
+          <Route path="/profile/edit" element={<EditProfile/>}/>
           <Route path="*" element={<NotFound404/>} />
 
         </Routes>
