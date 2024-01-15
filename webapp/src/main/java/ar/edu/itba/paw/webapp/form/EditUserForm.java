@@ -2,6 +2,9 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.NotNull;
@@ -12,12 +15,24 @@ public class EditUserForm {
 
     @Size(min = 6, max = 100)
     @Pattern(regexp = "^[A-Za-z]+(\\s[A-Za-z]*)+$")
+    @FormDataParam("name")
     private String name;
 
-    @MaxFileSize(8)
+//    @MaxFileSize(8)
     @ImageType(types = {"image/jpeg", "image/png"})
-    @NotNull
-    private CommonsMultipartFile profileImage;
+    @FormDataParam("profileImage")
+    private FormDataBodyPart profileImage;
+
+    @FormDataParam("profileImage")
+    private byte[] bytes;
+
+    public byte[] getBytes() {
+        return bytes;
+    }
+
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
+    }
 
     public String getName() {
         return name;
@@ -27,11 +42,11 @@ public class EditUserForm {
         this.name = name;
     }
 
-    public CommonsMultipartFile getProfileImage() {
+    public FormDataBodyPart getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(CommonsMultipartFile profileImage) {
+    public void setProfileImage(FormDataBodyPart profileImage) {
         this.profileImage = profileImage;
     }
 

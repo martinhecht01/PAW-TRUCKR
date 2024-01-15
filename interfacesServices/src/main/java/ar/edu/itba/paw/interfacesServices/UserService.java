@@ -16,7 +16,7 @@ public interface UserService {
 
     void createReset(Integer userId, Locale locale);
 
-   void createSecureToken(User user, Locale locale);
+    void createSecureToken(User user, Locale locale);
 
     public boolean verifyAccount(Integer tokenValue, Locale locale);
 
@@ -29,6 +29,8 @@ public interface UserService {
     byte[] getProfilePicture(Integer userId);
 
     void updateProfileName(Integer userId, String name);
+
+    void updateProfile(Integer userId, byte[] image, String name);
 
     void updateLocale(Integer userId, Locale locale);
 

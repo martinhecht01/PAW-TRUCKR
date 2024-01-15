@@ -161,6 +161,16 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
+    public void updateProfile(Integer userId, byte[] image, String name) {
+    	if(image != null) {
+            Integer imageId = imageDao.uploadImage(image);
+    		updateProfilePicture(userId, imageId);
+    	}
+        updateProfileName(userId, name);
+    }
+
+    @Transactional
+    @Override
     public byte[] getProfilePicture(Integer userId) {
         User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
         return user.getImage().getImage();

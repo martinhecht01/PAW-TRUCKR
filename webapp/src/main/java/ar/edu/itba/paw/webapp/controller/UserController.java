@@ -251,21 +251,21 @@ public class UserController {
         return new ModelAndView("user/editProfile");
     }
 
-    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
-    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form,
-                                 final BindingResult errors){
-        if (errors.hasErrors()) {
-            return editUserView(form);
-        }
-        if(!form.getProfileImage().isEmpty()) {
-            int imgId = is.uploadImage(form.getProfileImage().getBytes());
-            us.updateProfilePicture(getCurrentUser().getUserId(), imgId);
-        }
-        us.updateProfileName(getCurrentUser().getUserId(), form.getName());
-
-
-        return new ModelAndView("redirect:/profile");
-    }
+//    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
+//    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form,
+//                                 final BindingResult errors){
+//        if (errors.hasErrors()) {
+//            return editUserView(form);
+//        }
+//        if(!form.getProfileImage().isEmpty()) {
+//            int imgId = is.uploadImage(form.getProfileImage().getBytes());
+//            us.updateProfilePicture(getCurrentUser().getUserId(), imgId);
+//        }
+//        us.updateProfileName(getCurrentUser().getUserId(), form.getName());
+//
+//
+//        return new ModelAndView("redirect:/profile");
+//    }
 
     @RequestMapping( value = "/user/{userId}/profilePicture", method = {RequestMethod.GET},
             produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})

@@ -7,15 +7,18 @@ import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.function.Function;
@@ -64,5 +67,12 @@ public class UserControllerApi {
     }
 
 
+    @PATCH
+    @Path("/{id}")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+    public Response editUser(@PathParam("id") final Integer id, @Valid @BeanParam EditUserForm form) {
+        us.updateProfile(id, form.getBytes(), form.getName());
+        return Response.noContent().build();
+    }
 
 }
