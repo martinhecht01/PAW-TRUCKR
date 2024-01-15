@@ -10,6 +10,6 @@ import javax.mail.Message;
 public class UserNotFoundException extends RuntimeException {
 
     public UserNotFoundException(){
-        super("exception.userNotFound");
+        super("exception.UserNotFound");
     }
 }
