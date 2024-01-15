@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form.constraints.validators;
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.ConstraintValidator;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
-public class ImageTypeValidator implements ConstraintValidator<ImageType, CommonsMultipartFile> {
+public class ImageTypeValidator implements ConstraintValidator<ImageType, FormDataBodyPart> {
 
     private Collection<String> types;
 
@@ -19,9 +20,10 @@ public class ImageTypeValidator implements ConstraintValidator<ImageType, Common
     }
 
     @Override
-    public boolean isValid(CommonsMultipartFile image, ConstraintValidatorContext constraintValidatorContext) {
-        if(image.getSize() == 0)
+    public boolean isValid(FormDataBodyPart image, ConstraintValidatorContext constraintValidatorContext) {
+        if(image == null) {
             return true;
-        return types.contains(image.getContentType());
+        }
+        return types.contains(image.getMediaType().toString());
     }
 }
