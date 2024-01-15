@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+import javax.persistence.Access;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +58,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private BasicFilter basicFilter;
+
+    private static final String USER_ACCESS_VERIFICATION = "@accessHandler.userAccessVerification(#id)";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -120,6 +123,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new TruckrAccessDeniedHandler())
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.PATCH, "/users/{id}/**").access(USER_ACCESS_VERIFICATION)
                 .antMatchers(HttpMethod.GET, "/trips").authenticated()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
 //                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
