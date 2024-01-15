@@ -20,7 +20,8 @@
       "suggestedPrice": "Suggested Price",
       "arrivalDate": "Arrival Date",
       "departureDate": "Departure Date",
-      "licensePlate": "License Plate"
+      "licensePlate": "License Plate",
+      "offeredPrice": "Offered Price"
     },
 
     "myalert": {
@@ -55,6 +56,17 @@
       "uploadSuccessful": "File uploaded successfully",
       "uploadError": "File uploaded failed",
       "notPng": "File is not a png"
+    },
+
+    "manage": {
+      "origDest": "Origin - Destination",
+      "depArr": "Departure - Arrival",
+      "noOffers": "No offers yet for this publication",
+      "description": "Description",
+      "accept": "Accept",
+      "counterOffer": "Counter-Offer",
+      "reject": "Reject",
+      "cancel": "Cancel"
     }
 
 }

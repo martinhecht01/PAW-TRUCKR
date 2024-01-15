@@ -25,11 +25,11 @@ const SendCounterOffer: React.FC = () => {
                 <Col span={3}></Col>
                 <Col span={8}>
                     <Card title="Counter-offer">
-                        <Title className='m-0' level={5}>{t('common.description')}</Title>
+                        <Title className='m-0' level={5}>{t('manage.description')}</Title>
                         <TextArea
                             autoSize={{ minRows: 2 }}
                         />
-                        <Title level={5}>{t('manage.offeredPrice')}</Title>
+                        <Title level={5}>{t('common.offeredPrice')}</Title>
                         <InputNumber className='w-100' min={1}></InputNumber>
                         <Button className='mt-2vh' type="primary">Send Offer</Button>
                     </Card>
@@ -48,7 +48,7 @@ const SendCounterOffer: React.FC = () => {
                             <Text>{props.description}</Text>
                         </div>
                         <div className='mt-2vh'>
-                            <Title level={5}>{t('manage.offeredPrice')}</Title>
+                            <Title level={5}>{t('common.offeredPrice')}</Title>
                         </div>
                         <div>
                             <Text>{props.offeredPrice}</Text>
