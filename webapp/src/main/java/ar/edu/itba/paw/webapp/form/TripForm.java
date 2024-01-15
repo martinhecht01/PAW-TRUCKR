@@ -2,16 +2,11 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.DateValidation;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.PreventPast;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.validation.constraints.*;
-import java.io.InputStream;
 
 @DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
@@ -48,7 +43,7 @@ public class TripForm {
 
     @Size(min = 1, max = 100)
     @FormDataParam("origin")
-    private  String origin;
+    private String origin;
 
     @Size(min = 1, max = 100)
     @FormDataParam("destination")
