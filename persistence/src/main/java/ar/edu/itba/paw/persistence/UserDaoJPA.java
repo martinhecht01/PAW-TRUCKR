@@ -98,11 +98,12 @@ public class UserDaoJPA implements UserDao {
     }
 
     @Override
-    public void resetPassword(Integer hash, String newPassword) {
-        LOGGER.info("Resetting password for hash: {}", hash);
-        Reset reset = entityManager.find(Reset.class, hash);
+    public void resetPassword(Integer userId, String newPassword) {
+//        LOGGER.info("Resetting password for hash: {}", hash);
+//        Reset reset = entityManager.find(Reset.class, hash);
         //User user = entityManager.find(User.class, reset.getUserId());
-        User user = reset.getUser();
+        User user = entityManager.find(User.class, userId);
+//        User user = reset.getUser();
         user.setPassword(newPassword);
     }
 

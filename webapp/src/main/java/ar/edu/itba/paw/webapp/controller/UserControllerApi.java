@@ -7,7 +7,9 @@ import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.form.CuitForm;
 import ar.edu.itba.paw.webapp.form.EditUserForm;
+import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,12 +69,54 @@ public class UserControllerApi {
     }
 
 
-    @PATCH
+    @PUT
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
     public Response editUser(@PathParam("id") final Integer id, @Valid @BeanParam EditUserForm form) {
         us.updateProfile(id, form.getBytes(), form.getName());
         return Response.noContent().build();
     }
+
+// Change password
+
+    @POST
+    @Consumes("application/vnd.resetpassword.v1+json")
+    public Response resetPassword(@Valid CuitForm form){
+        User user = us.getUserByCuit(form.getCuit()).orElseThrow(UserNotFoundException::new);
+        us.createReset(user.getUserId(), LocaleContextHolder.getLocale());
+        return Response.accepted().build();
+    }
+
+    @PATCH
+    @Path("/{id}")
+    @Consumes("application/vnd.resetpassword.v1+json")
+    public Response changePassword(@Valid ResetPasswordForm form, @PathParam("id") final Integer id){
+        User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
+        us.resetPassword(user.getUserId(), form.getPassword());
+        return Response.noContent().build();
+    }
+
+// Verify account
+// TODO: RESEND TOKEN?
+
+//    @POST
+//    @Consumes("application/vnd.verifyaccount.v1+json")
+//    public Response verifyAccount(@Valid CuitForm form){
+//        User user = us.getUserByCuit(form.getCuit()).orElseThrow(UserNotFoundException::new);
+//        us.verifyAccount(user.getUserId(), LocaleContextHolder.getLocale());
+//        return Response.accepted().build();
+//    }
+
+    @PATCH
+    @Path("/{id}")
+    @Consumes("application/vnd.verifyaccount.v1+json")
+    public Response verifyAccount(@PathParam("id") final Integer id){
+        User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
+        us.verifyAccount(user.getUserId(), LocaleContextHolder.getLocale());
+        return Response.noContent().build();
+    }
+
+
+
 
 }

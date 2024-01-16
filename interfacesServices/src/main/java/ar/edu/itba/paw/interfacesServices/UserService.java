@@ -10,7 +10,7 @@ public interface UserService {
 
     User createUser(String email, String name, String id, String role, String password, Locale locale);
 
-    void resetPassword(Integer hash, String newPassword);
+    void resetPassword(Integer userId, String newPassword);
 
     Optional<Reset> getResetByHash(Integer hash);
 
@@ -18,7 +18,7 @@ public interface UserService {
 
     void createSecureToken(User user, Locale locale);
 
-    public boolean verifyAccount(Integer tokenValue, Locale locale);
+    public boolean verifyAccount(Integer userId, Locale locale);
 
     Optional<User> getUserByCuit(String cuit);
 
@@ -35,4 +35,6 @@ public interface UserService {
     void updateLocale(Integer userId, Locale locale);
 
     Optional<User> getCurrentUser();
+
+    void completeReset(Integer hash);
 }

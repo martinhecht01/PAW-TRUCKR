@@ -123,7 +123,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new TruckrAccessDeniedHandler())
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.PATCH, "/users/{id}/**").access(USER_ACCESS_VERIFICATION)
+                .antMatchers(HttpMethod.PUT, "/users/{id}/**").access(USER_ACCESS_VERIFICATION)
                 .antMatchers(HttpMethod.GET, "/trips").authenticated()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
 //                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")

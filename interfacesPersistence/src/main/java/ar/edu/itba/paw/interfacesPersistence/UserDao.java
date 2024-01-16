@@ -9,7 +9,8 @@ import java.util.Locale;
 import java.util.Optional;
 
 public interface UserDao {
-    void resetPassword(Integer hash, String newPassword);
+
+    void resetPassword(Integer userId, String newPassword);
 
     User create(String email, String name, String cuit, String role, String password, Locale locale);
 

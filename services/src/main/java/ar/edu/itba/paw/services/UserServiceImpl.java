@@ -62,15 +62,20 @@ public class UserServiceImpl implements UserService {
 
         User us= userDao.create(email,name,id, role, passwordEncoder.encode(password),locale);
 
-        createSecureToken(us,locale);
+        createSecureToken(us, locale);
 
         return us;
     }
 
     @Transactional
     @Override
-    public void resetPassword(Integer hash, String newPassword){
-        userDao.resetPassword(hash, passwordEncoder.encode(newPassword));
+    public void resetPassword(Integer userId, String newPassword){
+        userDao.resetPassword(userId, passwordEncoder.encode(newPassword));
+    }
+
+    @Transactional
+    @Override
+    public void completeReset(Integer hash){
         userDao.completeReset(hash);
     }
 

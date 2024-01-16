@@ -181,8 +181,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/verifyAccount", method = RequestMethod.POST)
-    public ModelAndView verifyAccount(@Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,final BindingResult errors){
-
+    public ModelAndView verifyAccount(
+            @Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,
+            final BindingResult errors)
+    {
         if (errors.hasErrors()) {
             return verifyAccountView(form, null);
         }
@@ -199,43 +201,45 @@ public class UserController {
         return new ModelAndView("redirect:/login?successVerification=" + true);
     }
 
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
-    public ModelAndView resetPassword(@ModelAttribute("userForm") final ResetPasswordForm form, @RequestParam(value = "hash") Integer hash){
-        us.getResetByHash(hash).orElseThrow(ResetErrorException::new);
-        ModelAndView mv = new ModelAndView("user/resetPassword");
-        mv.addObject("hash", hash);
-        return mv;
-    }
+//    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+//    public ModelAndView resetPassword(@ModelAttribute("userForm") final ResetPasswordForm form, @RequestParam(value = "hash") Integer hash){
+//        us.getResetByHash(hash).orElseThrow(ResetErrorException::new);
+//        ModelAndView mv = new ModelAndView("user/resetPassword");
+//        mv.addObject("hash", hash);
+//        return mv;
+//    }
 
 
 
-    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
-    public ModelAndView resetPassword(@RequestParam("hash") Integer hash, @Valid @ModelAttribute("userForm") final ResetPasswordForm form, final BindingResult errors){
-        if(errors.hasErrors()){
-            return resetPassword(form, hash);
-        }
-        us.resetPassword(hash, form.getPassword());
-        LOGGER.info("Password reset with hash: {}", hash);
-        return new ModelAndView("user/resetPasswordSuccess");
-    }
-
-    @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.POST)
-    public ModelAndView resetPasswordRequest(@RequestParam(value = "cuit", required = false) String cuit){
-        User user;
-        user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
-        us.createReset(user.getUserId(),LocaleContextHolder.getLocale());
-        LOGGER.info("Reset password request sent for user with CUIT: {}", cuit);
-        return resetPasswordRequest("false", user.getEmail(), "true");
-    }
-
-    @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.GET)
-    public ModelAndView resetPasswordRequest(@RequestParam(value = "error", required = false) String error,@RequestParam(value = "email", required = false) String email, @RequestParam(value = "emailSent", required = false) String emailSent){
-        ModelAndView mv = new ModelAndView("user/sendResetRequest");
-        mv.addObject("email", email);
-        mv.addObject("emailSent", Boolean.parseBoolean(emailSent));
-        mv.addObject("error", Boolean.parseBoolean(error));
-        return mv;
-    }
+//    @RequestMapping(value = "/resetPassword", method = RequestMethod.POST)
+//    public ModelAndView resetPassword(@RequestParam("hash") Integer hash, @Valid @ModelAttribute("userForm") final ResetPasswordForm form, final BindingResult errors){
+//        if(errors.hasErrors()){
+//            return resetPassword(form, hash);
+//        }
+//        us.resetPassword(hash, form.getPassword());
+//        LOGGER.info("Password reset with hash: {}", hash);
+//        return new ModelAndView("user/resetPasswordSuccess");
+//    }
+//
+//    @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.POST)
+//    public ModelAndView resetPasswordRequest(@RequestParam(value = "cuit", required = false) String cuit){
+//        User user;
+//        user = us.getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
+//        us.createReset(user.getUserId(),LocaleContextHolder.getLocale());
+//        LOGGER.info("Reset password request sent for user with CUIT: {}", cuit);
+//        return resetPasswordRequest("false", user.getEmail(), "true");
+//    }
+//
+//    @RequestMapping(value = "/resetPasswordRequest", method = RequestMethod.GET)
+//    public ModelAndView resetPasswordRequest(@RequestParam(value = "error", required = false) String error,
+//                                             @RequestParam(value = "email", required = false) String email,
+//                                             @RequestParam(value = "emailSent", required = false) String emailSent){
+//        ModelAndView mv = new ModelAndView("user/sendResetRequest");
+//        mv.addObject("email", email);
+//        mv.addObject("emailSent", Boolean.parseBoolean(emailSent));
+//        mv.addObject("error", Boolean.parseBoolean(error));
+//        return mv;
+//    }
     @ModelAttribute("currentUser")
     public User getCurrentUser(){
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -246,10 +250,10 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
-    public ModelAndView editUserView(@ModelAttribute("editUserForm") final EditUserForm form){
-        return new ModelAndView("user/editProfile");
-    }
+//    @RequestMapping(value = "/profile/edit", method = RequestMethod.GET)
+//    public ModelAndView editUserView(@ModelAttribute("editUserForm") final EditUserForm form){
+//        return new ModelAndView("user/editProfile");
+//    }
 
 //    @RequestMapping(value = "/profile/edit", method = RequestMethod.POST)
 //    public ModelAndView editUser(@Valid @ModelAttribute("editUserForm") final EditUserForm form,

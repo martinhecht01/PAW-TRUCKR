@@ -13,6 +13,7 @@ public class AccessHandler {
     @Autowired
     private UserService us;
 
+    //TODO estas excepciones se ven como 500 en el server
     public boolean userAccessVerification(String id){
         User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
         if (user != null) {

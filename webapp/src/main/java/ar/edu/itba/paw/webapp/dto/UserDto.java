@@ -30,9 +30,9 @@ public class UserDto {
         dto.email = user.getEmail();
         String role = user.getRole();
 
-        if(role.equals("TRUCKER"))
+        if(role.equals("TRUCKER") && user.getTruckerTrips() != null)
             dto.trips = user.getTruckerTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
-        else if(role.equals("PROVIDER"))
+        else if(role.equals("PROVIDER") && user.getProviderTrips() != null)
             dto.trips = user.getProviderTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
 
         dto.itinerary = uri.getBaseUriBuilder().path("/itinerary/").path(user.getUserId().toString()).build();
