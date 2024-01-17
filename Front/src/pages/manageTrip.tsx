@@ -27,7 +27,7 @@ const ManageTrip: React.FC = () => {
         {description:"uenas",offeredPrice:15,userPhoto:"http://t3.gstatic.com/images?q=tbn:ANd9GcSDOfreJh67Zm_asl0jKHzSciAEeqdvsmJ4off_OGDTwOORaTRSTEbaNuINJKXZTPHOTgjUcA",userName:"Julian Alvarez"}
     ];
 
-    const acceptedOffer : ProposalProps = {userMail:'meencantaRodrigodePaul@gmail.com',description:"uenas",offeredPrice:15,userPhoto:"http://t3.gstatic.com/images?q=tbn:ANd9GcSDOfreJh67Zm_asl0jKHzSciAEeqdvsmJ4off_OGDTwOORaTRSTEbaNuINJKXZTPHOTgjUcA",userName:"Julian Alvarez"};
+    const acceptedOffer : ProposalProps | null = null;
 
     return (
         <div >
@@ -106,8 +106,8 @@ const ManageTrip: React.FC = () => {
                         <Title className='m-0' level={5}>{t('manage.noOffers')}</Title>
                     </Card>}
                     { offerCount > 0 && acceptedOffer == null &&
-                        offers.map((offer, index) => (
-                            <ProposalCard description={offer.description} offeredPrice={offer.offeredPrice} userName={offer.userName} userPhoto={offer.userPhoto}></ProposalCard>
+                        offers.map((offer) => (
+                            <ProposalCard counterOffered={true} description={offer.description} offeredPrice={offer.offeredPrice} userName={offer.userName} userPhoto={offer.userPhoto}></ProposalCard>
                         ))
                     }
                     { acceptedOffer != null &&

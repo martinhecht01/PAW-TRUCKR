@@ -26,7 +26,8 @@
     "suggestedPrice": "Precio Sugerido",
     "arrivalDate": "Fecha de Llegada",
     "departureDate": "Fecha de Salida",
-    "licensePlate": "Patente"
+    "licensePlate": "Patente",
+    "offeredPrice": "Precio Ofrecido"
   },
 
   "profile": {
@@ -55,6 +56,17 @@
     "uploadSuccessful": "Archivo subido exitosamente",
     "uploadError": "Error al subir el archivo",
     "notPng": "El archivo debe ser una imagen .png"
+  },
+
+  "manage": {
+    "origDest": "Origen - Destino",
+    "depArr": "Salida - Llegada",
+    "noOffers": "No hay ofertas para esta publicación",
+    "description": "Descripción",
+    "accept": "Aceptar",
+    "counterOffer": "Contraoferta",
+    "reject": "Rechazar",
+    "cancel": "Cancelar"
   }
 }
   

@@ -15,11 +15,12 @@ import PastTrips from "./pages/pastTrips.tsx";
 import MyPublications from './pages/myPublications.tsx';
 import CreateTrip from "./pages/createTrip.tsx";
 import ManageTrip from "./pages/manageTrip.tsx";
-import ResetPasswordRequest from './pages/resetPasswordRequest.tsx';
-import ResetPassword from './pages/resetPassword.tsx';
-import SearchTrips from './pages/searchTrips.tsx';
-import PublicationDetails from './pages/publicationDetails.tsx';
 import EditProfile from './pages/editProfile.tsx';
+import PublicationDetails from './pages/publicationDetails.tsx';
+import SearchTrips from './pages/searchTrips.tsx';
+import ResetPassword from './pages/resetPassword.tsx';
+import ResetPasswordRequest from './pages/resetPasswordRequest.tsx';
+import SendCounterOffer from "./pages/sendCounterOffer.tsx";
 import CustomLayout from './Components/customLayout.tsx';
 
 
@@ -59,11 +60,6 @@ const WebApp = () => {
           <Route path="/myPublications" element={<MyPublications/>}></Route>
           <Route path="/trips/create" element={<CreateTrip/>}></Route>
           <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
-          <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}/>
-          <Route path="/resetPassword" element={<ResetPassword/>}/>
-          <Route path="/searchTrips" element={<SearchTrips/>}/>
-          <Route path="/details" element={<PublicationDetails/>}/>
-          <Route path="/profile/edit" element={<EditProfile/>}/>
           <Route path="*" element={<NotFound404/>} />
 
         </Routes>
