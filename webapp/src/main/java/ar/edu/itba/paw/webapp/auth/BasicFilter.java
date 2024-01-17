@@ -3,10 +3,9 @@ package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Reset;
-import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

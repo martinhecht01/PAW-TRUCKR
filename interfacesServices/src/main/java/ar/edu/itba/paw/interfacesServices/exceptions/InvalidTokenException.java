@@ -1,8 +1,5 @@
-package ar.edu.itba.paw.webapp.exceptions;
+package ar.edu.itba.paw.interfacesServices.exceptions;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class InvalidTokenException extends RuntimeException {
     public InvalidTokenException(){
         super("exception.InvalidToken");

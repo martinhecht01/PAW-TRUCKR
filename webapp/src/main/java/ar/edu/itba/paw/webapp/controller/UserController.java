@@ -9,31 +9,18 @@ import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
 
-import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
-import ar.edu.itba.paw.webapp.form.EditUserForm;
-import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
-import ar.edu.itba.paw.webapp.form.VerifyAccountForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.validation.Valid;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Controller
 public class UserController {
@@ -164,42 +151,42 @@ public class UserController {
         return new ModelAndView("redirect:/myOffers");
     }
 
-    @RequestMapping(value = "/verifyAccount", method = RequestMethod.GET)
-    public ModelAndView verifyAccountView(@ModelAttribute("verifyAccountForm") final VerifyAccountForm form, @RequestParam(required = false) String token){
+//    @RequestMapping(value = "/verifyAccount", method = RequestMethod.GET)
+//    public ModelAndView verifyAccountView(@ModelAttribute("verifyAccountForm") final VerifyAccountForm form, @RequestParam(required = false) String token){
+//
+//        if(token != null){
+//            form.setToken(token);
+//            return verifyAccount(form, validateForm(form));
+//        }
+//
+//        LOGGER.info("Accessing verify account page");
+//        return new ModelAndView("user/verifyAccount");
+//    }
+//
+//    private BindingResult validateForm(@Valid VerifyAccountForm form){
+//        return new BeanPropertyBindingResult(form, "verifyAccountForm");
+//    }
 
-        if(token != null){
-            form.setToken(token);
-            return verifyAccount(form, validateForm(form));
-        }
-
-        LOGGER.info("Accessing verify account page");
-        return new ModelAndView("user/verifyAccount");
-    }
-
-    private BindingResult validateForm(@Valid VerifyAccountForm form){
-        return new BeanPropertyBindingResult(form, "verifyAccountForm");
-    }
-
-    @RequestMapping(value = "/verifyAccount", method = RequestMethod.POST)
-    public ModelAndView verifyAccount(
-            @Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,
-            final BindingResult errors)
-    {
-        if (errors.hasErrors()) {
-            return verifyAccountView(form, null);
-        }
-
-        boolean success = us.verifyAccount(Integer.parseInt(form.getToken()), LocaleContextHolder.getLocale());
-
-        if(!success) {
-            LOGGER.info("Incorrect token");
-            errors.rejectValue("token", "IncorrectToken");
-            return verifyAccountView(form, null);
-        }
-
-        LOGGER.info("Account verified for token {}", form.getToken());
-        return new ModelAndView("redirect:/login?successVerification=" + true);
-    }
+//    @RequestMapping(value = "/verifyAccount", method = RequestMethod.POST)
+//    public ModelAndView verifyAccount(
+//            @Valid @ModelAttribute("verifyAccountForm") final VerifyAccountForm form,
+//            final BindingResult errors)
+//    {
+//        if (errors.hasErrors()) {
+//            return verifyAccountView(form, null);
+//        }
+//
+//        boolean success = us.verifyAccount(Integer.parseInt(form.getToken()), LocaleContextHolder.getLocale());
+//
+//        if(!success) {
+//            LOGGER.info("Incorrect token");
+//            errors.rejectValue("token", "IncorrectToken");
+//            return verifyAccountView(form, null);
+//        }
+//
+//        LOGGER.info("Account verified for token {}", form.getToken());
+//        return new ModelAndView("redirect:/login?successVerification=" + true);
+//    }
 
 //    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
 //    public ModelAndView resetPassword(@ModelAttribute("userForm") final ResetPasswordForm form, @RequestParam(value = "hash") Integer hash){

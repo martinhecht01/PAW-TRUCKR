@@ -7,35 +7,21 @@ import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundExcept
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.webapp.controller.utils.PaginationHelper;
 import ar.edu.itba.paw.webapp.dto.TripDto;
-import ar.edu.itba.paw.webapp.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.form.*;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
-import org.apache.commons.io.IOUtils;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.ModelAndView;
-
-
 
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

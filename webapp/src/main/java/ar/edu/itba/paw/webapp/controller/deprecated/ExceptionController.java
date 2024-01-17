@@ -1,7 +1,7 @@
 package ar.edu.itba.paw.webapp.controller.deprecated;
 import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.exceptions.ResetErrorException;
+import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

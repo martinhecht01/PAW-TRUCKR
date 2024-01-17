@@ -1,6 +1,7 @@
-package ar.edu.itba.paw.webapp.exceptions;
+package ar.edu.itba.paw.interfacesServices.exceptions;
 
 public class ResetErrorException extends RuntimeException{
+    //TODO
     public ResetErrorException() {
         super();
     }

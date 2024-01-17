@@ -1,8 +1,6 @@
-package ar.edu.itba.paw.webapp.exceptions;
+package ar.edu.itba.paw.interfacesServices.exceptions;
 
-import org.springframework.stereotype.Component;
 
-@Component
 public class UserAlreadyVerifiedException extends RuntimeException {
     public UserAlreadyVerifiedException(){
         super("exception.UserAlreadyVerified");

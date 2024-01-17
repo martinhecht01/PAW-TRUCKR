@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.mapper;
 import ar.edu.itba.paw.webapp.dto.ErrorDto;
-import ar.edu.itba.paw.webapp.exceptions.TripNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

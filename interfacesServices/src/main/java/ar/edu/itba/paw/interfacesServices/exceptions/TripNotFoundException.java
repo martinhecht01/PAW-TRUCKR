@@ -1,9 +1,6 @@
-package ar.edu.itba.paw.webapp.exceptions;
+package ar.edu.itba.paw.interfacesServices.exceptions;
 
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class TripNotFoundException extends RuntimeException {
     public TripNotFoundException(){
         super("exception.TripNotFound");
