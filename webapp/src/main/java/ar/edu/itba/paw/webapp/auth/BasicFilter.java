@@ -12,6 +12,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.HttpHeaders;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -66,7 +70,7 @@ public class BasicFilter extends OncePerRequestFilter {
                     User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(UserNotFoundException::new);
                     userService.completeReset(Integer.valueOf(credentials[NONCE]));
                     response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
-                    authentication = new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword(),null);
+                    authentication = nonceAuthentication(user);
                 }else{
                     //TODO HANDLE SITUATION
                     throw new ResetErrorException();
@@ -77,7 +81,7 @@ public class BasicFilter extends OncePerRequestFilter {
                 User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(UserNotFoundException::new);
                 userService.verifyAccount(Integer.valueOf(credentials[NONCE]),user.getLocale());
                 response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
-                authentication = new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword(),null);
+                authentication = nonceAuthentication(user);
             }else {
                 authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(credentials[CUIT], credentials[PASSWORD]));
@@ -119,6 +123,12 @@ public class BasicFilter extends OncePerRequestFilter {
 
     private String baseUrl(HttpServletRequest request){
         return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+    }
+
+    private Authentication nonceAuthentication(User user){
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+ user.getRole()));
+        return new UsernamePasswordAuthenticationToken(new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), true,true,true,true,authorities),null, authorities);
     }
 
 }

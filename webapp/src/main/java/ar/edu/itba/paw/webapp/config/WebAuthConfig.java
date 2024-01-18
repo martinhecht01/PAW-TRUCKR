@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -47,6 +48,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
@@ -124,6 +126,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.PUT, "/users/{id}/**").access(USER_ACCESS_VERIFICATION)
+                .antMatchers(HttpMethod.PATCH, "/users/{id}").authenticated()
                 .antMatchers(HttpMethod.GET, "/trips").authenticated()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
 //                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
@@ -135,8 +138,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and().cors().and().csrf().disable()
 
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(basicFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(basicFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
