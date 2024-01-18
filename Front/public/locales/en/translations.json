@@ -67,7 +67,11 @@
       "counterOffer": "Counter-Offer",
       "reject": "Reject",
       "cancel": "Cancel"
-    }
+    },
+
+  "alert": {
+    "create": "Create Alert"
+  }
 
 }
   

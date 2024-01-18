@@ -67,6 +67,10 @@
     "counterOffer": "Contraoferta",
     "reject": "Rechazar",
     "cancel": "Cancelar"
+  },
+
+  "alert": {
+    "create": "Crear Alerta"
   }
 }
   
