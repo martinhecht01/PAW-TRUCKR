@@ -10,26 +10,28 @@ import javax.validation.constraints.Size;
 @ConfirmPasswordValidation(passwordFieldName = "password", confirmPasswordFieldName = "repeatPassword")
 public class UserForm {
 
-    @NotNull
-    @Size(min = 6, max = 100)
-    @Pattern(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$")
+    @NotNull(message = "validation.NotNull")
+    @Size(min = 6, max = 100, message = "validation.Email")
+    @Pattern(regexp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}(?:\\.[a-zA-Z]{2,})?$", message="validation.Email")
     private String email;
 
-    @NotNull
-    @Size(min = 6, max = 100)
-    @Pattern(regexp = "^[A-Za-z]+(\\s[A-Za-z]*)+$")
+    @NotNull(message = "validation.NotNull")
+    @Size(min = 6, max = 100, message = "validation.Name.Size")
+    @Pattern(regexp = "^[A-Za-z]+(\\s[A-Za-z]*)+$", message="validation.Name.Pattern")
     private String name;
 
-    @Size(min = 6, max = 100)
+    @Size(min = 6, max = 100, message = "validation.Password.Size")
     private String password;
 
 
     private String repeatPassword;
 
-    @Pattern(regexp = "(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp = "(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]", message = "validation.Cuit")
     private String cuit;
 
-    @NotNull
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp = "^(PROVIDER|TRUCKER)$", flags = Pattern.Flag.CASE_INSENSITIVE, message = "validation.Role")
     private String role;
 
 

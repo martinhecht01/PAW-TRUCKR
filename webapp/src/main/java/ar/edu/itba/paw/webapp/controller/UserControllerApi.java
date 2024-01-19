@@ -56,7 +56,7 @@ public class UserControllerApi {
     @Consumes("application/vnd.user.v1+json")
     @Produces("application/vnd.user.v1+json")
     public Response createUser(@Valid UserForm form){
-        final User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole(), form.getPassword(), LocaleContextHolder.getLocale());
+        final User user = us.createUser(form.getEmail(), form.getName(), form.getCuit(), form.getRole().toUpperCase(), form.getPassword(), LocaleContextHolder.getLocale());
         return Response.created(uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(user.getUserId())).build()).entity(UserDto.fromUser(uriInfo, user)).build();
     }
 

@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.ImageDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.exceptions.CuitAlreadyExistsException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Reset;
@@ -33,7 +34,6 @@ public class UserServiceImpl implements UserService {
     private final MailService ms;
     private final ImageDao imageDao;
 
-    String email;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -47,23 +47,15 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public User createUser(String email, String name, String id, String role, String password, Locale locale){
-        this.email = email;
+    public User createUser(String email, String name, String cuit, String role, String password, Locale locale){
 
-        if(id == null) {
-            LOGGER.warn("User could not be created: id is null");
-            return null;
+        if( userDao.existsUser(cuit)){
+            LOGGER.warn("User could not be created: id already exists, CUIT: {}", cuit);
+            throw new CuitAlreadyExistsException();
         }
 
-        if( userDao.existsUser(id)){
-            LOGGER.warn("User could not be created: id already exists, ID: {}", id);
-            return null;
-        }
-
-        User us= userDao.create(email,name,id, role, passwordEncoder.encode(password),locale);
-
+        User us= userDao.create(email,name,cuit, role, passwordEncoder.encode(password),locale);
         createSecureToken(us, locale);
-
         return us;
     }
 
@@ -114,7 +106,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void createSecureToken(User user, Locale locale) {
-//        User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
         Integer tokenValue = userDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
         ms.sendSecureTokenEmail(user, tokenValue,locale);
     }
@@ -148,11 +139,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserById(int id) {
         return userDao.getUserById(id);
-    }
-
-    @Override
-    public String toString(){
-        return this.email;
     }
 
     @Transactional
