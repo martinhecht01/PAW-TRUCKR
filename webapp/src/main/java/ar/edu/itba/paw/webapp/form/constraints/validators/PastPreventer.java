@@ -17,7 +17,12 @@ public class PastPreventer implements ConstraintValidator<PreventPast, String>{
         if(date == null || date.isEmpty())
             return false;
 
-        LocalDateTime dateTime = LocalDateTime.parse(date);
+        LocalDateTime dateTime;
+        try {
+            dateTime = LocalDateTime.parse(date);
+        } catch (Exception e) {
+            return false;
+        }
         return !dateTime.isBefore(LocalDateTime.now());
     }
 

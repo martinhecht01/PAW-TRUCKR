@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
-import ar.edu.itba.paw.webapp.form.constraints.annotations.DateValidation;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.PreventPast;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.*;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
@@ -11,48 +9,60 @@ import javax.validation.constraints.*;
 @DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
 
-    @Pattern(regexp="^$|^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp="^$|^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$", message="validation.LicensePlate")
+    @TruckerLicensePlate
     @FormDataParam("licensePlate")
     private  String licensePlate;
 
-    @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$", message="validation.AvailableWeight")
     @FormDataParam("availableWeight")
     private String availableWeight;
 
-    @Pattern(regexp="^[1-9][0-9]*$")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp="^[1-9][0-9]*$", message="validation.AvailableVolume")
     @FormDataParam("availableVolume")
     private String availableVolume;
 
-    @Pattern(regexp="^[1-9][0-9]*$")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp="^[1-9][0-9]*$", message="validation.Price")
     @FormDataParam("price")
     private String price;
 
-    @Pattern(regexp="^(?!\\s*$).+")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp="^(?!\\s*$).+", message="validation.DepartureDate")
     @PreventPast
     @FormDataParam("departureDate")
     private String departureDate;
 
+    @NotNull(message = "validation.NotNull")
     @PreventPast
-    @Pattern(regexp="^(?!\\s*$).+")
+    @Pattern(regexp="^(?!\\s*$).+", message="validation.ArrivalDate")
     @FormDataParam("arrivalDate")
     private  String arrivalDate;
 
-    @NotNull
+    @NotNull(message = "validation.NotNull")
+    @CargoType
     @FormDataParam("cargoType")
     private String cargoType;
 
-    @Size(min = 1, max = 100)
+    @NotNull(message = "validation.NotNull")
+    @Size(min = 1, max = 100, message="validation.Origin")
     @FormDataParam("origin")
     private String origin;
 
-    @Size(min = 1, max = 100)
+    @NotNull(message = "validation.NotNull")
+    @Size(min = 1, max = 100, message="validation.Destination")
     @FormDataParam("destination")
     private String destination;
 
+    @NotNull(message = "validation.NotNull")
     @RequireImage
     @FormDataParam("tripImage")
     private FormDataBodyPart tripImage;
 
+    @NotNull(message = "validation.NotNull")
     @FormDataParam("tripImage")
     private byte[] bytes;
 
