@@ -1,15 +1,12 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesPersistence.*;
-import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.slf4j.Logger;
@@ -19,7 +16,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -51,7 +47,6 @@ public class TripServiceV2Impl implements TripServiceV2 {
     }
 
 
-    //TODO validation of cargo type and error handling
     @Transactional
     @Override
     public Trip createTrip(User user,
@@ -67,7 +62,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
         if(Objects.equals(user.getRole(), "TRUCKER")) {
             if(licensePlate == null || licensePlate.isEmpty())
-                throw new IllegalArgumentException("License plate cannot be null or empty");
+                throw new IllegalArgumentException("exception.LicensePlate");
             return tripDaoV2.createTrip(user, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
         }else
             return createRequest(user, weight, volume, departureDate, arrivalDate, origin, destination, type, price, user.getLocale());
