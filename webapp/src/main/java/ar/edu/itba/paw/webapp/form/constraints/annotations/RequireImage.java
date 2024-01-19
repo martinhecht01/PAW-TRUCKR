@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface RequireImage {
 
-    String message() default "Image is required.";
+    String message() default "validation.RequireImage";
 
     Class<?>[] groups() default {};
 

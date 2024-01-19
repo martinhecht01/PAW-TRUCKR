@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {DateValidator.class})
 public @interface DateValidation {
 
-    String message() default "Date validation error";
+    String message() default "validation.DateValidation";
 
     Class<?>[] groups() default {};
 

@@ -17,7 +17,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
     @Documented
     public @interface ImageType {
 
-        String message() default "invalid image type";
+        String message() default "validation.ImageType";
 
         String[] types();
 

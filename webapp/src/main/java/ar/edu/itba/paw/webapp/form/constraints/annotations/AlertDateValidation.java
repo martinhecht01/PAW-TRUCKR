@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {AlertDateValidator.class})
 public @interface AlertDateValidation {
-    String message() default "Error: toDate must be in the future of fromDate";
+    String message() default "validation.AlertDate";
 
     Class<?>[] groups() default {};
 
