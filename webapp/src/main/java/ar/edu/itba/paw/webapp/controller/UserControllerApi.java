@@ -72,6 +72,7 @@ public class UserControllerApi {
     @PUT
     @Path("/{id}")
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+    @PreAuthorize("@accessHandler.userAccessVerification(#id)")
     public Response editUser(@PathParam("id") final Integer id, @Valid @BeanParam EditUserForm form) {
         us.updateProfile(id, form.getBytes(), form.getName());
         return Response.noContent().build();

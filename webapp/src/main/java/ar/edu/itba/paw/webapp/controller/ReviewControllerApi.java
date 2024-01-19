@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.exceptions.ReviewNotFoundException;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.controller.utils.PaginationHelper;
@@ -55,7 +56,7 @@ public class ReviewControllerApi {
     public Response getReview(
             @PathParam("userId") final int userId,
             @PathParam("tripId") final int tripId) {
-        final Review review = revs.getReviewByTripAndUserId(tripId, userId).orElseThrow(()->new RuntimeException("Review not found"));//TODO crear exeption
+        final Review review = revs.getReviewByTripAndUserId(tripId, userId).orElseThrow(ReviewNotFoundException::new);
         return Response.ok(ReviewDto.fromReview(uriInfo,review)).build();
     }
 

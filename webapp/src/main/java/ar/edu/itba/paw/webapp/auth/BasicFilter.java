@@ -6,9 +6,12 @@ import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.exceptions.AuthErrorException;
 import org.glassfish.jersey.internal.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -36,6 +39,7 @@ public class BasicFilter extends OncePerRequestFilter {
     private static final int CUIT = 0;
     private static final int PASSWORD = 1;
     private static final int NONCE = 1;
+
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -67,18 +71,17 @@ public class BasicFilter extends OncePerRequestFilter {
             {
                 Optional<Reset> reset = userService.getResetByHash(Integer.valueOf(credentials[NONCE]));
                 if(reset.isPresent()){
-                    User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(UserNotFoundException::new);
+                    User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(AuthErrorException::new);
                     userService.completeReset(Integer.valueOf(credentials[NONCE]));
                     response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
                     authentication = nonceAuthentication(user);
                 }else{
-                    //TODO HANDLE SITUATION
-                    throw new ResetErrorException();
+                    throw new AuthErrorException("exception.InvalidResetToken");
                 }
             }else if(request.getContentType().equals("application/vnd.verifyaccount.v1+json")
                     && request.getMethod().equals("PATCH"))
             {
-                User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(UserNotFoundException::new);
+                User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(AuthErrorException::new);
                 userService.verifyAccount(Integer.valueOf(credentials[NONCE]),user.getLocale());
                 response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
                 authentication = nonceAuthentication(user);
@@ -103,9 +106,7 @@ public class BasicFilter extends OncePerRequestFilter {
             decoded = Base64.decode(base64Token);
 
         } catch (IllegalArgumentException e) {
-            //TODO exception
-            throw new RuntimeException();
-//            throw new BadCredentialsException("Failed to decode basic authentication token");
+            throw new AuthErrorException("exception.CouldntDecodeBasic");
         }
 
         String token = new String(decoded, StandardCharsets.UTF_8);
@@ -113,9 +114,7 @@ public class BasicFilter extends OncePerRequestFilter {
         int delim = token.indexOf(":");
 
         if (delim == -1) {
-            //TODO exception
-            throw new RuntimeException();
-//            throw new BadCredentialsException("Invalid basic authentication token");
+            throw new AuthErrorException("exception.InvalidBasicToken");
         }
         return new String[]{token.substring(0, delim), token.substring(delim + 1)};
 
@@ -128,7 +127,7 @@ public class BasicFilter extends OncePerRequestFilter {
     private Authentication nonceAuthentication(User user){
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_"+ user.getRole()));
-        return new UsernamePasswordAuthenticationToken(new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), true,true,true,true,authorities),null, authorities);
+        return new UsernamePasswordAuthenticationToken(new AuthUserDetailsImpl(user.getCuit(), user.getPassword(), true,true,true,true, authorities),null, authorities);
     }
 
 }

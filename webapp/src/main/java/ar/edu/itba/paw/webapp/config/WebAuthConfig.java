@@ -8,6 +8,7 @@ import ar.edu.itba.paw.webapp.auth.handlers.TruckrAuthenticationEntryPoint;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -51,6 +52,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -125,7 +129,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(new TruckrAccessDeniedHandler())
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.PUT, "/users/{id}/**").access(USER_ACCESS_VERIFICATION)
+                .antMatchers(HttpMethod.PUT, "/users/{id}/**").authenticated()
                 .antMatchers(HttpMethod.PATCH, "/users/{id}").authenticated()
                 .antMatchers(HttpMethod.GET, "/trips").authenticated()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
@@ -142,21 +146,21 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new SimpleUrlAuthenticationFailureHandler() {
-            @Override
-            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                String errorMessage = "InvalidCredentials";
-
-                if (exception.getMessage() != null && exception.getMessage().equalsIgnoreCase("User is disabled")) {
-                    errorMessage = "UserNotVerified";
-                }
-                String loginPageUrl = request.getContextPath() + "/login?error=" + errorMessage ;
-                response.sendRedirect(loginPageUrl);
-            }
-        };
-    }
+//    @Bean
+//    public AuthenticationFailureHandler authenticationFailureHandler() {
+//        return new SimpleUrlAuthenticationFailureHandler() {
+//            @Override
+//            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+//                String errorMessage = "InvalidCredentials";
+//
+//                if (exception.getMessage() != null && exception.getMessage().equalsIgnoreCase("User is disabled")) {
+//                    errorMessage = "UserNotVerified";
+//                }
+//                String loginPageUrl = request.getContextPath() + "/login?error=" + errorMessage ;
+//                response.sendRedirect(loginPageUrl);
+//            }
+//        };
+//    }
 
 
     @Override

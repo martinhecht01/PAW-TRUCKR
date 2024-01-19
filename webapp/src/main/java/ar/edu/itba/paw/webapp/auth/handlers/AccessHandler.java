@@ -19,7 +19,16 @@ public class AccessHandler {
     private UserService us;
 
     public boolean userAccessVerification(String id){
-        User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null) {
+            return false;
+        }
+
+        Optional<AuthUserDetailsImpl> principal = Optional.of((AuthUserDetailsImpl) auth.getPrincipal());
+        User user = principal.flatMap(pawAuthUserDetails -> us.getUserByCuit(pawAuthUserDetails.getUsername())).orElse(null);
+
         if (user != null) {
             return Integer.toString(user.getUserId()).equals(id);
         }
