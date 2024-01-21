@@ -86,7 +86,7 @@ public class TripControllerApi {
 
     @GET
     @Produces("application/vnd.tripList.v1+json")
-    public Response getPublications(
+    public Response getTripsAndPublications(
             @QueryParam("userId") Integer userId,
             @QueryParam("status") @DefaultValue("ongoing") String status,
             @QueryParam("page") @DefaultValue(PAGE) int page,
