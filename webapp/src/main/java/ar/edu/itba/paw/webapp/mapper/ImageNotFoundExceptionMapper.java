@@ -2,7 +2,6 @@ package ar.edu.itba.paw.webapp.mapper;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.webapp.dto.ErrorDto;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

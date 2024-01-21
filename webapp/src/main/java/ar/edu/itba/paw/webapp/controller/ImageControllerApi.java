@@ -5,6 +5,7 @@ import ar.edu.itba.paw.webapp.controller.utils.CacheHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.persistence.Cache;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -24,18 +25,14 @@ public class ImageControllerApi {
         this.is = is;
     }
 
+
+    //TODO resizing
     @GET
     @Path("/{id}")
     public Response getImage(@PathParam("id") int id, @Context javax.ws.rs.core.Request request ){
-
-        EntityTag etag = new EntityTag(Integer.toString(id));
-        Response.ResponseBuilder response = CacheHelper.getConditionalCacheResponse(request, etag);
-
-        if (response == null){
-            byte[] image = is.getImage(id);
-            return Response.ok(image).tag(etag).build();
-        }
-
+        byte[] image = is.getImage(id);
+        Response.ResponseBuilder response = Response.ok(image);
+        CacheHelper.setUnconditionalCache(response);
         return response.build();
     }
 
