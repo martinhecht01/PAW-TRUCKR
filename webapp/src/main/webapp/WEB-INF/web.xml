@@ -86,5 +86,15 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <filter>
+    <filter-name>StaticCacheFilter</filter-name>
+    <filter-class>ar.edu.itba.paw.webapp.config.StaticCacheFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>StaticCacheFilter</filter-name>
+    <url-pattern>/static/*</url-pattern>
+  </filter-mapping>
+
+
 
 </web-app>
