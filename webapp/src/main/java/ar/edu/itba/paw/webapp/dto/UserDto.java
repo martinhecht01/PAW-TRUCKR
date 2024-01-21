@@ -14,15 +14,16 @@ public class UserDto {
     private String name;
     private URI image;
     private List<URI> trips;
+    private String role;
     private URI reviews;
 
     public static UserDto fromUser(final UriInfo uri, final User user){
         final UserDto dto = new UserDto();
         dto.id = user.getUserId();
-        dto.self = uri.getAbsolutePathBuilder().path("/users/").path(user.getUserId().toString()).build();
+        dto.self = uri.getBaseUriBuilder().path("/users/").path(user.getUserId().toString()).build();
         dto.cuit = user.getCuit();
         dto.name = user.getName();
-        String role = user.getRole();
+        dto.role = user.getRole();
 
 //        if(role.equals("TRUCKER") && user.getTruckerTrips() != null)
 //            dto.trips = user.getTruckerTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
@@ -92,5 +93,13 @@ public class UserDto {
 
     public void setSelf(URI self) {
         this.self = self;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }

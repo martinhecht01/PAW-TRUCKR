@@ -29,10 +29,10 @@ public class ProposalDto {
     public static ProposalDto fromProposal(final UriInfo uriInfo, Proposal proposal){
         ProposalDto dto = new ProposalDto();
         dto.proposalId = proposal.getProposalId();
-        dto.self = uriInfo.getBaseUriBuilder().path("proposals").path(String.valueOf(proposal.getProposalId())).build();
-        dto.trip = uriInfo.getBaseUriBuilder().path("trips").path(String.valueOf(proposal.getTrip().getTripId())).build();
-        dto.user = uriInfo.getBaseUriBuilder().path("users").path(String.valueOf(proposal.getUser().getUserId())).build();
-        dto.self = uriInfo.getBaseUriBuilder().path("proposals").path(String.valueOf(proposal.getProposalId())).build();
+        dto.self = uriInfo.getBaseUriBuilder().path("/proposals/").path(String.valueOf(proposal.getProposalId())).build();
+        dto.trip = uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(proposal.getTrip().getTripId())).build();
+        dto.user = uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(proposal.getUser().getUserId())).build();
+        dto.self = uriInfo.getBaseUriBuilder().path("/proposals/").path(String.valueOf(proposal.getProposalId())).build();
         dto.description = proposal.getDescription();
         dto.price = proposal.getPrice();
         dto.userName = proposal.getUserName();
@@ -94,5 +94,13 @@ public class ProposalDto {
 
     public void setCounterProposal(Proposal counterProposal) {
         this.counterProposal = counterProposal;
+    }
+
+    public URI getSelf() {
+        return self;
+    }
+
+    public void setSelf(URI self) {
+        this.self = self;
     }
 }

@@ -17,33 +17,23 @@ public class TripDto {
 
     private URI provider;
 
-
     private URI trucker;
-
 
     private String licensePlate;
 
-
     private Integer weight;
-
 
     private Integer volume;
 
-
     private Timestamp departureDate;
-
 
     private Timestamp arrivalDate;
 
-
     private String origin;
-
 
     private String destination;
 
-
     private String type;
-
 
     private Integer price;
 
@@ -51,27 +41,21 @@ public class TripDto {
 
     private Boolean providerConfirmation;
 
-
     private Timestamp confirmationDate;
-
 
     private URI image;
 
-
     private URI proposals;
-
 
     private int proposalCount;
 
-
     private Proposal offer;
-
 
     private Review review;
 
     public static TripDto fromTrip(final UriInfo uri, final Trip trip){
         TripDto dto = new TripDto();
-        dto.self = uri.getBaseUriBuilder().path(String.valueOf(trip.getTripId())).build();
+        dto.self = uri.getBaseUriBuilder().path("/trips/").path(String.valueOf(trip.getTripId())).build();
         dto.tripId = trip.getTripId();
         if(trip.getProvider() != null)
             dto.provider = uri.getBaseUriBuilder().path("/users/").path(String.valueOf(trip.getProvider().getUserId())).build();
