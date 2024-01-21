@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfacesPersistence.ImageDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.ImageService;
+import ar.edu.itba.paw.interfacesServices.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,11 +31,11 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional(readOnly = true)
     @Override
-    public byte[] getImage(int imageid) throws IOException {
+    public byte[] getImage(int imageid) {
         Optional<Image> image = imageDao.getImage(imageid);
         if(!image.isPresent()){
             LOGGER.warn("Image not found: {}", imageid);
-            throw new IOException("Image not found");
+            throw new ImageNotFoundException();
         }
         else {
             return image.get().getImage();

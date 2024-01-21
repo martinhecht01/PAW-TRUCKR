@@ -5,7 +5,7 @@ import ar.edu.itba.paw.models.Image;
 import java.io.IOException;
 
 public interface ImageService {
-    byte[] getImage(int imageid) throws IOException;
+    byte[] getImage(int imageid);
 
     int uploadImage(byte[] image);
 
