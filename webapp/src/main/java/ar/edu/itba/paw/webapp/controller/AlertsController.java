@@ -77,9 +77,9 @@ public class AlertsController {
         return null;
     }
 
-    @ModelAttribute("cities")
-    public List<String> getCities() {
-        return cs.getAllCities();
-    }
+//    @ModelAttribute("cities")
+//    public List<String> getCities() {
+//        return cs.getAllCities();
+//    }
 
 }

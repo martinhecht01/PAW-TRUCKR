@@ -81,7 +81,7 @@ public class TripControllerApi {
     @Path("/{tripId}")
     public Response getTrip(@PathParam("tripId") int tripId){
         final Trip trip = ts.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
-        return Response.ok(TripDto.fromTrip(uriInfo,trip)).build();
+        return Response.ok(TripDto.fromTrip(uriInfo, trip)).build();
     }
 
     @GET

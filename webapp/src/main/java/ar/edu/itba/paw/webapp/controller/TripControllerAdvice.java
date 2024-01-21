@@ -20,10 +20,10 @@ public class TripControllerAdvice {
     }
 
 
-    @ModelAttribute("cities")
-    public List<String> getCities() {
-        return cityService.getAllCities();
-    }
+//    @ModelAttribute("cities")
+//    public List<String> getCities() {
+//        return cityService.getAllCities();
+//    }
 
     @ModelAttribute("cargoTypes")
     public List<String> getCargoTypes() {

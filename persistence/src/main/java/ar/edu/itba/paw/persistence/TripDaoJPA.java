@@ -84,25 +84,8 @@ public class TripDaoJPA implements TripDaoV2 {
             trip.setConfirmationDate(LocalDateTime.now());
         }
         entityManager.persist(trip);
-//
-//            entityManager.createQuery(
-//                            "UPDATE Trip t " +
-//                                    "SET t.truckerConfirmation = CASE " +
-//                                    "    WHEN t.truckerConfirmation = FALSE AND t.trucker = :user THEN TRUE " +
-//                                    "    WHEN t.truckerConfirmation = FALSE AND t.provider = :user THEN TRUE " +
-//                                    "    ELSE t.truckerConfirmation " +
-//                                    "END, " +
-//                                    "t.providerConfirmation = CASE " +
-//                                    "    WHEN t.providerConfirmation = FALSE AND t.provider = :user THEN TRUE " +
-//                                    "    ELSE t.providerConfirmation " +
-//                                    "END, " +
-//                                    "t.confirmationDate = :confirmationDate " +
-//                                    "WHERE t = :trip AND (t.truckerConfirmation = FALSE OR t.providerConfirmation = FALSE)")
-//                    .setParameter("user", user)
-//                    .setParameter("confirmationDate", Timestamp.valueOf(LocalDateTime.now()))
-//                    .setParameter("trip", trip)
-//                    .executeUpdate();
-            LOGGER.info("Confirming trip with id: {} for user with id: {}", trip.getTripId(), user.getUserId());
+
+        LOGGER.info("Confirming trip with id: {} for user with id: {}", trip.getTripId(), user.getUserId());
     }
 
 
@@ -155,11 +138,6 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public Optional<Proposal> getProposalById(int proposalId) {
-//        String query = "SELECT p FROM Proposal p JOIN FETCH p.user WHERE p.proposalId = :proposalId";
-//        TypedQuery<Proposal> typedQuery = entityManager.createQuery(query, Proposal.class);
-//        typedQuery.setParameter("proposalId", proposalId);
-//        List<Proposal> proposals = typedQuery.getResultList();
-//        return proposals.isEmpty() ? Optional.empty() : Optional.of(proposals.get(0));
         Proposal proposal = entityManager.find(Proposal.class, proposalId);
         if(proposal == null) {
             LOGGER.info("Proposal with id {} not found", proposalId);
@@ -331,28 +309,10 @@ public class TripDaoJPA implements TripDaoV2 {
         trip.setPrice(proposal.getPrice());
         entityManager.persist(trip);
 
-//        entityManager.remove(proposal);
         for (Proposal p : trip.getProposals()) {
             entityManager.remove(p);
         }
 
-//        String sql;
-//        if (trip.getTrucker().getUserId() <= 0) {
-//            sql = "UPDATE Trip t SET t.trucker = :user WHERE t.tripId = :tripId";
-//        } else {
-//            sql = "UPDATE Trip t SET t.provider = :user WHERE t.tripId = :tripId";
-//        }
-//        entityManager.createQuery(sql)
-//                .setParameter("user", proposal.getUser())
-//                .setParameter("tripId", proposal.getTrip().getTripId())
-//                .executeUpdate();
-//
-//
-//        String deleteSql = "DELETE FROM Proposal p WHERE p.proposalId <> :proposalId AND p.trip = :trip";
-//        entityManager.createQuery(deleteSql)
-//                .setParameter("proposalId", proposal.getProposalId())
-//                .setParameter("trip", proposal.getTrip())
-//                .executeUpdate();
     }
 
 //PAGINACION
@@ -506,9 +466,6 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     //PAGINACION
     @Override
     public Integer getTotalPagesActiveTripsOrRequests(User user) {
-//        String query = "SELECT count(*) as total FROM trips WHERE (trucker_id = ? AND provider_id IS NULL) OR (provider_id = ? AND trucker_id IS NULL)";
-//        Integer total = jdbcTemplate.query(query, (rs, row) -> rs.getInt("total"), userid, userid).get(0);
-//        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
         long total = user.getTruckerTrips().stream().filter(trip -> trip.getProvider() == null).count();
         total += user.getProviderTrips().stream().filter(trip -> trip.getTrucker() == null).count();
         return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
@@ -519,13 +476,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     //PAGINACION
     @Override
     public Integer getTotalPagesAcceptedTripsAndRequests(User user) {
-//        String query = "SELECT COUNT(*) as total FROM Trip t WHERE (t.trucker.userId = :userid AND t.provider.useriD IS NOT NULL) OR (t.provider.userId = :userid AND t.trucker.userId IS NOT NULL)";
-//        TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
-//        typedQuery.setParameter("userid", userid);
-//
-//        Long total = typedQuery.getSingleResult();
-//        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
-//        User user = userDao.getUserById(userid).orElseThrow(NoSuchElementException::new);
+
 
         long total = user.getTruckerTrips().stream().filter(trip -> trip.getProvider() != null).count();
         total += user.getProviderTrips().stream().filter(trip -> trip.getTrucker() != null).count();
