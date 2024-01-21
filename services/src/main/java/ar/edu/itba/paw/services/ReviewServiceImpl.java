@@ -4,6 +4,7 @@ import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
+import ar.edu.itba.paw.interfacesServices.exceptions.ReviewNotFoundException;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
@@ -35,6 +36,18 @@ public class ReviewServiceImpl implements ReviewService {
         this.reviewDao = reviewDao;
         this.tripDao = tripDao;
         this.userDao = userDao;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<Review> getReviewByTripId(int tripId) {
+        Optional<Trip> trip = tripDao.getTripOrRequestById(tripId);
+
+        if (!trip.isPresent()){
+            throw new ReviewNotFoundException();
+        }
+
+        return reviewDao.getReviewByTrip(trip.get());
     }
 
 

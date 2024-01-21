@@ -51,12 +51,11 @@ public class ReviewControllerApi {
     }
 
     @GET
-    @Path("/{userId}/{tripId}")
+    @Path("/{tripId}")
     @Produces("application/vnd.review.v1+json")
     public Response getReview(
-            @PathParam("userId") final int userId,
             @PathParam("tripId") final int tripId) {
-        final Review review = revs.getReviewByTripAndUserId(tripId, userId).orElseThrow(ReviewNotFoundException::new);
+        final Review review = revs.getReviewByTripId(tripId).orElseThrow(ReviewNotFoundException::new);
         return Response.ok(ReviewDto.fromReview(uriInfo,review)).build();
     }
 

@@ -40,6 +40,17 @@ public class ReviewDaoJPA implements ReviewDao {
     }
 
     @Override
+    public Optional<Review> getReviewByTrip(Trip trip) {
+        if(trip == null)
+            return Optional.empty();
+        String jpql = "SELECT r FROM Review r WHERE r.trip = :trip ";
+        List<Review> reviews = entityManager.createQuery(jpql, Review.class)
+                .setParameter("trip", trip)
+                .getResultList();
+        return reviews.isEmpty() ? Optional.empty() : Optional.of(reviews.get(0));
+    }
+
+    @Override
     public Review createReview(Trip trip, User user, float rating, String comment) {
         Review review = new Review(trip, user, rating, comment);
         LOGGER.info("Creating review token for user {} in trip {}", user.getUserId(), trip.getTripId());
