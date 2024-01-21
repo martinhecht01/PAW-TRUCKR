@@ -134,7 +134,7 @@ public class ReviewDaoImplTest {
         String sql = "SELECT * FROM users WHERE userid = ?";
 
         // 2. Ejercitar
-        List<Review> reviews = reviewDao.getUserReviews(em.find(User.class, USERID_EXISTENT));
+        List<Review> reviews = reviewDao.getUserReviews(em.find(User.class, USERID_EXISTENT),1,12);//TODO:harcodie el first page desp vemo
 
         // 3. Postcondiciones
         Assert.assertEquals(4, reviews.size());

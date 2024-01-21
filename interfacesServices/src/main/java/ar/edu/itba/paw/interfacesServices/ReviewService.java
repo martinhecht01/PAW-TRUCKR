@@ -14,5 +14,7 @@ public interface ReviewService {
 
     Double getUserRating(int userId);
 
-    List<Review> getUserReviews(int userId);
+    List<Review> getUserReviews(int userId, int page, int pageSize);
+
+    int getUserReviewCount(int userId);
 }

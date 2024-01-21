@@ -75,13 +75,12 @@ public class ReviewControllerApi {
             @QueryParam("page") @DefaultValue(PAGE) int page,
             @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
         final User user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        final List<Review> reviewList = revs.getUserReviews(user.getUserId());
+        final List<Review> reviewList = revs.getUserReviews(user.getUserId(), page, pageSize);
         if(reviewList.isEmpty()){
             return Response.noContent().build();
         }
-//        final int maxPages = revs.userReviewsMaxPages(user.getUserId()); TODO:paginar
+        final int maxPages = revs.getUserReviewCount(user.getUserId()) / pageSize + 1;
         final List<ReviewDto> reviewDtos = reviewList.stream().map(currifyUriInfo(ReviewDto::fromReview)).collect(Collectors.toList());
-        int maxPages = 1;
         Response.ResponseBuilder toReturn = Response.ok( new GenericEntity<List<ReviewDto>>(reviewDtos){});
         PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
         return toReturn.build();

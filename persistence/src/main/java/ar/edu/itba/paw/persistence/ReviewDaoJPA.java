@@ -67,10 +67,20 @@ public class ReviewDaoJPA implements ReviewDao {
     }
 
     @Override
-    public List<Review> getUserReviews(User user) {
+    public List<Review> getUserReviews(User user, int page, int pageSize) {
         String jpql = "SELECT r FROM Review r WHERE r.user = :user";
         return entityManager.createQuery(jpql, Review.class)
                 .setParameter("user", user)
+                .setFirstResult((page - 1) * pageSize)
+                .setMaxResults(pageSize)
                 .getResultList();
+    }
+
+    @Override
+    public int getUserReviewCount(User user) {
+        String jpql = "SELECT count(r) FROM Review r WHERE r.user = :user";
+        return entityManager.createQuery(jpql, Long.class)
+                .setParameter("user", user)
+                .getSingleResult().intValue();
     }
 }
