@@ -3,19 +3,16 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.webapp.controller.utils.CacheHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
-import javax.persistence.Cache;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 
 @Path("images")
-@Controller
+@Component
 public class ImageControllerApi {
 
     private final ImageService is;
