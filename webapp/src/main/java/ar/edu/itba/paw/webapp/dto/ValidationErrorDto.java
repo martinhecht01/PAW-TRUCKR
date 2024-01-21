@@ -11,8 +11,13 @@ public class ValidationErrorDto {
     public static ValidationErrorDto fromValidationException(ConstraintViolation<?> violation){
         ValidationErrorDto dto = new ValidationErrorDto();
         dto.message = violation.getMessage();
-        dto.path = violation.getPropertyPath().toString();
+        dto.path = getViolationPropertyName(violation);
         return dto;
+    }
+//TODO revisar como se comporta con la validacion de query params
+    private static String getViolationPropertyName(ConstraintViolation<?> violation) {
+        final String propertyPath = violation.getPropertyPath().toString();
+        return propertyPath.substring(propertyPath.lastIndexOf(".") + 1);
     }
 
     public String getMessage() {
