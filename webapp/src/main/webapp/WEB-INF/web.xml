@@ -71,7 +71,9 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     </init-param>
     <!-- pass to next filter if Jersey/App returns 404 -->
     <init-param>
-      <param-name>jersey.config.servlet.filter.forwardOn404</param-name>
+<!--      Cambiar estas lineas hace que te muestre el error en el reply que es un espanto-->
+<!--      <param-name>jersey.config.servlet.filter.forwardOn404</param-name>-->
+      <param-name>jersey.config.server.response.setStatusOverSendError</param-name>
       <param-value>true</param-value>
     </init-param>
 

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Reset;
+import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfacesServices.exceptions.ResetErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
@@ -60,30 +61,20 @@ public class BasicFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-
         Authentication authentication;
-
+        //TODO test
         try {
             String[] credentials = extractAndDecodeHeader(header);
+            Optional<SecureToken> token = userService.getSecureToken(credentials[NONCE]);
 
-            if(request.getContentType().equals("application/vnd.resetpassword.v1+json")
-                    && request.getMethod().equals("PATCH"))
-            {
-                Optional<Reset> reset = userService.getResetByHash(Integer.valueOf(credentials[NONCE]));
-                if(reset.isPresent()){
-                    User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(AuthErrorException::new);
-                    userService.completeReset(Integer.valueOf(credentials[NONCE]));
-                    response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
-                    authentication = nonceAuthentication(user);
-                }else{
-                    throw new AuthErrorException("exception.InvalidResetToken");
-                }
-            }else if(request.getContentType().equals("application/vnd.verifyaccount.v1+json")
-                    && request.getMethod().equals("PATCH"))
-            {
+            if(token.isPresent()){
                 User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(AuthErrorException::new);
-                userService.verifyAccount(Integer.valueOf(credentials[NONCE]),user.getLocale());
+                if(!token.get().getUser().equals(user))
+                    throw new AuthErrorException();
+                if(!userService.validateToken(Integer.valueOf(credentials[NONCE]), user.getLocale()))
+                    throw new AuthErrorException();
                 response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
+                userService.deleteToken(credentials[NONCE]);
                 authentication = nonceAuthentication(user);
             }else {
                 authentication = authenticationManager.authenticate(

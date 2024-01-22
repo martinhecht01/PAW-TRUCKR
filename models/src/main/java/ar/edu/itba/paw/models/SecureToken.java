@@ -49,4 +49,12 @@ public class SecureToken {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public LocalDateTime getExpireAt() {
+        return expireAt;
+    }
+
+    public void setExpireAt(LocalDateTime expireAt) {
+        this.expireAt = expireAt;
+    }
 }

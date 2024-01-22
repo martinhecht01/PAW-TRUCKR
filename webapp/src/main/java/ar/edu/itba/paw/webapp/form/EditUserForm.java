@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
+import ar.edu.itba.paw.webapp.form.constraints.annotations.ConfirmPasswordValidation;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
@@ -11,7 +12,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+//@ConfirmPasswordValidation(passwordFieldName = "password", confirmPasswordFieldName = "repeatPassword")
 public class EditUserForm {
+
+    @Size(min = 6, max = 100, message="validation.Password.Size")
+    @FormDataParam("password")
+    private String password;
+
+//    private String repeatPassword;
 
     @Size(min = 6, max = 100)
     @Pattern(regexp = "^[A-Za-z]+(\\s[A-Za-z]*)+$")
@@ -50,4 +58,19 @@ public class EditUserForm {
         this.profileImage = profileImage;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+//    public String getRepeatPassword() {
+//        return repeatPassword;
+//    }
+//
+//    public void setRepeatPassword(String repeatPassword) {
+//        this.repeatPassword = repeatPassword;
+//    }
 }

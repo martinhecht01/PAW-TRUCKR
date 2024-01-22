@@ -18,19 +18,24 @@ public interface UserDao {
 
     Optional<User> getUserById(int id);
 
-    Optional<Integer> createReset(Integer userId, Integer hash);
+//    Optional<Integer> createReset(Integer userId, Integer hash);
+//
+//    Optional<Reset> getResetByHash(Integer hash);
 
-    Optional<Reset> getResetByHash(Integer hash);
-
-    void completeReset(Integer hash);
+//    void completeReset(Integer hash);
 
     boolean existsUser(String cuit);
+
+    Optional<SecureToken> findTokenByUser(User user);
+
 
     Integer createSecureToken(User user, int token);
 
     Optional<SecureToken> getSecureTokenByValue(Integer tokenValue);
 
-    void verifyAccount(User user);
+    boolean delete(Integer tokenValue);
+
+    boolean verifyAccount(User user);
 
     void setImage(int userId, Image image);
 

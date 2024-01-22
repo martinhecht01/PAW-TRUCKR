@@ -62,38 +62,38 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void resetPassword(Integer userId, String newPassword){
-        userDao.resetPassword(userId, passwordEncoder.encode(newPassword));
+        if (newPassword != null && !newPassword.isEmpty())
+            userDao.resetPassword(userId, passwordEncoder.encode(newPassword));
     }
+
+//    @Transactional
+//    @Override
+//    public void completeReset(Integer hash){
+//        userDao.completeReset(hash);
+//    }
+
+//    @Transactional(readOnly = true)
+//    @Override
+//    public Optional<Reset> getResetByHash(Integer hash){
+//        Optional<Reset> reset = userDao.getResetByHash(hash);
+//
+//
+//        //raro lo que devuelve esto. Revisar
+//        if(!reset.isPresent())
+//            return reset;
+//
+//        Duration interval = Duration.between(reset.get().getCreateDate().toLocalDateTime(), LocalDateTime.now());
+//        if(reset.get().getCompleted() || interval.toHours() > 24)
+//            return Optional.empty();
+//
+//        return reset;
+//    }
 
     @Transactional
     @Override
-    public void completeReset(Integer hash){
-        userDao.completeReset(hash);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Reset> getResetByHash(Integer hash){
-        Optional<Reset> reset = userDao.getResetByHash(hash);
-
-
-        //raro lo que devuelve esto. Revisar
-        if(!reset.isPresent())
-            return reset;
-
-        Duration interval = Duration.between(reset.get().getCreateDate().toLocalDateTime(), LocalDateTime.now());
-        if(reset.get().getCompleted() || interval.toHours() > 24)
-            return Optional.empty();
-
-        return reset;
-    }
-
-    @Transactional
-    @Override
-    public void createReset(Integer userId, Locale locale){
-
-        Integer hash = userDao.createReset(userId, Objects.hash(LocalDateTime.now() + userId.toString()) ).get();
-        ms.sendResetEmail(userDao.getUserById(userId).get(), hash,locale);
+    public void sendPasswordToken(User user, Locale locale){
+        Integer tokenValue = userDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
+        ms.sendResetEmail(user, tokenValue, locale);
     }
 
     private static int hashTo6Digits(Object obj1, Object obj2) {
@@ -110,9 +110,26 @@ public class UserServiceImpl implements UserService {
         ms.sendSecureTokenEmail(user, tokenValue,locale);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<SecureToken> getSecureToken(String tokenValue){
+        //return empty if string does not contain a number
+        if(!tokenValue.matches("\\d+"))
+            return Optional.empty();
+        return userDao.getSecureTokenByValue(Integer.valueOf(tokenValue));
+    }
+
     @Transactional
     @Override
-    public boolean verifyAccount(Integer tokenValue, Locale locale){
+    public boolean deleteToken(String token){
+        if(!token.matches("\\d+"))
+            return false;
+        return userDao.delete(Integer.valueOf(token));
+    }
+
+    @Transactional
+    @Override
+    public boolean validateToken(Integer tokenValue, Locale locale){
         Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
         if(!token.isPresent()) {
             LOGGER.warn("Account not verified. Token missing.");
@@ -120,11 +137,14 @@ public class UserServiceImpl implements UserService {
         }
 
         if(token.get().isExpired()){
+            deleteToken(tokenValue.toString());
             LOGGER.warn("Account not verified. Token expired. Token: {}", tokenValue);
             return false;
         } else {
-            userDao.verifyAccount(token.get().getUser());
-            ms.sendConfirmationEmail(token.get().getUser(), locale);
+            boolean wasVerified = userDao.verifyAccount(token.get().getUser());
+            if(!wasVerified){
+                ms.sendConfirmationEmail(token.get().getUser(), locale);
+            }
         }
         return true;
     }
@@ -157,7 +177,8 @@ public class UserServiceImpl implements UserService {
             Integer imageId = imageDao.uploadImage(image);
     		updateProfilePicture(userId, imageId);
     	}
-        updateProfileName(userId, name);
+        if (name != null && !name.isEmpty())
+            updateProfileName(userId, name);
     }
 
     @Transactional
