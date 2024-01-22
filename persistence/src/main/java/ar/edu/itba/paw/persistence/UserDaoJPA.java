@@ -28,55 +28,6 @@ public class UserDaoJPA implements UserDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-//    @Override
-//    public Optional<Integer> createReset(Integer userId, Integer hash) {
-//        //hash.toString()
-//        // completed = false
-//        User user = entityManager.find(User.class, userId);
-//        Reset reset = new Reset(user, hash , new Timestamp(System.currentTimeMillis()), false);
-//        LOGGER.info("Creating reset for user: {}", userId);
-//        entityManager.persist(reset);
-//        return Optional.of(hash);
-//    }
-
-    @Override
-    public Integer createSecureToken(User user, int token) {
-        if (findTokenByUser(user).isPresent()){
-            delete(findTokenByUser(user).get().getToken());
-        }
-        SecureToken secureToken = new SecureToken(user,token, LocalDateTime.now().plusHours(1));
-        LOGGER.info("Creating secure token for user: {}", user.getUserId());
-        entityManager.persist(secureToken);
-        return token;
-    }
-
-    @Override
-    public Optional<SecureToken> getSecureTokenByValue(Integer tokenValue) {
-        SecureToken token = entityManager.find(SecureToken.class, tokenValue);
-        if(token == null){
-            LOGGER.info("Token not found. Token: {}", tokenValue);
-            return Optional.empty();
-        }
-        return Optional.of(token);
-    }
-
-    @Override
-    public boolean delete(Integer tokenValue){
-        SecureToken token = entityManager.find(SecureToken.class, tokenValue);
-        if(token == null){
-            LOGGER.info("Token not found. Token: {}", tokenValue);
-            return false;
-        }
-        entityManager.remove(token);
-        return true;
-    }
-
-    @Override
-    public Optional<SecureToken> findTokenByUser(User user){
-        TypedQuery<SecureToken> query = entityManager.createQuery("select t from SecureToken t where t.user = :user", SecureToken.class);
-        query.setParameter("user", user);
-        return query.getResultList().stream().findFirst();
-    }
 
     @Override
     public boolean verifyAccount(User user) {
@@ -86,30 +37,6 @@ public class UserDaoJPA implements UserDao {
         return wasVerified;
     }
 
-//    @Override
-//    public Optional<Reset> getResetByHash(Integer hash) {
-////        TypedQuery<Reset> query = entityManager.createQuery("SELECT r FROM Reset r WHERE r.hash = :hash", Reset.class);
-////        query.setParameter("hash", hash);
-////        List<Reset> resets = query.getResultList();
-////        if (resets.isEmpty()) {
-////            LOGGER.warn("Reset not found. Hash: {}", hash);
-////            return Optional.empty();
-////        }
-////        return resets.stream().findFirst();
-//        Reset reset = entityManager.find(Reset.class, hash);
-//        if(reset == null){
-//            LOGGER.warn("Reset not found. Hash: {}", hash);
-//            return Optional.empty();
-//        }
-//        return Optional.of(reset);
-//    }
-
-//    @Override
-//    public void completeReset(Integer hash) {
-//        LOGGER.info("Completing reset. Hash: {}", hash);
-//        Reset reset = entityManager.find(Reset.class, hash);
-//        reset.setCompleted(true);
-//    }
 
     @Override
     public void resetPassword(Integer userId, String newPassword) {

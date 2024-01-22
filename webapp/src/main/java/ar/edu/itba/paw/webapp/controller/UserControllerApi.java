@@ -9,9 +9,7 @@ import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
 import ar.edu.itba.paw.webapp.form.CuitForm;
 import ar.edu.itba.paw.webapp.form.EditUserForm;
-import ar.edu.itba.paw.webapp.form.ResetPasswordForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.EmptyBody;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -19,8 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -92,16 +88,6 @@ public class UserControllerApi {
         return Response.accepted().build();
     }
 
-//    @PATCH
-//    @Path("/{id}")
-//    @Consumes("application/vnd.resetpassword.v1+json")
-//    @PreAuthorize("@accessHandler.userAccessVerification(#id)")
-//    public Response changePassword(@Valid ResetPasswordForm form, @PathParam("id") final Integer id){
-//        User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
-//        us.resetPassword(user.getUserId(), form.getPassword());
-//        return Response.noContent().build();
-//    }
-
 // Verify account
 // TODO: RESEND TOKEN?
 
@@ -118,8 +104,6 @@ public class UserControllerApi {
     @Consumes("application/vnd.verifyaccount.v1+json")
     @PreAuthorize("@accessHandler.userAccessVerification(#id)")
     public Response verifyAccount(@PathParam("id") final Integer id){
-//        User user = us.getUserById(id).orElseThrow(UserNotFoundException::new);
-//        us.verifyAccount(user.getUserId(), LocaleContextHolder.getLocale());
         return Response.noContent().build();
     }
 

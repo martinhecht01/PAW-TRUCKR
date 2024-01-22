@@ -1,13 +1,13 @@
 package ar.edu.itba.paw.services;
 
 import ar.edu.itba.paw.interfacesPersistence.ImageDao;
+import ar.edu.itba.paw.interfacesPersistence.SecureTokenDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.CuitAlreadyExistsException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
-import ar.edu.itba.paw.models.Reset;
 import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 import org.slf4j.Logger;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Objects;
@@ -33,16 +32,22 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
     private final MailService ms;
     private final ImageDao imageDao;
+    private final SecureTokenDao secureTokenDao;
 
 
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDao userDao, MailService ms, ImageDao imageDao, PasswordEncoder passwordEncoder){
+    public UserServiceImpl(UserDao userDao,
+                           MailService ms,
+                           ImageDao imageDao,
+                           PasswordEncoder passwordEncoder,
+                           SecureTokenDao secureTokenDao){
         this.userDao = userDao;
         this.ms = ms;
         this.imageDao = imageDao;
         this.passwordEncoder = passwordEncoder;
+        this.secureTokenDao = secureTokenDao;
     }
 
     @Transactional
@@ -66,33 +71,10 @@ public class UserServiceImpl implements UserService {
             userDao.resetPassword(userId, passwordEncoder.encode(newPassword));
     }
 
-//    @Transactional
-//    @Override
-//    public void completeReset(Integer hash){
-//        userDao.completeReset(hash);
-//    }
-
-//    @Transactional(readOnly = true)
-//    @Override
-//    public Optional<Reset> getResetByHash(Integer hash){
-//        Optional<Reset> reset = userDao.getResetByHash(hash);
-//
-//
-//        //raro lo que devuelve esto. Revisar
-//        if(!reset.isPresent())
-//            return reset;
-//
-//        Duration interval = Duration.between(reset.get().getCreateDate().toLocalDateTime(), LocalDateTime.now());
-//        if(reset.get().getCompleted() || interval.toHours() > 24)
-//            return Optional.empty();
-//
-//        return reset;
-//    }
-
     @Transactional
     @Override
     public void sendPasswordToken(User user, Locale locale){
-        Integer tokenValue = userDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
+        Integer tokenValue = secureTokenDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
         ms.sendResetEmail(user, tokenValue, locale);
     }
 
@@ -106,7 +88,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void createSecureToken(User user, Locale locale) {
-        Integer tokenValue = userDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
+        Integer tokenValue = secureTokenDao.createSecureToken(user,hashTo6Digits(LocalDateTime.now(),user.getUserId().toString()));
         ms.sendSecureTokenEmail(user, tokenValue,locale);
     }
 
@@ -116,7 +98,7 @@ public class UserServiceImpl implements UserService {
         //return empty if string does not contain a number
         if(!tokenValue.matches("\\d+"))
             return Optional.empty();
-        return userDao.getSecureTokenByValue(Integer.valueOf(tokenValue));
+        return secureTokenDao.getSecureTokenByValue(Integer.valueOf(tokenValue));
     }
 
     @Transactional
@@ -124,13 +106,13 @@ public class UserServiceImpl implements UserService {
     public boolean deleteToken(String token){
         if(!token.matches("\\d+"))
             return false;
-        return userDao.delete(Integer.valueOf(token));
+        return secureTokenDao.delete(Integer.valueOf(token));
     }
 
     @Transactional
     @Override
     public boolean validateToken(Integer tokenValue, Locale locale){
-        Optional<SecureToken> token = userDao.getSecureTokenByValue(tokenValue);
+        Optional<SecureToken> token = secureTokenDao.getSecureTokenByValue(tokenValue);
         if(!token.isPresent()) {
             LOGGER.warn("Account not verified. Token missing.");
             return false;
