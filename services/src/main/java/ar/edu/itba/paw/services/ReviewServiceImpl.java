@@ -5,6 +5,7 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.exceptions.ReviewNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
@@ -90,15 +91,25 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Review> getUserReviews(int userId) {
+    public List<Review> getUserReviews(int userId, int page, int pageSize) {
 
         Optional<User> user = userDao.getUserById(userId);
 
         LOGGER.info("Getting reviews for user {}", userId);
 
         if (user.isPresent())
-            return reviewDao.getUserReviews(user.get());
+            return reviewDao.getUserReviews(user.get(),page, pageSize);
 
         return new ArrayList<>();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public int getUserReviewCount(int userId) {
+        Optional<User> user = userDao.getUserById(userId);
+        LOGGER.info("Getting review count for user {}", userId);
+
+        return user.map(reviewDao::getUserReviewCount).orElseThrow(UserNotFoundException::new);
+
     }
 }

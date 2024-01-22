@@ -16,5 +16,7 @@ public interface ReviewDao {
 
     Double getUserRating(User user);
 
-    List<Review> getUserReviews(User user);
+    List<Review> getUserReviews(User user, int page, int pageSize);
+
+    int getUserReviewCount(User user);
 }
