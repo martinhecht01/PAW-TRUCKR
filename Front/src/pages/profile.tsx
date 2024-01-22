@@ -5,17 +5,45 @@ import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
 import {StarFilled, UserOutlined} from "@ant-design/icons";
 import ReviewContainer from '../Components/reviewContainer';
+import {getUserById} from "../api/userApi";
+import {User} from "../models/User";
+import {getReview, getReviewsByUser} from "../api/reviewApi";
+
 
 const { Title, Text } = Typography;
 
-const profile: React.FC = () => {
+const profile: React.FC = async () => {
 
     const {t} = useTranslation();
 
     const [, setContainer] = React.useState<HTMLDivElement | null>(null);
 
-    const cardTitle = ' 4.5 - (3 ' + t("review.reviews") + ")";
-    //TODO: get user data from backend
+    const user: User = await getUserById(6);
+    //TODO: nombre, cuit y mail vienen por el endpoint de users. Despues me manda links de los trips que hizo y hacer array.len(). Tambien me manda links para los reviews que hizo y hacer array.len(). El rating es el promedio de los reviews que hizo.
+
+    const n: number = user.reviews.length;
+    let avg : number;
+
+    for (let i = 0; i < n; i++) {
+        const rat : number = (await getReview(user.reviews[i])).rating;
+        avg += rat;
+    }
+
+    const reviews = await getReviewsByUser(user.id);
+
+    avg = avg / n;
+
+
+    let compTrips : number = 0;
+    if (user.role == 'PROVIDER'){
+        compTrips = user.providerTrips.length;
+    }
+    else{
+        compTrips = user.truckerTrips.length;
+    }
+
+    const cardTitle = " " +avg+"- ("+n+" " + t("review.reviews") + ")";
+
 
     return (
         <div>
@@ -24,21 +52,22 @@ const profile: React.FC = () => {
                     <Col span={12}>
                         <Card className='w-100' title={<Title level={3}>{t("profile.profile")}</Title>}>
                             <div className='flex-center'>
-                                <Avatar size={124} icon={<UserOutlined />} />
+                                <Avatar size={124} icon={<UserOutlined/>}/>
                             </div>
                             <Title level={5}>{t("profile.name")}</Title>
-                            <Text>dfkjdf</Text>
+                            <Text>{user.name}</Text>
                             <Title level={5}>{t('profile.cuit')}</Title>
-                            <Text>dfkjdf</Text>
+                            <Text>{user.cuit}</Text>
                             <Title level={5}>{t('profile.email')}</Title>
-                            <Text>dfkjdf</Text>
-                            <Button style={{width:'100%', marginTop:'5vh'}} type='primary'>{t("profile.editProfile")}</Button>
+                            <Text>{user.email}</Text>
+                            <Button style={{width: '100%', marginTop: '5vh'}}
+                                    type='primary'>{t("profile.editProfile")}</Button>
                         </Card>
                     </Col>
                     <Col span={7}>
                         <Card title={<Title level={3}>{t("profile.completedTrips")}</Title>}>
-                            <div className='w-100 text-center'> 
-                                <Title level={3}>0</Title>
+                            <div className='w-100 text-center'>
+                                <Title level={3}>${compTrips}</Title>
                             </div>
                         </Card>
                     </Col>
@@ -53,15 +82,18 @@ const profile: React.FC = () => {
                             }
                         >
                             <div className='reviewsContainerStyle' ref={setContainer}>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
-                                <ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>
+                                {reviews.map((item, index) => (
+                                    // Each item in the array is mapped to a JSX element
+                                    <ReviewContainer avgRating={item.rating} comment={item.review}></ReviewContainer>
+                                ))}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
+                                {/*<ReviewContainer avgRating={5} comment={'Muy Bueno'}></ReviewContainer>*/}
                             </div>
                         </Card>
                     </Col>
