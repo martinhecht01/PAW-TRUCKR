@@ -41,26 +41,26 @@ public class OffersController {
     }
 
 
-    @RequestMapping(value = "/offers/acceptOffer", method = { RequestMethod.POST })
-    public ModelAndView acceptOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") int tripId) {
-        ts.acceptProposal(offerId, LocaleContextHolder.getLocale());
-
-
-        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
-
-        ModelAndView mav;
-
-        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
-            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
-        }
-        else {
-            mav = new ModelAndView("redirect:/trips/acceptSuccess?tripId=" + tripId);
-        }
-
-        LOGGER.info("Proposal with Id: {} accepted successfully", offerId);
-        mav.addObject("trip", trip);
-        return mav;
-    }
+//    @RequestMapping(value = "/offers/acceptOffer", method = { RequestMethod.POST })
+//    public ModelAndView acceptOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") int tripId) {
+//        ts.acceptProposal(offerId, LocaleContextHolder.getLocale());
+//
+//
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//
+//        ModelAndView mav;
+//
+//        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
+//            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
+//        }
+//        else {
+//            mav = new ModelAndView("redirect:/trips/acceptSuccess?tripId=" + tripId);
+//        }
+//
+//        LOGGER.info("Proposal with Id: {} accepted successfully", offerId);
+//        mav.addObject("trip", trip);
+//        return mav;
+//    }
 
     @RequestMapping(value = "/offers/rejectOffer", method = RequestMethod.POST)
     public ModelAndView cancelOffer(@ModelAttribute("offerId") final String offerId, @ModelAttribute("tripId") final Integer tripId) {
@@ -77,25 +77,25 @@ public class OffersController {
         return mav;
     }
 
-    @RequestMapping(value = "/offers/acceptCounterOffer", method = { RequestMethod.POST })
-    public ModelAndView acceptCounterOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") int tripid) {
-        ts.acceptCounterOffer(offerId);
-
-        Trip trip = ts.getTripOrRequestByIdAndUserId(tripid, getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
-
-        ModelAndView mav = new ModelAndView();
-        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
-            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripid);
-            mav.addObject("trip", trip);
-        }
-        else {
-            mav = new ModelAndView("redirect:/requests/manageRequest?requestId=" + tripid);
-            mav.addObject("request", trip);
-        }
-
-        LOGGER.info("Counter Offer with Id: {} accepted successfully", offerId);
-        return mav;
-    }
+//    @RequestMapping(value = "/offers/acceptCounterOffer", method = { RequestMethod.POST })
+//    public ModelAndView acceptCounterOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") int tripid) {
+//        ts.acceptCounterOffer(offerId);
+//
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(tripid, getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//
+//        ModelAndView mav = new ModelAndView();
+//        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
+//            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripid);
+//            mav.addObject("trip", trip);
+//        }
+//        else {
+//            mav = new ModelAndView("redirect:/requests/manageRequest?requestId=" + tripid);
+//            mav.addObject("request", trip);
+//        }
+//
+//        LOGGER.info("Counter Offer with Id: {} accepted successfully", offerId);
+//        return mav;
+//    }
 
     @RequestMapping(value = "/offers/rejectCounterOffer", method = { RequestMethod.POST })
     public ModelAndView rejectCounterOffer(@RequestParam("offerId") int offerId) {
@@ -105,26 +105,26 @@ public class OffersController {
         return new ModelAndView("redirect:/myOffers");
     }
 
-    @RequestMapping(value = "/offers/sendCounterOffer", method = { RequestMethod.POST })
-    public ModelAndView sendCounterOffer(@RequestParam("offerId") String offerId, @Valid @ModelAttribute("acceptForm") final AcceptForm form,  final BindingResult result) {
-        if(result.hasErrors())
-            return sendCounterOffer(form, offerId);
-        ts.sendCounterOffer(Integer.parseInt(offerId), getCurrentUser(), form.getDescription(), form.getPrice());
-
-        Proposal proposal = ts.getProposalById(Integer.parseInt(offerId)).orElseThrow(TripOrRequestNotFoundException::new);
-        Trip trip = ts.getTripOrRequestByIdAndUserId(proposal.getTrip().getTripId(), getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        ModelAndView mav;
-
-        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
-            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + trip.getTripId());
-            mav.addObject("trip", trip);
-        }
-        else {
-            mav = new ModelAndView("redirect:/requests/manageRequest?requestId=" + trip.getTripId());
-            mav.addObject("request", trip);
-        }
-        return mav;
-    }
+//    @RequestMapping(value = "/offers/sendCounterOffer", method = { RequestMethod.POST })
+//    public ModelAndView sendCounterOffer(@RequestParam("offerId") String offerId, @Valid @ModelAttribute("acceptForm") final AcceptForm form,  final BindingResult result) {
+//        if(result.hasErrors())
+//            return sendCounterOffer(form, offerId);
+//        ts.sendCounterOffer(Integer.parseInt(offerId), getCurrentUser(), form.getDescription(), form.getPrice());
+//
+//        Proposal proposal = ts.getProposalById(Integer.parseInt(offerId)).orElseThrow(TripOrRequestNotFoundException::new);
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(proposal.getTrip().getTripId(), getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//        ModelAndView mav;
+//
+//        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
+//            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + trip.getTripId());
+//            mav.addObject("trip", trip);
+//        }
+//        else {
+//            mav = new ModelAndView("redirect:/requests/manageRequest?requestId=" + trip.getTripId());
+//            mav.addObject("request", trip);
+//        }
+//        return mav;
+//    }
 
     @RequestMapping("/offers/sendCounterOffer")
     public ModelAndView sendCounterOffer(@ModelAttribute("acceptForm") final AcceptForm form, @RequestParam("offerId") String offerId) {
@@ -133,25 +133,25 @@ public class OffersController {
         mav.addObject("proposal", proposal);
         return mav;
     }
-    @RequestMapping(path = "/offers/deleteCounterOffer", method = { RequestMethod.POST })
-    public ModelAndView deleteCounterOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") String tripId) {
-        ts.deleteCounterOffer(offerId);
-
-        LOGGER.info("Counter Offer with Id: {} deleted successfully", offerId);
-
-        Trip trip = ts.getTripOrRequestByIdAndUserId(Integer.parseInt(tripId), getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        ModelAndView mav;
-
-        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
-            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
-            mav.addObject("trip", trip);
-        }
-        else {
-            mav = new ModelAndView("redirect:/requests/manageRequest?requestId=" + tripId);
-            mav.addObject("request", trip);
-        }
-        return mav;
-    }
+//    @RequestMapping(path = "/offers/deleteCounterOffer", method = { RequestMethod.POST })
+//    public ModelAndView deleteCounterOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") String tripId) {
+//        ts.deleteCounterOffer(offerId);
+//
+//        LOGGER.info("Counter Offer with Id: {} deleted successfully", offerId);
+//
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(Integer.parseInt(tripId), getCurrentUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//        ModelAndView mav;
+//
+//        if(Objects.equals(getCurrentUser().getRole(), "TRUCKER")) {
+//            mav = new ModelAndView("redirect:/trips/manageTrip?tripId=" + tripId);
+//            mav.addObject("trip", trip);
+//        }
+//        else {
+//            mav = new ModelAndView("redirect:/requests/manageRequest?requestId=" + tripId);
+//            mav.addObject("request", trip);
+//        }
+//        return mav;
+//    }
 
     public User getCurrentUser(){
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -198,60 +198,60 @@ public class TripController {
         return view;
     }
 
-    @RequestMapping("/trips/details")
-    public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
-        LOGGER.info("Accessing trip details page with trip Id: {}", id);
-        final ModelAndView mav = new ModelAndView("trips/details");
-        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        mav.addObject("trip", trip);
-        return mav;
-    }
+//    @RequestMapping("/trips/details")
+//    public ModelAndView tripDetail(@RequestParam("id") int id, @ModelAttribute("acceptForm") final AcceptForm form) {
+//        LOGGER.info("Accessing trip details page with trip Id: {}", id);
+//        final ModelAndView mav = new ModelAndView("trips/details");
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//        mav.addObject("trip", trip);
+//        return mav;
+//    }
 
 
-    @RequestMapping(value = "/trips/sendProposal", method = { RequestMethod.POST })
-    public ModelAndView sendProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
-        if (errors.hasErrors()) {
-            LOGGER.info("Error sending proposal");
-            return tripDetail(id, form);
-        }
+//    @RequestMapping(value = "/trips/sendProposal", method = { RequestMethod.POST })
+//    public ModelAndView sendProposal(@RequestParam("id") int id, @Valid @ModelAttribute("acceptForm") final AcceptForm form, final BindingResult errors) throws MessagingException {
+//        if (errors.hasErrors()) {
+//            LOGGER.info("Error sending proposal");
+//            return tripDetail(id, form);
+//        }
+//
+//        User user = getUser();
+//
+//        if(user == null)
+//            throw new UserNotFoundException();
+//
+//        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
+//        LOGGER.info("Proposal with Id: {} sent successfully", id);
+//        ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
+//        mav.addObject("id", id);
+//        return mav;
+//    }
 
-        User user = getUser();
-
-        if(user == null)
-            throw new UserNotFoundException();
-
-        ts.createProposal(id, user.getUserId(), form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
-        LOGGER.info("Proposal with Id: {} sent successfully", id);
-        ModelAndView mav = new ModelAndView("redirect:/trips/reserveSuccess");
-        mav.addObject("id", id);
-        return mav;
-    }
-
-    @RequestMapping("/trips/acceptSuccess")
-    public ModelAndView acceptSuccess(@RequestParam("tripId") String tripId){
-        ModelAndView mav = new ModelAndView("trips/acceptSuccess");
-        Trip trip = ts.getTripOrRequestByIdAndUserId(Integer.parseInt(tripId), getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        mav.addObject("trip", trip);
-        return mav;
-    }
-
-    @RequestMapping("/trips/success")
-    public ModelAndView tripDetail(@RequestParam("id") int id) {
-        LOGGER.info("Accessing trip success page with trip Id: {}", id);
-        final ModelAndView mav = new ModelAndView("trips/success");
-        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        mav.addObject("trip", trip);
-        return mav;
-    }
-
-    @RequestMapping("/trips/reserveSuccess")
-    public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
-        LOGGER.info("Accessing trip reserve success page with trip Id: {}", id);
-        final ModelAndView mav = new ModelAndView("trips/reserveSuccess");
-        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-        mav.addObject("trip", trip);
-        return mav;
-    }
+//    @RequestMapping("/trips/acceptSuccess")
+//    public ModelAndView acceptSuccess(@RequestParam("tripId") String tripId){
+//        ModelAndView mav = new ModelAndView("trips/acceptSuccess");
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(Integer.parseInt(tripId), getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//        mav.addObject("trip", trip);
+//        return mav;
+//    }
+//
+//    @RequestMapping("/trips/success")
+//    public ModelAndView tripDetail(@RequestParam("id") int id) {
+//        LOGGER.info("Accessing trip success page with trip Id: {}", id);
+//        final ModelAndView mav = new ModelAndView("trips/success");
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//        mav.addObject("trip", trip);
+//        return mav;
+//    }
+//
+//    @RequestMapping("/trips/reserveSuccess")
+//    public ModelAndView tripReserveSuccess(@RequestParam("id") int id) {
+//        LOGGER.info("Accessing trip reserve success page with trip Id: {}", id);
+//        final ModelAndView mav = new ModelAndView("trips/reserveSuccess");
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(id, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//        mav.addObject("trip", trip);
+//        return mav;
+//    }
 
     @RequestMapping("/trips/myTrips")
     public ModelAndView myTrips(@RequestParam(value = "acceptPage", required = false, defaultValue = "1") final Integer acceptPage,
@@ -274,19 +274,19 @@ public class TripController {
         return mav;
     }
 
-    @RequestMapping("/trips/manageTrip")
-    public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {
-        LOGGER.info("Accessing manage trip page with trip Id: {}", tripId);
-        final ModelAndView mav = new ModelAndView("trips/manageTrip");
-        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
-
-        int userId = Objects.requireNonNull(getUser()).getUserId();
-        mav.addObject("trip", trip);
-        mav.addObject("userId", userId);
-        mav.addObject("now", LocalDateTime.now());
-
-        return mav;
-    }
+//    @RequestMapping("/trips/manageTrip")
+//    public ModelAndView manageTrip(@RequestParam("tripId") int tripId, @ModelAttribute("acceptForm") final AcceptForm form ) {
+//        LOGGER.info("Accessing manage trip page with trip Id: {}", tripId);
+//        final ModelAndView mav = new ModelAndView("trips/manageTrip");
+//        Trip trip = ts.getTripOrRequestByIdAndUserId(tripId, getUser()).orElseThrow(TripOrRequestNotFoundException::new);
+//
+//        int userId = Objects.requireNonNull(getUser()).getUserId();
+//        mav.addObject("trip", trip);
+//        mav.addObject("userId", userId);
+//        mav.addObject("now", LocalDateTime.now());
+//
+//        return mav;
+//    }
 
 //    @RequestMapping(value = "/trips/confirmTrip", method = { RequestMethod.POST })
 //    public ModelAndView confirmTrip(@RequestParam("id") int tripId) {

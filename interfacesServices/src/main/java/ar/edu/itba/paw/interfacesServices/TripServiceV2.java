@@ -64,7 +64,7 @@ public interface TripServiceV2 {
 
     Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
 
-    Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
+//    Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
 
     List<Trip> getPublications(Integer userId, String status, Integer page);
 

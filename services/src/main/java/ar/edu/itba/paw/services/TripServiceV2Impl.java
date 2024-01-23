@@ -244,31 +244,31 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.getTotalPagesAcceptedTripsAndRequests(user);
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user){
-        Optional<Trip> optionalTrip = tripDaoV2.getTripOrRequestById(id);
-
-        if(!optionalTrip.isPresent())
-            return Optional.empty();
-
-        Trip trip = optionalTrip.get();
-        //si esta aceptado y es usuario anonimo devuelvo empty
-        if(trip.getProvider() != null && trip.getTrucker() != null && user == null)
-            return Optional.empty();
-
-        //si es usuario anonimo y alguno de los dos es null (no aceptado) lo devuelvo
-        if(user == null && (trip.getProvider() == null || trip.getTrucker() == null))
-            return optionalTrip;
-
-        if(user != null && ((trip.getTrucker() != null && !Objects.equals(trip.getTrucker().getUserId(), user.getUserId())) && (trip.getProvider() != null && !Objects.equals(trip.getProvider().getUserId(), user.getUserId())))){
-            return Optional.empty();
-        }
-
-        optionalTrip.get().setReview(reviewDao.getReviewByTripAndUserId(trip, Objects.equals(user.getUserId(), trip.getTrucker() == null ? null : trip.getTrucker().getUserId()) ? trip.getProvider() : trip.getTrucker()).orElse(null));
-        optionalTrip.get().setOffer(tripDaoV2.getOffer(user, optionalTrip.get()).orElse(null));
-        return optionalTrip;
-    }
+//    @Transactional(readOnly = true)
+//    @Override
+//    public Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user){
+//        Optional<Trip> optionalTrip = tripDaoV2.getTripOrRequestById(id);
+//
+//        if(!optionalTrip.isPresent())
+//            return Optional.empty();
+//
+//        Trip trip = optionalTrip.get();
+//        //si esta aceptado y es usuario anonimo devuelvo empty
+//        if(trip.getProvider() != null && trip.getTrucker() != null && user == null)
+//            return Optional.empty();
+//
+//        //si es usuario anonimo y alguno de los dos es null (no aceptado) lo devuelvo
+//        if(user == null && (trip.getProvider() == null || trip.getTrucker() == null))
+//            return optionalTrip;
+//
+//        if(user != null && ((trip.getTrucker() != null && !Objects.equals(trip.getTrucker().getUserId(), user.getUserId())) && (trip.getProvider() != null && !Objects.equals(trip.getProvider().getUserId(), user.getUserId())))){
+//            return Optional.empty();
+//        }
+//
+//        optionalTrip.get().setReview(reviewDao.getReviewByTripAndUserId(trip, Objects.equals(user.getUserId(), trip.getTrucker() == null ? null : trip.getTrucker().getUserId()) ? trip.getProvider() : trip.getTrucker()).orElse(null));
+//        optionalTrip.get().setOffer(tripDaoV2.getOffer(user, optionalTrip.get()).orElse(null));
+//        return optionalTrip;
+//    }
 
 //    Get Publications
 
