@@ -4,7 +4,9 @@ import ar.edu.itba.paw.interfacesPersistence.ReviewDao;
 import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
+import ar.edu.itba.paw.interfacesServices.exceptions.ReviewAlreadyExistsException;
 import ar.edu.itba.paw.interfacesServices.exceptions.ReviewNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Review;
 import ar.edu.itba.paw.models.Trip;
@@ -39,17 +41,19 @@ public class ReviewServiceImpl implements ReviewService {
         this.userDao = userDao;
     }
 
+//    @Transactional(readOnly = true)
+//    @Override
+//    public List<Review> getReviewByTripId(int tripId) {
+//        Trip trip = tripDao.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
+//        return reviewDao.getReviewByTrip(trip);
+//    }
+
     @Transactional(readOnly = true)
     @Override
-    public Optional<Review> getReviewByTripId(int tripId) {
-        Optional<Trip> trip = tripDao.getTripOrRequestById(tripId);
-
-        if (!trip.isPresent()){
-            throw new ReviewNotFoundException();
-        }
-
-        return reviewDao.getReviewByTrip(trip.get());
+    public Optional<Review> getReviewById(Integer id){
+        return reviewDao.getReviewById(id);
     }
+
 
 
     @Transactional(readOnly = true)
@@ -67,14 +71,16 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     @Override
     public Review createReview(int tripid, int userid, float rating, String comment) {
-        Optional<User> user = userDao.getUserById(userid);
-        Optional<Trip> trip = tripDao.getTripOrRequestById(tripid);
+        User user = userDao.getUserById(userid).orElseThrow(UserNotFoundException::new);
+        Trip trip = tripDao.getTripOrRequestById(tripid).orElseThrow(TripOrRequestNotFoundException::new);
+        if(getReviewByTripAndUserId(tripid, userid).isPresent()){
+            throw new ReviewAlreadyExistsException();
+        }
+        if(!trip.getTruckerConfirmation() || !trip.getProviderConfirmation()){
+            throw new IllegalArgumentException();
+        }
         LOGGER.info("Creating review for user {} in trip {}", userid, tripid);
-
-        if (user.isPresent() && trip.isPresent())
-            return reviewDao.createReview(trip.get(),user.get(),rating,comment);
-        LOGGER.warn("Trip {} or user {} not present", tripid, userid);
-        return null;
+        return reviewDao.createReview(trip, user, rating, comment);
     }
 
     @Transactional(readOnly = true)

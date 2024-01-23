@@ -10,9 +10,12 @@ import java.util.Optional;
 public interface ReviewDao {
 
     Optional<Review> getReviewByTripAndUserId(Trip trip, User user);
-    Optional<Review> getReviewByTrip(Trip trip);
+
+//    List<Review> getReviewByTrip(Trip trip);
 
     Review createReview(Trip trip, User user, float rating, String comment);
+
+    Optional<Review> getReviewById(Integer id);
 
     Double getUserRating(User user);
 

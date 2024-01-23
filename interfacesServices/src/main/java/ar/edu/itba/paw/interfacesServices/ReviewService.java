@@ -8,7 +8,10 @@ import java.util.List;
 public interface ReviewService {
 
     Optional<Review> getReviewByTripAndUserId(int tripId, int userId);
-    public Optional<Review> getReviewByTripId(int tripId);
+
+    Optional<Review> getReviewById(Integer id);
+
+//    List<Review> getReviewByTripId(int tripId);
 
     Review createReview(int tripid, int userid, float rating, String comment);
 

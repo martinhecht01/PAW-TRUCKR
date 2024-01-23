@@ -9,10 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,15 +37,24 @@ public class ReviewDaoJPA implements ReviewDao {
         return reviews.isEmpty() ? Optional.empty() : Optional.of(reviews.get(0));
     }
 
+//    @Override
+//    public List<Review> getReviewByTrip(Trip trip) {
+////        if(trip == null)
+////            return Optional.empty();
+//        String jpql = "SELECT r FROM Review r WHERE r.trip = :trip ";
+//        return entityManager.createQuery(jpql, Review.class)
+//                .setParameter("trip", trip)
+//                .getResultList();
+////        return reviews.isEmpty() ? Optional.empty() : Optional.of(reviews.get(0));
+//    }
+
     @Override
-    public Optional<Review> getReviewByTrip(Trip trip) {
-        if(trip == null)
+    public Optional<Review> getReviewById(Integer id){
+        Review review = entityManager.find(Review.class, id);
+        if (review == null) {
             return Optional.empty();
-        String jpql = "SELECT r FROM Review r WHERE r.trip = :trip ";
-        List<Review> reviews = entityManager.createQuery(jpql, Review.class)
-                .setParameter("trip", trip)
-                .getResultList();
-        return reviews.isEmpty() ? Optional.empty() : Optional.of(reviews.get(0));
+        }
+        return Optional.of(review);
     }
 
     @Override
