@@ -133,6 +133,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/users/{id}").authenticated()
                 .antMatchers(HttpMethod.GET, "/trips").authenticated()
                 .antMatchers(HttpMethod.POST, "/trips").authenticated()
+                .antMatchers(HttpMethod.POST, "/reviews").authenticated()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
 //                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")
 //                    .antMatchers("/login", "/register", "/resetPassword", "/resetPasswordRequest", "/verifyAccount").anonymous()

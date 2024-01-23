@@ -14,6 +14,7 @@ import ar.edu.itba.paw.webapp.function.CurryingFunction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 
