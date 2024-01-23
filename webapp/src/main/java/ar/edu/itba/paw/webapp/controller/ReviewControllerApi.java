@@ -32,7 +32,6 @@ public class ReviewControllerApi {
     private final String PAGE = "1";
 
 
-
     private final ReviewService revs;
     private final UserService us;
 
