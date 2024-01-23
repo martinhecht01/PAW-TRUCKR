@@ -31,14 +31,14 @@ public class ImageServiceImpl implements ImageService {
 
     @Transactional(readOnly = true)
     @Override
-    public byte[] getImage(int imageid) {
+    public Optional<Image> getImage(int imageid) {
         Optional<Image> image = imageDao.getImage(imageid);
         if(!image.isPresent()){
             LOGGER.warn("Image not found: {}", imageid);
             throw new ImageNotFoundException();
         }
         else {
-            return image.get().getImage();
+            return image;
         }
     }
 
