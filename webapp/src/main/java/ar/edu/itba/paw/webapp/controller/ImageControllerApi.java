@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
@@ -47,7 +48,7 @@ public class ImageControllerApi {
     @POST
     public Response uploadImage(
             @RequireImage @FormDataParam("image") FormDataBodyPart image,
-            @FormDataParam("image") byte[] imageBytes)
+            @Size(max = 1024 * 1024 * 8, message = "validation.Image.Size") @FormDataParam("image") byte[] imageBytes)
     {
         int id = is.uploadImage(imageBytes);
         Image img = is.getImage(id).orElseThrow(ImageNotFoundException::new);
