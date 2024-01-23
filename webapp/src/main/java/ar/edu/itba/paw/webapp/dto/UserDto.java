@@ -16,6 +16,7 @@ public class UserDto {
     private List<URI> trips;
     private String role;
     private URI reviews;
+    private Double rating;
 
     public static UserDto fromUser(final UriInfo uri, final User user){
         final UserDto dto = new UserDto();
@@ -24,6 +25,7 @@ public class UserDto {
         dto.cuit = user.getCuit();
         dto.name = user.getName();
         dto.role = user.getRole();
+        dto.rating = user.getRating();
 
 //        if(role.equals("TRUCKER") && user.getTruckerTrips() != null)
 //            dto.trips = user.getTruckerTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
@@ -101,5 +103,13 @@ public class UserDto {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Double getRating() {
+        return rating;
+    }
+
+    public void setRating(Double rating) {
+        this.rating = rating;
     }
 }
