@@ -4,11 +4,12 @@ import ar.edu.itba.paw.interfacesServices.ImageService;
 import ar.edu.itba.paw.interfacesServices.ReviewService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.dto.UserDto;
+import ar.edu.itba.paw.webapp.dto.UserEditDto;
 import ar.edu.itba.paw.webapp.form.CuitForm;
-import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.UserForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Component;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.function.Function;
@@ -67,18 +67,21 @@ public class UserControllerApi {
         return Response.ok(UserDto.fromUser(uriInfo, user)).build();
     }
 
-
     @PATCH
     @Path("/{id:\\d+}")
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+    @Consumes("application/vnd.user.v1+json")
     @PreAuthorize("@accessHandler.userAccessVerification(#id)")
-    public Response editUser(@Valid @BeanParam EditUserForm form, @PathParam("id") final Integer id ) {
-        us.resetPassword(id, form.getPassword());
-        us.updateProfile(id, form.getBytes(), form.getName());
+    public Response editUser(@Valid UserEditDto userEditDto, @PathParam("id") final Integer id ) {
+        us.resetPassword(id, userEditDto.getPassword());
+        try {
+            us.updateProfile(id, userEditDto.getImageId(), userEditDto.getName());
+        } catch (ImageNotFoundException e){
+            throw new BadRequestException();
+        }
         return Response.noContent().build();
     }
 
-// Change password
+// Request password reset
 
     @POST
     @Consumes("application/vnd.resetpassword.v1+json")
@@ -99,15 +102,13 @@ public class UserControllerApi {
 //        return Response.accepted().build();
 //    }
 
-    @PATCH
-    @Path("/{id:\\d+}")
-    @Consumes("application/vnd.verifyaccount.v1+json")
-    @PreAuthorize("@accessHandler.userAccessVerification(#id)")
-    public Response verifyAccount(@PathParam("id") final Integer id){
-        return Response.noContent().build();
-    }
-
-
+//    @PATCH
+//    @Path("/{id:\\d+}")
+//    @Consumes("application/vnd.verifyaccount.v1+json")
+//    @PreAuthorize("@accessHandler.userAccessVerification(#id)")
+//    public Response verifyAccount(@PathParam("id") final Integer id){
+//        return Response.noContent().build();
+//    }
 
 
 }

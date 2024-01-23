@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.CuitAlreadyExistsException;
+import ar.edu.itba.paw.interfacesServices.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.SecureToken;
@@ -154,11 +155,12 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void updateProfile(Integer userId, byte[] image, String name) {
-    	if(image != null) {
-            Integer imageId = imageDao.uploadImage(image);
-    		updateProfilePicture(userId, imageId);
-    	}
+    public void updateProfile(Integer userId, Integer imageId, String name) {
+        if (imageId != null && imageId != 0){
+            imageDao.getImage(imageId).orElseThrow(ImageNotFoundException::new);
+            updateProfilePicture(userId, imageId);
+        }
+
         if (name != null && !name.isEmpty())
             updateProfileName(userId, name);
     }

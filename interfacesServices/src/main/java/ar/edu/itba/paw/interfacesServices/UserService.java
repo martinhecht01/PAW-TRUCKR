@@ -19,7 +19,7 @@ public interface UserService {
 
     boolean deleteToken(String token);
 
-    public boolean validateToken(Integer userId, Locale locale);
+    boolean validateToken(Integer userId, Locale locale);
 
     Optional<User> getUserByCuit(String cuit);
 
@@ -31,7 +31,7 @@ public interface UserService {
 
     void updateProfileName(Integer userId, String name);
 
-    void updateProfile(Integer userId, byte[] image, String name);
+    void updateProfile(Integer userId, Integer imageId, String name);
 
     void updateLocale(Integer userId, Locale locale);
 
