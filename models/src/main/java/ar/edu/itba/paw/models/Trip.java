@@ -1,7 +1,8 @@
 package ar.edu.itba.paw.models;
 
+import org.hibernate.annotations.Formula;
+
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -75,16 +76,36 @@ public class Trip {
     @Transient
     private Proposal offer;
 
-    @Transient Review review;
+    @Formula("(SELECT COUNT(*) > 0 FROM reviews r JOIN users u ON r.userid = u.userid WHERE u.role = 'PROVIDER' AND r.tripid = trip_id)")
+    private boolean truckerSubmittedHisReview;
 
-    public void setTrucker(User trucker) {
-        this.trucker = trucker;
-    }
+    @Formula("(SELECT COUNT(*) > 0 FROM reviews r JOIN users u ON r.userid = u.userid WHERE u.role = 'TRUCKER' AND r.tripid = trip_id)")
+    private boolean providerSubmittedHisReview;
+
+
     // Constructors, getters, and setters
 
     //constructor completo
-    public Trip(int tripId, User trucker, User provider, String licensePlate, Integer weight, Integer volume, LocalDateTime departureDate, LocalDateTime arrivalDate, String origin, String destination, String type,
-                Integer price, Boolean truckerConfirmation, Boolean providerConfirmation, LocalDateTime confirmationDate, Image image, int proposalCount) {
+    public Trip(
+            int tripId,
+            User trucker,
+            User provider,
+            String licensePlate,
+            Integer weight,
+            Integer volume,
+            LocalDateTime departureDate,
+            LocalDateTime arrivalDate,
+            String origin,
+            String destination,
+            String type,
+            Integer price,
+            Boolean truckerConfirmation,
+            Boolean providerConfirmation,
+            LocalDateTime confirmationDate,
+            Image image, int proposalCount,
+            boolean truckerReview,
+            boolean providerReview
+    ) {
         this.tripId = tripId;
         this.provider = provider;
         this.trucker = trucker;
@@ -102,6 +123,8 @@ public class Trip {
         this.confirmationDate = confirmationDate == null ? null : Timestamp.valueOf(confirmationDate);
         this.proposalCount = proposalCount;
         this.image= image;
+        this.truckerSubmittedHisReview = truckerReview;
+        this.providerSubmittedHisReview = providerReview;
     }
 
     //constructor para el trucker
@@ -346,14 +369,6 @@ public class Trip {
         this.offer = offer;
     }
 
-    public Review getReview() {
-        return review;
-    }
-
-    public void setReview(Review review) {
-        this.review = review;
-    }
-
     public String getDepartureDateString() {
         if (departureDate == null) return null;
         return departureDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
@@ -367,5 +382,25 @@ public class Trip {
     public String getConfirmationDateString() {
         if (confirmationDate == null) return null;
         return confirmationDate.toLocalDateTime().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
+    public void setTrucker(User trucker) {
+        this.trucker = trucker;
+    }
+
+    public boolean getTruckerSubmittedHisReview() {
+        return truckerSubmittedHisReview;
+    }
+
+    public void setTruckerSubmittedHisReview(boolean truckerSubmittedHisReview) {
+        this.truckerSubmittedHisReview = truckerSubmittedHisReview;
+    }
+
+    public boolean getProviderSubmittedHisReview() {
+        return providerSubmittedHisReview;
+    }
+
+    public void setProviderSubmittedHisReview(boolean providerSubmittedHisReview) {
+        this.providerSubmittedHisReview = providerSubmittedHisReview;
     }
 }

@@ -7,51 +7,31 @@ import javax.persistence.*;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.sql.Timestamp;
-import java.util.List;
 
 public class TripDto {
 
     private Integer tripId;
-
     private URI self;
-
     private URI provider;
-
     private URI trucker;
-
     private String licensePlate;
-
     private Integer weight;
-
     private Integer volume;
-
     private Timestamp departureDate;
-
     private Timestamp arrivalDate;
-
     private String origin;
-
     private String destination;
-
     private String type;
-
     private Integer price;
-
     private Boolean truckerConfirmation;
-
     private Boolean providerConfirmation;
-
     private Timestamp confirmationDate;
-
     private URI image;
-
     private URI proposals;
-
     private int proposalCount;
-
     private Proposal offer;
-
-    private Review review;
+    private boolean truckerSubmittedHisReview;
+    private boolean providerSubmittedHisReview;
 
     public static TripDto fromTrip(final UriInfo uri, final Trip trip){
         TripDto dto = new TripDto();
@@ -76,10 +56,16 @@ public class TripDto {
             dto.confirmationDate = Timestamp.valueOf(trip.getConfirmationDate());
         else dto.confirmationDate = null;
         dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
+
+        //TODO revisar
         dto.proposals = uri.getBaseUriBuilder().path("/proposals/").path(String.valueOf(trip.getTripId())).build();
+
+        dto.truckerSubmittedHisReview = trip.getTruckerSubmittedHisReview();
+        dto.providerSubmittedHisReview = trip.getProviderSubmittedHisReview();
+
         dto.proposalCount = trip.getProposalCount();
         dto.offer = trip.getOffer();
-        dto.review = trip.getReview();
+
         return dto;
     }
 
@@ -243,11 +229,19 @@ public class TripDto {
         this.offer = offer;
     }
 
-    public Review getReview() {
-        return review;
+    public boolean getTruckerSubmittedHisReview() {
+        return truckerSubmittedHisReview;
     }
 
-    public void setReview(Review review) {
-        this.review = review;
+    public void setTruckerSubmittedHisReview(boolean truckerSubmittedHisReview) {
+        this.truckerSubmittedHisReview = truckerSubmittedHisReview;
+    }
+
+    public boolean getProviderSubmittedHisReview() {
+        return providerSubmittedHisReview;
+    }
+
+    public void setProviderSubmittedHisReview(boolean providerSubmittedHisReview) {
+        this.providerSubmittedHisReview = providerSubmittedHisReview;
     }
 }
