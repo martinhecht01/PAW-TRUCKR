@@ -77,7 +77,7 @@ public class OffersControllerApi {
 
         final List<ProposalDto> proposalDtos = proposalList.stream().map(currifyUriInfo(ProposalDto::fromProposal)).collect(Collectors.toList());
 
-        int maxPages = 1; //TODO: pagination trips
+        int maxPages = (ts.getProposalCountForTripId(tripId) / pageSize)+1; //TODO: pagination trips
         Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<ProposalDto>>(proposalDtos){});
         PaginationHelper.getLinks(toReturn,uriInfo,page,maxPages);
 
