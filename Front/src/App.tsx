@@ -23,6 +23,7 @@ import ResetPasswordRequest from './pages/resetPasswordRequest.tsx';
 import SendCounterOffer from "./pages/sendCounterOffer.tsx";
 import CustomLayout from './Components/customLayout.tsx';
 import CreateAlert from "./pages/createAlert";
+import SentOffers from "./pages/sentOffers";
 
 
 const WebApp = () => {
@@ -58,6 +59,7 @@ const WebApp = () => {
           <Route path="/myAlert" element={<MyAlert/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/pastTrips" element={<PastTrips/>}></Route>
+          <Route path="/sentOffers" element={<SentOffers/>}></Route>
           <Route path="/myPublications" element={<MyPublications/>}></Route>
           <Route path="/trips/create" element={<CreateTrip/>}></Route>
           <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>

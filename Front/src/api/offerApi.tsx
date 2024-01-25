@@ -27,6 +27,17 @@ export async function getOffersByTrip(id: number): Promise<Offer[]> {
     return toRet;
 }
 
+export async function getOffersByUser(id: number): Promise<Offer[]> {
+    const response = await api.get('/offers?userId=' + id);
+
+    const toRet = [];
+    for (const offer of response.data) {
+        toRet.push(Offer.offerFromJson(offer))
+    }
+
+    return toRet;
+}
+
 export async function getOffer(offerId : number) : Promise<Offer> {
     const response = await api.get(`/offers/${offerId}`);
     return Offer.offerFromJson(response.data);
