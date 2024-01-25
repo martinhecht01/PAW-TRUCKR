@@ -20,7 +20,7 @@ public class CargoTypeValidator implements ConstraintValidator<CargoType, String
 
     @Override
     public boolean isValid(String cargoType, javax.validation.ConstraintValidatorContext constraintValidatorContext) {
-        return cargoTypeService.getAllCargoTypes().contains(cargoType);
+        return cargoType == null || cargoTypeService.getAllCargoTypes().contains(cargoType);
     }
 
 }
