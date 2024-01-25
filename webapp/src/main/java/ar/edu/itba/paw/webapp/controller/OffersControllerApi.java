@@ -70,7 +70,7 @@ public class OffersControllerApi {
     @GET
     @Produces("application/vnd.proposalList.v1+json")
     public Response getOffers(@QueryParam("tripId") int tripId, @QueryParam("page") @DefaultValue(PAGE) int page, @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
-        final List<Proposal> proposalList = ts.getAllProposalsForTripId(tripId); // TODO: make this pageable
+        final List<Proposal> proposalList = ts.getAllProposalsForTripId(tripId,page,pageSize);
         if(proposalList.isEmpty()){
             return Response.noContent().build();
         }

@@ -150,10 +150,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Proposal> getAllProposalsForTripId(int tripId) {
+    public List<Proposal> getAllProposalsForTripId(int tripId, Integer page, Integer pageSize) {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        return trip.getProposals();
-        //return tripDaoV2.getAllProposalsForTripId(tripId);
+        //return trip.getProposals();
+        return tripDaoV2.getAllProposalsForTripId(tripId,page,pageSize);
+    }
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getProposalCountForTripId(int tripId){
+        return tripDaoV2.getProposalsCountForTripId(tripId);
     }
 
     @Transactional(readOnly = true)

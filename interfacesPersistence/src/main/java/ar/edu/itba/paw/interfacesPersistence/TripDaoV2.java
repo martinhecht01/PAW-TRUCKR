@@ -37,7 +37,8 @@ public interface TripDaoV2 {
 
     Proposal createProposal(Trip trip, User user, String description, Integer price);
 
-    List<Proposal> getAllProposalsForTripId(int tripId, int pag);
+    List<Proposal> getAllProposalsForTripId(int tripId, int pag, int pagesize);
+
 
     //PAGINACION
     Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type);
@@ -103,4 +104,6 @@ public interface TripDaoV2 {
     void rejectCounterOffer(Proposal counterOffer);
 
     void deleteCounterOffer(Proposal counterOffer);
+
+    Integer getProposalsCountForTripId(int tripId);
 }

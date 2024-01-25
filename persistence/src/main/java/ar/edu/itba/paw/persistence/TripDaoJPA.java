@@ -99,11 +99,11 @@ public class TripDaoJPA implements TripDaoV2 {
 
     //ejemplo de 1+1 query
     @Override
-    public List<Proposal> getAllProposalsForTripId(int tripId, int pag){
+    public List<Proposal> getAllProposalsForTripId(int tripId, int pag, int pagesize){
         String query = "SELECT proposal_id FROM proposals WHERE trip_id = :tripId";
         Query q = entityManager.createNativeQuery(query);
         q.setFirstResult(pag);
-        q.setMaxResults(ITEMS_PER_PAGE);
+        q.setMaxResults(pagesize);
         q.setParameter("tripId", tripId);
 
         @SuppressWarnings("unchecked")
@@ -113,6 +113,14 @@ public class TripDaoJPA implements TripDaoV2 {
         typedQuery.setParameter("idList", idList);
         return typedQuery.getResultList();
 
+    }
+
+    @Override
+    public Integer getProposalsCountForTripId(int tripId){
+        String query = "SELECT COUNT(proposal_id) FROM proposals WHERE trip_id = :tripId";
+        Query q = entityManager.createNativeQuery(query);
+        q.setParameter("tripId", tripId);
+        return ((Number) q.getSingleResult()).intValue();
     }
 
 
