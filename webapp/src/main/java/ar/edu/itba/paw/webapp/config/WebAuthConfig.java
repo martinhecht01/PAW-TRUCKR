@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.config;
 import ar.edu.itba.paw.webapp.auth.BasicFilter;
 import ar.edu.itba.paw.webapp.auth.JwtTokenFilter;
 import ar.edu.itba.paw.webapp.auth.UserDetailsServiceImpl;
+import ar.edu.itba.paw.webapp.auth.handlers.AccessHandler;
 import ar.edu.itba.paw.webapp.auth.handlers.TruckrAccessDeniedHandler;
 import ar.edu.itba.paw.webapp.auth.handlers.TruckrAuthenticationEntryPoint;
 import io.jsonwebtoken.security.Keys;
@@ -47,10 +48,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 
-@Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @ComponentScan("ar.edu.itba.paw.webapp.auth")
+@Configuration
 public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -65,7 +66,6 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private BasicFilter basicFilter;
 
-    private static final String USER_ACCESS_VERIFICATION = "@accessHandler.userAccessVerification(#id)";
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -131,8 +131,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.PUT, "/users/{id}/**").authenticated()
                 .antMatchers(HttpMethod.PATCH, "/users/{id}").authenticated()
-                .antMatchers(HttpMethod.GET, "/trips").authenticated()
                 .antMatchers(HttpMethod.POST, "/trips").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/trips").authenticated()
                 .antMatchers(HttpMethod.POST, "/reviews").authenticated()
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")
 //                    .antMatchers("/requests/browse").access("hasRole('TRUCKER') or isAnonymous()")

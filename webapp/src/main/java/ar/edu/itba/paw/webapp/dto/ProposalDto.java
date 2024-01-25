@@ -24,6 +24,7 @@ public class ProposalDto {
     private Integer price;
 
     private String userName;
+
     private Proposal counterProposal;
 
     public static ProposalDto fromProposal(final UriInfo uriInfo, Proposal proposal){
@@ -32,10 +33,11 @@ public class ProposalDto {
         dto.self = uriInfo.getBaseUriBuilder().path("/proposals/").path(String.valueOf(proposal.getProposalId())).build();
         dto.trip = uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(proposal.getTrip().getTripId())).build();
         dto.user = uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(proposal.getUser().getUserId())).build();
-        dto.self = uriInfo.getBaseUriBuilder().path("/proposals/").path(String.valueOf(proposal.getProposalId())).build();
         dto.description = proposal.getDescription();
         dto.price = proposal.getPrice();
         dto.userName = proposal.getUserName();
+
+        //TODO ver
         dto.counterProposal = proposal.getCounterProposal();
         return dto;
     }

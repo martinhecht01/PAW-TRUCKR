@@ -5,20 +5,25 @@ import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Trip;
+import ar.edu.itba.paw.webapp.auth.handlers.AccessHandler;
 import ar.edu.itba.paw.webapp.controller.utils.PaginationHelper;
+import ar.edu.itba.paw.webapp.dto.PublicationDto;
 import ar.edu.itba.paw.webapp.dto.TripDto;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.exceptions.AuthErrorException;
 import ar.edu.itba.paw.webapp.form.*;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
 import java.time.LocalDateTime;
@@ -53,91 +58,107 @@ public class TripControllerApi {
         this.ts = ts;
     }
 
-
     @POST
-    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-    public Response createTrip( @Valid @BeanParam TripForm form ) {
-        LocalDateTime departure = LocalDateTime.parse(form.getDepartureDate());
-        LocalDateTime arrival = LocalDateTime.parse(form.getArrivalDate());
-        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        final Trip trip = ts.createTrip(
-                user,
-                form.getLicensePlate(),
-                Integer.parseInt(form.getAvailableWeight()),
-                Integer.parseInt(form.getAvailableVolume()),
-                departure,
-                arrival,
-                form.getOrigin(),
-                form.getDestination(),
-                form.getCargoType(),
-                Integer.parseInt(form.getPrice()));
+    @Consumes("application/vnd.trip.v1+json")
+    @Produces("application/vnd.trip.v1+json")
+    public Response createTrip( @Valid TripForm form ) {
+        Integer availableWeight;
+        Integer availableVolume;
+        LocalDateTime departure;
+        LocalDateTime arrival;
+        Integer price;
+        try {
+            departure = LocalDateTime.parse(form.getDepartureDate());
+            arrival = LocalDateTime.parse(form.getArrivalDate());
+            availableWeight = Integer.parseInt(form.getAvailableWeight());
+            availableVolume = Integer.parseInt(form.getAvailableVolume());
+            price = Integer.parseInt(form.getPrice());
+        } catch (Exception e) {
+            throw new BadRequestException();
+        }
 
-        int imageId = is.uploadImage(form.getBytes());
-        ts.updateTripPicture(trip.getTripId(), imageId);
-        return Response.created(uriInfo.getBaseUriBuilder().path("/trips/" ).path(String.valueOf(trip.getTripId())).build()).entity(TripDto.fromTrip(uriInfo,trip)).build();
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        final Trip trip = ts.createTrip(user, form.getLicensePlate(), availableWeight, availableVolume, departure,arrival, form.getOrigin(), form.getDestination(), form.getCargoType(), price);
+
+        ts.updateTripPicture(trip.getTripId(), form.getImageId());
+        return Response.created(uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(trip.getTripId())).build()).entity(TripDto.fromTrip(uriInfo, trip)).build();
     }
+
 
     @GET
     @Produces("application/vnd.trip.v1+json")
-    @Path("/{tripId}")
-    public Response getTrip(@PathParam("tripId") int tripId){
-        final Trip trip = ts.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
+    @Path("/{id:\\d+}")
+    @PreAuthorize("@accessHandler.isTripOwner(#id)")
+    public Response getTrip(@PathParam("id") int id){
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(id, user);
         return Response.ok(TripDto.fromTrip(uriInfo, trip)).build();
     }
 
     @GET
-    @Produces("application/vnd.tripList.v1+json")
-    public Response getTripsAndPublications(
-            @QueryParam("userId") Integer userId,
-            @QueryParam("status") @DefaultValue("ongoing") String status,
-            @QueryParam("page") @DefaultValue(PAGE) int page,
-            @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize,
-            @QueryParam("origin") String origin,
-            @QueryParam("destination") String destination,
-            @QueryParam("minAvailableVolume") Integer minAvailableVolume,
-            @QueryParam("minAvailableWeight") Integer minAvailableWeight,
-            @QueryParam("minPrice") Integer minPrice,
-            @QueryParam("maxPrice") Integer maxPrice,
-            @QueryParam("sortOrder") String sortOrder,
-            @QueryParam("departureDate") String departureDate,
-            @QueryParam("arrivalDate") String arrivalDate,
-            @QueryParam("cargoType") String cargoType,
-            @QueryParam("tripType") @DefaultValue("trip") String tripType
-            )
-    {
+    @Produces("application/vnd.publication.v1+json")
+    @Path("/{id:\\d+}")
+    public Response getPublication(@PathParam("id") int id){
+        final Trip trip = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        return Response.ok(PublicationDto.fromTrip(uriInfo, trip)).build();
+    }
 
+    @GET
+    @Produces("application/vnd.tripList.v1+json")
+    @PreAuthorize("@accessHandler.getAuth()")
+    public Response getTrips(
+            @QueryParam("status") @DefaultValue("ONGOING") @Pattern(regexp = "^(ONGOING|PAST|FUTURE)$", message="validation.Status") String status,
+            @QueryParam("page") @DefaultValue(PAGE) int page,
+            @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize)
+    {
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        List <Trip> tripList = ts.getTrips(user.getUserId(), status, page, pageSize);
+        int maxPages = ts.getTotalPagesTrips(user, status);
+        if (tripList.isEmpty()) {
+            return Response.noContent().build();
+        }
+        List<TripDto> dtoList = tripList.stream().map(currifyUriInfo(TripDto::fromTrip)).collect(Collectors.toList());
+        Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<TripDto>>(dtoList) {});
+        PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
+        return toReturn.build();
+    }
+
+    @GET
+    @Produces("application/vnd.publicationList.v1+json")
+    public Response getPublications(@Valid @BeanParam FilterForm form) {
         List <Trip> tripList;
         final User user;
         int maxPages;
 
-        if(userId == null ){
-            tripList = ts.getAllActiveTripsOrRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, cargoType, tripType, page, pageSize);
-            maxPages = ts.getActiveTripsOrRequestsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, cargoType, tripType);
+        if(form.getUserId() == null ){
+            tripList = ts.getAllActiveTripsOrRequests(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getSortOrder(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest(), form.getPage(), form.getPageSize());
+            maxPages = ts.getActiveTripsOrRequestsTotalPages(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest());
         }else {
-            user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
-            tripList = ts.getPublications(user.getUserId(), status, page);
-            maxPages = ts.getTotalPagesPublications(user, status);
+            user = us.getUserById(form.getUserId()).orElseThrow(UserNotFoundException::new);
+            tripList = ts.getPublications(user.getUserId(), form.getStatus(), form.getPage());
+            maxPages = ts.getTotalPagesPublications(user, form.getStatus());
         }
 
         if (tripList.isEmpty()) {
             return Response.noContent().build();
         }
 
-        List<TripDto> dtoList = tripList.stream().map(currifyUriInfo(TripDto::fromTrip)).collect(Collectors.toList());
-        Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<TripDto>>(dtoList) {});
-        PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
-
+        List<PublicationDto> dtoList = tripList.stream().map(currifyUriInfo(PublicationDto::fromTrip)).collect(Collectors.toList());
+        Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<PublicationDto>>(dtoList) {});
+        PaginationHelper.getLinks(toReturn, uriInfo, form.getPage(), maxPages);
         return toReturn.build();
     }
 
-    //TODO error handling (si le mandas ids distintos a los que espera entra a tirar errores como loco)
-    @PUT
-    @Path("/{id}")
-    public Response confirmTrip(@PathParam("id") int tripId) {
+    @PATCH
+    @Path("/{id:\\d+}")
+    @PreAuthorize("@accessHandler.isTripOwner(#id)")
+    public Response confirmTrip(@PathParam("id") int id) {
         User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-
-        Trip trip = ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
-
-        return Response.ok(TripDto.fromTrip(uriInfo, trip)).build();
+        try{
+            ts.confirmTrip(id, user, LocaleContextHolder.getLocale());
+        }catch (IllegalArgumentException e){
+            throw new BadRequestException();
+        }
+        return Response.noContent().build();
     }
 }

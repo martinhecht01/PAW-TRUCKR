@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.*;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import javax.validation.constraints.*;
 
@@ -12,74 +10,51 @@ public class TripForm {
     @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^$|^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$", message="validation.LicensePlate")
     @TruckerLicensePlate
-    @FormDataParam("licensePlate")
     private  String licensePlate;
 
     @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^(5[0-9]|[6-9][0-9]|[1-9][0-9]{2,})$", message="validation.AvailableWeight")
-    @FormDataParam("availableWeight")
     private String availableWeight;
 
     @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^[1-9][0-9]*$", message="validation.AvailableVolume")
-    @FormDataParam("availableVolume")
     private String availableVolume;
 
     @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^[1-9][0-9]*$", message="validation.Price")
-    @FormDataParam("price")
     private String price;
 
     @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^(?!\\s*$).+", message="validation.DepartureDate")
     @PreventPast
-    @FormDataParam("departureDate")
     private String departureDate;
 
     @NotNull(message = "validation.NotNull")
     @PreventPast
     @Pattern(regexp="^(?!\\s*$).+", message="validation.ArrivalDate")
-    @FormDataParam("arrivalDate")
     private  String arrivalDate;
 
     @NotNull(message = "validation.NotNull")
     @CargoType
-    @FormDataParam("cargoType")
     private String cargoType;
 
     @NotNull(message = "validation.NotNull")
     @Size(min = 1, max = 100, message="validation.Origin")
-    @FormDataParam("origin")
     private String origin;
 
     @NotNull(message = "validation.NotNull")
     @Size(min = 1, max = 100, message="validation.Destination")
-    @FormDataParam("destination")
     private String destination;
 
     @NotNull(message = "validation.NotNull")
-    @RequireImage
-    @FormDataParam("tripImage")
-    private FormDataBodyPart tripImage;
+    private Integer imageId;
 
-    @NotNull(message = "validation.NotNull")
-    @FormDataParam("tripImage")
-    private byte[] bytes;
-
-    public FormDataBodyPart getTripImage() {
-        return tripImage;
+    public Integer getImageId() {
+        return imageId;
     }
 
-    public void setTripImage(FormDataBodyPart tripImage) {
-        this.tripImage = tripImage;
-    }
-
-    public byte[] getBytes() {
-        return bytes;
-    }
-
-    public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
     }
 
     public void setLicensePlate(String licensePlate) {
@@ -107,9 +82,13 @@ public class TripForm {
         this.destination = destination;
     }
 
-    public void setPrice(String price) {this.price = price;}
+    public void setPrice(String price) {
+        this.price = price;
+    }
 
-    public String getPrice() {return price;}
+    public String getPrice() {
+        return price;
+    }
 
     public String getLicensePlate() {
         return licensePlate;

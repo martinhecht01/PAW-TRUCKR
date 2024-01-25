@@ -76,7 +76,6 @@ public class ReviewControllerApi {
         try {
             //TODO: esto es porque capaz no esta completo el viaje, se podra hacer mejor?
             Integer uId = Objects.equals(user.getUserId(), trip.getTrucker().getUserId()) ? trip.getProvider().getUserId() : trip.getTrucker().getUserId();
-
             review = revs.createReview(form.getTripId(), uId, form.getRating(), form.getReview());
         }catch (Exception e){
             throw new BadRequestException();

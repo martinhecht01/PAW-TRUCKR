@@ -60,7 +60,9 @@ public interface TripDaoV2 {
 
     List<Trip> getAllActivePublications(Integer userId, Integer pag);
 
- Integer getTotalPagesExpiredPublications(User user);
+    Integer getTotalPagesExpiredPublications(User user);
+
+    Integer getTotalPagesAllPastTrips(User user);
 
     Integer getTotalPagesActivePublications(User user);
 

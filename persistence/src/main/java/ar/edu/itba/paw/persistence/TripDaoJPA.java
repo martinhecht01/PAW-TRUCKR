@@ -549,6 +549,17 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     }
 
     @Override
+    public Integer getTotalPagesAllPastTrips(User user){
+        String query = "SELECT COUNT(*) as total FROM Trip t WHERE (t.provider = :user OR t.trucker = :user) AND t.truckerConfirmation = true AND t.providerConfirmation = true";
+        TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
+        typedQuery.setParameter("user", user);
+
+        Long total = typedQuery.getSingleResult();
+        return (int) Math.ceil(total / (double) ITEMS_PER_PAGE);
+    }
+
+
+    @Override
     public Integer getTotalPagesAllFutureTrips(User user){
         String query = "SELECT COUNT(*) as total FROM Trip t WHERE (( t.provider = :user AND t.trucker IS NOT NULL ) OR (t.trucker = :user AND t.provider IS NOT NULL)) AND t.departureDate > now()";
         TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);

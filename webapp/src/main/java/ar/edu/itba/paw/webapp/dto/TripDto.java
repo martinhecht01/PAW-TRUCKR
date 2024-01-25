@@ -64,6 +64,8 @@ public class TripDto {
         dto.providerSubmittedHisReview = trip.getProviderSubmittedHisReview();
 
         dto.proposalCount = trip.getProposalCount();
+
+        //TODO son muchas, es lo mismo que proposal???
         dto.offer = trip.getOffer();
 
         return dto;

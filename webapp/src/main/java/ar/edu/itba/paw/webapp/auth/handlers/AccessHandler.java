@@ -5,50 +5,71 @@ import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
-import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.form.EditUserForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import java.text.Normalizer;
+import javax.ws.rs.BadRequestException;
 import java.util.Optional;
 
 
 @Component
 public class AccessHandler {
 
-    @Autowired
     private UserService us;
-
-    @Autowired
     private TripServiceV2 ts;
 
+    @Autowired
+    public AccessHandler(UserService us, TripServiceV2 ts){
+        this.us = us;
+        this.ts = ts;
+    }
+
     public boolean userAccessVerification(String id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
+        User user = getLoggedUser();
+        if (user == null) {
             return false;
         }
-        User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        if (user != null) {
-            return Integer.toString(user.getUserId()).equals(id);
+        return Integer.toString(user.getUserId()).equals(id);
+    }
+
+    public boolean userTripOwnerVerification(ReviewForm form){
+        User user = getLoggedUser();
+        if (user == null) {
+            return false;
+        }
+
+        Trip trip = ts.getTripOrRequestById(form.getTripId()).orElseThrow(BadRequestException::new);
+        if (trip != null) {
+            return trip.getTrucker().getUserId().equals(user.getUserId()) || trip.getProvider().getUserId().equals(user.getUserId());
         }
         return false;
     }
 
-    public boolean userTripOwnerVerification(ReviewForm form){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
+    public boolean getAuth(){
+        User user = getLoggedUser();
+        return user != null;
+    }
+
+    public boolean isTripOwner(Integer tripId){
+        User user = getLoggedUser();
+        if (user == null) {
             return false;
         }
-        User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        Trip trip = ts.getTripOrRequestById(form.getTripId()).orElseThrow(UserNotFoundException::new);
+        Optional<Trip> trip = ts.getTripOrRequestById(tripId);
+        return trip.isPresent() &&
+                ((trip.get().getTrucker() != null && user.getUserId().equals(trip.get().getTrucker().getUserId())) ||
+                        (trip.get().getProvider() != null && user.getUserId().equals(trip.get().getProvider().getUserId())));
+    }
 
-        if (user != null && trip != null) {
-            return trip.getTrucker().getUserId().equals(user.getUserId()) || trip.getProvider().getUserId().equals(user.getUserId());
+    private User getLoggedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getPrincipal().equals("anonymousUser") || !auth.isAuthenticated() || auth.getPrincipal() == null) {
+            return null;
         }
-        return false;
+        Optional<User> optUser = us.getCurrentUser();
+        return optUser.orElse(null);
     }
 }

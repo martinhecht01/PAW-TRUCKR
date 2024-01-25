@@ -102,9 +102,10 @@ public class Trip {
             Boolean truckerConfirmation,
             Boolean providerConfirmation,
             LocalDateTime confirmationDate,
-            Image image, int proposalCount,
-            boolean truckerReview,
-            boolean providerReview
+            Image image,
+            int proposalCount,
+            boolean truckerSubmittedHisReview,
+            boolean providerSubmittedHisReview
     ) {
         this.tripId = tripId;
         this.provider = provider;
@@ -123,8 +124,8 @@ public class Trip {
         this.confirmationDate = confirmationDate == null ? null : Timestamp.valueOf(confirmationDate);
         this.proposalCount = proposalCount;
         this.image= image;
-        this.truckerSubmittedHisReview = truckerReview;
-        this.providerSubmittedHisReview = providerReview;
+        this.truckerSubmittedHisReview = truckerSubmittedHisReview;
+        this.providerSubmittedHisReview = providerSubmittedHisReview;
     }
 
     //constructor para el trucker
