@@ -8,15 +8,20 @@ export async function createReview(review: Review): Promise<Review> {
     return Review.reviewFromJson(response.data);
 }
 
-// export async function getReview(review: Review): Promise<Review> {
-//     const responde = await api.get(`/reviews/${review.user}/${review.trip}`, Review.reviewToJson(review));
-//     return Review.reviewFromJson(responde.data);
-// }
+export async function getReview(review: Review): Promise<Review> {
+    const responde = await api.get(`/reviews/${review.user}/${review.trip}`, Review.reviewToJson(review));
+    return Review.reviewFromJson(responde.data);
+}
 
 export async function getReviewsByUser(id: number): Promise<Review[]> {
     const response = await api.get(`${reviewsEndpoint}?userId=${id}`);
 
-    return response.data.map((reviewData: any) => {
-        return Review.reviewFromJson(reviewData);
-    });
+    console.log(response.data)
+
+    const toRet = []
+    for (const review of response.data) {
+        toRet.push(Review.reviewFromJson(review))
+    }
+
+    return toRet;
 }

@@ -15,13 +15,13 @@ export async function getUserById(id: number): Promise<User> {
 
 export async function loginUser(email: string, password: string): Promise<User> {
     const credentials = btoa(`${email}:${password}`)
-    const response = await api.post(usersEndpoint, {
+    const response = await api.get('/trips/0', {
         headers: {
             'Authorization': `Basic ${credentials}`
         }
     
     });
-    var token = response.headers.common('X-JWT')
+    var token = response.headers['x-jwt']
     sessionStorage.setItem("token", token);
     return User.userFromJson(response.data);
 }
