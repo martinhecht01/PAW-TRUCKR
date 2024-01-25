@@ -12,7 +12,7 @@ public class ReviewDto {
 
     private URI user;
     private URI self;
-    private URI trip;
+//    private URI trip;
 
     private float rating;
 
@@ -22,7 +22,7 @@ public class ReviewDto {
         ReviewDto dto = new ReviewDto();
         dto.user = uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(review.getUser().getUserId())).build();
         dto.self = uriInfo.getBaseUriBuilder().path("/reviews/").path(String.valueOf(review.getReviewId())).build();
-        dto.trip = uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(review.getTrip().getTripId())).build();
+//        dto.trip = uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(review.getTrip().getTripId())).build();
         dto.rating = review.getRating();
         dto.review = review.getReview();
         return dto;
@@ -36,13 +36,13 @@ public class ReviewDto {
         this.user = user;
     }
 
-    public URI getTrip() {
-        return trip;
-    }
+//    public URI getTrip() {
+//        return trip;
+//    }
 
-    public void setTrip(URI trip) {
-        this.trip = trip;
-    }
+//    public void setTrip(URI trip) {
+//        this.trip = trip;
+//    }
 
     public float getRating() {
         return rating;
