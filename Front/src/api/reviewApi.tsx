@@ -4,7 +4,11 @@ import api from "./config";
 const reviewsEndpoint = '/reviews'
 
 export async function createReview(review: Review): Promise<Review> {
-    const response = await api.post(reviewsEndpoint, Review.reviewToJson(review));
+    const response = await api.post(reviewsEndpoint, {
+        review: review.review,
+        rating: review.rating,
+        tripId: review.trip
+    });
     return Review.reviewFromJson(response.data);
 }
 
