@@ -32,7 +32,7 @@ public interface TripServiceV2 {
                        int price,
                        Locale locale);
 
-    Trip confirmTrip(int tripId, int userId,Locale locale);
+    Trip confirmTrip(int tripId, User user,Locale locale);
 
     Proposal createProposal(int tripId, int userId, String description, int price, Locale locale);
 

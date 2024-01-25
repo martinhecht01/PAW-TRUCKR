@@ -3,7 +3,9 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfacesPersistence.*;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOwnerException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -93,13 +95,13 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public Trip confirmTrip(int tripId, int userId,Locale locale) {
-        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        tripDaoV2.confirmTrip(trip, user);
-        //Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+    public Trip confirmTrip(int tripId, User user, Locale locale) {
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(TripNotFoundException::new);
         User trucker = trip.getTrucker();
         User provider = trip.getProvider();
+        if(trucker == null || provider == null)
+            throw new IllegalArgumentException();
+        tripDaoV2.confirmTrip(trip, user);
         if(trip.getProviderConfirmation()){
             ms.sendCompletionEmail(trucker, trip,locale);
             ms.sendCompletionEmail(provider,trip,locale);
@@ -429,8 +431,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Override
     public Trip getTripOrRequestByIdAndUserId(Integer id, User user){
         Trip trip = tripDaoV2.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
-        if(!Objects.equals(user.getUserId(), trip.getTrucker().getUserId()) && !Objects.equals(user.getUserId(), trip.getProvider().getUserId()))
-            throw new IllegalArgumentException();
+        if(!Objects.equals(user, trip.getTrucker()) && !Objects.equals(user, trip.getProvider()))
+            throw new TripOwnerException();
         return trip;
     }
 

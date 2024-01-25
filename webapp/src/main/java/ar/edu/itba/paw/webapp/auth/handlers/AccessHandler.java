@@ -28,27 +28,18 @@ public class AccessHandler {
     }
 
     public boolean userAccessVerification(String id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || auth.getPrincipal().equals("anonymousUser") || !auth.isAuthenticated() || auth.getPrincipal() == null) {
+        User user = getLoggedUser();
+        if (user == null) {
             return false;
         }
-        Optional<User> optUser = us.getCurrentUser();
-        if (!optUser.isPresent())
-            return false;
-        User user = optUser.get();
         return Integer.toString(user.getUserId()).equals(id);
     }
 
     public boolean userTripOwnerVerification(ReviewForm form){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth);
-        if (auth == null || auth.getPrincipal().equals("anonymousUser") || !auth.isAuthenticated() || auth.getPrincipal() == null) {
+        User user = getLoggedUser();
+        if (user == null) {
             return false;
         }
-        Optional<User> optUser = us.getCurrentUser();
-        if (!optUser.isPresent())
-            return false;
-        User user = optUser.get();
 
         Trip trip = ts.getTripOrRequestById(form.getTripId()).orElseThrow(BadRequestException::new);
         if (trip != null) {
@@ -57,28 +48,28 @@ public class AccessHandler {
         return false;
     }
 
-    public boolean isAuthenticated(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
-            return false;
-        }
-        Optional<User> user = us.getCurrentUser();
-        return !user.isPresent();
+    public boolean getAuth(){
+        User user = getLoggedUser();
+        return user != null;
     }
 
-    public boolean queryUserVerification(String userId, String tripType){
-        if (userId == null)
-            return true;
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null) {
+    public boolean isTripOwner(Integer tripId){
+        User user = getLoggedUser();
+        if (user == null) {
             return false;
         }
-        User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        if (user != null) {
-            if (Integer.toString(user.getUserId()).equals(userId))
-                return true;
-            return tripType.equals("publication");
+        Optional<Trip> trip = ts.getTripOrRequestById(tripId);
+        return trip.isPresent() &&
+                ((trip.get().getTrucker() != null && user.getUserId().equals(trip.get().getTrucker().getUserId())) ||
+                        (trip.get().getProvider() != null && user.getUserId().equals(trip.get().getProvider().getUserId())));
+    }
+
+    private User getLoggedUser(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || auth.getPrincipal().equals("anonymousUser") || !auth.isAuthenticated() || auth.getPrincipal() == null) {
+            return null;
         }
-        return false;
+        Optional<User> optUser = us.getCurrentUser();
+        return optUser.orElse(null);
     }
 }
