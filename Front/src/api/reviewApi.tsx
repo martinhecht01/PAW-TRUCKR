@@ -13,8 +13,8 @@ export async function createReview(review: Review): Promise<Review> {
 }
 
 export async function getReview(review: Review): Promise<Review> {
-    const responde = await api.get(`/reviews/${review.user}/${review.trip}`, Review.reviewToJson(review));
-    return Review.reviewFromJson(responde.data);
+    const response = await api.get(`/reviews/${review.user}/${review.trip}`);
+    return Review.reviewFromJson(response.data);
 }
 
 export async function getReviewsByUser(id: number): Promise<Review[]> {
