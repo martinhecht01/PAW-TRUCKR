@@ -11,11 +11,13 @@ import ar.edu.itba.paw.webapp.dto.PublicationDto;
 import ar.edu.itba.paw.webapp.dto.TripDto;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.webapp.exceptions.AuthErrorException;
 import ar.edu.itba.paw.webapp.form.*;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
@@ -86,10 +88,10 @@ public class TripControllerApi {
     @GET
     @Produces("application/vnd.trip.v1+json")
     @Path("/{id:\\d+}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("@accessHandler.isTripOwner(#id)")
     public Response getTrip(@PathParam("id") int id){
         final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        final Trip trip = ts.getTripOrRequestByIdAndUserId(id, user);
+        Trip trip = ts.getTripOrRequestByIdAndUserId(id, user);
         return Response.ok(TripDto.fromTrip(uriInfo, trip)).build();
     }
 
@@ -103,7 +105,7 @@ public class TripControllerApi {
 
     @GET
     @Produces("application/vnd.tripList.v1+json")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("@accessHandler.getAuth()")
     public Response getTrips(
             @QueryParam("status") @DefaultValue("ONGOING") @Pattern(regexp = "^(ONGOING|PAST|FUTURE)$", message="validation.Status") String status,
             @QueryParam("page") @DefaultValue(PAGE) int page,
@@ -129,8 +131,8 @@ public class TripControllerApi {
         int maxPages;
 
         if(form.getUserId() == null ){
-            tripList = ts.getAllActiveTripsOrRequests(form.getOrigin(), form.getDestination(), form.getAvailableVolume(), form.getMinAvailableWeight(), form.getMinPrice(), form.getMaxPrice(), form.getSortOrder(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest(), form.getPage(), form.getPageSize());
-            maxPages = ts.getActiveTripsOrRequestsTotalPages(form.getOrigin(), form.getDestination(), form.getAvailableVolume(), form.getMinAvailableWeight(), form.getMinPrice(), form.getMaxPrice(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest());
+            tripList = ts.getAllActiveTripsOrRequests(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getSortOrder(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest(), form.getPage(), form.getPageSize());
+            maxPages = ts.getActiveTripsOrRequestsTotalPages(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest());
         }else {
             user = us.getUserById(form.getUserId()).orElseThrow(UserNotFoundException::new);
             tripList = ts.getPublications(user.getUserId(), form.getStatus(), form.getPage());
@@ -147,14 +149,16 @@ public class TripControllerApi {
         return toReturn.build();
     }
 
-    //TODO error handling (si le mandas ids distintos a los que espera entra a tirar errores como loco)
-    @PUT
-    @Path("/{id}")
-    public Response confirmTrip(@PathParam("id") int tripId) {
+    @PATCH
+    @Path("/{id:\\d+}")
+    @PreAuthorize("@accessHandler.isTripOwner(#id)")
+    public Response confirmTrip(@PathParam("id") int id) {
         User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-
-        Trip trip = ts.confirmTrip(tripId, user.getUserId(),LocaleContextHolder.getLocale());
-
-        return Response.ok(TripDto.fromTrip(uriInfo, trip)).build();
+        try{
+            ts.confirmTrip(id, user, LocaleContextHolder.getLocale());
+        }catch (IllegalArgumentException e){
+            throw new BadRequestException();
+        }
+        return Response.noContent().build();
     }
 }

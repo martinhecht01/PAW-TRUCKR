@@ -36,13 +36,13 @@ public class FilterForm {
     @DefaultValue(PAGE_SIZE)
     int pageSize;
 
-    @Range(min=1, max=100000, message = "validation.MinAvailableWeight.Range")
-    @QueryParam("minAvailableWeight")
-    private Integer minAvailableWeight;
+    @Range(min=1, max=100000, message = "validation.Weight.Range")
+    @QueryParam("weight")
+    private Integer weight;
 
-    @Range(min = 1, max=1000, message = "validation.MinAvailableVolume.Range")
-    @QueryParam("minAvailableVolume")
-    private Integer minAvailableVolume;
+    @Range(min = 1, max=1000, message = "validation.Volume.Range")
+    @QueryParam("volume")
+    private Integer volume;
 
     @CargoType
     @QueryParam("cargoType")
@@ -65,6 +65,7 @@ public class FilterForm {
     private String destination;
 
     @QueryParam("sortOrder")
+    @Pattern(regexp="\\b(departureDate|arrivalDate|price)\\s+(ASC|DESC)\\b", message="validation.SortOrder")
     private String sortOrder;
 
     @Range(min=0, max=999999, message="validation.MinPrice.Range")
@@ -74,14 +75,6 @@ public class FilterForm {
     @Range(min=0, max=1000000, message="validation.MaxPrice.Range")
     @QueryParam("maxPrice")
     private Integer maxPrice;
-
-    public Integer getMinAvailableWeight() {
-        return minAvailableWeight;
-    }
-
-    public void setMinAvailableWeight(int minAvailableWeight) {
-        this.minAvailableWeight = minAvailableWeight;
-    }
 
     public String getDepartureDate() {
         return departureDate;
@@ -123,12 +116,20 @@ public class FilterForm {
         this.sortOrder = sortOrder;
     }
 
-    public void setAvailableWeight(int availableWeight) {
-        this.minAvailableWeight = availableWeight;
+    public Integer getWeight() {
+        return weight;
     }
 
-    public void setAvailableVolume(int availableVolume) {
-        this.minAvailableVolume = availableVolume;
+    public void setWeight(Integer weight) {
+        this.weight = weight;
+    }
+
+    public Integer getVolume() {
+        return volume;
+    }
+
+    public void setVolume(Integer volume) {
+        this.volume = volume;
     }
 
     public void setOrigin(String origin) {
@@ -139,26 +140,6 @@ public class FilterForm {
         this.destination = destination;
     }
 
-
-    public Integer getAvailableWeight() {
-        return minAvailableWeight;
-    }
-
-    public Integer getAvailableVolume() {
-        return minAvailableVolume;
-    }
-
-    public void setMinAvailableWeight(Integer minAvailableWeight) {
-        this.minAvailableWeight = minAvailableWeight;
-    }
-
-    public Integer getMinAvailableVolume() {
-        return minAvailableVolume;
-    }
-
-    public void setMinAvailableVolume(Integer minAvailableVolume) {
-        this.minAvailableVolume = minAvailableVolume;
-    }
 
     public String getCargoType() {
         return cargoType;
