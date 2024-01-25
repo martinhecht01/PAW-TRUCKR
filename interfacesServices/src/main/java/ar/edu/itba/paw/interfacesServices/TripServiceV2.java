@@ -44,17 +44,15 @@ public interface TripServiceV2 {
 
     Integer getActiveTripsOrRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String cargoType, String tripType);
 
-//    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer page, Integer pageSize);
-//
-//    List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag);
-//
-//    Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type);
-//
-//    Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type);
-
     Optional<Trip> getTripOrRequestById(int tripid);
 
     void acceptProposal(int proposalId, Locale locale);
+
+    List<Trip> getTrips(Integer userId, String status, Integer page, Integer pageSize);
+
+    Integer getTotalPagesTrips(User user, String status);
+
+    Integer getTotalPagesAllPastTrips(Integer userId);
 
     List<Trip> getAllActiveTripsOrRequestsAndProposalsCount(Integer userId, Integer pag);
 
@@ -63,8 +61,6 @@ public interface TripServiceV2 {
     Integer getTotalPagesActiveTripsOrRequests(Integer userid);
 
     Integer getTotalPagesAcceptedTripsAndRequests(Integer userid);
-
-//    Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
 
     List<Trip> getPublications(Integer userId, String status, Integer page);
 
@@ -107,4 +103,16 @@ public interface TripServiceV2 {
     void acceptCounterOffer(Integer offerId);
 
     void deleteCounterOffer(Integer offerId);
+
+    Trip getTripOrRequestByIdAndUserId(Integer id, User user);
+
+    //    List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer page, Integer pageSize);
+//
+//    List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag);
+//
+//    Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type);
+//
+//    Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type);
+
+//    Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user);
 }

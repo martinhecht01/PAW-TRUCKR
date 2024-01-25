@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfacesPersistence.*;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -110,6 +110,8 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return trip;
     }
 
+//-------------  PROPOSALS  -----------
+
     @Transactional
     @Override
     public Proposal createProposal(int tripId, int userId, String description, int price, Locale locale) {
@@ -164,6 +166,50 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional(readOnly = true)
     @Override
+    public Optional<Proposal> getOffer(User user, Trip trip){
+        return tripDaoV2.getOffer(user, trip);
+    }
+
+
+    @Transactional
+    @Override
+    public Optional<Proposal> sendCounterOffer(Integer originalId, User user, String description, Integer price){
+        Proposal original = tripDaoV2.getProposalById(originalId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.sendCounterOffer(original, description, price);
+    }
+
+    @Transactional
+    @Override
+    public void rejectCounterOffer(Integer offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.rejectCounterOffer(offer);
+    }
+
+    @Transactional
+    @Override
+    public void acceptCounterOffer(Integer offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.acceptCounterOffer(offer);
+    }
+
+    @Transactional
+    @Override
+    public void deleteCounterOffer(Integer offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.deleteCounterOffer(offer);
+    }
+
+    @Transactional
+    @Override
+    public void deleteOffer(int offerId){
+        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(ProposalNotFoundException::new);
+        tripDaoV2.deleteOffer(offer);
+    }
+
+//-----------  SEARCH  ---------------
+
+    @Transactional(readOnly = true)
+    @Override
     public List<Trip> getAllActiveTripsOrRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String cargoType, String tripType,  Integer page, Integer pageSize) {
         tripType = tripType.toLowerCase();
         if(tripType.equals("trip"))
@@ -186,31 +232,166 @@ public class TripServiceV2Impl implements TripServiceV2 {
             throw new IllegalArgumentException("The tripType must be either trip or request");
     }
 
+// ----------  PUBLICATIONS  -----------
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getPublications(Integer userId, String status, Integer page){
+        String st = status.toUpperCase();
+        switch (st) {
+            case "EXPIRED":
+                return tripDaoV2.getAllExpiredPublications(userId, page);
+            case "ACTIVE":
+                return tripDaoV2.getAllActivePublications(userId, page);
+            default:
+                return new ArrayList<>();
+        }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllActivePublications(Integer userId, Integer pag){
+        return tripDaoV2.getAllActivePublications(userId,pag);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllExpiredPublications(Integer userId, Integer pag){
+        return tripDaoV2.getAllExpiredPublications(userId, pag);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllOngoingPublications(Integer userId){
+        return tripDaoV2.getAllOngoingPublications(userId);
+    }
 
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type,  Integer page, Integer pageSize) {
-//        return tripDaoV2.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, page);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag) {
-//        return tripDaoV2.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, pag);
-//    }
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesPublications(User user, String status){
+        String st = status.toUpperCase();
+        switch (st) {
+            case "EXPIRED":
+                return tripDaoV2.getTotalPagesExpiredPublications(user);
+            case "ACTIVE":
+                return tripDaoV2.getTotalPagesActivePublications(user);
+            default:
+                return 0;
+        }
+    }
 
-//    @Transactional(readOnly = true)
-//    @Override
-//    public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type) {
-//        return tripDaoV2.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
-//    }
-//
-//    @Transactional(readOnly = true)
-//    @Override
-//    public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type) {
-//        return tripDaoV2.getActiveRequestsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
-//    }
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesExpiredPublications(User user){
+        return tripDaoV2.getTotalPagesExpiredPublications(user);
+    }
+    @Transactional
+    @Override
+    public Integer getTotalPagesActivePublications(User user){
+        return tripDaoV2.getTotalPagesActivePublications(user);
+    }
+
+
+//---------  ITINERARY  ---------
+
+    @Transactional
+    @Override
+    public List<Trip> getTrips(Integer userId, String status, Integer page, Integer pageSize){
+        System.out.println(status);
+        switch(status){
+            case "ONGOING":
+                return getAllOngoingTrips(userId, page);
+            case "PAST":
+                return getAllPastTrips(userId);
+            case "FUTURE":
+                return getAllFutureTrips(userId, page);
+            default:
+                throw new IllegalArgumentException("The status must be either ongoing, past or future");
+        }
+    }
+
+    @Transactional
+    @Override
+    public Integer getTotalPagesTrips(User user, String status){
+        switch(status){
+            case "ONGOING":
+                return getTotalPagesAllOngoingTrips(user.getUserId());
+            case "PAST":
+                return getTotalPagesAllPastTrips(user.getUserId());
+            case "FUTURE":
+                return getTotalPagesAllFutureTrips(user.getUserId());
+            default:
+                throw new IllegalArgumentException("The status must be either ongoing, past or future");
+        }
+    }
+
+    @Transactional
+    @Override
+    public Integer getTotalPagesAllOngoingTrips(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesAllOngoingTrips(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllOngoingTrips(Integer userId, Integer pag) {
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllOngoingTrips(user,pag);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllPastTrips(Integer userId) {
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllPastTrips(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesAllPastTrips(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesAllPastTrips(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getTotalPagesAllFutureTrips(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getTotalPagesAllFutureTrips(user);
+    }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Trip> getAllFutureTrips(Integer userId, Integer page){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getAllFutureTrips(user, page);
+    }
+
+ //-----------  MISC  --------------
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public byte[] getTripPicture(Integer tripId) {
+        return imageDao.getImage(tripId).get().getImage();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getCompletedTripsCount(Integer userId){
+        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+        return tripDaoV2.getCompletedTripsCount(user);
+    }
+
+    @Transactional
+    @Override
+    public void updateTripPicture(Integer tripId, Integer imageId) {
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+        Image image = imageDao.getImage(imageId).orElseThrow(NoSuchElementException::new);
+        tripDaoV2.setImage(trip, image);
+    }
 
     @Transactional(readOnly = true)
     @Override
@@ -244,193 +425,37 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.getTotalPagesAcceptedTripsAndRequests(user);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public Trip getTripOrRequestByIdAndUserId(Integer id, User user){
+        Trip trip = tripDaoV2.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        if(!Objects.equals(user.getUserId(), trip.getTrucker().getUserId()) && !Objects.equals(user.getUserId(), trip.getProvider().getUserId()))
+            throw new IllegalArgumentException();
+        return trip;
+    }
+
+    //    @Transactional(readOnly = true)
+//    @Override
+//    public List<Trip> getAllActiveTrips(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type,  Integer page, Integer pageSize) {
+//        return tripDaoV2.getAllActiveTrips(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, page);
+//    }
+//
 //    @Transactional(readOnly = true)
 //    @Override
-//    public Optional<Trip> getTripOrRequestByIdAndUserId(int id, User user){
-//        Optional<Trip> optionalTrip = tripDaoV2.getTripOrRequestById(id);
-//
-//        if(!optionalTrip.isPresent())
-//            return Optional.empty();
-//
-//        Trip trip = optionalTrip.get();
-//        //si esta aceptado y es usuario anonimo devuelvo empty
-//        if(trip.getProvider() != null && trip.getTrucker() != null && user == null)
-//            return Optional.empty();
-//
-//        //si es usuario anonimo y alguno de los dos es null (no aceptado) lo devuelvo
-//        if(user == null && (trip.getProvider() == null || trip.getTrucker() == null))
-//            return optionalTrip;
-//
-//        if(user != null && ((trip.getTrucker() != null && !Objects.equals(trip.getTrucker().getUserId(), user.getUserId())) && (trip.getProvider() != null && !Objects.equals(trip.getProvider().getUserId(), user.getUserId())))){
-//            return Optional.empty();
-//        }
-//
-//        optionalTrip.get().setReview(reviewDao.getReviewByTripAndUserId(trip, Objects.equals(user.getUserId(), trip.getTrucker() == null ? null : trip.getTrucker().getUserId()) ? trip.getProvider() : trip.getTrucker()).orElse(null));
-//        optionalTrip.get().setOffer(tripDaoV2.getOffer(user, optionalTrip.get()).orElse(null));
-//        return optionalTrip;
+//    public List<Trip> getAllActiveRequests(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String sortOrder, String departureDate, String arrivalDate, String type, Integer pag) {
+//        return tripDaoV2.getAllActiveRequests(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, sortOrder, departureDate, arrivalDate, type, pag);
 //    }
 
-//    Get Publications
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getPublications(Integer userId, String status, Integer page){
-        String st = status.toLowerCase();
-        switch (st) {
-            case "expired":
-                return tripDaoV2.getAllExpiredPublications(userId, page);
-            case "active":
-                return tripDaoV2.getAllActivePublications(userId, page);
-            default:
-                return new ArrayList<>();
-        }
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllActivePublications(Integer userId, Integer pag){
-        return tripDaoV2.getAllActivePublications(userId,pag);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllExpiredPublications(Integer userId, Integer pag){
-        return tripDaoV2.getAllExpiredPublications(userId, pag);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllOngoingPublications(Integer userId){
-        return tripDaoV2.getAllOngoingPublications(userId);
-    }
-
-//    Get Pages:
-
-    @Transactional(readOnly = true)
-    @Override
-    public Integer getTotalPagesPublications(User user, String status){
-        String st = status.toLowerCase();
-        switch (st) {
-            case "expired":
-                return tripDaoV2.getTotalPagesExpiredPublications(user);
-            case "active":
-                return tripDaoV2.getTotalPagesActivePublications(user);
-            default:
-                return 0;
-        }
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Integer getTotalPagesExpiredPublications(User user){
-        return tripDaoV2.getTotalPagesExpiredPublications(user);
-    }
-    @Transactional
-    @Override
-    public Integer getTotalPagesActivePublications(User user){
-        return tripDaoV2.getTotalPagesActivePublications(user);
-    }
-
-//   --------------
-
-
-    @Transactional
-    @Override
-    public void updateTripPicture(Integer tripId, Integer imageId) {
-        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        Image image = imageDao.getImage(imageId).orElseThrow(NoSuchElementException::new);
-        tripDaoV2.setImage(trip, image);
-    }
-    
-    @Transactional
-    @Override
-    public void deleteOffer(int offerId){
-        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(ProposalNotFoundException::new);
-        tripDaoV2.deleteOffer(offer);
-    }
-
-    @Transactional
-    @Override
-    public Integer getTotalPagesAllOngoingTrips(Integer userId){
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getTotalPagesAllOngoingTrips(user);
-    }
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllOngoingTrips(Integer userId,Integer pag) {
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllOngoingTrips(user,pag);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllPastTrips(Integer userId) {
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllPastTrips(user);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Integer getTotalPagesAllFutureTrips(Integer userId){
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getTotalPagesAllFutureTrips(user);
-    }
-
-
-    @Transactional(readOnly = true)
-    @Override
-    public List<Trip> getAllFutureTrips(Integer userId, Integer page){
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getAllFutureTrips(user, page);
-    }
-
-
-    @Transactional(readOnly = true)
-    @Override
-    public byte[] getTripPicture(Integer tripId) {
-        return imageDao.getImage(tripId).get().getImage();
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Integer getCompletedTripsCount(Integer userId){
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.getCompletedTripsCount(user);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Proposal> getOffer(User user, Trip trip){
-        return tripDaoV2.getOffer(user, trip);
-    }
-
-
-    @Transactional
-    @Override
-    public Optional<Proposal> sendCounterOffer(Integer originalId, User user, String description, Integer price){
-        Proposal original = tripDaoV2.getProposalById(originalId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.sendCounterOffer(original, description, price);
-    }
-
-    @Transactional
-    @Override
-    public void rejectCounterOffer(Integer offerId){
-        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
-        tripDaoV2.rejectCounterOffer(offer);
-    }
-
-    @Transactional
-    @Override
-    public void acceptCounterOffer(Integer offerId){
-        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
-        tripDaoV2.acceptCounterOffer(offer);
-    }
-
-    @Transactional
-    @Override
-    public void deleteCounterOffer(Integer offerId){
-        Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(NoSuchElementException::new);
-        tripDaoV2.deleteCounterOffer(offer);
-    }
+//    @Transactional(readOnly = true)
+//    @Override
+//    public Integer getActiveTripsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type) {
+//        return tripDaoV2.getActiveTripsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+//    }
+//
+//    @Transactional(readOnly = true)
+//    @Override
+//    public Integer getActiveRequestsTotalPages(String origin, String destination, Integer minAvailableVolume, Integer minAvailableWeight, Integer minPrice, Integer maxPrice, String departureDate, String arrivalDate, String type) {
+//        return tripDaoV2.getActiveRequestsTotalPages(origin, destination, minAvailableVolume, minAvailableWeight, minPrice, maxPrice, departureDate, arrivalDate, type);
+//    }
 
 }
