@@ -19,4 +19,6 @@ public interface AlertDao {
 
     List<Alert> getAlertsThatMatch(Trip trip);
 
+    Optional<Alert> getAlertById(Integer alertId);
+
 }

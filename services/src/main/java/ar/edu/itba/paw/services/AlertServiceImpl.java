@@ -3,6 +3,7 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfacesPersistence.AlertDao;
 import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.interfacesServices.exceptions.AlertAlreadyExistsException;
 import ar.edu.itba.paw.models.Alert;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
@@ -30,10 +31,12 @@ public class AlertServiceImpl implements AlertService{
         this.alertDao = alertDao;
     }
 
-
+//TODO decision de borrar la alerta sino y crearte otra y listo
     @Override
     public Optional<Alert> createAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to, String type) {
         LOGGER.info("Creating alert for user {} in city {}", user.getUserId(), city);
+        if(user.getAlert() != null)
+            throw new AlertAlreadyExistsException();
         return alertDao.createAlert(user, city, maxWeight, maxVolume, from, to, type);
     }
 
@@ -62,5 +65,10 @@ public class AlertServiceImpl implements AlertService{
             return null;
 
         return alertDao.getAlertsThatMatch(optionalTrip.get());
+    }
+
+    @Override
+    public Optional<Alert> getAlertById(Integer alertId) {
+        return alertDao.getAlertById(alertId);
     }
 }

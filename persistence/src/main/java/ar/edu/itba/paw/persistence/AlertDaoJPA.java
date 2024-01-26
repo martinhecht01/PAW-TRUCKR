@@ -40,6 +40,12 @@ public class AlertDaoJPA implements AlertDao {
     }
 
     @Override
+    public Optional<Alert> getAlertById(Integer alertId) {
+        Alert alert = entityManager.find(Alert.class, alertId);
+        return alert != null ? Optional.of(alert) : Optional.empty();
+    }
+
+    @Override
     public Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
         Alert alert = entityManager.find(Alert.class, user);
 

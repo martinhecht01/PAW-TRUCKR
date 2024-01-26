@@ -18,4 +18,6 @@ public interface AlertService {
     Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
 
     List<Alert> getAlertsThatMatch(Integer tripId);
+
+    Optional<Alert> getAlertById(Integer alertId);
 }
