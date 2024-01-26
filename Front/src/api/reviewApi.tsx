@@ -1,5 +1,6 @@
 import {Review} from "../models/Review.tsx";
 import api from "./config";
+import { getToken } from "./userApi.tsx";
 
 const reviewsEndpoint = '/reviews'
 
@@ -25,6 +26,23 @@ export async function getReviewsByUser(id: number): Promise<Review[]> {
     const toRet = []
     for (const review of response.data) {
         toRet.push(Review.reviewFromJson(review))
+    }
+
+    return toRet;
+}
+
+export async function getReviewsByURL(url: string): Promise<Review[]> {
+    const response = await api.get(url, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`
+        }
+    });
+
+    console.log(response.data)
+
+    const toRet = []
+    for (const review of response.data) {
+        toRet.push(Review.reviewFromJson(JSON.parse(review)))
     }
 
     return toRet;
