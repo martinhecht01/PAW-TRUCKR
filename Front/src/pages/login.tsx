@@ -33,7 +33,7 @@ const Login: React.FC = () => {
                     <Card>
                         <div className='w-100 text-center'>
                             <Title level={2}>Login</Title>
-                            <Text>New to Truckr? <Link>Sign up now</Link></Text>
+                            <Text>New to Truckr? <Link href='/register'>Sign up now</Link></Text>
                         </div>
                         
                         <Input 

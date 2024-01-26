@@ -10,7 +10,7 @@ export class User {
     email: string;
     cuit: string;
     password: string;
-    passwordConfirmation: string;
+    repeatPassword: string;
     rating: number;
     ratingCount: number;
     role: string;
@@ -21,13 +21,13 @@ export class User {
     reviewsURL: string;
     alert: Alert;
     
-   constructor(id: number, name: string, email: string, cuit: string, password: string, passwordConfirmation: string, rating: number, ratingCount: number, role: string, imageUrl: string, offers: Offer[], truckerTrips: Trip[], providerTrips: Trip[], reviewsURL: string, alert: Alert) {
+   constructor(id: number, name: string, email: string, cuit: string, password: string, repeatPassword: string, rating: number, ratingCount: number, role: string, imageUrl: string, offers: Offer[], truckerTrips: Trip[], providerTrips: Trip[], reviewsURL: string, alert: Alert) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.cuit = cuit;
         this.password = password;
-        this.passwordConfirmation = passwordConfirmation;
+        this.repeatPassword = repeatPassword;
         this.rating = rating;
         this.ratingCount = ratingCount;
         this.role = role;
@@ -40,7 +40,7 @@ export class User {
     }
 
     static userFromJson(json: any): User {
-        return new User(json.id, json.name, json.email, json.cuit, json.password, json.passwordConfirmation, json.rating, json.ratingCount, json.role, json.image, json.offers, json.truckerTrips, json.providerTrips, json.reviews, json.alert);
+        return new User(json.id, json.name, json.email, json.cuit, json.password, json.repeatPassword, json.rating, json.ratingCount, json.role, json.image, json.offers, json.truckerTrips, json.providerTrips, json.reviews, json.alert);
     }
 
     static userToJson(user: User): any {
@@ -50,7 +50,7 @@ export class User {
             email: user.email,
             cuit: user.cuit,
             password: user.password,
-            passwordConfirmation: user.passwordConfirmation,
+            repeatPassword: user.repeatPassword,
             rating: user.rating,
             ratingCount: user.ratingCount,
             role: user.role,
