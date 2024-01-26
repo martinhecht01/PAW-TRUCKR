@@ -22,16 +22,9 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-import javax.persistence.Access;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -46,7 +39,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
+import static org.springframework.web.cors.CorsConfiguration.ALL;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -90,10 +83,10 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cors = new CorsConfiguration();
-        cors.setAllowedOrigins(Collections.singletonList("*"));
+        cors.setAllowedOrigins(Collections.singletonList(ALL));
         cors.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        cors.setAllowedHeaders(Arrays.asList("authorization", "userURL", "content-type", "x-auth-token"));
-        cors.setExposedHeaders(Arrays.asList("X-JWT", "X-Content-Type-Options", "X-XSS-Protection", "X-Frame-Options", "authorization", "Location", "Content-Disposition", "Link"));
+        cors.addAllowedHeader(ALL);
+        cors.setExposedHeaders(Arrays.asList("Authorization", "Link", "Location", "ETag", "Total-Elements", "X-JWT"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cors);
         return source;
@@ -127,6 +120,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().exceptionHandling()
                 .authenticationEntryPoint(new TruckrAuthenticationEntryPoint())
                 .accessDeniedHandler(new TruckrAccessDeniedHandler())
+                .and().headers().cacheControl().disable()
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.PUT, "/users/{id}/**").authenticated()
