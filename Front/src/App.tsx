@@ -24,6 +24,7 @@ import SendCounterOffer from "./pages/sendCounterOffer.tsx";
 import CustomLayout from './Components/customLayout.tsx';
 import CreateAlert from "./pages/createAlert";
 import SentOffers from "./pages/sentOffers";
+import Tester from './pages/endpointTester.tsx';
 
 
 const WebApp = () => {
@@ -65,6 +66,12 @@ const WebApp = () => {
           <Route path="/trips/create" element={<CreateTrip/>}></Route>
           <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
           <Route path="/createAlert" element={<CreateAlert/>}></Route>
+          <Route path="/trips/:id" element={<PublicationDetails/>}></Route>
+          <Route path="/searchTrips" element={<SearchTrips/>}></Route>
+          <Route path="/resetPassword" element={<ResetPassword/>}></Route>
+          <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}></Route>
+          <Route path="/sendCounterOffer" element={<SendCounterOffer/>}></Route>
+          {/* <Route path='/test' element={<Tester/>}/> */}
           <Route path="*" element={<NotFound404/>} />
 
         </Routes>
