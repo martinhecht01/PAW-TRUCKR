@@ -57,6 +57,22 @@ export async function getPublications(userId: number, status: string, page: numb
     });
 }
 
+export async function getTrips(status: String): Promise<Trip[]>{
+    try {
+        const jwt = sessionStorage.getItem("token");
+        const response = await api.get(`${tripsEndpoint}?status=${status}`, {
+            headers: {
+                'Authorization': `Bearer ${jwt}`
+            }
+        })
+        return response.data.map((tripData: any) => {
+            return Trip.tripFromJson(tripData);
+        });
+    } catch(e){
+        return []
+    }
+}
+
 export async function createTrip(trip: Trip): Promise<Trip>{
     const response = await api.post(tripsEndpoint, Trip.tripToJson(trip))
     return Trip.tripFromJson(response.data)
