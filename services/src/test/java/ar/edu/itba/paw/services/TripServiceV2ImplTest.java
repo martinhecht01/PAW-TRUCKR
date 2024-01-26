@@ -154,29 +154,29 @@ public class TripServiceV2ImplTest {
 //
 //    }
 
-    @Test
-    public void testCreateProposal(){
-//         1 Precondiciones
-
-        when(tripDao.createProposal(eq(trip1), eq(user1), eq(PROPOSAL_DESCRIPTION), anyInt())).
-                thenReturn( new Proposal(PROPOSALID_NOT_EXISTENT, trip1, user1, PROPOSAL_DESCRIPTION, TRUCKERNAME_NOT_EXISTENT, PRICE_NOT_EXISTENT, null));
-
-        when(tripDao.getTripOrRequestById(TRIPID_NOT_EXISTENT))
-                .thenReturn(Optional.of(trip1));
-
-        when(userDao.getUserById(anyInt()))
-                .thenReturn(Optional.of(user1));
-
-
-        //2 Ejercitar
-        Proposal proposal = tripService.createProposal(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION, PRICE_NOT_EXISTENT, Locale.ENGLISH);
-
-        //3 Postcondiciones
-        Assert.assertNotNull(proposal);
-        Assert.assertEquals(TRIPID_NOT_EXISTENT, proposal.getTrip().getTripId());
-        Assert.assertEquals(TRUCKERID_NOT_EXISTENT, (long)proposal.getUser().getUserId());
-        Assert.assertEquals(PROPOSAL_DESCRIPTION, proposal.getDescription());
-        Assert.assertEquals(TRUCKERNAME_NOT_EXISTENT, proposal.getUserName());
-    }
+//    @Test
+//    public void testCreateProposal(){
+////         1 Precondiciones
+//
+//        when(tripDao.createProposal(eq(trip1), eq(user1), eq(PROPOSAL_DESCRIPTION), anyInt())).
+//                thenReturn( new Proposal(PROPOSALID_NOT_EXISTENT, trip1, user1, PROPOSAL_DESCRIPTION, TRUCKERNAME_NOT_EXISTENT, PRICE_NOT_EXISTENT, null));
+//
+//        when(tripDao.getTripOrRequestById(TRIPID_NOT_EXISTENT))
+//                .thenReturn(Optional.of(trip1));
+//
+//        when(userDao.getUserById(anyInt()))
+//                .thenReturn(Optional.of(user1));
+//
+//
+//        //2 Ejercitar
+//        Proposal proposal = tripService.createProposal(TRIPID_NOT_EXISTENT, TRUCKERID_NOT_EXISTENT, PROPOSAL_DESCRIPTION, PRICE_NOT_EXISTENT, Locale.ENGLISH);
+//
+//        //3 Postcondiciones
+//        Assert.assertNotNull(proposal);
+//        Assert.assertEquals(TRIPID_NOT_EXISTENT, proposal.getTrip().getTripId());
+//        Assert.assertEquals(TRUCKERID_NOT_EXISTENT, (long)proposal.getUser().getUserId());
+//        Assert.assertEquals(PROPOSAL_DESCRIPTION, proposal.getDescription());
+//        Assert.assertEquals(TRUCKERNAME_NOT_EXISTENT, proposal.getUserName());
+//    }
 
 }

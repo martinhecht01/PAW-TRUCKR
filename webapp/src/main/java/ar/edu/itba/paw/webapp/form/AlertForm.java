@@ -5,31 +5,31 @@ import ar.edu.itba.paw.webapp.form.constraints.annotations.*;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 
-//@DateValidation(start="departureDate", end="arrivalDate")
 @AlertDateValidation(start="fromDate", end="toDate")
 public class AlertForm {
-    @Range(min=1, max=100000)
+
+    @Range(min=1, max=100000, message = "validation.Weight.Range")
     private Integer maxWeight;
 
-    @Range(min=1, max=10000)
+    @Range(min=1, max=1000, message = "validation.Volume.Range")
     private Integer maxVolume;
 
-
     @PreventPast
+    @Pattern(regexp="^(?!\\s*$).+", message="validation.fromDate")
     private String fromDate;
 
+    @Pattern(regexp="^(?!\\s*$).+", message="validation.toDate")
     private  String toDate;
 
+    @CargoType
     private String cargoType;
 
-    @NotNull
-    @Size(min = 1, max = 100)
+    @NotNull(message = "validation.NotNull")
+    @Size(min = 1, max = 100, message = "validation.Origin")
     private  String origin;
 
     public String getCargoType() {

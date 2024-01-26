@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.CityService;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.exceptions.AlertNotFoundException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Alert;
 import ar.edu.itba.paw.models.User;
@@ -11,6 +12,8 @@ import ar.edu.itba.paw.webapp.form.AlertForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -21,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.function.Function;
 
 @Path("alerts")
+@Component
 public class AlertsControllerApi {
     private final AlertService as;
     private final CityService cs;
@@ -39,28 +43,42 @@ public class AlertsControllerApi {
         return fun.curry(fun,uriInfo);
     }
 
+
     @POST
     @Consumes("application/vnd.alert.v1+json")
     @Produces("application/vnd.alert.v1+json")
     public Response createAlert(@Valid AlertForm form){
-        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException :: new);
-        Alert alert = as.createAlert(user, form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), (form.getFromDate() == null || form.getFromDate().isEmpty()) ? null : LocalDateTime.parse(form.getFromDate()), (form.getToDate() == null || form.getToDate().isEmpty()) ? null : LocalDateTime.parse(form.getToDate()), form.getCargoType()).get();
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        Alert alert = as.createAlert(user, form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), LocalDateTime.parse(form.getFromDate()), (form.getToDate() == null || form.getToDate().isEmpty()) ? null : LocalDateTime.parse(form.getToDate()), form.getCargoType()).get();
         return Response.created(uriInfo.getBaseUriBuilder().path("/alerts").build()).entity(AlertDto.fromAlert(uriInfo,alert)).build();
     }
 
     @GET
-    public Response getAlert(){
-        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException :: new);
+    @Produces("application/vnd.alert.v1+json")
+    public Response getUserAlert(){
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
         Alert alert = user.getAlert();
+        if(alert == null){
+            return Response.noContent().build();
+        }
+        return Response.ok(AlertDto.fromAlert(uriInfo,alert)).build();
+    }
+
+    //TODO decidir si queremos que este pueda ser publico
+    @GET
+    @Path("/{id:\\d+}")
+    @Produces("application/vnd.alert.v1+json")
+    @PreAuthorize("@accessHandler.isAlertOwner(#id)")
+    public Response getAlert(@PathParam("id") int id){
+        Alert alert = as.getAlertById(id).orElseThrow(AlertNotFoundException::new);
         return Response.ok(AlertDto.fromAlert(uriInfo,alert)).build();
     }
 
     @DELETE
     public Response deleteAlert(){
-        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException :: new);
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
         as.deleteAlert(user);
         return Response.ok().build();
-
     }
 
 
