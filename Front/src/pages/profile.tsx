@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {Avatar, Button, Card, Col, Row, Typography} from 'antd';
+import {Avatar, Button, Card, Col, Row, Skeleton, Typography} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
 import {StarFilled, UserOutlined} from "@ant-design/icons";
 import ReviewContainer from '../Components/reviewContainer';
-import {getUserById} from "../api/userApi";
+import {getClaims, getUserById, getUserByUrl} from "../api/userApi";
 import {User} from "../models/User";
-import {getReview, getReviewsByUser} from "../api/reviewApi";
+import {getReview, getReviewsByURL, getReviewsByUser} from "../api/reviewApi";
 import { Review } from '../models/Review';
 import NotFound404 from './404';
+import { useNavigate } from 'react-router-dom';
 
 
 const { Title, Text } = Typography;
@@ -21,9 +22,18 @@ const Profile: React.FC = () => {
     const [ user, setUser] = useState<User>();
     const [ reviews, setReviews] = useState<Review[]>([]);
     const [ completedTrips, setCompletedTrips] = useState<number>(0);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    const router = useNavigate();
 
     useEffect(() => {
-        getUserById(2).then((user) => {
+        const claims = getClaims();
+
+        if (claims == null){
+            router('/login');
+        }
+
+        getUserByUrl(claims!.userURL).then((user) => {
             setUser(user);
             if (user.role == 'PROVIDER'){
                 setCompletedTrips(user.providerTrips ? user.providerTrips.length : 0);
@@ -32,12 +42,23 @@ const Profile: React.FC = () => {
                 setCompletedTrips(user.truckerTrips ? user.truckerTrips.length : 0);
             }
         
+            getReviewsByURL(user.reviewsURL).then((reviews) => {
+                setReviews(reviews);
+                setIsLoading(false);
+            })
+
+            setIsLoading(false);
         })
 
-        getReviewsByUser(2).then((reviews) => {
-            setReviews(reviews);
-        })
     }, [])
+    
+    if( isLoading ){
+        return (
+            <Row className='w-100 space-evenly'>
+                <Skeleton loading={isLoading} active avatar paragraph={{ rows: 4 }}/>
+            </Row>
+        )
+    }
     
     if( user != null && user != undefined ){
         return (
@@ -55,8 +76,7 @@ const Profile: React.FC = () => {
                                 <Text>{user!.cuit}</Text>
                                 {/* <Title level={5}>{t('profile.email')}</Title>
                                 <Text>{user!.email}</Text> */}
-                                <Button style={{width: '100%', marginTop: '5vh'}}
-                                        type='primary'>{t("profile.editProfile")}</Button>
+                                <Button style={{width: '100%', marginTop: '5vh'}} type='primary' onClick={() => router('./edit')}>{t("profile.editProfile")}</Button>
                             </Card>
                         </Col>
                         <Col span={7}>
