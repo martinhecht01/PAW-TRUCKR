@@ -77,7 +77,7 @@ public class OffersControllerApi {
 
         final List<OfferDto> proposalDtos = proposalList.stream().map(currifyUriInfo(OfferDto::fromProposal)).collect(Collectors.toList());
 
-        int maxPages = 1; //TODO: pagination trips
+        int maxPages = (ts.getProposalCountForTripId(tripId) / pageSize)+1; //TODO: pagination trips
         Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<OfferDto>>(proposalDtos){});
         PaginationHelper.getLinks(toReturn,uriInfo,page,maxPages);
 
@@ -89,8 +89,5 @@ public class OffersControllerApi {
         ts.acceptProposal(id, LocaleContextHolder.getLocale());
         return Response.ok().build();
     }
-
-
-
 
 }
