@@ -1,44 +1,31 @@
 package ar.edu.itba.paw.webapp.dto;
 
 import ar.edu.itba.paw.models.Proposal;
-import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
 
-import javax.persistence.*;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 
-public class ProposalDto {
-
+public class OfferDto {
 
     private Integer proposalId;
-
     private URI self;
-
     private URI trip;
-
     private URI user;
-
     private String description;
-
     private Integer price;
-
     private String userName;
+    private Proposal counterOffer;
 
-    private Proposal counterProposal;
-
-    public static ProposalDto fromProposal(final UriInfo uriInfo, Proposal proposal){
-        ProposalDto dto = new ProposalDto();
+    public static OfferDto fromProposal(final UriInfo uriInfo, Proposal proposal){
+        OfferDto dto = new OfferDto();
         dto.proposalId = proposal.getProposalId();
-        dto.self = uriInfo.getBaseUriBuilder().path("/proposals/").path(String.valueOf(proposal.getProposalId())).build();
+        dto.self = uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getProposalId())).build();
         dto.trip = uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(proposal.getTrip().getTripId())).build();
         dto.user = uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(proposal.getUser().getUserId())).build();
         dto.description = proposal.getDescription();
         dto.price = proposal.getPrice();
         dto.userName = proposal.getUserName();
-
-        //TODO ver
-        dto.counterProposal = proposal.getCounterProposal();
+        dto.counterOffer = proposal.getCounterProposal();
         return dto;
     }
 
@@ -91,11 +78,11 @@ public class ProposalDto {
     }
 
     public Proposal getCounterProposal() {
-        return counterProposal;
+        return counterOffer;
     }
 
     public void setCounterProposal(Proposal counterProposal) {
-        this.counterProposal = counterProposal;
+        this.counterOffer = counterProposal;
     }
 
     public URI getSelf() {

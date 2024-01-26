@@ -116,14 +116,13 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public Proposal createProposal(int tripId, int userId, String description, int price, Locale locale) {
-        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);
+    public Proposal createProposal(int tripId,User user, String description, int price, Locale locale) {
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
         Proposal proposal = tripDaoV2.createProposal(trip, user, description, price);
-        //Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
+
         LOGGER.debug("Trip: " + trip.toString() +", Proposal: " + proposal.toString());
 
-        //User user;
+
         if(trip.getTrucker() != null)
             user = trip.getTrucker();
         else

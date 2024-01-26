@@ -34,7 +34,7 @@ public interface TripServiceV2 {
 
     Trip confirmTrip(int tripId, User user,Locale locale);
 
-    Proposal createProposal(int tripId, int userId, String description, int price, Locale locale);
+    Proposal createProposal(int tripId, User user, String description, int price, Locale locale);
 
     List<Proposal> getAllProposalsForTripId(int tripId,Integer page, Integer pageSize);
 
