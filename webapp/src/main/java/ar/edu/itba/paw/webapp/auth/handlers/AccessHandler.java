@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.auth.handlers;
 
+import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.models.Alert;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
@@ -20,11 +22,13 @@ public class AccessHandler {
 
     private UserService us;
     private TripServiceV2 ts;
+    private AlertService as;
 
     @Autowired
-    public AccessHandler(UserService us, TripServiceV2 ts){
+    public AccessHandler(UserService us, TripServiceV2 ts, AlertService as){
         this.us = us;
         this.ts = ts;
+        this.as = as;
     }
 
     public boolean userAccessVerification(String id) {
@@ -63,6 +67,16 @@ public class AccessHandler {
                 ((trip.get().getTrucker() != null && user.getUserId().equals(trip.get().getTrucker().getUserId())) ||
                         (trip.get().getProvider() != null && user.getUserId().equals(trip.get().getProvider().getUserId())));
     }
+
+    public boolean isAlertOwner(Integer alertId){
+        User user = getLoggedUser();
+        if (user == null) {
+            return false;
+        }
+        Optional<Alert> alert = as.getAlertById(alertId);
+        return alert.isPresent() && user.getUserId().equals(alert.get().getUser().getUserId());
+    }
+
 
     private User getLoggedUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
