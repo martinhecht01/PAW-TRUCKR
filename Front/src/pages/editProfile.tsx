@@ -35,10 +35,11 @@ const EditProfile: React.FC = () => {
       getUserByUrl(claims?.userURL!).then((user) => {
         setUser(user);
         setName(user.name);
-        setIsLoading(false);
         getImage(user.imageUrl!).then((image) => {
           setImageUrl(URL.createObjectURL(image));
         })
+        setIsLoading(false);
+
       })
     }, [])
 

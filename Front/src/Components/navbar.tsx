@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import type { MenuProps } from 'antd';
-import { Image, Menu } from 'antd';
+import { Avatar, Col, Image, Menu, Row, Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { getClaims } from '../api/userApi';
+
+import '../styles/main.scss'
+import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { useAuthContext } from '../hooks/authProvider';
 
 const noAuth = [
   {
@@ -63,24 +67,31 @@ const NavBar: React.FC = () => {
   const [role, setRole] = useState<string>('');
 
   const {t} = useTranslation();
+  const auth = useAuthContext();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const claims = getClaims();
-    console.log(claims);
-    if (claims) {
-      setRole(claims?.role);
+    if (auth.isAuthenticated) {
+      const claims = getClaims();
+      if (claims) {
+        setRole(claims.role);
+      }
     } else {
       setRole('');
     }
-  }, []);
+  }, [auth.isAuthenticated]);
 
 
   const onClick: MenuProps['onClick'] = (e) => {
     navigate(`/${e.key}`)
     setCurrent(e.key);
   };
+
+  function logout(){
+    auth.logout();
+    navigate('/');
+  }
 
 return (
     <Menu mode="horizontal" style={{display: 'flex', alignItems: 'center', backgroundColor: 'white'}}>
@@ -92,7 +103,7 @@ return (
               item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
           ))}
           <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>Profile</Menu.Item>
-          <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={() => navigate('/logout')}>Logout</Menu.Item>
+          <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
         </>
                    
         : 
@@ -102,7 +113,7 @@ return (
               item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
             ))}
             <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>Profile</Menu.Item>
-            <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={() => navigate('/logout')}>Logout</Menu.Item>
+            <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
         </>
         : 
           <>

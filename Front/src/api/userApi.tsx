@@ -1,4 +1,3 @@
-import { useAuth } from "../hooks/authState";
 import { Claims } from "../models/Claims";
 import { User } from "../models/User";
 import api from "./config";
@@ -34,17 +33,22 @@ export async function updateUser(user: User): Promise<User> {
     return User.userFromJson(JSON.parse(response.data));
 }
 
-export async function loginUser(email: string, password: string): Promise<User> {
-    const credentials = btoa(`${email}:${password}`)
-    const response = await api.get('/trips/0', {
-        headers: {
-            'Authorization': `Basic ${credentials}`
-        }
-    
-    });
-    var token = response.headers['x-jwt']
-    sessionStorage.setItem("token", token)
-    return User.userFromJson(JSON.parse(response.data));
+export async function loginUser(email: string, password: string): Promise<string | null> {
+    try {
+        const credentials = btoa(`${email}:${password}`)
+        const response = await api.get('/trips/0', {
+            headers: {
+                'Authorization': `Basic ${credentials}`
+            }
+        })
+        console.log(response);
+        const token = response.headers['x-jwt'];
+        sessionStorage.setItem("token", token );
+        return token;
+    } catch(e){
+        return null
+    }
+
 }
 
 export function getToken(): string | null {

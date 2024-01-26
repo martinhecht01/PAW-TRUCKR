@@ -25,6 +25,7 @@ import CustomLayout from './Components/customLayout.tsx';
 import CreateAlert from "./pages/createAlert";
 import SentOffers from "./pages/sentOffers";
 import Tester from './pages/endpointTester.tsx';
+import AuthProvider from './hooks/authProvider.tsx';
 
 
 const WebApp = () => {
@@ -49,33 +50,35 @@ const WebApp = () => {
       
   }}>
     <Router>
-      <CustomLayout>
-        <Routes>
-          <Route path="/" element={<Landing/>}/>
-          <Route path="/trips" element={<BrowseTrips/>}/>
-          <Route path="/cargo" element={<BrowseTrips/>}/>
-          <Route path="/login" element={<Login/>} />
-          <Route path="/register" element={<Register/>} />
-          <Route path="/myItinerary" element={<MyItinerary/>} />
-          <Route path="/myAlert" element={<MyAlert/>} />
-          <Route path="/profile" element={<Profile/>} />
-          <Route path="/profile/edit" element={<EditProfile/>} />
-          <Route path="/pastTrips" element={<PastTrips/>}></Route>
-          <Route path="/sentOffers" element={<SentOffers/>}></Route>
-          <Route path="/myPublications" element={<MyPublications/>}></Route>
-          <Route path="/trips/create" element={<CreateTrip/>}></Route>
-          <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
-          <Route path="/createAlert" element={<CreateAlert/>}></Route>
-          <Route path="/trips/:id" element={<PublicationDetails/>}></Route>
-          <Route path="/searchTrips" element={<SearchTrips/>}></Route>
-          <Route path="/resetPassword" element={<ResetPassword/>}></Route>
-          <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}></Route>
-          <Route path="/sendCounterOffer" element={<SendCounterOffer/>}></Route>
-          {/* <Route path='/test' element={<Tester/>}/> */}
-          <Route path="*" element={<NotFound404/>} />
+      <AuthProvider>
+        <CustomLayout>
+          <Routes>
+            <Route path="/" element={<Landing/>}/>
+            <Route path="/trips" element={<BrowseTrips/>}/>
+            <Route path="/cargo" element={<BrowseTrips/>}/>
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/myItinerary" element={<MyItinerary/>} />
+            <Route path="/myAlert" element={<MyAlert/>} />
+            <Route path="/profile" element={<Profile/>} />
+            <Route path="/profile/edit" element={<EditProfile/>} />
+            <Route path="/pastTrips" element={<PastTrips/>}></Route>
+            <Route path="/sentOffers" element={<SentOffers/>}></Route>
+            <Route path="/myPublications" element={<MyPublications/>}></Route>
+            <Route path="/trips/create" element={<CreateTrip/>}></Route>
+            <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
+            <Route path="/createAlert" element={<CreateAlert/>}></Route>
+            <Route path="/trips/:id" element={<PublicationDetails/>}></Route>
+            <Route path="/searchTrips" element={<SearchTrips/>}></Route>
+            <Route path="/resetPassword" element={<ResetPassword/>}></Route>
+            <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}></Route>
+            <Route path="/sendCounterOffer" element={<SendCounterOffer/>}></Route>
+            {/* <Route path='/test' element={<Tester/>}/> */}
+            <Route path="*" element={<NotFound404/>} />
 
-        </Routes>
-      </CustomLayout>
+          </Routes>
+        </CustomLayout>
+      </AuthProvider>
     </Router>
   </ConfigProvider>
   );

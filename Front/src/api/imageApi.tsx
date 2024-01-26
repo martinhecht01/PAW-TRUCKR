@@ -17,6 +17,8 @@ export async function uploadImage(image: File): Promise<string> {
 }
 
 export async function getImage(URL: string): Promise<Blob> {
-        const response = await api.get(URL)
-        return response.data as Blob;  
-  };
+    console.log("URL img " + URL)
+    
+    const response = await api.get(URL)
+    return response.data as Blob;  
+};
