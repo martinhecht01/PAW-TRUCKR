@@ -27,7 +27,8 @@
     "arrivalDate": "Fecha de Llegada",
     "departureDate": "Fecha de Salida",
     "licensePlate": "Patente",
-    "offeredPrice": "Precio Ofrecido"
+    "offeredPrice": "Precio Ofrecido",
+    "browse": "Buscar publicaciones"
   },
 
   "profile": {
@@ -71,6 +72,10 @@
 
   "alert": {
     "create": "Crear Alerta"
+  },
+  "sentOffers": {
+    "noOffers": "No has mandado ninguna oferta",
+    "sentOffers": "Ofertas enviadas"
   }
 }
   

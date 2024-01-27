@@ -21,7 +21,8 @@
       "arrivalDate": "Arrival Date",
       "departureDate": "Departure Date",
       "licensePlate": "License Plate",
-      "offeredPrice": "Offered Price"
+      "offeredPrice": "Offered Price",
+      "browse": "Browse publications"
     },
 
     "myalert": {
@@ -71,6 +72,10 @@
 
   "alert": {
     "create": "Create Alert"
+  },
+  "sentOffers": {
+    "noOffers": "You haven't sent any offers",
+    "sentOffers": "Sent Offers"
   }
 
 }
