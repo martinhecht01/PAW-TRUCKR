@@ -123,8 +123,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and().headers().cacheControl().disable()
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.PUT, "/users/{id}/**").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/users/{id}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/users/{id:\\d+}/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/users/{id:\\d+}").authenticated()
                 .antMatchers(HttpMethod.POST, "/trips").authenticated()
                 .antMatchers(HttpMethod.PATCH, "/trips").authenticated()
                 .antMatchers(HttpMethod.POST, "/reviews").authenticated()
@@ -132,6 +132,11 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/alerts").authenticated()
                 .antMatchers(HttpMethod.GET, "/alerts").authenticated()
                 .antMatchers(HttpMethod.GET, "/alerts/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.POST, "/offers").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/offers/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/offers/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.GET, "/offers").authenticated()
+
 
 
 //                    .antMatchers("/trips/browse").access("hasRole('PROVIDER') or isAnonymous()")

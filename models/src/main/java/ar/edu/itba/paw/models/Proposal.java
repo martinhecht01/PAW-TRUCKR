@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.models;
 
-
+    import org.hibernate.annotations.Formula;
 
     import javax.persistence.*;
 
@@ -16,9 +16,12 @@ package ar.edu.itba.paw.models;
         @JoinColumn(name = "trip_id")
         private Trip trip;
 
+
+        //Solucion: rollback aca, user en el create, y si el counter offer es distinto al dueño del viaje no lo permito
         @ManyToOne
         @JoinColumn(name = "user_id")
         private User user;
+
 
         @Column(name = "description", length = 300)
         private String description;
@@ -32,6 +35,10 @@ package ar.edu.itba.paw.models;
 
         @OneToOne
         private Proposal counterProposal;
+
+        @OneToOne
+        @JoinColumn(name = "parent_proposal_id")
+        private Proposal parentProposal;
 
         // Constructors, getters, and setters
 
@@ -56,6 +63,17 @@ package ar.edu.itba.paw.models;
             this.userName = null;
             this.price = price;
             this.counterProposal = null;
+        }
+
+        public Proposal(Trip trip, User user, String description, Integer price, Proposal parentProposal) {
+            this.proposalId = null;
+            this.trip = trip;
+            this.user = user;
+            this.description = description;
+            this.userName = null;
+            this.price = price;
+            this.counterProposal = null;
+            this.parentProposal = parentProposal;
         }
 
         public Proposal getCounterProposal() {
@@ -116,5 +134,13 @@ package ar.edu.itba.paw.models;
 
         public void setPrice(Integer price) {
             this.price = price;
+        }
+
+        public Proposal getParentProposal() {
+            return parentProposal;
+        }
+
+        public void setParentProposal(Proposal parentProposal) {
+            this.parentProposal = parentProposal;
         }
     }
