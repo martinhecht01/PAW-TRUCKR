@@ -1,15 +1,19 @@
 package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.exceptions.CounterOfferAlreadyExistsException;
+import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.webapp.controller.utils.PaginationHelper;
 import ar.edu.itba.paw.webapp.dto.OfferDto;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.AcceptForm;
+import ar.edu.itba.paw.webapp.form.ActionForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -45,48 +49,61 @@ public class OffersControllerApi {
         this.ts = ts;
     }
 
-//    @POST
-//    @Consumes("application/vnd.proposal.v1+json")
-//    @Produces("application/vnd.proposal.v1+json")
-//    public Response createOffer(@Valid AcceptForm form){
-//        User user = us.getCurrentUser().orElseThrow(UserNotFoundException:: new);
-//        Proposal proposal;
-//        if(form.getProposalId() != null){
-//            proposal = ts.createProposal(form.getTripId(), user, form.getDescription(), form.getPrice(), LocaleContextHolder.getLocale());
-//        }else{
-//            proposal = ts.sendCounterOffer(form.getProposalId(), user, form.getDescription(), form.getPrice());
-//        }
-//        return Response.created(uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getProposalId())).build()).entity(OfferDto.fromProposal(uriInfo,proposal)).build();
-//    }
+    @POST
+    @Consumes("application/vnd.offer.v1+json")
+    @Produces("application/vnd.offer.v1+json")
+    @PreAuthorize("@accessHandler.canCreateOffer(#form)")
+    public Response createOffer(@Valid AcceptForm form){
+        User user = us.getCurrentUser().orElseThrow(UserNotFoundException:: new);
+        Proposal proposal;
+        try {
+            proposal = ts.createProposal(form.getTripId(), user, form.getDescription(), form.getPrice(), form.getParent_offer_id(), LocaleContextHolder.getLocale());
+        }catch (CounterOfferAlreadyExistsException e){
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+        return Response.created(uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getProposalId())).build()).entity(OfferDto.fromProposal(uriInfo,proposal)).build();
+    }
 
     @GET
-    @Path("/{id}")
-    @Produces("application/vnd.proposal.v1+json")
+    @Path("/{id:\\d+}")
+    @Produces("application/vnd.offer.v1+json")
+    @PreAuthorize("@accessHandler.canSeeOffer(#id)")
     public Response getOffer(@PathParam("id") int id){
-        final Proposal proposal = ts.getProposalById(id).get();
+        final Proposal proposal = ts.getProposalById(id).orElseThrow(ProposalNotFoundException::new);
         return Response.ok(OfferDto.fromProposal(uriInfo,proposal)).build();
     }
 
     @GET
-    @Produces("application/vnd.proposalList.v1+json")
-    public Response getOffers(@QueryParam("tripId") int tripId, @QueryParam("page") @DefaultValue(PAGE) int page, @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
-        final List<Proposal> proposalList = ts.getAllProposalsForTripId(tripId,page,pageSize);
-        if(proposalList.isEmpty()){
+    @Produces("application/vnd.offerList.v1+json")
+    @PreAuthorize("@accessHandler.canSeeOffers(#tripId, #userId)")
+    public Response getOffers(@QueryParam("tripId") Integer tripId,
+                              @QueryParam("userId") Integer userId,
+                              @QueryParam("page") @DefaultValue(PAGE) int page,
+                              @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
+        final List<Proposal> proposalList = ts.findOffers(tripId, userId, page, pageSize);
+        if(proposalList.isEmpty())
             return Response.noContent().build();
-        }
-
         final List<OfferDto> proposalDtos = proposalList.stream().map(currifyUriInfo(OfferDto::fromProposal)).collect(Collectors.toList());
-
-        int maxPages = (ts.getProposalCountForTripId(tripId) / pageSize)+1; //TODO: pagination trips
+        int maxPages = (ts.findOfferCount(tripId, userId) / pageSize)+1; //TODO: pagination trips
         Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<OfferDto>>(proposalDtos){});
-        PaginationHelper.getLinks(toReturn,uriInfo,page,maxPages);
+        PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
 
         return toReturn.build();
     }
-    @PUT
-    @Path("/{id}")
-    public Response acceptOffer(@PathParam("id") int id){
-        ts.acceptProposal(id, LocaleContextHolder.getLocale());
+
+    @PATCH
+    @Path("/{id:\\d+}")
+    @PreAuthorize("@accessHandler.canActOnOffer(#id)")
+    public Response actOnOffer(@PathParam("id") int id, @Valid ActionForm form){
+        ts.actOnOffer(id, form.getAction(), LocaleContextHolder.getLocale());
+        return Response.ok().build();
+    }
+
+    @DELETE
+    @Path("/{id:\\d+}")
+    @PreAuthorize("@accessHandler.isOfferOwner(#id)")
+    public Response deleteOffer(@PathParam("id") int id){
+        ts.deleteOffer(id);
         return Response.ok().build();
     }
 

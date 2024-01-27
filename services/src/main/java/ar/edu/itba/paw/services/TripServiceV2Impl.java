@@ -3,15 +3,12 @@ package ar.edu.itba.paw.services;
 import ar.edu.itba.paw.interfacesPersistence.*;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
-import ar.edu.itba.paw.interfacesServices.exceptions.TripNotFoundException;
-import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
-import ar.edu.itba.paw.interfacesServices.exceptions.TripOwnerException;
+import ar.edu.itba.paw.interfacesServices.exceptions.*;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,12 +113,13 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public Proposal createProposal(int tripId,User user, String description, int price, Locale locale) {
+    public Proposal createProposal(int tripId, User user, String description, int price, Integer parentOfferId, Locale locale) {
         Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
+        if (parentOfferId != null)
+            return sendCounterOffer(parentOfferId, user, description, price);
+
         Proposal proposal = tripDaoV2.createProposal(trip, user, description, price);
-
         LOGGER.debug("Trip: " + trip.toString() +", Proposal: " + proposal.toString());
-
 
         if(trip.getTrucker() != null)
             user = trip.getTrucker();
@@ -133,20 +131,26 @@ public class TripServiceV2Impl implements TripServiceV2 {
     }
 
     @Transactional
-    @Override
-    public void acceptProposal(int proposalId, Locale locale) {
-
+    public void actOnOffer(int proposalId, String action, Locale locale) {
         Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(ProposalNotFoundException::new);
-        tripDaoV2.acceptProposal(proposal);
+
+        if(proposal.getParentProposal() != null){
+            if(action.equals("ACCEPT"))
+                acceptCounterOffer(proposalId);
+            else if(action.equals("REJECT"))
+                rejectCounterOffer(proposalId);
+            return;
+        }
+
+        if(action.equals("REJECT")) {
+            tripDaoV2.deleteOffer(proposal);
+            return;
+        }
 
         Trip trip = proposal.getTrip();
-        // tripDaoV2.getTripOrRequestById(proposal.getTripId()).orElseThrow(ProposalNotFoundException::new);
-
         User trucker = trip.getTrucker();
-                //userDao.getUserById(trip.getTruckerId()).orElseThrow(ProposalNotFoundException::new);
         User provider = trip.getProvider();
-                //userDao.getUserById(trip.getProviderId()).orElseThrow(ProposalNotFoundException::new);
-
+        tripDaoV2.acceptProposal(proposal);
         ms.sendTripEmail(trucker, provider,trip,locale);
         ms.sendTripEmail(provider, trucker,trip, locale);
     }
@@ -154,14 +158,38 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional(readOnly = true)
     @Override
     public List<Proposal> getAllProposalsForTripId(int tripId, Integer page, Integer pageSize) {
-        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(NoSuchElementException::new);
-        //return trip.getProposals();
+        Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
         return tripDaoV2.getAllProposalsForTripId(tripId,page,pageSize);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Proposal> findOffers(Integer tripId, Integer userId, Integer page, Integer pageSize) {
+        if (tripId != null)
+            return getAllProposalsForTripId(tripId, page, pageSize);
+        User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        return user.getProposals();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer findOfferCount(Integer tripId, Integer userId) {
+        if (tripId != null)
+            return getProposalCountForTripId(tripId);
+        User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
+        return getProposalCountForUserId(userId);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Integer getProposalCountForTripId(int tripId){
         return tripDaoV2.getProposalsCountForTripId(tripId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Integer getProposalCountForUserId(int userId){
+        return tripDaoV2.getProposalsCountForUserId(userId);
     }
 
     @Transactional(readOnly = true)
@@ -179,9 +207,16 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     @Override
-    public Optional<Proposal> sendCounterOffer(Integer originalId, User user, String description, Integer price){
-        Proposal original = tripDaoV2.getProposalById(originalId).orElseThrow(NoSuchElementException::new);
-        return tripDaoV2.sendCounterOffer(original, description, price);
+    public Proposal sendCounterOffer(Integer originalId, User user, String description, Integer price){
+        Proposal original = tripDaoV2.getProposalById(originalId).orElseThrow(ProposalNotFoundException::new);
+        if(original.getCounterProposal() != null)
+            throw new CounterOfferAlreadyExistsException();
+        if(original.getUser() == null)
+            throw new UserNotFoundException();
+        if(Objects.equals(original.getUser().getUserId(), user.getUserId()))
+            throw new CounterOfferAlreadyExistsException();
+        Optional<Proposal> counterOffer = tripDaoV2.sendCounterOffer(original, user, description, price);
+        return counterOffer.orElse(null);
     }
 
     @Transactional
@@ -209,6 +244,10 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Override
     public void deleteOffer(int offerId){
         Proposal offer = tripDaoV2.getProposalById(offerId).orElseThrow(ProposalNotFoundException::new);
+        if (offer.getParentProposal() != null) {
+            deleteCounterOffer(offerId);
+            return;
+        }
         tripDaoV2.deleteOffer(offer);
     }
 

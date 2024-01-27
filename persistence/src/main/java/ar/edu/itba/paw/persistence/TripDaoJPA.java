@@ -123,6 +123,14 @@ public class TripDaoJPA implements TripDaoV2 {
         return ((Number) q.getSingleResult()).intValue();
     }
 
+    @Override
+    public Integer getProposalsCountForUserId(int userId){
+        String query = "SELECT COUNT(proposal_id) FROM proposals WHERE user_id = :userId";
+        Query q = entityManager.createNativeQuery(query);
+        q.setParameter("userId", userId);
+        return ((Number) q.getSingleResult()).intValue();
+    }
+
 
     //PAGINACION
     @Override
@@ -602,14 +610,22 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
     }
 
     @Override
-    public Optional<Proposal> sendCounterOffer(Proposal original, String description, Integer price){
+    public Optional<Proposal> sendCounterOffer(Proposal original, User user,String description, Integer price){
         if(original == null || entityManager.find(Proposal.class, original.getProposalId()) == null)
             return Optional.empty();
 
-        Proposal counterProposal = createProposal(null, null, description, price);
+        Proposal counterProposal = createCounterProposal(original.getTrip(), user, description, price, original);
         original.setCounterProposal(counterProposal);
         entityManager.persist(original);
         return Optional.of(counterProposal);
+    }
+
+    @Override
+    public Proposal createCounterProposal(Trip trip, User user, String description, Integer price, Proposal parentProposal) {
+        Proposal proposal = new Proposal(trip, user, description, price, parentProposal);
+        entityManager.persist(proposal);
+        LOGGER.info("Creating proposal with id {}", proposal.getProposalId());
+        return proposal;
     }
 
     @Override
@@ -623,6 +639,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         acceptProposal(originalProposal);
     }
 
+    //TODO ver si funciona.
     @Override
     public void rejectCounterOffer(Proposal counterOffer){
         String jpql = "SELECT p FROM Proposal p WHERE p.counterProposal = :counterProposal";

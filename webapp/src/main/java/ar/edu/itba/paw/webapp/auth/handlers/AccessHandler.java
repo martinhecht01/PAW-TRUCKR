@@ -4,9 +4,10 @@ import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.Alert;
+import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.webapp.form.AcceptForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -68,6 +69,18 @@ public class AccessHandler {
                         (trip.get().getProvider() != null && user.getUserId().equals(trip.get().getProvider().getUserId())));
     }
 
+    public boolean canCreateOffer(AcceptForm form){
+        User user = getLoggedUser();
+        if (user == null) {
+            return false;
+        }
+        boolean isTripOwner = isTripOwner(form.getTripId());
+        if(form.getParent_offer_id() != null){
+            return isTripOwner;
+        }
+        return !isTripOwner;
+    }
+
     public boolean isAlertOwner(Integer alertId){
         User user = getLoggedUser();
         if (user == null) {
@@ -75,6 +88,55 @@ public class AccessHandler {
         }
         Optional<Alert> alert = as.getAlertById(alertId);
         return alert.isPresent() && user.getUserId().equals(alert.get().getUser().getUserId());
+    }
+
+    public boolean canSeeOffer(Integer offerId){
+        User user = getLoggedUser();
+        if (user == null)
+            return false;
+
+        Optional<Proposal> offer = ts.getProposalById(offerId);
+
+        if (offer.isPresent()) {
+            Trip trip = offer.get().getTrip();
+            return offer.get().getUser().getUserId().equals(user.getUserId()) ||
+                    ((trip.getTrucker() != null && user.getUserId().equals(trip.getTrucker().getUserId())) ||
+                            (trip.getProvider() != null && user.getUserId().equals(trip.getProvider().getUserId())));
+        }
+        return false;
+    }
+
+    public boolean canActOnOffer(int offerId) {
+        User user = getLoggedUser();
+        if (user == null)
+            return false;
+
+        Proposal offer = ts.getProposalById(offerId).orElseThrow(BadRequestException::new);
+
+        if(offer.getParentProposal() == null)
+            return isTripOwner(offer.getTrip().getTripId());
+        return offer.getParentProposal().getUser().getUserId().equals(user.getUserId());
+    }
+
+    public boolean isOfferOwner(int offerId){
+        User user = getLoggedUser();
+        if (user == null)
+            return false;
+
+        Proposal offer = ts.getProposalById(offerId).orElseThrow(BadRequestException::new);
+        return offer.getUser().getUserId().equals(user.getUserId());
+    }
+
+    public boolean canSeeOffers(Integer tripId, Integer userId){
+        if(tripId != null){
+            return isTripOwner(tripId);
+        }
+
+        if(userId != null){
+            return userAccessVerification(Integer.toString(userId));
+        }
+        return false;
+
     }
 
 
@@ -86,4 +148,6 @@ public class AccessHandler {
         Optional<User> optUser = us.getCurrentUser();
         return optUser.orElse(null);
     }
+
+
 }

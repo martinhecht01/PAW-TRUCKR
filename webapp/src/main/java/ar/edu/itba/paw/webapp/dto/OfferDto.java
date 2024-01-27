@@ -14,7 +14,8 @@ public class OfferDto {
     private String description;
     private Integer price;
     private String userName;
-    private Proposal counterOffer;
+    private URI counterOffer;
+    private URI parentOffer;
 
     public static OfferDto fromProposal(final UriInfo uriInfo, Proposal proposal){
         OfferDto dto = new OfferDto();
@@ -25,7 +26,10 @@ public class OfferDto {
         dto.description = proposal.getDescription();
         dto.price = proposal.getPrice();
         dto.userName = proposal.getUserName();
-        dto.counterOffer = proposal.getCounterProposal();
+        if (proposal.getCounterProposal() != null)
+            dto.counterOffer = uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getCounterProposal().getProposalId())).build();
+        if(proposal.getParentProposal() != null)
+            dto.parentOffer = uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getParentProposal().getProposalId())).build();
         return dto;
     }
 
@@ -77,12 +81,12 @@ public class OfferDto {
         this.userName = userName;
     }
 
-    public Proposal getCounterProposal() {
+    public URI getCounterOffer() {
         return counterOffer;
     }
 
-    public void setCounterProposal(Proposal counterProposal) {
-        this.counterOffer = counterProposal;
+    public void setCounterOffer(URI counterOffer) {
+        this.counterOffer = counterOffer;
     }
 
     public URI getSelf() {
@@ -91,5 +95,13 @@ public class OfferDto {
 
     public void setSelf(URI self) {
         this.self = self;
+    }
+
+    public URI getParentOffer() {
+        return parentOffer;
+    }
+
+    public void setParentOffer(URI parentOffer) {
+        this.parentOffer = parentOffer;
     }
 }

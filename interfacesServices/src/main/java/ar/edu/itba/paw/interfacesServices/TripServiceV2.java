@@ -34,11 +34,18 @@ public interface TripServiceV2 {
 
     Trip confirmTrip(int tripId, User user,Locale locale);
 
-    Proposal createProposal(int tripId, User user, String description, int price, Locale locale);
+    Proposal createProposal(int tripId, User user, String description, int price, Integer parentOfferId, Locale locale);
 
     List<Proposal> getAllProposalsForTripId(int tripId,Integer page, Integer pageSize);
 
+    List<Proposal> findOffers(Integer tripId, Integer userId, Integer page, Integer pageSize);
+
+
     Integer getProposalCountForTripId(int tripId);
+
+    Integer getProposalCountForUserId(int userId);
+
+    Integer findOfferCount(Integer tripId, Integer userId);
 
     Optional<Proposal> getProposalById(int proposalId);
 
@@ -48,7 +55,7 @@ public interface TripServiceV2 {
 
     Optional<Trip> getTripOrRequestById(int tripid);
 
-    void acceptProposal(int proposalId, Locale locale);
+    void actOnOffer(int proposalId, String action, Locale locale);
 
     List<Trip> getTrips(Integer userId, String status, Integer page, Integer pageSize);
 
@@ -98,7 +105,7 @@ public interface TripServiceV2 {
 
     Optional<Proposal> getOffer(User user, Trip trip);
 
-    Optional<Proposal> sendCounterOffer(Integer originalId, User user, String description, Integer price);
+    Proposal sendCounterOffer(Integer originalId, User user, String description, Integer price);
 
     void rejectCounterOffer(Integer offerId);
 

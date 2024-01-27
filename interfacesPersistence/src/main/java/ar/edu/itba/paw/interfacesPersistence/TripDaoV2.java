@@ -99,7 +99,9 @@ public interface TripDaoV2 {
 
     Optional<Proposal> getOffer(User user, Trip trip);
 
-    Optional<Proposal> sendCounterOffer(Proposal original, String description, Integer price);
+    Optional<Proposal> sendCounterOffer(Proposal original, User user, String description, Integer price);
+
+    Proposal createCounterProposal(Trip trip, User user, String description, Integer price, Proposal parentProposal);
 
     void acceptCounterOffer(Proposal counterProposal);
 
@@ -108,4 +110,6 @@ public interface TripDaoV2 {
     void deleteCounterOffer(Proposal counterOffer);
 
     Integer getProposalsCountForTripId(int tripId);
+
+    Integer getProposalsCountForUserId(int userId);
 }
