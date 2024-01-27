@@ -3,10 +3,13 @@
     "hello": "¡Hola Mundo!"
   },
 
-  "myalert": {
+  "myAlert": {
     "help": "¿Necesitas ayuda?",
     "alertExplanation": "Una alerta es una notificación que se te enviará cuando se cree un cargamento que coincida con tus criterios.",
-    "alertQuestion": "Que es una alerta?"
+    "alertQuestion": "Que es una alerta?",
+    "create": "Crear alerta",
+    "myAlert": "Mi alerta",
+    "noAlert": "No tiene una alerta activa"
   },
 
   "common": {
@@ -70,9 +73,6 @@
     "cancel": "Cancelar"
   },
 
-  "alert": {
-    "create": "Crear Alerta"
-  },
   "sentOffers": {
     "noOffers": "No has mandado ninguna oferta",
     "sentOffers": "Ofertas enviadas"

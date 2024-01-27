@@ -25,10 +25,13 @@
       "browse": "Browse publications"
     },
 
-    "myalert": {
+    "myAlert": {
       "help": "Need Help?",
       "alertExplanation": "An alert is a notification that will be sent to you when a cargo that matches your criteria is created.",
-      "alertQuestion": "What is an alert?"
+      "alertQuestion": "What is an alert?",
+      "create": "Create Alert",
+      "myAlert": "My Alert",
+      "noAlert": "You haven't created an alert yet"
     },
 
     "profile": {
@@ -70,9 +73,6 @@
       "cancel": "Cancel"
     },
 
-  "alert": {
-    "create": "Create Alert"
-  },
   "sentOffers": {
     "noOffers": "You haven't sent any offers",
     "sentOffers": "Sent Offers"

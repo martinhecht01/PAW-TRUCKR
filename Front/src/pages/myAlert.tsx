@@ -1,8 +1,12 @@
-import React from 'react';
-import {Button, Card, Input, Popover, Typography, Row, Col, DatePicker} from 'antd';
+import React, {useEffect, useState} from 'react';
+import {Button, Card, Input, Popover, Typography, Row, Col} from 'antd';
 import '../styles/main.scss';
 import '../styles/myAlert.scss';
 import {useTranslation} from "react-i18next";
+import {Alert} from "../models/Alert";
+import {getAlert} from "../api/alertApi";
+import {getUserById} from "../api/userApi";
+import {User} from "../models/User";
 
 const { Title } = Typography;
 
@@ -10,57 +14,83 @@ const { Title } = Typography;
 const myAlert: React.FC = () => {
 
     const {t} = useTranslation();
-    const {RangePicker} = DatePicker;
     const popoverContent = (
         <div>
-            <p>{t('myalert.alertExplanation')}</p>
+            <p>{t('myAlert.alertExplanation')}</p>
         </div>
     )
 
-    return (
-        <div>
-            <div className='flex-center'>
-                <Card title="My alert" className='w-50' headStyle={{fontSize:'175%'}}>
-                    <Row className='infoRow'>
-                        <Col span={7}>
+    const [user, setUser] = useState<User>();
+    const [myAlert, setMyAlert] = useState<Alert>();
+
+    useEffect(() => {
+        getUserById(2).then((user) => {
+            setUser(user);
+        });
+
+        getAlert().then((alert) => {
+            setMyAlert(alert);
+        })
+    });
+
+    if (user?.alert != undefined) {
+        return (
+            <div>
+                <div className='flex-center'>
+                    <Card title={t('myAlert.myAlert')} className='w-50' headStyle={{fontSize: '175%'}}>
+                        <Row className='infoRow'>
+                            <Col span={7}>
                                 <Title level={5}>{t('common.origin')}</Title>
-                                <Input disabled defaultValue={"Buenos Aires"}></Input>
-                        </Col>
-                        <Col span={3}/>
-                        <Col span={14}>
+                                <Input disabled defaultValue={myAlert?.city}></Input>
+                            </Col>
+                            <Col span={3}/>
+                            <Col span={14}>
                                 <Title level={5}>{t('common.from')}-{t('common.to')}</Title>
-                                <RangePicker disabled></RangePicker>
-                        </Col>
-                    </Row>
-                    <Row className='infoRow'>
-                        <Col span={7}>
+                                <Input disabled
+                                       defaultValue={`${myAlert?.fromDate.toDateString()} - ${myAlert?.fromDate.toDateString()}`}></Input>
+                            </Col>
+                        </Row>
+                        <Row className='infoRow'>
+                            <Col span={7}>
                                 <Title level={5}>{t('common.maxWeight')}</Title>
-                                <Input disabled defaultValue={"1000"} suffix={'Kg'}></Input>
-                        </Col>
-                        <Col span={7}>
+                                <Input disabled defaultValue={myAlert?.maxWeight} suffix={'Kg'}></Input>
+                            </Col>
+                            <Col span={7}>
                                 <Title level={5}>{t('common.maxVolume')}</Title>
-                                <Input disabled defaultValue={"1000"} suffix={'m3'}></Input>
-                        </Col>
-                        <Col span={7}>
+                                <Input disabled defaultValue={myAlert?.maxVolume} suffix={'m3'}></Input>
+                            </Col>
+                            <Col span={7}>
                                 <Title level={5}>{t('common.cargoType')}</Title>
-                                <Input disabled defaultValue={"Fragile"}></Input>
-                        </Col>
-                    </Row>
-                </Card>
-            </div>
-
-            <div className="flex-center">
-                <div className='w-50 space-between mt-5'>
-                    <Button danger  type="dashed">{t('common.delete')}</Button>
-                    <Popover content={popoverContent} title={t('myalert.alertQuestion')}>
-                        <Button type="primary">{t('myalert.help')}</Button>
-                    </Popover>
+                                <Input disabled defaultValue={myAlert?.cargoType}></Input>
+                            </Col>
+                        </Row>
+                    </Card>
                 </div>
+
+                <div className="flex-center">
+                    <div className='w-50 space-between mt-5'>
+                        <Button danger type="dashed">{t('common.delete')}</Button>
+                        <Popover content={popoverContent} title={t('myAlert.alertQuestion')}>
+                            <Button type="primary">{t('myAlert.help')}</Button>
+                        </Popover>
+                    </div>
+                </div>
+
             </div>
 
-        </div>
-
-    );
+        );
+    } else {
+        return (
+            <Card title={t('myAlert.myAlert')}>
+                <div className="flex-center">
+                    <div className='flex-column' style={{textAlign:'center'}}>
+                        <Title className='m-0' level={5}>{t('myAlert.noAlert')}</Title>
+                        <Button style={{marginTop:'2vh'}} type='primary'>{t('myAlert.create')}</Button>
+                    </div>
+                </div>
+            </Card>
+        );
+    }
 };
 
 export default myAlert;
