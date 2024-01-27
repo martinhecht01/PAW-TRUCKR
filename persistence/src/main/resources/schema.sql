@@ -63,11 +63,11 @@ CREATE TABLE IF NOT EXISTS proposals (
 
 
 CREATE TABLE IF NOT EXISTS reviews (
+        reviewid SERIAL PRIMARY KEY,
         userid INT ,
         tripid INT ,
         rating FLOAT CHECK(rating<=5 AND rating>=0),
         review VARCHAR(400),
-        PRIMARY KEY(userid,tripid),
         FOREIGN KEY (userid) REFERENCES users(userid),
         FOREIGN KEY (tripid) REFERENCES trips(trip_id)
 );
