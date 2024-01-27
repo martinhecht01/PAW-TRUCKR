@@ -18,7 +18,7 @@ public class AcceptForm {
     @NotNull(message = "validation.NotNull")
     private Integer tripId;
 
-    private Integer proposalId;
+    private Integer parent_offer_id;
 
     public Integer getPrice() {
         return price;
@@ -44,11 +44,11 @@ public class AcceptForm {
         this.tripId = tripId;
     }
 
-    public Integer getProposalId() {
-        return proposalId;
+    public Integer getParent_offer_id() {
+        return parent_offer_id;
     }
 
-    public void setProposalId(Integer proposalId) {
-        this.proposalId = proposalId;
+    public void setParent_offer_id(Integer parent_offer_id) {
+        this.parent_offer_id = parent_offer_id;
     }
 }
