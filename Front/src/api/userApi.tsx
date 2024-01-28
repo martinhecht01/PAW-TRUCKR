@@ -28,7 +28,7 @@ export async function getUserByUrl(url: string): Promise<User> {
 
 export async function getUserById(id: number): Promise<User> {
     const response = await api.get(`${usersEndpoint}/${id}`);
-    return User.userFromJson(JSON.parse(response.data));
+    return User.userFromJson(response.data);
 }
 
 export async function updateUser(user: User): Promise<User> {
