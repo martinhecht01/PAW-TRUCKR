@@ -36,14 +36,14 @@ const TripCard = (props: TripCardProps) => {
                         <div style={{display: 'flex', textAlign: 'center'}}>
                             <div style={{width: '40%'}}>
                                 <Title level={5} style={{margin: 0}}>{props.from}</Title>
-                                <Text>{props.fromDate.toString()}</Text>
+                                <Text>{(new Date(props.fromDate.toString())).toDateString()}</Text>
                             </div>
                             <div style={{width: '20%', display: 'flex', justifyContent: 'center'}}>
                                 <ArrowRightOutlined/>
                             </div>
                             <div style={{width: '40%'}}>
                                 <Title level={5} style={{margin: 0}}>{props.to}</Title>
-                                <Text>{props.toDate.toString()}</Text>
+                                <Text>{(new Date(props.toDate.toString())).toDateString()}</Text>
                             </div>
                         </div>
                     }

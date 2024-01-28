@@ -8,20 +8,6 @@ import { getClaims, getUserByUrl } from "../api/userApi";
 
 const {Title, Text} = Typography;
 
-/*
-export type TripCardProps = {
-    type: 'trip' | 'cargo';
-    from: string;
-    to: string;
-    fromDate: Date;
-    toDate: Date;
-    weight: number;
-    volume: number;
-    price: number;
-    image: string;
-
-}   
-*/
 const MyPublications: React.FC = () => {
 
     const navigate = useNavigate();
@@ -55,7 +41,7 @@ const MyPublications: React.FC = () => {
                     }
                 }))
     
-                getPublications('', 'TRIP', 'EXPIRED', 1, 1, '', '', 0, 0, expiredPage, 4, 'departureDate ASC').then((trips) => {
+                getPublications(user.id.toString(), 'TRIP', 'EXPIRED', 1, 1, '', '', 0, 0, expiredPage, 4, 'departureDate ASC').then((trips) => {
                     setExpiredTrips(trips.map((publication) => {
                         return {
                             type: 'trip',
@@ -92,7 +78,7 @@ const MyPublications: React.FC = () => {
                             <div style={{display: "flex", flexDirection: 'column'}}>
                                 <Row gutter={15}>
                                     {activeTrips.map((trip, index) => (
-                                        <Col xxl={6} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
+                                        <Col xxl={6} xl={6} lg={8} md={12} sm={22} xs={22} key={index}>
                                             <TripCard {...trip}></TripCard>
                                         </Col>
                                     )
@@ -119,7 +105,7 @@ const MyPublications: React.FC = () => {
                             <div style={{display: "flex", flexDirection: 'column'}}>
                                 <Row gutter={15}>
                                     {expiredTrips.map((trip, index) => (
-                                        <Col xxl={6} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
+                                        <Col xxl={6} xl={6} lg={8} md={12} sm={22} xs={22} key={index}>
                                             <TripCard {...trip}></TripCard>
                                         </Col>
                                     )
