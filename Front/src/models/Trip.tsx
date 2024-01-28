@@ -1,63 +1,95 @@
 export class Trip {
-    tripId: number;
-    provider: number;
-    trucker: number;
-    licensePlate: string;
-    weight: number;
-    volume: number;
-    departureDate: Date;
     arrivalDate: Date;
-    origin: string;
+    departureDate: Date;
     destination: string;
-    type: string;
+    image: string;
+    licensePlate: string;
+    origin: string;
     price: number;
-    truckerConfirmation: boolean;
+    proposalCount: number;
+    proposals: string;
+    provider: string;
     providerConfirmation: boolean;
-    confirmationDate: Date;
-    imageUrl: number;
-    
+    providerSubmittedHisReview: boolean;
+    self: string;
+    tripId: number;
+    trucker: string;
+    truckerConfirmation: boolean;
+    truckerSubmittedHisReview: boolean;
+    type: string;
+    volume: number;
+    weight: number;
 
-    constructor(tripId: number, provider: number, trucker: number, licensePlate: string, weight: number, volume: number, departureDate: Date, arrivalDate: Date, origin: string, destination: string, type: string, price: number, truckerConfirmation: boolean, providerConfirmation: boolean, confirmationDate: Date, imageUrl: number) {
-        this.tripId = tripId;
-        this.provider = provider;
-        this.trucker = trucker;
-        this.licensePlate = licensePlate;
-        this.weight = weight;
-        this.volume = volume;
-        this.departureDate = departureDate;
+    constructor(arrivalDate: Date, departureDate: Date, destination: string, image: string, licensePlate: string, origin: string, price: number, proposalCount: number, proposals: string, provider: string, providerConfirmation: boolean, providerSubmittedHisReview: boolean, self: string, tripId: number, trucker: string, truckerConfirmation: boolean, truckerSubmittedHisReview: boolean, type: string, volume: number, weight: number) {
         this.arrivalDate = arrivalDate;
-        this.origin = origin;
+        this.departureDate = departureDate;
         this.destination = destination;
-        this.type = type;
+        this.image = image;
+        this.licensePlate = licensePlate;
+        this.origin = origin;
         this.price = price;
-        this.truckerConfirmation = truckerConfirmation;
+        this.proposalCount = proposalCount;
+        this.proposals = proposals;
+        this.provider = provider;
         this.providerConfirmation = providerConfirmation;
-        this.confirmationDate = confirmationDate;
-        this.imageUrl = imageUrl;
+        this.providerSubmittedHisReview = providerSubmittedHisReview;
+        this.self = self;
+        this.tripId = tripId;
+        this.trucker = trucker;
+        this.truckerConfirmation = truckerConfirmation;
+        this.truckerSubmittedHisReview = truckerSubmittedHisReview;
+        this.type = type;
+        this.volume = volume;
+        this.weight = weight;
     }
 
     static tripFromJson(json: any): Trip {
-        return new Trip(json.tripId, json.provider, json.trucker, json.licensePlate, json.weight, json.volume, json.departureDate, json.arrivalDate, json.origin, json.destination, json.type, json.price, json.truckerConfirmation, json.providerConfirmation, json.confirmationDate, json.imageUrl);
+        return new Trip(
+            json.arrivalDate,
+            json.departureDate,
+            json.destination,
+            json.image,
+            json.licensePlate,
+            json.origin,
+            json.price,
+            json.proposalCount,
+            json.proposals,
+            json.provider,
+            json.providerConfirmation,
+            json.providerSubmittedHisReview,
+            json.self,
+            json.tripId,
+            json.trucker,
+            json.truckerConfirmation,
+            json.truckerSubmittedHisReview,
+            json.type,
+            json.volume,
+            json.weight
+        )
     }
 
-    static tripToJson(trip: Trip): any {
-        return {
-            tripId: trip.tripId,
-            provider: trip.provider,
-            trucker: trip.trucker,
-            licensePlate: trip.licensePlate,
-            weight: trip.weight,
-            volume: trip.volume,
-            departureDate: trip.departureDate,
-            arrivalDate: trip.arrivalDate,
-            origin: trip.origin,
-            destination: trip.destination,
-            type: trip.type,
-            price: trip.price,
-            truckerConfirmation: trip.truckerConfirmation,
-            providerConfirmation: trip.providerConfirmation,
-            confirmationDate: trip.confirmationDate,
-            imageUrl: trip.imageUrl
-        }
+    static tripToJson(trip: Trip): string {
+        return JSON.stringify({
+            "arrivalDate": trip.arrivalDate,
+            "departureDate": trip.departureDate,
+            "destination": trip.destination,
+            "image": trip.image,
+            "licensePlate": trip.licensePlate,
+            "origin": trip.origin,
+            "price": trip.price,
+            "proposalCount": trip.proposalCount,
+            "proposals": trip.proposals,
+            "provider": trip.provider,
+            "providerConfirmation": trip.providerConfirmation,
+            "providerSubmittedHisReview": trip.providerSubmittedHisReview,
+            "self": trip.self,
+            "tripId": trip.tripId,
+            "trucker": trip.trucker,
+            "truckerConfirmation": trip.truckerConfirmation,
+            "truckerSubmittedHisReview": trip.truckerSubmittedHisReview,
+            "type": trip.type,
+            "volume": trip.volume,
+            "weight": trip.weight
+        })
     }
 }
