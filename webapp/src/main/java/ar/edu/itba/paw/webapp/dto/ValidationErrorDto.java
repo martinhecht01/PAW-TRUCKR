@@ -14,7 +14,6 @@ public class ValidationErrorDto {
         dto.path = getViolationPropertyName(violation);
         return dto;
     }
-//TODO revisar como se comporta con la validacion de query params
     private static String getViolationPropertyName(ConstraintViolation<?> violation) {
         final String propertyPath = violation.getPropertyPath().toString();
         return propertyPath.substring(propertyPath.lastIndexOf(".") + 1);

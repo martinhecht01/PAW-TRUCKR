@@ -62,7 +62,7 @@ public class BasicFilter extends OncePerRequestFilter {
             return;
         }
         Authentication authentication;
-        //TODO test
+
         try {
             String[] credentials = extractAndDecodeHeader(header);
             Optional<SecureToken> token = userService.getSecureToken(credentials[NONCE]);

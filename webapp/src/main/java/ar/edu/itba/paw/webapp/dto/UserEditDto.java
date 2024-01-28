@@ -1,14 +1,5 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.webapp.form.constraints.annotations.ConfirmPasswordValidation;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.ImageType;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.MaxFileSize;
-import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
-
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 

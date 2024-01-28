@@ -5,7 +5,7 @@ import javax.ws.rs.DefaultValue;
 
 public class ActionForm {
 
-    @Pattern(regexp = "(ACCEPT|REJECT)", message = "validation.Action")
+    @Pattern(regexp = "^(ACCEPT|REJECT)$", message = "validation.Action")
     @DefaultValue("ACCEPT")
     private String action;
 

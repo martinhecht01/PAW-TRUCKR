@@ -47,12 +47,16 @@ import java.util.Properties;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebConfig {
 
+    private static final Integer MAX_UPLOAD_SIZE = 1024 * 1024 * 10;
+    private static final Integer MAIL_PORT = 587;
+    private static final Integer CACHE_SECONDS = 5;
+
     @Bean
     public MessageSource messageSource() {
         final ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("classpath:i18n/messages");
         messageSource.setDefaultEncoding(StandardCharsets.UTF_8.displayName());
-        messageSource.setCacheSeconds(5);
+        messageSource.setCacheSeconds(CACHE_SECONDS);
         return messageSource;
     }
 
@@ -85,7 +89,7 @@ public class WebConfig {
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+        mailSender.setPort(MAIL_PORT);
 
         mailSender.setUsername("truckrconfirmation@gmail.com");
         mailSender.setPassword("njcgqqagyhvdeiye");
@@ -148,7 +152,7 @@ public class WebConfig {
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("utf-8");
-        resolver.setMaxUploadSize(1024 * 1024 * 10); // 10 MB
+        resolver.setMaxUploadSize(MAX_UPLOAD_SIZE);
         return resolver;
     }
 

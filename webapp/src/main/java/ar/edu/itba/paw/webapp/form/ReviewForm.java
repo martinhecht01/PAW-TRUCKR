@@ -30,6 +30,7 @@ public class ReviewForm {
     public int getTripId() {
         return tripId;
     }
+
     public void setReview(String review) {
             this.review = review;
         }

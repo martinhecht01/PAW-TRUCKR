@@ -23,7 +23,6 @@ public class UserForm {
     @Size(min = 6, max = 100, message = "validation.Password.Size")
     private String password;
 
-
     private String repeatPassword;
 
     @NotNull(message = "validation.NotNull")

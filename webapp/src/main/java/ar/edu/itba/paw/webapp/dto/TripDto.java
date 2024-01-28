@@ -27,9 +27,9 @@ public class TripDto {
     private Boolean providerConfirmation;
     private Timestamp confirmationDate;
     private URI image;
-    private URI proposals;
-    private int proposalCount;
-    private Proposal offer;
+//    private URI proposals;
+//    private int proposalCount;
+//    private Proposal offer;
     private boolean truckerSubmittedHisReview;
     private boolean providerSubmittedHisReview;
 
@@ -58,15 +58,14 @@ public class TripDto {
         dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
 
         //TODO revisar
-        dto.proposals = uri.getBaseUriBuilder().path("/proposals/").path(String.valueOf(trip.getTripId())).build();
+//        dto.proposals = uri.getBaseUriBuilder().path("/offers/").path(String.valueOf(trip.getTripId())).build();
 
         dto.truckerSubmittedHisReview = trip.getTruckerSubmittedHisReview();
         dto.providerSubmittedHisReview = trip.getProviderSubmittedHisReview();
 
-        dto.proposalCount = trip.getProposalCount();
+//        dto.proposalCount = trip.getProposalCount();
 
-        //TODO son muchas, es lo mismo que proposal???
-        dto.offer = trip.getOffer();
+//        dto.offer = trip.getOffer();
 
         return dto;
     }
@@ -207,29 +206,29 @@ public class TripDto {
         return image;
     }
 
-    public URI getProposals() {
-        return proposals;
-    }
-
-    public void setProposals(URI proposals) {
-        this.proposals = proposals;
-    }
-
-    public int getProposalCount() {
-        return proposalCount;
-    }
-
-    public void setProposalCount(int proposalCount) {
-        this.proposalCount = proposalCount;
-    }
-
-    public Proposal getOffer() {
-        return offer;
-    }
-
-    public void setOffer(Proposal offer) {
-        this.offer = offer;
-    }
+//    public URI getProposals() {
+//        return proposals;
+//    }
+//
+//    public void setProposals(URI proposals) {
+//        this.proposals = proposals;
+//    }
+//
+//    public int getProposalCount() {
+//        return proposalCount;
+//    }
+//
+//    public void setProposalCount(int proposalCount) {
+//        this.proposalCount = proposalCount;
+//    }
+//
+//    public Proposal getOffer() {
+//        return offer;
+//    }
+//
+//    public void setOffer(Proposal offer) {
+//        this.offer = offer;
+//    }
 
     public boolean getTruckerSubmittedHisReview() {
         return truckerSubmittedHisReview;

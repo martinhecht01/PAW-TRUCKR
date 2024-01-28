@@ -7,7 +7,6 @@ import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.auth.AuthUserDetailsImpl;
-import ar.edu.itba.paw.webapp.form.AcceptForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -125,14 +124,14 @@ public class OffersController {
 //        }
 //        return mav;
 //    }
-
-    @RequestMapping("/offers/sendCounterOffer")
-    public ModelAndView sendCounterOffer(@ModelAttribute("acceptForm") final AcceptForm form, @RequestParam("offerId") String offerId) {
-        Proposal proposal = ts.getProposalById(Integer.parseInt(offerId)).orElseThrow(TripOrRequestNotFoundException::new);
-        ModelAndView mav = new ModelAndView("user/sendCounterOffer");
-        mav.addObject("proposal", proposal);
-        return mav;
-    }
+//
+//    @RequestMapping("/offers/sendCounterOffer")
+//    public ModelAndView sendCounterOffer(@ModelAttribute("acceptForm") final AcceptForm form, @RequestParam("offerId") String offerId) {
+//        Proposal proposal = ts.getProposalById(Integer.parseInt(offerId)).orElseThrow(TripOrRequestNotFoundException::new);
+//        ModelAndView mav = new ModelAndView("user/sendCounterOffer");
+//        mav.addObject("proposal", proposal);
+//        return mav;
+//    }
 //    @RequestMapping(path = "/offers/deleteCounterOffer", method = { RequestMethod.POST })
 //    public ModelAndView deleteCounterOffer(@RequestParam("offerId") int offerId, @RequestParam("tripId") String tripId) {
 //        ts.deleteCounterOffer(offerId);
