@@ -98,6 +98,19 @@ export async function getTripById(id: string): Promise<Trip> {
     return Trip.tripFromJson(response.data);
 }
 
+export async function getTripByUrl(url: string): Promise<Trip> {
+
+    const token = sessionStorage.getItem('token')
+
+    const response = await api.get(url, {
+        headers: {
+            Accept: 'application/vnd.trip.v1+json',
+            Authorization: `Bearer ${token}`
+        }
+    });
+    return Trip.tripFromJson(response.data);
+}
+
 export async function createTrip(trip: Trip): Promise<Trip> {
 
     const token = sessionStorage.getItem('token')
