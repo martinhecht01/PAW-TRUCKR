@@ -54,8 +54,8 @@ const WebApp = () => {
         <CustomLayout>
           <Routes>
             <Route path="/" element={<Landing/>}/>
-            <Route path="/trips" element={<BrowseTrips/>}/>
-            <Route path="/cargo" element={<BrowseTrips/>}/>
+            <Route path="/trips" element={<BrowseTrips tripOrRequest='TRIP'/>}/>
+            <Route path="/cargo" element={<BrowseTrips tripOrRequest='REQUEST'/>}/>
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
             <Route path="/myItinerary" element={<MyItinerary/>} />
@@ -73,7 +73,7 @@ const WebApp = () => {
             <Route path="/resetPassword" element={<ResetPassword/>}></Route>
             <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}></Route>
             <Route path="/sendCounterOffer" element={<SendCounterOffer/>}></Route>
-            {/* <Route path='/test' element={<Tester/>}/> */}
+            <Route path='/test' element={<Tester/>}/>
             <Route path="*" element={<NotFound404/>} />
 
           </Routes>

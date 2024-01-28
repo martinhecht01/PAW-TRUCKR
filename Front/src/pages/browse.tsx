@@ -1,8 +1,11 @@
-import { Button, Card, Col, DatePicker, Divider, Grid, Input, Pagination, Row, Select, Slider, Switch, Typography } from "antd"
-import { useState } from "react";
+import { Button, Card, Col, DatePicker, Divider, Grid, Input, Pagination, Row, Select, Skeleton, Slider, Switch, Typography } from "antd"
+import { useEffect, useState } from "react";
 import TripCard, { TripCardProps } from "../Components/tripCard";
 import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import '../styles/main.scss';
+import { getPublications } from "../api/tripApi";
+import { Dayjs } from "dayjs";
+import { getCities } from "../api/citiesApi";
 
 const {Text, Title} = Typography;
 
@@ -10,16 +13,71 @@ const formatter = (value: number | undefined) => `$${value}`;
 
 const {RangePicker} = DatePicker;
 
-const BrowseTrips: React.FC = () => {
-    const [trips, setTrips] = useState(Array<TripCardProps>());
-    
-    trips.push({type: 'trip', from: 'Helsinki', to: 'Tampere', fromDate: new Date(), toDate: new Date(), weight: 1000, volume: 1000, price: 1000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s'})
-    trips.push({type: 'trip', from: 'Helsinki', to: 'Tampere', fromDate: new Date(), toDate: new Date(), weight: 1000, volume: 1000, price: 1000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s'})
-    trips.push({type: 'trip', from: 'Helsinki', to: 'Tampere', fromDate: new Date(), toDate: new Date(), weight: 1000, volume: 1000, price: 1000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s'})
-    trips.push({type: 'trip', from: 'Helsinki', to: 'Tampere', fromDate: new Date(), toDate: new Date(), weight: 1000, volume: 1000, price: 1000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s'})
-    trips.push({type: 'trip', from: 'Helsinki', to: 'Tampere', fromDate: new Date(), toDate: new Date(), weight: 1000, volume: 1000, price: 1000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s'})
-    trips.push({type: 'trip', from: 'Helsinki', to: 'Tampere', fromDate: new Date(), toDate: new Date(), weight: 1000, volume: 1000, price: 1000, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s'})
+type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
+interface BrowseTripsProps {
+    tripOrRequest: 'TRIP' | 'REQUEST';
+}
+
+
+const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
+
+    const sortOptions = ['departureDate ASC', 'departureDate DESC', 'arrivalDate ASC', 'arrivalDate DESC', 'price ASC', 'price DESC']
+
+    const [cities, setCities] = useState<Array<string>>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [trips, setTrips] = useState<Array<TripCardProps>>([]);
+    const [origin, setOrigin] = useState<string>('');
+    const [destination, setDestination] = useState<string>('');
+    const [weight, setWeight] = useState<number>(1);
+    const [volume, setVolume] = useState<number>(1);
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
+    const [sortBy, setSortBy] = useState<string>(sortOptions[0]);
+    const [page, setPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(12);
+
+    const handleOriginChange = (value: string) => setOrigin(value);
+    const handleDestinationChange = (value: string) => setDestination(value);
+    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(+e.target.value);
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => setVolume(+e.target.value);
+
+    const handlePriceRangeChange = (value: number | number[]) => {
+        if (Array.isArray(value) && value.length === 2) {
+            setPriceRange(value as [number, number]);
+        }
+    };
+
+    const handlePaginationChange = (page: number, pageSize?: number) => {
+        setPage(page);
+        if (pageSize) setPageSize(pageSize);
+    };
+
+    const handleSortByChange = (value: string) => setSortBy(value);
+
+    useEffect(() => {
+        setIsLoading(true);
+
+        const cities = getCities().then((cities) => {
+            const citiesArray = cities.map((city) => city.cityName);
+            setCities(citiesArray);
+        });
+        const publications = getPublications('' ,tripOrRequest, 'ACTIVE', volume, weight, origin, destination, priceRange[0], priceRange[1], page, pageSize, sortBy).then((publications) => {
+            setTrips(publications.map((publication) => {
+                return {
+                    type: 'trip',
+                    from: publication.origin,
+                    to: publication.destination,
+                    fromDate: publication.departureDate,
+                    toDate: publication.arrivalDate,
+                    weight: publication.weight,
+                    volume: publication.volume,
+                    price: publication.price,
+                    image: publication.image
+                }
+            }))
+            setIsLoading(false);
+        })
+    }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest])
 
     return (
         <Row>
@@ -28,48 +86,73 @@ const BrowseTrips: React.FC = () => {
                     <Title level={3} style={{marginTop: 0}}>Filters</Title>
                     <Divider></Divider>
                     <Text>Origin:</Text>
-                    <Select placeholder="-" className="w-100"></Select>
+                    <Select placeholder="-" className="w-100" onChange={handleOriginChange}>
+                        {cities.map((city, index) => (
+                            <Select.Option key={index} value={city}>{city}</Select.Option>
+                        ))}
+                    </Select>
                     <div className="m-10"></div>
                     <Text>Destination:</Text>
-                    <Select placeholder="-" className="w-100"></Select>
+                    <Select placeholder="-" className="w-100" onChange={handleDestinationChange}>
+                        {cities.map((city, index) => (
+                            <Select.Option key={index} value={city}>{city}</Select.Option>
+                        ))}
+                    </Select>
                     <div className="m-10"></div>
                     <Text>Weight:</Text>
-                    <Input type="number" placeholder="-" min={0}></Input>
+                    <Input type="number" placeholder="-" min={0} onChange={handleWeightChange} suffix='Kg'></Input>
                     <div className="m-10"></div>
                     <Text>Volume:</Text>
-                    <Input type="number" placeholder="-" min={0}></Input>
+                    <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3'></Input>
                     <div className="m-10"></div>
                     <Text>Price:</Text>
-                    <Slider range min={0} max={1000000} tooltip={{formatter}}></Slider>
+                    <Slider range min={0} max={1000000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
-                    <Text>Cargo type:</Text>
-                    <Select placeholder="-" className="w-100"></Select>
+                    {/* <Text>Cargo type:</Text>
+                    <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange}></Select> */}
                     <div className="m-10"></div>
-                    <Text>Date Range</Text>
-                    <RangePicker></RangePicker>
+                    {/* <Text>Date Range</Text>
+                    <RangePicker
+                        onChange={(val) => {
+                            setDateRange(val);
+                        }}   
+                    ></RangePicker> */}
                     <div className="m-10"></div>
                     <Text>Sort by:</Text>
-                    <Select placeholder="-" className="w-100"></Select>                                        
-                    <div className="m-10"></div>
-                    <div>
-                        <Button type="primary" style={{width: '72%', marginRight: '3%'}}>Apply</Button>
-                        <Button type="dashed" className="w-25"><CloseOutlined /></Button>
-                    </div>
-                    
+                    <Select placeholder="-" className="w-100" onChange={handleSortByChange}>
+                        {sortOptions.map((option, index) => (
+                            <Select.Option key={index} value={option}>{option}</Select.Option>
+                        )
+                        )}
+                    </Select>                                      
+                    <div className="m-10"></div>                    
                 </Card>
             </Col>
             <Col xxl={20} xl={20} lg={16} md={24} sm={24} xs={24}>
-                <div style={{display: "flex", flexDirection: 'column'}}>
-                    <Row gutter={15}>
-                        {trips.map((trip, index) => (
-                            <Col xxl={6} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
-                                <TripCard {...trip}></TripCard>
-                            </Col>
-                        )
-                        )}
-                    </Row>
-                    <Pagination className="text-center mt-2vh" defaultCurrent={1} total={50} />
-                </div>
+                <Skeleton loading={isLoading}>
+                    <div style={{display: "flex", flexDirection: 'column'}}>
+                        <Row gutter={15}>
+                            {trips.length === 0 && <Col span={24} className="text-center"><Title level={3}>No trips found</Title></Col>}
+                            {trips.map((trip, index) => (
+                                <Col xxl={6} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
+                                    <TripCard {...trip}></TripCard>
+                                </Col>
+                            )
+                            )}
+                        </Row>
+                        {trips.length === 0 ? null : 
+                            <Pagination 
+                                className="text-center mt-2vh" 
+                                defaultCurrent={1} 
+                                total={50} // Update this total with the actual total number of items
+                                current={page}
+                                pageSize={pageSize}
+                                onChange={handlePaginationChange}
+                            />
+                        }
+                    </div>
+                </Skeleton>
+
             </Col>
                             
             
