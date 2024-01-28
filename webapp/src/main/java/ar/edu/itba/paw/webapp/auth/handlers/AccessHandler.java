@@ -7,7 +7,7 @@ import ar.edu.itba.paw.models.Alert;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.form.AcceptForm;
+import ar.edu.itba.paw.webapp.form.OfferForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -69,13 +69,13 @@ public class AccessHandler {
                         (trip.get().getProvider() != null && user.getUserId().equals(trip.get().getProvider().getUserId())));
     }
 
-    public boolean canCreateOffer(AcceptForm form){
+    public boolean canCreateOffer(Integer tripId, Integer parent_offer_id){
         User user = getLoggedUser();
-        if (user == null) {
+        if (user == null || tripId == null) {
             return false;
         }
-        boolean isTripOwner = isTripOwner(form.getTripId());
-        if(form.getParent_offer_id() != null){
+        boolean isTripOwner = isTripOwner(tripId);
+        if(parent_offer_id != null){
             return isTripOwner;
         }
         return !isTripOwner;
@@ -127,16 +127,11 @@ public class AccessHandler {
         return offer.getUser().getUserId().equals(user.getUserId());
     }
 
-    public boolean canSeeOffers(Integer tripId, Integer userId){
+    public boolean canSeeOffers(Integer tripId){
         if(tripId != null){
             return isTripOwner(tripId);
         }
-
-        if(userId != null){
-            return userAccessVerification(Integer.toString(userId));
-        }
-        return false;
-
+        return true;
     }
 
 

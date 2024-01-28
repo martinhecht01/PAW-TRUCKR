@@ -7,7 +7,7 @@ import java.net.URI;
 
 public class OfferDto {
 
-    private Integer proposalId;
+    private Integer offerId;
     private URI self;
     private URI trip;
     private URI user;
@@ -19,7 +19,7 @@ public class OfferDto {
 
     public static OfferDto fromProposal(final UriInfo uriInfo, Proposal proposal){
         OfferDto dto = new OfferDto();
-        dto.proposalId = proposal.getProposalId();
+        dto.offerId = proposal.getProposalId();
         dto.self = uriInfo.getBaseUriBuilder().path("/offers/").path(String.valueOf(proposal.getProposalId())).build();
         dto.trip = uriInfo.getBaseUriBuilder().path("/trips/").path(String.valueOf(proposal.getTrip().getTripId())).build();
         dto.user = uriInfo.getBaseUriBuilder().path("/users/").path(String.valueOf(proposal.getUser().getUserId())).build();
@@ -33,12 +33,12 @@ public class OfferDto {
         return dto;
     }
 
-    public Integer getProposalId() {
-        return proposalId;
+    public Integer getOfferId() {
+        return offerId;
     }
 
-    public void setProposalId(Integer proposalId) {
-        this.proposalId = proposalId;
+    public void setOfferId(Integer offerId) {
+        this.offerId = offerId;
     }
 
     public URI getTrip() {

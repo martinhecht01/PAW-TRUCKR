@@ -5,7 +5,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class AcceptForm {
+public class OfferForm {
 
     @NotNull(message = "validation.NotNull")
     @Size(min = 1, max = 250, message="validation.Description")

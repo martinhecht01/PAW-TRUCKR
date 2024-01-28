@@ -8,7 +8,7 @@ import ar.edu.itba.paw.webapp.controller.utils.PaginationHelper;
 import ar.edu.itba.paw.webapp.dto.OfferDto;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.User;
-import ar.edu.itba.paw.webapp.form.AcceptForm;
+import ar.edu.itba.paw.webapp.form.OfferForm;
 import ar.edu.itba.paw.webapp.form.ActionForm;
 import ar.edu.itba.paw.webapp.function.CurryingFunction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +52,8 @@ public class OffersControllerApi {
     @POST
     @Consumes("application/vnd.offer.v1+json")
     @Produces("application/vnd.offer.v1+json")
-    @PreAuthorize("@accessHandler.canCreateOffer(#form)")
-    public Response createOffer(@Valid AcceptForm form){
+    @PreAuthorize("@accessHandler.canCreateOffer(#form.getTripId(), #form.getParent_offer_id())")
+    public Response createOffer(@Valid OfferForm form){
         User user = us.getCurrentUser().orElseThrow(UserNotFoundException:: new);
         Proposal proposal;
         try {
@@ -75,16 +75,16 @@ public class OffersControllerApi {
 
     @GET
     @Produces("application/vnd.offerList.v1+json")
-    @PreAuthorize("@accessHandler.canSeeOffers(#tripId, #userId)")
+    @PreAuthorize("@accessHandler.canSeeOffers(#tripId)")
     public Response getOffers(@QueryParam("tripId") Integer tripId,
-                              @QueryParam("userId") Integer userId,
                               @QueryParam("page") @DefaultValue(PAGE) int page,
                               @QueryParam("pageSize") @DefaultValue(PAGE_SIZE) int pageSize){
-        final List<Proposal> proposalList = ts.findOffers(tripId, userId, page, pageSize);
+        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
+        final List<Proposal> proposalList = ts.findOffers(tripId, user.getUserId(), page, pageSize);
         if(proposalList.isEmpty())
             return Response.noContent().build();
         final List<OfferDto> proposalDtos = proposalList.stream().map(currifyUriInfo(OfferDto::fromProposal)).collect(Collectors.toList());
-        int maxPages = (ts.findOfferCount(tripId, userId) / pageSize)+1; //TODO: pagination trips
+        int maxPages = (ts.findOfferCount(tripId, user.getUserId()) / pageSize)+1; //TODO: pagination trips
         Response.ResponseBuilder toReturn = Response.ok(new GenericEntity<List<OfferDto>>(proposalDtos){});
         PaginationHelper.getLinks(toReturn, uriInfo, page, maxPages);
 
