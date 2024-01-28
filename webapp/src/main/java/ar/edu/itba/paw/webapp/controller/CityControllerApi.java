@@ -52,7 +52,7 @@ public class CityControllerApi {
     }
 
     @GET
-    @Produces("application/vnd.city.v1+json")
+    @Produces("application/vnd.cityList.v1+json")
     public Response getCities() {
         List<City> cityList = cs.getAllCities();
         List<CityDto> dtoList = cityList.stream().map(currifyUriInfo(CityDto::fromCity)).collect(Collectors.toList());

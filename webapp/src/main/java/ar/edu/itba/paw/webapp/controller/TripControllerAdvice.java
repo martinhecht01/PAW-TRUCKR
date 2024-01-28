@@ -25,8 +25,8 @@ public class TripControllerAdvice {
 //        return cityService.getAllCities();
 //    }
 
-    @ModelAttribute("cargoTypes")
-    public List<String> getCargoTypes() {
-        return cargoTypeService.getAllCargoTypes();
-    }
+//    @ModelAttribute("cargoTypes")
+//    public List<String> getCargoTypes() {
+//        return cargoTypeService.getAllCargoTypes();
+//    }
 }
