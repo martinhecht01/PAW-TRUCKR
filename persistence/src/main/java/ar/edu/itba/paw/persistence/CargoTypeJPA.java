@@ -1,15 +1,14 @@
 package ar.edu.itba.paw.persistence;
 
 import ar.edu.itba.paw.interfacesPersistence.CargoTypeDao;
-import ar.edu.itba.paw.interfacesPersistence.ImageDao;
-import ar.edu.itba.paw.models.Image;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import ar.edu.itba.paw.models.CargoType;
+import ar.edu.itba.paw.models.City;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,17 @@ public class CargoTypeJPA implements CargoTypeDao {
 
 
     @Override
-    public List<String> getAllCargoTypes() {
-        return entityManager.createQuery("SELECT c.name FROM CargoType c", String.class).getResultList();
+    public List<CargoType> getAllCargoTypes() {
+        TypedQuery<CargoType> query= entityManager.createQuery("SELECT c FROM CargoType c", CargoType.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public Optional<CargoType> getCargoTypeById(Integer id) {
+        CargoType cargoType = entityManager.find(CargoType.class, id);
+        if (cargoType == null) {
+            return Optional.empty();
+        }
+        return Optional.of(cargoType);
     }
 }
