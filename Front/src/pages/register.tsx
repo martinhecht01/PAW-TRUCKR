@@ -5,7 +5,7 @@ import '../styles/main.scss';
 import { createUser } from '../api/userApi';
 import { User } from '../models/User';
 import { Alert } from '../models/Alert';
-import { Axios, AxiosError } from 'axios';
+import { Axios, AxiosError, AxiosResponse } from 'axios';
 
 const Register: React.FC = () => {
     const [name, setName] = useState('');
@@ -20,23 +20,20 @@ const Register: React.FC = () => {
 
     async function createAccountAction() {
         try {
-            // Assuming User constructor takes the parameters in the order: id, name, email, cuit, password, confirmPassword, other parameters...
-            await createUser(new User(0, name, email, cuit, pass, confirmPass, 0, 0, role, '', [], [], [], '',    new Alert(0,0,'0',0,0,new Date,new Date, '')))
-            message.success('User created successfully');
+            // Await the createUser function
+            const user = await createUser(new User(0, name, email, cuit, pass, confirmPass, 0, 0, role, '', [], [], [], '', new Alert(0,0,'0',0,0,new Date,new Date, '')));
+            message.success('Account created successfully');
             router('/login');
         } catch (error) {
-            const axiosError = error as AxiosError;
-            if (axiosError.response && axiosError.response.data) {
-                // Access the error message here, adjust according to your error response structure
-                let errorMessage = axiosError.response.data.message;
-                message.error(errorMessage);
-            } else {
-                message.error('An unexpected error occurred');
+            if (error instanceof AxiosError && error.response) {
+                message.error(`${error.response.data.message}`);
+            } else{
+                console.log(error);
+                message.error('Unexpected error');
             }
-            
-            console.log(error);
         }
     }
+
 
     return (
         <>

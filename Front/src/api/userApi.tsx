@@ -5,17 +5,16 @@ import api from "./config";
 const usersEndpoint = '/users'
 
 export async function createUser(user: User): Promise<User> {
-    try{
-        const response = await api.post(usersEndpoint, User.userToJson(user), {
-            headers: {
-                'Content-Type': 'application/vnd.user.v1+json',
-                'Accept': 'application/vnd.user.v1+json'
-            }        
-        })
-        return User.userFromJson(JSON.parse(response.data));
-    } catch(e){
-        throw e
+    const response = await api.post(usersEndpoint, User.userToJson(user), {
+        headers: {
+            'Content-Type': 'application/vnd.user.v1+json',
+            'Accept': 'application/vnd.user.v1+json'
+        }        
+    });
+    if(response.status !== 201) {
+        throw new Error(response.statusText);
     }
+    return response.data;
 }
 
 export async function getUserByUrl(url: string): Promise<User> {
