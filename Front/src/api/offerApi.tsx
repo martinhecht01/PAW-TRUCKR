@@ -1,5 +1,6 @@
 import {Offer} from "../models/Offer.tsx";
 import api from "./config";
+import {getToken} from "./userApi";
 
 // export async function createOffer(offer: Offer): Promise<Offer> {
 //     const response = await api.post(`/reviews`, Review.reviewToJson(review));
@@ -28,7 +29,12 @@ export async function getOffersByTrip(id: number): Promise<Offer[]> {
 }
 
 export async function getOffersByUser(id: number): Promise<Offer[]> {
-    const response = await api.get('/offers?userId=' + id);
+    const response = await api.get('/offers?userId=' + id,{
+        headers:{
+            'Authorization': `Bearer ${getToken()}`,
+            "Accept": "application/vnd.offerList.v1+json"
+        }
+    });
 
     const toRet = [];
     for (const offer of response.data) {
