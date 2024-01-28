@@ -68,7 +68,7 @@ const Profile: React.FC = () => {
                         <Col span={12}>
                             <Card className='w-100' title={<Title level={3}>{t("profile.profile")}</Title>}>
                                 <div className='flex-center'>
-                                    <Avatar size={124} icon={<UserOutlined/>}/>
+                                    <Avatar size={124} icon={<UserOutlined/>} src={user!.imageUrl}/>
                                 </div>
                                 <Title level={5}>{t("profile.name")}</Title>
                                 <Text>{user!.name}</Text>

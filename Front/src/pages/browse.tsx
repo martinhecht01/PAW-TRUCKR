@@ -134,7 +134,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                         <Row gutter={15}>
                             {trips.length === 0 && <Col span={24} className="text-center"><Title level={3}>No trips found</Title></Col>}
                             {trips.map((trip, index) => (
-                                <Col xxl={6} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
+                                <Col xxl={6} xl={6} lg={8} md={12} sm={22} xs={22} key={index}>
                                     <TripCard {...trip}></TripCard>
                                 </Col>
                             )

@@ -50,8 +50,8 @@ const Login: React.FC = () => {
                         />
                         <Link>Forgot your password?</Link>
                         <br></br>
-                        <Checkbox className='mb-1vh'><Text>Remember me</Text></Checkbox>
-                        <br></br>
+                        {/* <Checkbox className='mb-1vh'><Text>Remember me</Text></Checkbox>
+                        <br></br> */}
                         
                         <Button type='primary' className='w-100' onClick={loginAction}>Login</Button>
                     </Card>

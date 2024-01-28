@@ -55,19 +55,6 @@ export async function getPublicationById(id: string): Promise<Publication> {
     return Publication.publicationFromJson(response.data);
 }
 
-/*
-### Get trips. :devuelve los trips del usuario autenticado
-
-- ENDPOINT: GET http://localhost:8080/webapp_war/trips
-- Basic or JWT auth required
-- Query params:
-    - status: ONGOING, PAST o  FUTURE (ONGOING default)
-    - page: page (1 default)
-    - pageSize: pageSize (12 default)
-- Headers:
-    - Accept: application/vnd.tripList.v1+json
-*/
-
 export async function getTrips(
     status: string,
     page: string,
@@ -110,7 +97,6 @@ export async function getTripById(id: string): Promise<Trip> {
     });
     return Trip.tripFromJson(response.data);
 }
-//- Accept: application/vnd.trip.v1+json
 
 export async function createTrip(trip: Trip): Promise<Trip> {
 

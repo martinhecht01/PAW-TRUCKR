@@ -44,7 +44,7 @@ export async function updateUser(user: User): Promise<User> {
 export async function loginUser(email: string, password: string): Promise<string | null> {
     try {
         const credentials = btoa(`${email}:${password}`)
-        const response = await api.get('/trips/0', {
+        const response = await api.get('/trips/1', {
             headers: {
                 'Authorization': `Basic ${credentials}`
             }
