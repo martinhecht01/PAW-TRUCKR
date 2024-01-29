@@ -6,6 +6,7 @@ import '../styles/main.scss';
 import { getPublications } from "../api/tripApi";
 import { Dayjs } from "dayjs";
 import { getCities } from "../api/citiesApi";
+import { getCargoTypes } from "../api/cargoTypeApi";
 
 const {Text, Title} = Typography;
 
@@ -35,6 +36,9 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
     const [sortBy, setSortBy] = useState<string>(sortOptions[0]);
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(12);
+    const [cargoTypes, setCargoTypes] = useState<Array<string>>([]);
+    const [cargoType, setCargoType] = useState<string>('');
+    const [dateRange, setDateRange] = useState<RangeValue>(null);
 
     const handleOriginChange = (value: string) => setOrigin(value);
     const handleDestinationChange = (value: string) => setDestination(value);
@@ -53,15 +57,21 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
     };
 
     const handleSortByChange = (value: string) => setSortBy(value);
+    const handleCargoTypeChange = (value: string) => setCargoType(value);
 
     useEffect(() => {
         setIsLoading(true);
 
-        const cities = getCities().then((cities) => {
+        getCities().then((cities) => {
             const citiesArray = cities.map((city) => city.cityName);
             setCities(citiesArray);
         });
-        const publications = getPublications('' ,tripOrRequest, 'ACTIVE', volume, weight, origin, destination, priceRange[0], priceRange[1], page, pageSize, sortBy).then((publications) => {
+
+        getCargoTypes().then((cargoTypes) => {
+            setCargoTypes(cargoTypes);
+        });
+
+        getPublications('' ,tripOrRequest, dateRange?.[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : '', dateRange?.[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss'): '', 'ACTIVE', volume, weight, cargoType, origin, destination, priceRange[0], priceRange[1], page, pageSize, sortBy).then((publications) => {
             setTrips(publications.map((publication) => {
                 return {
                     type: 'trip',
@@ -77,7 +87,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
             }))
             setIsLoading(false);
         })
-    }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest])
+    }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest, dateRange, cargoType])
 
     return (
         <Row>
@@ -108,15 +118,19 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Text>Price:</Text>
                     <Slider range min={0} max={1000000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
-                    {/* <Text>Cargo type:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange}></Select> */}
+                    <Text>Cargo type:</Text>
+                    <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange}>
+                        {cargoTypes.map((cargoType, index) => (
+                            <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
+                        ))}
+                    </Select>
                     <div className="m-10"></div>
-                    {/* <Text>Date Range</Text>
-                    <RangePicker
+                    <Text>Date Range</Text>
+                    <RangePicker className="w-100"
                         onChange={(val) => {
                             setDateRange(val);
                         }}   
-                    ></RangePicker> */}
+                    ></RangePicker>
                     <div className="m-10"></div>
                     <Text>Sort by:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleSortByChange}>

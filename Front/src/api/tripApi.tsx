@@ -5,9 +5,12 @@ import api from './config'
 export async function getPublications(
     userId: string,
     tripOrRequest: string,
+    departureDate: string,
+    arrivalDate: string,
     status: string,
     volume: number,
     weight: number,
+    cargoType: string,
     origin: string,
     destination: string,
     minPrice: number,
@@ -16,24 +19,34 @@ export async function getPublications(
     pageSize: number,
     sortOrder: string
 ): Promise<Publication[]> {
+    
+    const params: any = {
+        userId,
+        tripOrRequest,
+        status,
+        volume,
+        weight,
+        origin,
+        destination,
+        minPrice,
+        maxPrice,
+        page,
+        pageSize,
+        sortOrder
+    };
+
+    if (departureDate) params.departureDate = departureDate;
+    if (arrivalDate) params.arrivalDate = arrivalDate;
+    if (cargoType) params.cargoType = cargoType;
+
+    // Log for debugging
+    console.log(params);
+
     const response = await api.get('/trips', {
         headers: {
             Accept: 'application/vnd.publicationList.v1+json'
         },
-        params: {
-            userId: userId,
-            tripOrRequest: tripOrRequest,
-            status: status,
-            volume: volume,
-            weight: weight,
-            origin: origin,
-            destination: destination,
-            minPrice: minPrice,
-            maxPrice: maxPrice,
-            page: page,
-            pageSize: pageSize,
-            sortOrder: sortOrder
-        }
+        params: params
     });
     
     const toRet = [];
@@ -43,7 +56,6 @@ export async function getPublications(
     }
 
     return toRet;
-
 }
 
 export async function getPublicationById(id: string): Promise<Publication> {

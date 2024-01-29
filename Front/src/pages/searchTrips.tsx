@@ -5,14 +5,22 @@ import { useEffect, useState } from 'react';
 import { getCities } from '../api/citiesApi';
 import TripCard, { TripCardProps } from '../Components/tripCard';
 import { getPublications } from '../api/tripApi';
+import { RangeValue } from 'rc-picker/lib/interface';
+import { Dayjs } from 'dayjs';
+import { getCargoTypes } from '../api/cargoTypeApi';
 
 
 const {Title, Text} = Typography;
 const SearchTrips: React.FC = () => {
 
     const formatter = (value: number | undefined) => `$${value}`;
+
+    type RangeValue = [Dayjs | null, Dayjs | null] | null;
+
+    //Ver que onda el tema type
     
     const [search, setSearch] = useState<boolean>(true);
+    const [cargoTypes, setCargoTypes] = useState<Array<string>>([]);
     const [cities, setCities] = useState<Array<string>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [publications, setPublications] = useState<Array<TripCardProps>>([]);
@@ -23,6 +31,7 @@ const SearchTrips: React.FC = () => {
     const [volume, setVolume] = useState<number>(1);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
     const [type, setCargoType] = useState<string>('');
+    const [dates, setDates] = useState<RangeValue>(null);
 
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(12);
@@ -43,19 +52,25 @@ const SearchTrips: React.FC = () => {
         setPage(page);
         if (pageSize) setPageSize(pageSize);
     };
-
+    
     useEffect(() => {
         setIsLoading(true);
         getCities().then((cities) => {
             setCities(cities.map((city) => city.cityName));
-            setIsLoading(false);
+            getCargoTypes().then((cargoTypes) => {
+                console.log(cargoTypes)
+                setCargoTypes(cargoTypes);
+                setIsLoading(false);
+            })
         })
     }, [])
 
     async function searchAction(){
         //ACA FALTA EL TYPE!!
+        console.log(dates?.[0], dates?.[1])
         setIsLoading(true);
-        getPublications('', 'TRIP', 'ACTIVE', volume, weight, origin, destination, priceRange[0], priceRange[1], page, pageSize, 'departureDate ASC').then((trips) => {
+        //2024-03-01T12:00:00
+        getPublications('', 'TRIP', dates?.[0] ? dates[0].format('YYYY-MM-DDTHH:MM:ss') : '', dates?.[1] ? dates[1].format('YYYY-MM-DDTHH:MM:ss'): '', 'ACTIVE', volume, weight, type, origin, destination, priceRange[0], priceRange[1], page, pageSize, 'departureDate ASC').then((trips) => {
             setPublications(trips.map((publication) => {
                 return {
                     type: 'trip',
@@ -84,6 +99,7 @@ const SearchTrips: React.FC = () => {
         setPriceRange([0, 1000000])
         setPage(1)
         setPageSize(12)
+        setDates(null)
     }
     
     if(search)
@@ -112,8 +128,12 @@ const SearchTrips: React.FC = () => {
                                 </Select>
                             </Col>
                         </Row>
-                        <DatePicker.RangePicker className='w-100 mb-1vh'></DatePicker.RangePicker>
-                        <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange}></Select>
+                        <DatePicker.RangePicker className='w-100 mb-1vh' onChange={(val) => setDates(val)}></DatePicker.RangePicker>
+                        <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange}>
+                            {cargoTypes.map((cargoType, index) => (
+                                <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
+                            ))}
+                        </Select>
                         <Row className='w-100 space-between'>
                             <Col span={11}>
                                 <Input type='number' placeholder='Weight' className='mb-1vh' onChange={handleWeightChange} suffix={'Kg'}></Input>

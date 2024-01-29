@@ -26,7 +26,7 @@ const MyPublications: React.FC = () => {
         setIsLoading(true);
 
         getUserByUrl(getClaims()?.userURL || '').then((user) => {
-            getPublications(user.id.toString(), 'TRIP', 'ACTIVE', 1, 1, '', '', 0, 0, activePage, 4, 'departureDate ASC').then((trips) => {
+            getPublications(user.id.toString(), 'TRIP', '', '', 'ACTIVE', 1, 1, '', '', '', 0, 0, activePage, 12, 'departureDate ASC').then((trips) => {
                 setActiveTrips(trips.map((publication) => {
                     return {
                         type: 'trip',
@@ -41,7 +41,7 @@ const MyPublications: React.FC = () => {
                     }
                 }))
     
-                getPublications(user.id.toString(), 'TRIP', 'EXPIRED', 1, 1, '', '', 0, 0, expiredPage, 4, 'departureDate ASC').then((trips) => {
+                getPublications(user.id.toString(), 'TRIP', '', '', 'EXPIRED', 1, 1, '', '', '', 0, 0, expiredPage, 12, 'departureDate ASC').then((trips) => {
                     setExpiredTrips(trips.map((publication) => {
                         return {
                             type: 'trip',
