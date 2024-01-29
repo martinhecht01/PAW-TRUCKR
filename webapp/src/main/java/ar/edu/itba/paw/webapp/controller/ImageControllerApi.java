@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.paw.interfacesServices.ImageService;
+import ar.edu.itba.paw.interfacesServices.exceptions.CustomInternalServerErrorException;
 import ar.edu.itba.paw.interfacesServices.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.webapp.controller.utils.CacheHelper;
@@ -23,6 +24,8 @@ import java.io.IOException;
 @Component
 public class ImageControllerApi {
 
+    private final static int MAX_IMAGE_SIZE = 1024 * 1024 * 10;
+
     private final ImageService is;
 
     @Autowired
@@ -33,14 +36,21 @@ public class ImageControllerApi {
     @Context
     private UriInfo uriInfo;
 
+
+    //TODO revisar si preferimos un formato de height y width y listo
     @GET
-    @Path("/{id}")
+    @Path("/{id:\\d+}")
     public Response getImage(
             @PathParam("id") int id,
             @DefaultValue("FULL") @Pattern(regexp = "FULL|SQUARE", message = "validation.ImageSize.Pattern") @QueryParam("size") String size,
-            @Context javax.ws.rs.core.Request request ) throws IOException {
+            @Context javax.ws.rs.core.Request request ){
         Image image = is.getImage(id).orElseThrow(ImageNotFoundException::new);
-        Response.ResponseBuilder response = Response.ok(ImageHelper.valueOf(size).resizeImage(image.getImage()));
+        Response.ResponseBuilder response;
+        try {
+            response = Response.ok(ImageHelper.valueOf(size).resizeImage(image.getImage()));
+        }catch(IOException e){
+            throw new CustomInternalServerErrorException("exception.ResizeImage");
+        }
         CacheHelper.setUnconditionalCache(response);
         return response.build();
     }
@@ -48,8 +58,7 @@ public class ImageControllerApi {
     @POST
     public Response uploadImage(
             @RequireImage @FormDataParam("image") FormDataBodyPart image,
-            @Size(max = 1024 * 1024 * 8, message = "validation.Image.Size") @FormDataParam("image") byte[] imageBytes)
-    {
+            @Size(max = MAX_IMAGE_SIZE, message = "validation.Image.Size") @FormDataParam("image") byte[] imageBytes){
         int id = is.uploadImage(imageBytes);
         Image img = is.getImage(id).orElseThrow(ImageNotFoundException::new);
         return Response.created(uriInfo.getBaseUriBuilder().path("/images/").path(String.valueOf(id)).build()).entity(img.getImage()).build();
