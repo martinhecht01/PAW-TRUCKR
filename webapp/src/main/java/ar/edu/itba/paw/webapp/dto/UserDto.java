@@ -5,7 +5,6 @@ import ar.edu.itba.paw.models.User;
 import javax.ws.rs.core.UriInfo;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserDto {
     private int id;
@@ -26,12 +25,6 @@ public class UserDto {
         dto.name = user.getName();
         dto.role = user.getRole();
         dto.rating = user.getRating();
-
-//        if(role.equals("TRUCKER") && user.getTruckerTrips() != null)
-//            dto.trips = user.getTruckerTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
-//        else if(role.equals("PROVIDER") && user.getProviderTrips() != null)
-//            dto.trips = user.getProviderTrips().stream().map(t -> uri.getBaseUriBuilder().path("/trips/").path(Integer.toString(t.getTripId())).build()).collect(Collectors.toList());
-
         dto.reviews = uri.getBaseUriBuilder().path("/reviews/").path(user.getUserId().toString()).build();
 
         if(user.getImage() != null){

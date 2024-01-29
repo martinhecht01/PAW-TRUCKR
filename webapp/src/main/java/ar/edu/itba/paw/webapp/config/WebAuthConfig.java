@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.config;
 
+import ar.edu.itba.paw.models.RoleType;
 import ar.edu.itba.paw.webapp.auth.BasicFilter;
 import ar.edu.itba.paw.webapp.auth.JwtTokenFilter;
 import ar.edu.itba.paw.webapp.auth.UserDetailsServiceImpl;
@@ -132,7 +133,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.POST, "/reviews").authenticated()
 
-                .antMatchers(HttpMethod.POST, "/alerts").hasRole("TRUCKER")
+                .antMatchers(HttpMethod.POST, "/alerts").hasRole(RoleType.TRUCKER.getRoleName())
                 .antMatchers(HttpMethod.DELETE, "/alerts").authenticated()
                 .antMatchers(HttpMethod.GET, "/alerts").authenticated()
                 .antMatchers(HttpMethod.GET, "/alerts/{id:\\d+}").authenticated()

@@ -3,10 +3,7 @@ package ar.edu.itba.paw.webapp.auth.handlers;
 import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
-import ar.edu.itba.paw.models.Alert;
-import ar.edu.itba.paw.models.Proposal;
-import ar.edu.itba.paw.models.Trip;
-import ar.edu.itba.paw.models.User;
+import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.form.OfferForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import javax.ws.rs.BadRequestException;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -76,7 +74,22 @@ public class AccessHandler {
         }
         boolean isTripOwner = isTripOwner(tripId);
         if(parent_offer_id != null){
+            // es una contraoferta
             return isTripOwner;
+        }
+        //es una oferta
+        Trip trip = ts.getTripOrRequestById(tripId).orElseThrow(BadRequestException::new);
+
+        if(trip.getTrucker() != null){
+            //ya tiene un camionero asignado
+            if(Objects.equals(user.getRole(), RoleType.TRUCKER.getRoleName())){
+                return false;
+            }
+        }else{
+            //ya tiene un proveedor asignado
+            if(Objects.equals(user.getRole(), RoleType.PROVIDER.getRoleName())){
+                return false;
+            }
         }
         return !isTripOwner;
     }

@@ -59,7 +59,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
                            String type,
                            int price) {
 
-        if(Objects.equals(user.getRole(), "TRUCKER")) {
+        if(Objects.equals(user.getRole(), RoleType.TRUCKER.getRoleName())) {
             if(licensePlate == null || licensePlate.isEmpty())
                 throw new IllegalArgumentException("exception.LicensePlate");
             return tripDaoV2.createTrip(user, licensePlate, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
@@ -132,7 +132,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
     @Transactional
     public void actOnOffer(int proposalId, String action, Locale locale) {
-        Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(ProposalNotFoundException::new);
+        Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(OfferNotFoundException::new);
 
         if(proposal.getParentProposal() != null){
             if(action.equals("ACCEPT"))

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.form.constraints.validators;
 import ar.edu.itba.paw.interfacesServices.CargoTypeService;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.RoleType;
 import ar.edu.itba.paw.models.User;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.TruckerLicensePlate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class TruckerLicensePlateValidator implements ConstraintValidator<Trucker
     @Override
     public boolean isValid(String licensePlate, javax.validation.ConstraintValidatorContext constraintValidatorContext) {
         User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        if(Objects.equals(user.getRole(), "TRUCKER")){
+        if(Objects.equals(user.getRole(), RoleType.TRUCKER.getRoleName())){
             return licensePlate != null && !licensePlate.isEmpty();
         }
         return true;
