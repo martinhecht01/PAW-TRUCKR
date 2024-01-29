@@ -75,9 +75,10 @@ public class AlertsControllerApi {
     }
 
     @DELETE
-    public Response deleteAlert(){
-        final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        as.deleteAlert(user);
+    @Path("/{id:\\d+}")
+    @PreAuthorize("@accessHandler.isAlertOwner(#id)")
+    public Response deleteAlert(@PathParam("id") int id){
+        as.deleteAlert(id);
         return Response.ok().build();
     }
 

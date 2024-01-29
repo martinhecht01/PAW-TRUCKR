@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.mapper;
 
 import ar.edu.itba.paw.interfacesServices.exceptions.AlertAlreadyExistsException;
-import ar.edu.itba.paw.interfacesServices.exceptions.ReviewNotFoundException;
 import ar.edu.itba.paw.webapp.dto.ErrorDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -26,7 +25,7 @@ public class AlertAlreadyExistsExceptionMapper implements ExceptionMapper<AlertA
         String message = messageSource.getMessage(exception.getMessage(), null, LocaleContextHolder.getLocale());
         ErrorDto errorDto = ErrorDto.fromErrorMessage(message);
         return Response
-                .status(Status.NOT_FOUND)
+                .status(Status.CONFLICT)
                 .entity(new GenericEntity<ErrorDto>(errorDto) {})
                 .build();
     }

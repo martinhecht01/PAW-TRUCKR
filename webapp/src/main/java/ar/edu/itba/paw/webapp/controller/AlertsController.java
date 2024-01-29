@@ -62,11 +62,11 @@ public class AlertsController {
         return mav;
     }
 
-    @RequestMapping(value = "/alerts/delete", method = RequestMethod.POST)
-    public ModelAndView deleteAlert() {
-        as.deleteAlert(getCurrentUser());
-        return new ModelAndView("redirect:/alerts/myAlerts");
-    }
+//    @RequestMapping(value = "/alerts/delete", method = RequestMethod.POST)
+//    public ModelAndView deleteAlert() {
+//        as.deleteAlert(getCurrentUser());
+//        return new ModelAndView("redirect:/alerts/myAlerts");
+//    }
 
     private User getCurrentUser() {
         Object userDetails = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

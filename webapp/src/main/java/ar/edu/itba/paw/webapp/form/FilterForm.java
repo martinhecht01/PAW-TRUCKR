@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.CargoType;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -48,11 +49,11 @@ public class FilterForm {
     @QueryParam("cargoType")
     private String cargoType;
 
-    @Pattern(regexp="^(?!\\s*$).+", message="validation.DepartureDate")
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$", message="validation.DateFormat")
     @QueryParam("departureDate")
     private String departureDate;
 
-    @Pattern(regexp="^(?!\\s*$).+", message="validation.ArrivalDate")
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$", message="validation.DateFormat")
     @QueryParam("arrivalDate")
     private String arrivalDate;
 

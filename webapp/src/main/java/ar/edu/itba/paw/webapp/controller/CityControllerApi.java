@@ -43,7 +43,7 @@ public class CityControllerApi {
 
     @GET
     @Produces("application/vnd.city.v1+json")
-    @Path("/{id}")
+    @Path("/{id:\\d+}")
     public Response getCity(@PathParam("id") final int id) {
         final City city = cs.getCityById(id).orElseThrow(CityNotFoundException::new);
         Response.ResponseBuilder response = Response.ok(CityDto.fromCity(uriInfo, city));

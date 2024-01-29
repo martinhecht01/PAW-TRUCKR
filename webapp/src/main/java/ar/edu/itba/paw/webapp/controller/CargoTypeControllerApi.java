@@ -45,7 +45,7 @@ public class CargoTypeControllerApi {
     }
 
     @GET
-    @Path("/{id: \\d+}")
+    @Path("/{id:\\d+}")
     @Produces("application/vnd.cargoType.v1+json")
     public Response getCargoTypeById(@PathParam("id") final int id) {
         final CargoType cargoType = cs.getCargoTypeById(id).orElseThrow(CargoTypeNotFoundException::new);

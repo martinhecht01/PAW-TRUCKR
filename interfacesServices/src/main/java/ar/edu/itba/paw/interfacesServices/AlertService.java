@@ -13,7 +13,7 @@ public interface AlertService {
 
 //    Optional<Alert> getAlert(User user);
 
-    void deleteAlert(User user);
+    void deleteAlert(Integer alertId);
 
     Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to);
 
