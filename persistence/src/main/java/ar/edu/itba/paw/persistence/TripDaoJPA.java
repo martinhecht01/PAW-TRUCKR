@@ -218,7 +218,6 @@ public class TripDaoJPA implements TripDaoV2 {
             params.put("maxPrice",maxPrice);
         }
 
-        //ESTAS DOS SON RARAS, REVISAR
         if (departureDate != null && !departureDate.equals("")){
             LOGGER.debug("Adding departureDate: {} to query", departureDate);
             query.append(" AND DATE(departure_date) >= CAST( :departureDate AS DATE)");
@@ -589,7 +588,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
     @Override
     public Integer getCompletedTripsCount(User user){
-        String jpql = "SELECT r FROM Trip r WHERE ((r.provider = :user AND r.trucker IS NOT NULL ) OR (r.trucker = :user AND r.provider IS NOT NULL)) AND r.providerConfirmation = true AND r.truckerConfirmation = true)";
+        String jpql = "SELECT r FROM Trip r WHERE ((r.provider = :user AND r.trucker IS NOT NULL ) OR (r.trucker = :user AND r.provider IS NOT NULL)) AND r.providerConfirmation = true AND r.truckerConfirmation = true";
         return entityManager.createQuery(jpql, Trip.class)
                 .setParameter("user", user)
                 .getResultList().size();
