@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintValidator;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class CargoTypeValidator implements ConstraintValidator<CargoType, String>{
 
@@ -20,7 +21,8 @@ public class CargoTypeValidator implements ConstraintValidator<CargoType, String
 
     @Override
     public boolean isValid(String cargoType, javax.validation.ConstraintValidatorContext constraintValidatorContext) {
-        return cargoType == null || cargoTypeService.getAllCargoTypes().contains(cargoType);
+        List<String> cargoTypes = cargoTypeService.getAllCargoTypes().stream().map(ar.edu.itba.paw.models.CargoType::getName).collect(java.util.stream.Collectors.toList());
+        return cargoType == null || cargoTypes.contains(cargoType);
     }
 
 }
