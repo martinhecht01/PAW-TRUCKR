@@ -2,16 +2,6 @@ import {Offer} from "../models/Offer.tsx";
 import api from "./config";
 import {getToken} from "./userApi";
 
-// export async function createOffer(offer: Offer): Promise<Offer> {
-//     const response = await api.post(`/reviews`, Review.reviewToJson(review));
-//     return Review.reviewFromJson(response.data);
-// }
-//
-// export async function getReview(review: Review): Promise<Review> {
-//     const responde = await api.get(`/reviews/${review.user}/${review.trip}`, Review.reviewToJson(review));
-//     return Review.reviewFromJson(responde.data);
-// }
-
 export async function acceptOffer(offer: Offer): Promise<Offer> {
     const response = await api.put(`/offers/${offer.id}`);
     return Offer.offerFromJson(response.data);
@@ -49,10 +39,40 @@ export async function getOffer(offerId : number) : Promise<Offer> {
     return Offer.offerFromJson(response.data);
 }
 
-export async function createOffer(offer: Offer): Promise<Offer> {
-    const response = await api.post(`/offers?tripId=${offer.trip_id}`, {
-        price: offer.price,
-        description: offer.description
-    });
+export async function createOffer(tripId: number, price: number, description: string): Promise<Offer> {
+    const response = await api.post(`/offers`, 
+        {
+            price: price,
+            description: description,
+            tripId: tripId
+        },
+        {
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+                'Accept': 'application/vnd.offer.v1+json',
+                'Content-Type': 'application/vnd.offer.v1+json'
+            },
+        }
+    );
     return Offer.offerFromJson(response.data);
 }
+
+export async function createCounterOffer(tripId: number, price: number, description: string, parentOfferId: number): Promise<Offer> {
+    const response = await api.post(`/offers`, 
+        {
+            price: price,
+            description: description,
+            parent_offer_id: parentOfferId,
+            tripId: tripId
+        },
+        {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+                'Accept': 'application/vnd.offer.v1+json',
+                'Content-Type': 'application/vnd.offer.v1+json'
+            }
+        }
+    );
+    return Offer.offerFromJson(response.data);
+}
+    

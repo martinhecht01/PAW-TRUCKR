@@ -68,14 +68,14 @@ const WebApp = () => {
             <Route path="/trips/create" element={<CreateTrip/>}></Route>
             <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
             <Route path="/createAlert" element={<CreateAlert/>}></Route>
-            <Route path="/trips/:id" element={<PublicationDetails/>}></Route>
+            <Route path="/trips/:tripId" element={<PublicationDetails/>}></Route>
             <Route path="/searchTrips" element={<SearchTrips/>}></Route>
             <Route path="/resetPassword" element={<ResetPassword/>}></Route>
             <Route path="/resetPasswordRequest" element={<ResetPasswordRequest/>}></Route>
             <Route path="/sendCounterOffer" element={<SendCounterOffer/>}></Route>
             <Route path='/test' element={<Tester/>}/>
             <Route path="*" element={<NotFound404/>} />
-
+            <Route path="/404" element={<NotFound404/>} />
           </Routes>
         </CustomLayout>
       </AuthProvider>

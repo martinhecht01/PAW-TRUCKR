@@ -14,7 +14,7 @@ export type TripCardProps = {
     volume: number;
     price: number;
     image: string;
-
+    cargoType: string
 }   
 
 const TripCard = (props: TripCardProps) => {
@@ -22,7 +22,7 @@ const TripCard = (props: TripCardProps) => {
        
             <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} hoverable
                 cover={
-                    <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>Refrigated</Title>}  color="blue" >
+                    <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>}  color="blue" >
                         <img
                             style={{width: '100%'}}
                             alt="example"

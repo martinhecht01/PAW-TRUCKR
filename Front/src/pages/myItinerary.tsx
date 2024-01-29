@@ -1,7 +1,7 @@
 import { Button, Col, Pagination, Row, Tabs } from "antd";
 import '../styles/main.scss';
-import ItineraryTripCard, { ItineraryTripCardProps } from "../components/itineraryTripCard";
 import { useNavigate } from "react-router-dom";
+import ItineraryTripCard, { ItineraryTripCardProps } from "../Components/itineraryTripCard";
 
 const MyItinerary: React.FC = () => {
 

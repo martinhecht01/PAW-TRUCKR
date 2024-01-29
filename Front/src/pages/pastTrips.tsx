@@ -3,7 +3,7 @@ import {Col, Pagination, Row, Typography} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
-import PastTripCard, { TripCardProps } from '../components/pastTripCard';
+import PastTripCard, { TripCardProps } from '../Components/pastTripCard';
 
 const PastTrips: React.FC = () => {
 

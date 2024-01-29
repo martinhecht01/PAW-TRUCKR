@@ -63,7 +63,7 @@ const provider = [
 ]
 
 const NavBar: React.FC = () => {
-  const [current, setCurrent] = useState('recorded');
+  const [current, setCurrent] = useState('/');
   const [role, setRole] = useState<string>('');
 
   const {t} = useTranslation();

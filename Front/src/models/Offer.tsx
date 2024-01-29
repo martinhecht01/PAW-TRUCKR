@@ -1,36 +1,53 @@
 export class Offer {
     id: number;
-    trip_id: number;
-    user_id: number;
-    name: string;
     description: string;
     price: number;
-    counter_offer_id: number;
-    
+    conterOfferUrl: string;
+    userUrl: string;
+    tripUrl: string;
 
-    constructor(id: number, trip_id: number, user_ud: number, name: string, description: string, price: number, counter_offer_id: number) {
+
+    
+    /*
+{
+    "counterOffer": "http://localhost:8080/webapp_war/offers/14",
+    "description": "te lo llevo",
+    "price": 20000000,
+    "proposalId": 13,
+    "self": "http://localhost:8080/webapp_war/offers/13",
+    "trip": "http://localhost:8080/webapp_war/trips/10",
+    "user": "http://localhost:8080/webapp_war/users/6"
+}
+    */
+
+    constructor(id: number, description: string, price: number, conterOfferUrl: string, userUrl: string, tripUrl: string) {
         this.id = id;
-        this.trip_id = trip_id;
-        this.user_id = user_ud;
-        this.name = name;
         this.description = description;
         this.price = price;
-        this.counter_offer_id = counter_offer_id;
+        this.conterOfferUrl = conterOfferUrl;
+        this.userUrl = userUrl;
+        this.tripUrl = tripUrl;
     }
 
     static offerFromJson(json: any): Offer {
-        return new Offer(json.id, json.trip_id, json.user_id, json.name, json.description, json.price, json.counter_offer_id);
+        return new Offer(
+            json.proposal_id,
+            json.description,
+            json.price,
+            json.counterOffer,
+            json.user,
+            json.trip
+        );
     }
-    
+
     static offerToJson(offer: Offer): any {
         return {
             id: offer.id,
-            trip_id: offer.trip_id,
-            user_id: offer.user_id,
-            name: offer.name,
             description: offer.description,
             price: offer.price,
-            counter_offer_id: offer.counter_offer_id
-        }
+            counterOffer: offer.conterOfferUrl,
+            user: offer.userUrl,
+            trip: offer.tripUrl
+        };
     }
 }
