@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.form;
 
 import ar.edu.itba.paw.webapp.form.constraints.annotations.CargoType;
+import ar.edu.itba.paw.webapp.form.constraints.annotations.City;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -57,10 +58,12 @@ public class FilterForm {
     @QueryParam("arrivalDate")
     private String arrivalDate;
 
+    @City
     @Size(min = 0, max = 1000, message="validation.Origin")
     @QueryParam("origin")
     private  String origin;
 
+    @City
     @Size(min = 0, max = 1000, message="validation.Destination")
     @QueryParam("destination")
     private String destination;

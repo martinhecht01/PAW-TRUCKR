@@ -31,6 +31,7 @@ public class AlertForm {
     private String cargoType;
 
     @NotNull(message = "validation.NotNull")
+    @City
     @Size(min = 1, max = 100, message = "validation.Origin")
     private  String origin;
 

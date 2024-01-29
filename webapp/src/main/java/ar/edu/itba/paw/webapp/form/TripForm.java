@@ -39,10 +39,12 @@ public class TripForm {
     private String cargoType;
 
     @NotNull(message = "validation.NotNull")
+    @City
     @Size(min = 1, max = 100, message="validation.Origin")
     private String origin;
 
     @NotNull(message = "validation.NotNull")
+    @City
     @Size(min = 1, max = 100, message="validation.Destination")
     private String destination;
 
