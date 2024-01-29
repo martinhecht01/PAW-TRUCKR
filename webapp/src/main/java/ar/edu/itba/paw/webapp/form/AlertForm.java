@@ -19,9 +19,11 @@ public class AlertForm {
     private Integer maxVolume;
 
     @PreventPast
+    @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^(?!\\s*$).+", message="validation.fromDate")
     private String fromDate;
 
+    @PreventPast
     @Pattern(regexp="^(?!\\s*$).+", message="validation.toDate")
     private  String toDate;
 

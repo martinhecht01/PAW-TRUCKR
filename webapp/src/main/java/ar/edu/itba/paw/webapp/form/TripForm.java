@@ -25,13 +25,13 @@ public class TripForm {
     private String price;
 
     @NotNull(message = "validation.NotNull")
-    @Pattern(regexp="^(?!\\s*$).+", message="validation.DepartureDate")
     @PreventPast
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$", message="validation.DateFormat")
     private String departureDate;
 
     @NotNull(message = "validation.NotNull")
     @PreventPast
-    @Pattern(regexp="^(?!\\s*$).+", message="validation.ArrivalDate")
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$", message="validation.DateFormat")
     private  String arrivalDate;
 
     @NotNull(message = "validation.NotNull")
