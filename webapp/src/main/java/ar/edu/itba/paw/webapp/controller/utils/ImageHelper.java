@@ -11,8 +11,10 @@ import java.io.InputStream;
 //https://www.baeldung.com/java-resize-image
 
 public enum ImageHelper {
+    // Using INSTAGRAM sizes
     FULL(1, 1),
-    SQUARE(500,500);
+    PROFILE(320,320),
+    SQUARE(1080, 1080);
 
     private final int width;
     private final int height;
