@@ -8,10 +8,11 @@ export type ItineraryTripCardProps = {
     destination: string, 
     departure: Date,
     arrival: Date,
-    url: string,
+    userUrl: string,
     name: string,
     role: string,
-    rating: number
+    rating: number,
+    id: number
 }
 
 const ItineraryTripCard = (trip: ItineraryTripCardProps) => {
@@ -23,14 +24,14 @@ const ItineraryTripCard = (trip: ItineraryTripCardProps) => {
                     <Row>
                         <Col span={10} className="text-center">
                             <Title level={4}>{trip.origin}</Title>
-                            <Text>{trip.departure.toDateString()}</Text>
+                            <Text>{(new Date(trip.departure.toString())).toDateString()}</Text>
                         </Col>
                         <Col span={4} className="h-100" style={{display: 'flex', height: 100}}>
                             <ArrowRightOutlined style={{fontSize: 35, display: 'flex', margin: 'auto'}}/>
                         </Col>
                         <Col span={10} className="text-center">
                             <Title level={4}>{trip.destination}</Title>
-                            <Text>{trip.arrival.toDateString()}</Text>
+                            <Text>{(new Date(trip.arrival.toString())).toDateString()}</Text>
                         </Col>
                     </Row>
                 </Col>
@@ -41,7 +42,7 @@ const ItineraryTripCard = (trip: ItineraryTripCardProps) => {
                             <Rate disabled defaultValue={trip.rating} allowHalf/> 
                         </div>
                         <div>
-                            <Avatar src={trip.url} size={80}></Avatar>
+                            <Avatar src={trip.userUrl} size={80}></Avatar>
                         </div>
                     </div>
                 </Col>
