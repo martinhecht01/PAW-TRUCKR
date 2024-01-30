@@ -24,6 +24,7 @@ const ResetPassword: React.FC = () => {
         }
         if (cuit == null || hash == null || userId == null) {
             message.error('Please request a valid reset password link');
+            return;
         }
         try {
             await resetPassword(cuit, password, hash, userId);
