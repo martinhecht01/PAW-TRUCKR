@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Card, Checkbox, Col, Input, Typography, message,  } from 'antd';
+import { Button, Card, Col, Input, Typography, message,  } from 'antd';
 import '../styles/main.scss';
 import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api/userApi';
@@ -48,7 +48,7 @@ const Login: React.FC = () => {
                             value={pass}
                             onChange={(e) => setPass(e.target.value)}
                         />
-                        <Link>Forgot your password?</Link>
+                        <Link href='/resetPasswordRequest'>Forgot your password?</Link>
                         <br></br>
                         {/* <Checkbox className='mb-1vh'><Text>Remember me</Text></Checkbox>
                         <br></br> */}
