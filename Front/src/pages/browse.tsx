@@ -83,7 +83,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     volume: publication.volume,
                     price: publication.price,
                     image: publication.image,
-                    cargoType: publication.type
+                    cargoType: publication.type,
+                    id: publication.tripId
                 }
             }))
             setIsLoading(false);
@@ -117,7 +118,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3'></Input>
                     <div className="m-10"></div>
                     <Text>Price:</Text>
-                    <Slider range min={0} max={1000000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
+                    <Slider range min={0} max={100000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
                     <Text>Cargo type:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange}>
@@ -147,7 +148,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                 <Skeleton loading={isLoading}>
                     <div style={{display: "flex", flexDirection: 'column'}}>
                         <Row gutter={15}>
-                            {trips.length === 0 && <Col span={24} className="text-center"><Title level={3}>No trips found</Title></Col>}
+                            {trips.length === 0 && <Col span={24} className="text-center"><Title level={3}>No {tripOrRequest.toLocaleLowerCase()} found</Title></Col>}
                             {trips.map((trip, index) => (
                                 <Col xxl={6} xl={6} lg={8} md={12} sm={22} xs={22} key={index}>
                                     <TripCard {...trip}></TripCard>
