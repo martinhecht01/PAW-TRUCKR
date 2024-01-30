@@ -102,59 +102,72 @@ const SearchTrips: React.FC = () => {
         setPageSize(12)
         setDates(null)
     }
+
+    function viewAll(){
+        resetSearch()
+        searchAction()
+    }
     
     if(search)
         return (
-            <Row className='flex-center w-100'>
-                <Col span={12} className='flex-center'>
-                    <Card className='w-100'>
-                        <Title level={4}>Search Trips</Title>
-                        <Divider></Divider>
-                        <Row className='w-100 space-between'>
-                            <Col span={11}>
-                                <Select placeholder="Origin" className='w-100 mb-1vh' onChange={handleOriginChange}>
-                                    {cities.map((city, index) => (
-                                        <Select.Option key={index} value={city}>{city}</Select.Option>
-                                    ))}
-                                </Select>
-                            </Col>
-                            <Col span={2} className='flex-center mb-1vh'>
-                                <ArrowRightOutlined/>
-                            </Col>
-                            <Col span={11}>
-                                <Select placeholder="Destination" className='w-100 mb-1vh' onChange={handleDestinationChange}>
-                                    {cities.map((city, index) => (
-                                        <Select.Option key={index} value={city}>{city}</Select.Option>
-                                    ))}
-                                </Select>
-                            </Col>
-                        </Row>
-                        <DatePicker.RangePicker className='w-100 mb-1vh' onChange={(val) => setDates(val)}></DatePicker.RangePicker>
-                        <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange}>
-                            {cargoTypes.map((cargoType, index) => (
-                                <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
-                            ))}
-                        </Select>
-                        <Row className='w-100 space-between'>
-                            <Col span={11}>
-                                <Input type='number' placeholder='Weight' className='mb-1vh' onChange={handleWeightChange} suffix={'Kg'}></Input>
-                            </Col>
-                            <Col span={12}>
-                                <Input type='number' placeholder='Volume' className='mb-1vh' onChange={handleVolumeChange} suffix={'M3'}></Input>
-                            </Col>
-                        </Row>
-                        <Row className='w-100 flex-center'>
-                            <Col span={12}>
-                                <Text>Price</Text>
-                                <Slider range min={0} max={1000000} className='mb-1vh' tooltip={{formatter}} onChange={handlePriceRangeChange}></Slider>
-                            </Col>
-                        </Row>
-                        <div className='w-100 flex-center pt-5'>
-                            <Button type='primary' className='w-50' onClick={searchAction}>Search</Button>
-                        </div>
-                    </Card>
-                </Col>
-            </Row>
+            <div>
+                <Row className='flex-center w-100'>
+                    <Col span={12} className='flex-center'>
+                        <Card className='w-100'>
+                            <Title level={4}>Search Trips</Title>
+                            <Divider></Divider>
+                            <Row className='w-100 space-between'>
+                                <Col span={11}>
+                                    <Select placeholder="Origin" className='w-100 mb-1vh' onChange={handleOriginChange}>
+                                        {cities.map((city, index) => (
+                                            <Select.Option key={index} value={city}>{city}</Select.Option>
+                                        ))}
+                                    </Select>
+                                </Col>
+                                <Col span={2} className='flex-center mb-1vh'>
+                                    <ArrowRightOutlined/>
+                                </Col>
+                                <Col span={11}>
+                                    <Select placeholder="Destination" className='w-100 mb-1vh' onChange={handleDestinationChange}>
+                                        {cities.map((city, index) => (
+                                            <Select.Option key={index} value={city}>{city}</Select.Option>
+                                        ))}
+                                    </Select>
+                                </Col>
+                            </Row>
+                            <DatePicker.RangePicker className='w-100 mb-1vh' onChange={(val) => setDates(val)}></DatePicker.RangePicker>
+                            <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange}>
+                                {cargoTypes.map((cargoType, index) => (
+                                    <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
+                                ))}
+                            </Select>
+                            <Row className='w-100 space-between'>
+                                <Col span={11}>
+                                    <Input type='number' placeholder='Weight' className='mb-1vh' onChange={handleWeightChange} suffix={'Kg'}></Input>
+                                </Col>
+                                <Col span={12}>
+                                    <Input type='number' placeholder='Volume' className='mb-1vh' onChange={handleVolumeChange} suffix={'M3'}></Input>
+                                </Col>
+                            </Row>
+                            <Row className='w-100 flex-center'>
+                                <Col span={12}>
+                                    <Text>Price</Text>
+                                    <Slider range min={0} max={1000000} className='mb-1vh' tooltip={{formatter}} onChange={handlePriceRangeChange}></Slider>
+                                </Col>
+                            </Row>
+                            <div className='w-100 flex-center pt-5'>
+                                <Button type='primary' className='w-50' onClick={searchAction}>Search</Button>
+                            </div>
+                        </Card>
+
+                    </Col>
+                </Row>
+                <Row className='flex-center w-100'>
+                    <Col span={12} style={{textAlign: 'end', textDecoration: 'underline'}} className='mt-5' onClick={viewAll}>
+                        <Text>View all trips</Text>
+                    </Col>            
+                </Row>
+            </div>
         );
     else
         return (
