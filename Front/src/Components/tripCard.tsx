@@ -1,10 +1,12 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Badge, Card, Divider, Typography } from "antd";
 import Meta from "antd/es/card/Meta";
+import { useNavigate } from "react-router-dom";
 
 const {Title, Text} = Typography;
 
 export type TripCardProps = {
+    id: number;
     type: 'trip' | 'cargo';
     from: string;
     to: string;
@@ -17,7 +19,10 @@ export type TripCardProps = {
     cargoType: string
 }   
 
+
+
 const TripCard = (props: TripCardProps) => {
+    const router = useNavigate();
     return(
        
             <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} hoverable
@@ -30,6 +35,8 @@ const TripCard = (props: TripCardProps) => {
                         />
                     </Badge.Ribbon>
                 }
+
+                onClick={() => router(`/trips/${props.id}`)}
             >
                 <Meta
                     title={

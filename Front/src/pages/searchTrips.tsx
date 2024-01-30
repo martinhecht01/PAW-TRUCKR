@@ -82,7 +82,8 @@ const SearchTrips: React.FC = () => {
                     volume: publication.volume,
                     price: publication.price,
                     image: publication.image,
-                    cargoType: publication.type
+                    cargoType: publication.type,
+                    id: publication.tripId
                 }
             }))
             setSearch(false)

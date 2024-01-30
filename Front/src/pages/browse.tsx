@@ -83,7 +83,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     volume: publication.volume,
                     price: publication.price,
                     image: publication.image,
-                    cargoType: publication.type
+                    cargoType: publication.type,
+                    id: publication.tripId
                 }
             }))
             setIsLoading(false);
