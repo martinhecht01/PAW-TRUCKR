@@ -3,29 +3,36 @@ import {Col, Pagination, Row, Typography} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
-import PastTripCard, { TripCardProps } from '../Components/pastTripCard';
-import {Trip} from "../models/Trip";
-import {getUserById} from "../api/userApi";
-import {User} from "../models/User";
+
 import {getTrips} from "../api/tripApi";
+import TripCard, {TripCardProps} from "../Components/tripCard.tsx";
 
 const PastTrips: React.FC = () => {
 
     const {t} = useTranslation();
 
-    const [user, setUser] = useState<User>();
-    const [trips, setTrips] = useState<Trip[]>([]);
+    const {Title} = Typography;
+
+    const [trips, setTrips] = useState<TripCardProps[]>([]);
 
     useEffect(() => {
-        getUserById(2).then((user) => {
-            setUser(user);
+        getTrips('PAST', '1', '12').then((trips) => {
+            setTrips(trips.map((trip) => {
+                return {
+                    id: trip.tripId,
+                    type: 'trip',
+                    from: trip.origin,
+                    to: trip.destination,
+                    fromDate: trip.departureDate,
+                    toDate: trip.arrivalDate,
+                    weight: trip.weight,
+                    volume: trip.volume,
+                    price: trip.price,
+                    image: trip.image,
+                    cargoType: trip.type
+                }
+            }));
         });
-
-        getTrips("PAST").then(r => {
-            r.forEach((trip) => {
-                setTrips((prevTrips) => [...prevTrips, trip]);
-            })
-        })
 
     }, []); // The empty dependency array ensures that this effect runs only once
 
@@ -34,12 +41,17 @@ const PastTrips: React.FC = () => {
             <Row gutter={15} className='flex-center'>
                 {trips.map((trip,index) => (
                         <Col xxl={5} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
-                            <PastTripCard {...trip}></PastTripCard>
+                            <TripCard {...trip}></TripCard>
                         </Col>
                     )
                 )}
             </Row>
+            {trips.length === 0 ?
+                <Row gutter={15} className='flex-center'>
+                    <Title level={3}>{t('trips.noPastTrips')}</Title>
+                </Row>:
             <Pagination className="text-center mt-2vh" defaultCurrent={1} total={50} />
+            }
         </div>
     );
 };
