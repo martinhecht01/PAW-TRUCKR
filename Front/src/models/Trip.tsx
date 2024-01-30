@@ -1,6 +1,7 @@
 export class Trip {
     arrivalDate: Date;
     departureDate: Date;
+    creator: string;
     destination: string;
     image: string;
     licensePlate: string;
@@ -20,9 +21,10 @@ export class Trip {
     volume: number;
     weight: number;
 
-    constructor(arrivalDate: Date, departureDate: Date, destination: string, image: string, licensePlate: string, origin: string, price: number, proposalCount: number, proposals: string, provider: string, providerConfirmation: boolean, providerSubmittedHisReview: boolean, self: string, tripId: number, trucker: string, truckerConfirmation: boolean, truckerSubmittedHisReview: boolean, type: string, volume: number, weight: number) {
+    constructor(arrivalDate: Date, departureDate: Date, creator:string,destination: string, image: string, licensePlate: string, origin: string, price: number, proposalCount: number, proposals: string, provider: string, providerConfirmation: boolean, providerSubmittedHisReview: boolean, self: string, tripId: number, trucker: string, truckerConfirmation: boolean, truckerSubmittedHisReview: boolean, type: string, volume: number, weight: number) {
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
+        this.creator = creator;
         this.destination = destination;
         this.image = image;
         this.licensePlate = licensePlate;
@@ -47,6 +49,7 @@ export class Trip {
         return new Trip(
             json.arrivalDate,
             json.departureDate,
+            json.creator,
             json.destination,
             json.image,
             json.licensePlate,
@@ -72,6 +75,7 @@ export class Trip {
         return JSON.stringify({
             "arrivalDate": trip.arrivalDate,
             "departureDate": trip.departureDate,
+            "creator" : trip.creator,
             "destination": trip.destination,
             "image": trip.image,
             "licensePlate": trip.licensePlate,
