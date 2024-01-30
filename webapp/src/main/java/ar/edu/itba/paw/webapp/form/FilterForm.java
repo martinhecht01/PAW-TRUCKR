@@ -50,11 +50,11 @@ public class FilterForm {
     @QueryParam("cargoType")
     private String cargoType;
 
-    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$", message="validation.DateFormat")
+    @Pattern(regexp="^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}|)$", message="validation.DateFormat")
     @QueryParam("departureDate")
     private String departureDate;
 
-    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$", message="validation.DateFormat")
+    @Pattern(regexp="^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}|)$", message="validation.DateFormat")
     @QueryParam("arrivalDate")
     private String arrivalDate;
 

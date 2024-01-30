@@ -26,7 +26,7 @@ public class CityValidator implements ConstraintValidator<City, String>{
             list.add(city.getCityName());
         }
         HashSet<String> cities = new HashSet<>(list);
-        return cityName == null || cities.contains(cityName);
+        return cityName == null || cityName.equals("") || cities.contains(cityName);
     }
 
 }

@@ -22,7 +22,7 @@ public class CargoTypeValidator implements ConstraintValidator<CargoType, String
     @Override
     public boolean isValid(String cargoType, javax.validation.ConstraintValidatorContext constraintValidatorContext) {
         List<String> cargoTypes = cargoTypeService.getAllCargoTypes().stream().map(ar.edu.itba.paw.models.CargoType::getName).collect(java.util.stream.Collectors.toList());
-        return cargoType == null || cargoTypes.contains(cargoType);
+        return cargoType == null || cargoType.equals("") || cargoTypes.contains(cargoType);
     }
 
 }
