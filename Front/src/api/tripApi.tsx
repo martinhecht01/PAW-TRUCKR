@@ -67,6 +67,16 @@ export async function getPublicationById(id: string): Promise<Publication> {
     return Publication.publicationFromJson(response.data);
 }
 
+export async function getPublicationByUrl(url: string): Promise<Trip> {
+
+    const response = await api.get(url, {
+        headers: {
+            Accept: 'application/vnd.publication.v1+json',
+        }
+    });
+    return Trip.tripFromJson(response.data);
+}
+
 export async function getTrips(
     status: string,
     page: string,
