@@ -5,8 +5,8 @@ import javax.validation.constraints.Pattern;
 
 public class CuitForm {
 
-    @NotNull
-    @Pattern(regexp = "(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]")
+    @NotNull(message = "validation.NotNull")
+    @Pattern(regexp = "(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]", message="validation.Cuit")
     private String cuit;
 
     public String getCuit() {
