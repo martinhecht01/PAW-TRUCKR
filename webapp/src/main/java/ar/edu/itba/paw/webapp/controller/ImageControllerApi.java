@@ -37,9 +37,9 @@ public class ImageControllerApi {
     private UriInfo uriInfo;
 
 
-    //TODO revisar si preferimos un formato de height y width y listo
     @GET
     @Path("/{id:\\d+}")
+    @Produces("image/*")
     public Response getImage(
             @PathParam("id") int id,
             @DefaultValue("FULL") @Pattern(regexp = "FULL|PROFILE|SQUARE", message = "validation.ImageSize.Pattern") @QueryParam("size") String size,
@@ -56,6 +56,8 @@ public class ImageControllerApi {
     }
 
     @POST
+    @Consumes("multipart/form-data")
+    @Produces("image/*")
     public Response uploadImage(
             @RequireImage @FormDataParam("image") FormDataBodyPart image,
             @Size(max = MAX_IMAGE_SIZE, message = "validation.Image.Size") @FormDataParam("image") byte[] imageBytes){
