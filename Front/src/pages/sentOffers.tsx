@@ -3,12 +3,12 @@ import {Button, Card, Typography} from 'antd';
 import '../styles/main.scss';
 import OfferCard from '../components/offerCard';
 import {User} from "../models/User";
-import {getUserById} from "../api/userApi";
+import {getUserById, getUserByUrl} from "../api/userApi";
 import {Offer} from "../models/Offer";
 import {getOffersByUser} from "../api/offerApi";
 import NotFound404 from "./404";
 import {Trip} from "../models/Trip";
-import {getTripByUrl} from "../api/tripApi";
+import {getPublicationByUrl, getTripByUrl} from "../api/tripApi";
 import {useTranslation} from "react-i18next";
 
 const { Title } =Typography;
@@ -27,25 +27,26 @@ const SentOffers: React.FC = () => {
     useEffect(() => {
         getUserById(76).then((userx) => {
             setUser(userx);
-            getOffersByUser(76).then((offersx) => {
+            getOffersByUser(77).then((offersx) => {
                 setOffers(offersx);
-                console.log(offersx);
-                offersx.forEach((offer, i) => {
-                    getTripByUrl(offer.tripUrl).then((trip) => {
-                        console.log("VA UN TRIP")
+                // Create an array of promises for all async operations
+                const promises = offersx.map((offer) => {
+                    return getPublicationByUrl(offer.tripUrl).then((trip) => {
+                        console.log("esto es un trip")
                         console.log(trip)
                         setTrips((prevState) => [...prevState, trip]);
-                        if (trip.trucker != null){
-                            getUserById(Number(trip.trucker)).then((trucker) => {
-                                setTripUsers((prevState) => [...prevState, trucker])
-                            })
-                        }
-                        else{
-                            getUserById(Number(trip.provider)).then((provider) => {
-                                setTripUsers((prevState) => [...prevState, provider])
-                            })
-                        }
-                    })})
+                        return getUserByUrl(trip.creator);
+                    });
+                });
+
+                // Wait for all promises to resolve
+                Promise.all(promises).then((users) => {
+                    setTripUsers((prevState) => [...prevState, ...users]);
+
+                    // Now you can log the updated state
+                    console.log("esto son los trips");
+                    console.log(trips);
+                });
             })
         })
     }, [])
