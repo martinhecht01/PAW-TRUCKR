@@ -4,38 +4,29 @@ import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
 import PastTripCard, { TripCardProps } from '../Components/pastTripCard';
+import {Trip} from "../models/Trip";
+import {getUserById} from "../api/userApi";
+import {User} from "../models/User";
+import {getTrips} from "../api/tripApi";
 
 const PastTrips: React.FC = () => {
 
     const {t} = useTranslation();
 
-    const [trips, setTrips] = useState<Array<TripCardProps>>([
-        {
-            type: 'trip',
-            from: 'Helsinki',
-            to: 'Tampere',
-            fromDate: new Date(),
-            toDate: new Date(),
-            lastUpdate: new Date(),
-            price: 1000,
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s',
-        },
-    ]);
+    const [user, setUser] = useState<User>();
+    const [trips, setTrips] = useState<Trip[]>([]);
 
     useEffect(() => {
-        const newTrip: TripCardProps = {
-            type: 'trip',
-            from: 'New Origin',
-            to: 'New Destination',
-            fromDate: new Date(),
-            toDate: new Date(),
-            lastUpdate: new Date(),
-            price: 1500,
-            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNHkjak0XBtavkkM8z1vJo-BMjmjxfOEaU7pyFAGDc&s',
-        };
+        getUserById(2).then((user) => {
+            setUser(user);
+        });
 
-        // Create a new array with the existing trips and the new trip
-        setTrips((prevTrips) => [...prevTrips, newTrip]);
+        getTrips("PAST").then(r => {
+            r.forEach((trip) => {
+                setTrips((prevTrips) => [...prevTrips, trip]);
+            })
+        })
+
     }, []); // The empty dependency array ensures that this effect runs only once
 
     return (
