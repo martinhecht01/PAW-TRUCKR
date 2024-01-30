@@ -6,6 +6,7 @@ import ar.edu.itba.paw.interfacesServices.exceptions.ImageNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.webapp.controller.utils.CacheHelper;
 import ar.edu.itba.paw.webapp.controller.utils.ImageHelper;
+import ar.edu.itba.paw.webapp.dto.ImageDto;
 import ar.edu.itba.paw.webapp.form.constraints.annotations.RequireImage;
 import org.glassfish.jersey.media.multipart.FormDataBodyPart;
 import org.glassfish.jersey.media.multipart.FormDataParam;
@@ -16,6 +17,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.IOException;
@@ -56,14 +58,18 @@ public class ImageControllerApi {
     }
 
     @POST
-    @Consumes("multipart/form-data")
-    @Produces("image/*")
+    @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
+//    @Produces("image/*")
     public Response uploadImage(
             @RequireImage @FormDataParam("image") FormDataBodyPart image,
             @Size(max = MAX_IMAGE_SIZE, message = "validation.Image.Size") @FormDataParam("image") byte[] imageBytes){
         int id = is.uploadImage(imageBytes);
         Image img = is.getImage(id).orElseThrow(ImageNotFoundException::new);
-        return Response.created(uriInfo.getBaseUriBuilder().path("/images/").path(String.valueOf(id)).build()).entity(img.getImage()).build();
+        return Response.created(uriInfo.getBaseUriBuilder()
+                .path("/images/")
+                .path(String.valueOf(id)).build())
+                .entity(ImageDto.fromImage(uriInfo, img))
+                .build();
     }
 
 
