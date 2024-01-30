@@ -17,6 +17,15 @@ export async function createUser(user: User): Promise<User> {
     return response.data;
 }
 
+export async function resetPasswordRequest(cuit :String): Promise<void> {
+    const response = await api.post(`${usersEndpoint}`, {
+        cuit: cuit
+    });
+    if(response.status !== 202) {
+        throw new Error(response.statusText);
+    }
+}
+
 export async function getUserByUrl(url: string): Promise<User> {
     const response = await api.get(url, {
         headers: {
