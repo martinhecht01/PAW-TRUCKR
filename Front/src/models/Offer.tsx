@@ -31,7 +31,7 @@ export class Offer {
 
     static offerFromJson(json: any): Offer {
         return new Offer(
-            json.proposal_id,
+            json.offerId,
             json.description,
             json.price,
             json.counterOffer,

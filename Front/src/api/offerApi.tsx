@@ -57,6 +57,14 @@ export async function createOffer(tripId: number, price: number, description: st
     return Offer.offerFromJson(response.data);
 }
 
+export async function deleteOffer(offerId: number): Promise<void> {
+    await api.delete(`/offers/${offerId}`, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`
+        }
+    });
+}
+
 export async function createCounterOffer(tripId: number, price: number, description: string, parentOfferId: number): Promise<Offer> {
     const response = await api.post(`/offers`, 
         {
