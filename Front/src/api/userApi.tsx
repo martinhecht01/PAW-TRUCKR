@@ -35,11 +35,11 @@ export async function resetPassword(cuit : string, password: String, token: Stri
         password: password
     }, {
         headers: {
-            'Content-Type': 'application/vnd.resetpassword.v1+json',
+            'Content-Type': 'application/vnd.user.v1+json',
             'Authorization': `Basic ${credentials}`
         }
     });
-    if(response.status !== 202) {
+    if(response.status !== 204) {
         throw new Error(response.statusText);
     }
 }
