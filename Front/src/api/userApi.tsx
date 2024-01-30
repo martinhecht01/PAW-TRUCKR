@@ -20,6 +20,9 @@ export async function createUser(user: User): Promise<User> {
 export async function resetPasswordRequest(cuit :String): Promise<void> {
     const response = await api.post(`${usersEndpoint}`, {
         cuit: cuit
+    }, {
+        headers: {
+            'Content-Type': 'application/vnd.resetpassword.v1+json',}
     });
     if(response.status !== 202) {
         throw new Error(response.statusText);
