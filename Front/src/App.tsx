@@ -66,7 +66,7 @@ const WebApp = () => {
             <Route path="/sentOffers" element={<SentOffers/>}></Route>
             <Route path="/myPublications" element={<MyPublications/>}></Route>
             <Route path="/trips/create" element={<CreateTrip/>}></Route>
-            <Route path="/trips/manageTrip" element={<ManageTrip/>}></Route>
+            <Route path="/trips/manage/:tripId" element={<ManageTrip/>}></Route>
             <Route path="/createAlert" element={<CreateAlert/>}></Route>
             <Route path="/trips/:tripId" element={<PublicationDetails/>}></Route>
             <Route path="/searchTrips" element={<SearchTrips/>}></Route>
