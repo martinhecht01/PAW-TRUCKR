@@ -102,8 +102,8 @@ public class TripDaoJPA implements TripDaoV2 {
     public List<Proposal> getAllProposalsForTripId(int tripId, int pag, int pagesize){
         String query = "SELECT proposal_id FROM proposals WHERE trip_id = :tripId";
         Query q = entityManager.createNativeQuery(query);
-        q.setFirstResult(pag);
-        q.setMaxResults(pagesize);
+//        q.setFirstResult(pag);
+//        q.setMaxResults(pagesize);
         q.setParameter("tripId", tripId);
 
         @SuppressWarnings("unchecked")

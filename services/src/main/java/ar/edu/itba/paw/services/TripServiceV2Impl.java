@@ -349,7 +349,6 @@ public class TripServiceV2Impl implements TripServiceV2 {
     @Transactional
     @Override
     public List<Trip> getTrips(Integer userId, String status, Integer page, Integer pageSize){
-        System.out.println(status);
         switch(status){
             case "ONGOING":
                 return getAllOngoingTrips(userId, page);
