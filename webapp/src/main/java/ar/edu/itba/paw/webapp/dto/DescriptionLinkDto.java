@@ -1,7 +1,5 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.webapp.controller.utils.DescriptionLink;
-
 public class DescriptionLinkDto {
     private final static String BASE_URI = "http://localhost:8080/api";
 
