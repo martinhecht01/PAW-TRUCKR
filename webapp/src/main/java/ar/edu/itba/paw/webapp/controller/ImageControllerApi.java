@@ -41,7 +41,7 @@ public class ImageControllerApi {
 
     @GET
     @Path("/{id:\\d+}")
-    @Produces("image/*")
+//    @Produces("image/*")
     public Response getImage(
             @PathParam("id") int id,
             @DefaultValue("SQUARE") @Pattern(regexp = "FULL|PROFILE|SQUARE", message = "validation.ImageSize.Pattern") @QueryParam("size") String size,

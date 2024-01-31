@@ -115,8 +115,9 @@ public class BasicFilter extends OncePerRequestFilter {
 
     }
 
+    //TODO: ver si el "api" tiene que qeudar asi
     private String baseUrl(HttpServletRequest request){
-        return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+        return  request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath()+"/api";
     }
 
     private Authentication nonceAuthentication(User user){
