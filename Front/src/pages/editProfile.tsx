@@ -43,15 +43,15 @@ const EditProfile: React.FC = () => {
       })
     }, [])
 
-    function save(){
-      selectedFile? uploadImage(selectedFile).then(() => {
-        user?.setName(name)
-        updateUser(user!).then(
-          message.success("Usuario actualizado")
-        )
-      }) : message.info("No se seleccionó ninguna imagen")
+    async function save(){
+      selectedFile? uploadImage(selectedFile).then((id) => 
+        updateUser(name, id, user!.id).then(() => {
+          message.success('Profile updated successfully');
+          router('/profile');
+        })
+      ) : null
 
-      }
+    }
 
     const props: UploadProps = {
       name: 'file',
