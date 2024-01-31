@@ -74,7 +74,7 @@ export async function updateUser(name: string, imageId: string, id: number): Pro
 export async function loginUser(email: string, password: string): Promise<string | null> {
     try {
         const credentials = btoa(`${email}:${password}`)
-        const response = await api.get('/trips/1', {
+        const response = await api.get('/', {
             headers: {
                 'Authorization': `Basic ${credentials}`
             }
