@@ -21,6 +21,8 @@ public interface UserService {
 
     boolean validateToken(Integer userId, Locale locale);
 
+    void resendToken(String cuit);
+
     Optional<User> getUserByCuit(String cuit);
 
     Optional<User> getUserById(int id);

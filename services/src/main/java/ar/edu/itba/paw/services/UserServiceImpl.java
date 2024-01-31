@@ -133,6 +133,15 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Transactional
+    @Override
+    public void resendToken(String cuit){
+        User user = getUserByCuit(cuit).orElseThrow(UserNotFoundException::new);
+        Optional<SecureToken> token = secureTokenDao.findTokenByUser(user);
+        token.ifPresent(secureToken -> deleteToken(secureToken.getToken().toString()));
+        createSecureToken(user, user.getLocale());
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<User> getUserByCuit(String cuit){

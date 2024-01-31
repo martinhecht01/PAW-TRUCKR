@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -62,11 +63,11 @@ public class BasicFilter extends OncePerRequestFilter {
             return;
         }
         Authentication authentication;
-
+        String cuit = "";
         try {
             String[] credentials = extractAndDecodeHeader(header);
+            cuit = credentials[CUIT];
             Optional<SecureToken> token = userService.getSecureToken(credentials[NONCE]);
-
             if(token.isPresent()){
                 User user = userService.getUserByCuit(credentials[CUIT]).orElseThrow(AuthErrorException::new);
                 if(!token.get().getUser().equals(user))
@@ -82,6 +83,9 @@ public class BasicFilter extends OncePerRequestFilter {
                 userService.getUserByCuit(credentials[CUIT]).ifPresent(user -> response.setHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request))));
             }
         } catch (AuthenticationException failed) {
+            if(failed instanceof DisabledException){
+                userService.resendToken(cuit);
+            }
             SecurityContextHolder.clearContext();
             authenticationEntryPoint.commence(request, response, failed);
             return;
