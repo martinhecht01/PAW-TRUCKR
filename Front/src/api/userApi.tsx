@@ -29,6 +29,21 @@ export async function resetPasswordRequest(cuit :String): Promise<void> {
     }
 }
 
+export async function resetPassword(cuit : string, password: String, token: String, userId : String): Promise<void> {
+    const credentials = btoa(`${cuit}:${token}`)
+    const response = await api.patch(`${usersEndpoint}/${userId}`, {
+        password: password
+    }, {
+        headers: {
+            'Content-Type': 'application/vnd.user.v1+json',
+            'Authorization': `Basic ${credentials}`
+        }
+    });
+    if(response.status !== 204) {
+        throw new Error(response.statusText);
+    }
+}
+
 export async function getUserByUrl(url: string): Promise<User> {
     const response = await api.get(url, {
         headers: {

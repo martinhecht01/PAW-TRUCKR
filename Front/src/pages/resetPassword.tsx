@@ -1,15 +1,38 @@
-import { Button, Card, Col, Input, Typography } from "antd";
+import {Button, Card, Col, Input, message, Typography} from "antd";
 import Link from "antd/es/typography/Link";
 import { useState} from "react";
+import {useSearchParams} from 'react-router-dom';
+import {resetPassword} from "../api/userApi.tsx";
 
 const {Text, Title} = Typography;
 
 const ResetPassword: React.FC = () => {
 
-    const [ResetState, setResetState] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams()
+    const hash = searchParams.get('hash');
+    const cuit = searchParams.get('cuit');
+    const userId = searchParams.get('userid');
 
-    const ResetPassword = () => {
-        setResetState(true);
+    const [ResetState, setResetState] = useState(false);
+    const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
+
+    async function ResetPassword() {
+        if (password !== confirmPassword) {
+            message.error('Passwords do not match');
+            return;
+        }
+        if (cuit == null || hash == null || userId == null) {
+            message.error('Please request a valid reset password link');
+            return;
+        }
+        try {
+            await resetPassword(cuit, password, hash, userId);
+            setResetState(true);
+        }
+        catch (e) {
+            message.error('Link expired or already used. Please request a new one');
+        }
     }
     
     return (
@@ -21,14 +44,14 @@ const ResetPassword: React.FC = () => {
                 </div>
                 {!ResetState ? 
                     <div>
-                        <Input.Password placeholder='Password' className='mb-1vh'></Input.Password>
-                        <Input.Password placeholder='Confirm Password' className='mb-1vh'></Input.Password>                  
+                        <Input.Password placeholder='Password' className='mb-1vh' onChange={(e) => setPassword(e.target.value)}></Input.Password>
+                        <Input.Password placeholder='Confirm Password' className='mb-1vh' onChange={(e) => setConfirmPassword(e.target.value)}></Input.Password>
                         <Button type='primary' className='w-100' onClick={ResetPassword}>Reset Password</Button>
                     </div>
 
                     :
 
-                    <Text className='w-100 text-center'> Password change successfully! <Link>Login back</Link></Text>
+                    <Text className='w-100 text-center'> Password change successfully! <Link href='/login'>Login back</Link></Text>
             
                 }
                 
