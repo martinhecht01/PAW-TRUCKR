@@ -151,7 +151,12 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     @Override
     public Optional<User> getUserById(int id) {
-        return userDao.getUserById(id);
+        if( userDao.getUserById(id).isPresent()){
+            return userDao.getUserById(id);
+        }else{
+            LOGGER.warn("User not found. Id: {}", id);
+            throw new UserNotFoundException();
+        }
     }
 
     @Transactional
