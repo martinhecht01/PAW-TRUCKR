@@ -84,7 +84,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     price: publication.price,
                     image: publication.image,
                     cargoType: publication.type,
-                    id: publication.tripId
+                    id: publication.tripId,
+                    clickUrl: '/trip'
                 }
             }))
             setIsLoading(false);

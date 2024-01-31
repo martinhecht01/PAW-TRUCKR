@@ -29,7 +29,8 @@ const PastTrips: React.FC = () => {
                     volume: trip.volume,
                     price: trip.price,
                     image: trip.image,
-                    cargoType: trip.type
+                    cargoType: trip.type,
+                    clickUrl: '/trips'
                 }
             }));
         });

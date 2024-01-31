@@ -1,10 +1,17 @@
-import React from 'react';
-import {Card, Col, Divider, Image, Row, Typography, Avatar} from 'antd';
+import React, { useEffect, useState } from 'react';
+import {Card, Col, Divider, Image, Row, Typography, Avatar, Skeleton, Badge} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
 import ProposalCard from "../Components/proposalCard.tsx";
-import {StarFilled} from "@ant-design/icons";
+import {ArrowRightOutlined, StarFilled} from "@ant-design/icons";
+import { Trip } from '../models/Trip.tsx';
+import { User } from '../models/User.tsx';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getTripById } from '../api/tripApi.tsx';
+import { Offer } from '../models/Offer.tsx';
+import { getOffersByTrip } from '../api/offerApi.tsx';
+import { getClaims, getUserByUrl } from '../api/userApi.tsx';
 
 
 const { Title, Text } = Typography;
@@ -20,16 +27,108 @@ export type ProposalProps = {
 const ManageTrip: React.FC = () => {
 
     const {t} = useTranslation();
+    const router = useNavigate();
+
+    const {tripId} = useParams();
 
     let offerCount = 1;
     //TODO: get offer data from backend
-    const offers : ProposalProps[] = [
-        {description:"uenas",offeredPrice:15,userPhoto:"http://t3.gstatic.com/images?q=tbn:ANd9GcSDOfreJh67Zm_asl0jKHzSciAEeqdvsmJ4off_OGDTwOORaTRSTEbaNuINJKXZTPHOTgjUcA",userName:"Julian Alvarez"}
-    ];
 
     const acceptedOffer : ProposalProps | null = null;
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [publication, setPublication] = useState<Trip>();
+    const [offers, setOffers] = useState<Offer[]>([]);
+    const [user, setUser] = useState<User>();
+
+    useEffect(()=>{
+
+        const claims = getClaims();
+
+        if(tripId == null){
+            router('/404')
+        }
+
+        getTripById(tripId!).catch((err) => {router('/404')}).then((trip) => {
+            setPublication(trip!);
+            getOffersByTrip(tripId!).then((offers) => {
+                setOffers(offers);
+                setIsLoading(false);
+            })
+        })
+        
+    }, [])
 
     return (
+        <div className="w-100 flex-center">
+        <Row style={{justifyContent: 'space-evenly'}} className="w-80">
+            <Skeleton loading={isLoading}>
+                <Col span={10}>
+                    <div>
+                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color="blue">
+                                    <img
+                                    src={publication?.image}
+                                    style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
+                                    alt="A giant squid swimming deep in the sea"
+                                    />
+                        </Badge.Ribbon>
+                    </div>
+                    <Card className="mt-5">
+                        <Row className="space-evenly">
+                            <Col span={8} className="text-center">
+                                <Title level={4}>{publication?.origin}</Title>
+                                <Text>{publication?.departureDate ? new Date(publication.departureDate).toDateString() : ''}</Text>
+                            </Col>
+                            <Col span={8} className="flex-center flex-column">
+                                <div className="w-100 flex-center"><Image height={45} preview={false} src="https://i.pinimg.com/originals/e0/8b/14/e08b1415885d4d2ddd7fd3f75967da29.png"></Image></div>
+                                <div className="w-100 flex-center">
+                                    <div style={{border: '1px solid black', width: '100%'}}/><ArrowRightOutlined/>
+                                </div>                            
+                            </Col>
+                            <Col span={8}  className="text-center">
+                                <Title level={4}>{publication?.destination}</Title>
+                                <Text>{publication?.arrivalDate ? new Date(publication.arrivalDate).toDateString() : ''}</Text>
+                            </Col>
+                        </Row>
+                    </Card>
+                    <Row className="mt-5 space-between">
+                        <Col span={11}>
+                            <Card className="w-100 text-center">
+                                <Title level={3}>{publication?.weight} Kg</Title>
+                                <Text>Weight</Text>
+                            </Card>
+                        </Col>
+                        <Col span={11}>
+                            <Card className="w-100 text-center">
+                                <Title level={3}>{publication?.volume} M3</Title>
+                                <Text>Volume</Text>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Col>
+                <Col span={8}>
+                    <Card>
+                        <div className="w-100 space-between">
+                            <Avatar size={64} src={user?.imageUrl}></Avatar>
+                            <Title level={3}>{user?.name}</Title>
+                            <div>
+                                <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : user?.rating }</Title>
+                            </div>
+                        </div>
+                    </Card>
+                    
+                </Col>
+            </Skeleton>
+        </Row>
+    </div>
+
+    );
+};
+
+export default ManageTrip;
+
+
+/*
+
         <div >
             <div className="flex-center" style={{alignItems:'flex-start', margin: '3vh'}}>
                 <Card style={{width: '30%', marginRight:'1vh'}} headStyle={{fontSize: '2.5vh', color: '#142d4c'}}
@@ -130,7 +229,4 @@ const ManageTrip: React.FC = () => {
                 </div>
             </div>
         </div>
-    );
-};
-
-export default ManageTrip;
+        */

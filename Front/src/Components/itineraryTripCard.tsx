@@ -1,5 +1,6 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Avatar, Card, Col, Rate, Row, Typography } from "antd"
+import { useNavigate } from "react-router-dom";
 
 const {Title, Text} = Typography;
 
@@ -17,8 +18,10 @@ export type ItineraryTripCardProps = {
 
 const ItineraryTripCard = (trip: ItineraryTripCardProps) => {
 
+    const router = useNavigate();
+
     return (
-        <Card className="w-100 mt-1vh">
+        <Card className="w-100 mt-1vh" onClick={() => router(`/trips/manage/${trip.id}`)}>
             <Row>
                 <Col span={15}>
                     <Row>

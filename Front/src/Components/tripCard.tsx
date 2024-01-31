@@ -16,7 +16,8 @@ export type TripCardProps = {
     volume: number;
     price: number;
     image: string;
-    cargoType: string
+    cargoType: string;
+    clickUrl: string;
 }   
 
 
@@ -36,7 +37,7 @@ const TripCard = (props: TripCardProps) => {
                     </Badge.Ribbon>
                 }
 
-                onClick={() => router(`/trips/${props.id}`)}
+                onClick={() => router(`${props.clickUrl}/${props.id}`)}
             >
                 <Meta
                     title={
