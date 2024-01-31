@@ -87,6 +87,35 @@ public class UserServiceImplTest {
         Assert.assertNull(user);
     }
 
+    @Test(expected = UserNotFoundException.class)
+    public void testGetUserByIdWithNonExistentId() {
+        // 1 Precondiciones
+        when(userDao.getUserById(anyInt()))
+                .thenReturn(Optional.empty());
+
+        //2 Ejercitar
+        userService.getUserById(USERID);
+    }
+
+
+    @Test
+    public void testGetUserByIdWithExistentId() {
+        // 1 Precondiciones
+        when(userDao.getUserById(anyInt()))
+                .thenReturn(Optional.of(new User(USERID, EMAIL, NAME, CUIT, ROLE, PASSWORD, false, null,Locale.ENGLISH)));
+
+        //2 Ejercitar
+        User user = userService.getUserById(USERID).get();
+
+        //3 Postcondiciones
+        Assert.assertNotNull(user);
+        Assert.assertEquals(EMAIL, user.getEmail());
+        Assert.assertEquals(NAME, user.getName());
+        Assert.assertEquals(CUIT, user.getCuit());
+        Assert.assertEquals(ROLE, user.getRole());
+        Assert.assertEquals(PASSWORD, user.getPassword());
+    }
+
 
 
 }

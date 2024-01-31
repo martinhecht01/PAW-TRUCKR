@@ -59,6 +59,9 @@ public class TripServiceV2Impl implements TripServiceV2 {
                            String type,
                            int price) {
 
+        if(!userDao.getUserById(user.getUserId()).isPresent()){
+            throw new UserNotFoundException();
+        }
         if(Objects.equals(user.getRole(), RoleType.TRUCKER.getRoleName())) {
             if(licensePlate == null || licensePlate.isEmpty())
                 throw new IllegalArgumentException("exception.LicensePlate");
@@ -79,6 +82,9 @@ public class TripServiceV2Impl implements TripServiceV2 {
                               String type,
                               int price,
                               Locale locale) {
+        if(!userDao.getUserById(user.getUserId()).isPresent()){
+            throw new UserNotFoundException();
+        }
         Trip trip =  tripDaoV2.createRequest(user, weight, volume, departureDate, arrivalDate, origin, destination, type, price);
 
         List<Alert> alerts = alertDao.getAlertsThatMatch(trip);

@@ -5,6 +5,9 @@ import ar.edu.itba.paw.interfacesPersistence.TripDaoV2;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.interfacesServices.MailService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.TripOrRequestNotFoundException;
+import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
 import ar.edu.itba.paw.models.Image;
 import ar.edu.itba.paw.models.Proposal;
 import ar.edu.itba.paw.models.Trip;
@@ -179,5 +182,24 @@ public class TripServiceV2ImplTest {
         Assert.assertEquals(PROPOSAL_DESCRIPTION, proposal.getDescription());
         Assert.assertEquals(TRUCKERNAME_NOT_EXISTENT, proposal.getUserName());
     }
+
+    @Test(expected = TripOrRequestNotFoundException.class)
+    public void testCreateProposalTripNotFound(){
+        when(tripService.getTripOrRequestById(anyInt()))
+                .thenReturn(Optional.empty());
+
+        tripService.createProposal(TRIPID_NOT_EXISTENT, user1, PROPOSAL_DESCRIPTION, PRICE_NOT_EXISTENT, 0,Locale.ENGLISH);
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void testCreateTripUserNotFound(){
+        when(userDao.getUserById(anyInt()))
+                .thenReturn(Optional.empty());
+
+        tripService.createTrip(user1,LICENSEPLATE_NOT_EXISTENT,WEIGHT_NOT_EXISTENT,VOLUME_NOT_EXISTENT,DEPARTUREDATE_NOT_EXISTENT,ARRIVALDATE_NOT_EXISTENT,ORIGIN_NOT_EXISTENT,DESTINATION_NOT_EXISTENT,TYPE_NOT_EXISTENT,PRICE_NOT_EXISTENT);
+    }
+
+
+
 
 }
