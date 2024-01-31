@@ -1,6 +1,8 @@
+import { AxiosError } from 'axios';
 import { Publication } from '../models/Publication';
 import { Trip } from '../models/Trip';
 import api from './config'
+import { getToken } from './userApi';
 
 export async function getPublications(
     userId: string,
@@ -133,30 +135,40 @@ export async function getTripByUrl(url: string): Promise<Trip> {
     return Trip.tripFromJson(response.data);
 }
 
-export async function createTrip(trip: Trip): Promise<Trip> {
+    export async function createTrip(
+        licensePlate: string,
+        availableWeight: number,
+        availableVolume: number,
+        price: number,
+        departureDate: string,
+        arrivalDate: string,
+        cargoType: string,
+        origin: string,
+        destination: string,
+        imageId: string
+    ): Promise<Trip> {
 
-    const token = sessionStorage.getItem('token')
+        const response = await api.post('/trips', {
+            licensePlate: licensePlate,
+            availableWeight: availableWeight,
+            availableVolume: availableVolume,
+            price: price,
+            departureDate: departureDate,
+            arrivalDate: arrivalDate,
+            cargoType: cargoType,
+            origin: origin,
+            destination: destination,
+            imageId: imageId
+        }, {
+            headers: {
+                Accept: 'application/vnd.trip.v1+json',
+                "Content-Type": 'application/vnd.trip.v1+json',
+                Authorization: `Bearer ${getToken()}`
+            }
+        });
 
-    const response = await api.post('/trips', {
-        licensePlate: trip.licensePlate,
-        availableWeight: trip.weight,
-        availableVolume: trip.volume,
-        price: trip.price,
-        departureDate: trip.departureDate,
-        arrivalDate: trip.arrivalDate,
-        cargoType: trip.type,
-        origin: trip.origin,
-        destination: trip.destination,
-        imageId: trip.image
-    }, {
-        headers: {
-            Accept: 'application/vnd.trip.v1+json',
-            "Content-Type": 'application/vnd.trip.v1+json',
-            Authorization: `Bearer ${token}`
-        }
-    });
-    return Trip.tripFromJson(response.data);
-}
+        return Trip.tripFromJson(response.data);
+    }
 
 export async function confirmTrip(id: string): Promise<void> {
 

@@ -58,14 +58,17 @@ export async function getUserById(id: number): Promise<User> {
     return User.userFromJson(response.data);
 }
 
-export async function updateUser(user: User): Promise<User> {
-    const response = await api.patch(`${usersEndpoint}/${user.id}`, User.userToJson(user), {
+export async function updateUser(name: string, imageId: string, id: number): Promise<User> {
+    const response = await api.patch(`${usersEndpoint}/${id}`, {
+        imageId: imageId,
+        name: name
+    }, {
         headers: {
             'Authorization': `Bearer ${getToken()}`,
             'Content-Type': 'application/vnd.user.v1+json'
         }
     });
-    return User.userFromJson(JSON.parse(response.data));
+    return User.userFromJson(response.data);
 }
 
 export async function loginUser(email: string, password: string): Promise<string | null> {

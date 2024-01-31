@@ -13,7 +13,8 @@ export async function uploadImage(image: File): Promise<string> {
         }
     });
 
-    return response.data;
+    console.log(response.data['imageId'])
+    return response.data['imageId'];
 }
 
 export async function getImage(URL: string): Promise<File> {
