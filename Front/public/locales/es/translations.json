@@ -1,0 +1,81 @@
+{
+  "greeting": {
+    "hello": "¡Hola Mundo!"
+  },
+
+  "myAlert": {
+    "help": "¿Necesitas ayuda?",
+    "alertExplanation": "Una alerta es una notificación que se te enviará cuando se cree un cargamento que coincida con tus criterios.",
+    "alertQuestion": "Que es una alerta?",
+    "create": "Crear alerta",
+    "myAlert": "Mi alerta",
+    "noAlert": "No tiene una alerta activa"
+  },
+
+  "common": {
+    "date": "Fecha",
+    "time": "Hora",
+    "search": "Buscar",
+    "origin": "Origen",
+    "destination": "Destino",
+    "from": "Desde",
+    "to": "Hasta",
+    "maxVolume": "Volumen Máximo",
+    "maxWeight": "Peso Máximo",
+    "delete": "Borrar",
+    "cargoType": "Tipo de Carga",
+    "availableWeight": "Peso Disponible",
+    "availableVolume": "Volumen Disponible",
+    "suggestedPrice": "Precio Sugerido",
+    "arrivalDate": "Fecha de Llegada",
+    "departureDate": "Fecha de Salida",
+    "licensePlate": "Patente",
+    "offeredPrice": "Precio Ofrecido",
+    "browse": "Buscar publicaciones"
+  },
+
+  "profile": {
+    "cuit": "Cuit/Cuil",
+    "name": "Nombre",
+    "email": "Email",
+    "editProfile":"Editar Perfil",
+    "completedTrips": "Viajes completos",
+    "profile": "Perfil"
+  },
+
+  "review": {
+    "reviews": "Reseñas"
+  },
+
+  "pastTrips": {
+    "lastUpdate": "Ultima actualización"
+  },
+
+  "trip": {
+    "create": "Crear Viaje"
+  },
+
+  "create": {
+    "uploadClick": "Click para subir",
+    "uploadSuccessful": "Archivo subido exitosamente",
+    "uploadError": "Error al subir el archivo",
+    "notPng": "El archivo debe ser una imagen .png"
+  },
+
+  "manage": {
+    "origDest": "Origen - Destino",
+    "depArr": "Salida - Llegada",
+    "noOffers": "No hay ofertas para esta publicación",
+    "description": "Descripción",
+    "accept": "Aceptar",
+    "counterOffer": "Contraoferta",
+    "reject": "Rechazar",
+    "cancel": "Cancelar"
+  },
+
+  "sentOffers": {
+    "noOffers": "No has mandado ninguna oferta",
+    "sentOffers": "Ofertas enviadas"
+  }
+}
+  
