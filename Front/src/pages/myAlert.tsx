@@ -85,7 +85,7 @@ const myAlert: React.FC = () => {
                 <div className="flex-center">
                     <div className='flex-column' style={{textAlign:'center'}}>
                         <Title className='m-0' level={5}>{t('myAlert.noAlert')}</Title>
-                        <Button style={{marginTop:'2vh'}} type='primary'>{t('myAlert.create')}</Button>
+                        <Button style={{marginTop:'2vh'}} href='/createAlert' type='primary'>{t('myAlert.create')}</Button>
                     </div>
                 </div>
             </Card>

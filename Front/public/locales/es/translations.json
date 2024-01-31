@@ -12,6 +12,12 @@
     "noAlert": "No tiene una alerta activa"
   },
 
+  "cargoType": {
+    "refrigerated": "Refrigerado",
+    "normal": "Normal",
+    "hazardous": "Peligroso"
+  },
+
   "common": {
     "date": "Fecha",
     "time": "Hora",

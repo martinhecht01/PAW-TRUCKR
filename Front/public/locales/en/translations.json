@@ -25,6 +25,12 @@
       "browse": "Browse publications"
     },
 
+    "cargoType": {
+      "refrigerated": "Refrigerated",
+      "normal": "Normal",
+      "hazardous": "Hazardous"
+    },
+
     "myAlert": {
       "help": "Need Help?",
       "alertExplanation": "An alert is a notification that will be sent to you when a cargo that matches your criteria is created.",
