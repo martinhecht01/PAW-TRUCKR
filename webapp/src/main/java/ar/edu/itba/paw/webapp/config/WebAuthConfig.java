@@ -125,23 +125,23 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
 
-                .antMatchers(HttpMethod.PUT, "/users/{id:\\d+}/**").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/users/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.PUT, "/api/users/{id:\\d+}/**").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/users/{id:\\d+}").authenticated()
 
-                .antMatchers(HttpMethod.POST, "/trips").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/trips").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/trips").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/trips").authenticated()
 
-                .antMatchers(HttpMethod.POST, "/reviews").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/reviews").authenticated()
 
-                .antMatchers(HttpMethod.POST, "/alerts").hasRole(RoleType.TRUCKER.getRoleName())
-                .antMatchers(HttpMethod.DELETE, "/alerts").authenticated()
-                .antMatchers(HttpMethod.GET, "/alerts").authenticated()
-                .antMatchers(HttpMethod.GET, "/alerts/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/alerts").hasRole(RoleType.TRUCKER.getRoleName())
+                .antMatchers(HttpMethod.DELETE, "/api/alerts").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/alerts").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/alerts/{id:\\d+}").authenticated()
 
-                .antMatchers(HttpMethod.POST, "/offers").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/offers/{id:\\d+}").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/offers/{id:\\d+}").authenticated()
-                .antMatchers(HttpMethod.GET, "/offers").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/offers").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/offers/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/offers/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/offers").authenticated()
 
 
 
@@ -152,7 +152,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 //                    .antMatchers("/trips/create", "/trips/myTrips").hasRole("TRUCKER")
 //                    .antMatchers( "/","/trips/details", "/requests/details", "/explore", "/trips/{tripId}/tripPicture", "/user/{userId}/profilePicture").permitAll()
 //                    .antMatchers("/**").authenticated()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .and().cors().and().csrf().disable()
 
                 .addFilterBefore(basicFilter, UsernamePasswordAuthenticationFilter.class)
