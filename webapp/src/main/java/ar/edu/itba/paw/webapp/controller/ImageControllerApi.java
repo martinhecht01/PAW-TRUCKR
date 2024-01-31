@@ -44,7 +44,7 @@ public class ImageControllerApi {
     @Produces("image/*")
     public Response getImage(
             @PathParam("id") int id,
-            @DefaultValue("FULL") @Pattern(regexp = "FULL|PROFILE|SQUARE", message = "validation.ImageSize.Pattern") @QueryParam("size") String size,
+            @DefaultValue("SQUARE") @Pattern(regexp = "FULL|PROFILE|SQUARE", message = "validation.ImageSize.Pattern") @QueryParam("size") String size,
             @Context javax.ws.rs.core.Request request ){
         Image image = is.getImage(id).orElseThrow(ImageNotFoundException::new);
         Response.ResponseBuilder response;
