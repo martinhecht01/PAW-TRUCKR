@@ -49,7 +49,7 @@ public class CargoTypeControllerApi {
     @Produces("application/vnd.cargoType.v1+json")
     public Response getCargoTypeById(@PathParam("id") final int id) {
         final CargoType cargoType = cs.getCargoTypeById(id).orElseThrow(CargoTypeNotFoundException::new);
-        cargoType.setName(getLocalCargoType(cargoType));
+//        cargoType.setName(getLocalCargoType(cargoType));
         Response.ResponseBuilder response = Response.ok(CargoTypeDto.fromCargoType(uriInfo, cargoType));
         CacheHelper.setUnconditionalCache(response);
         return response.build();
@@ -59,7 +59,7 @@ public class CargoTypeControllerApi {
     @Produces("application/vnd.cargoTypeList.v1+json")
     public Response getCargoTypes() {
         List<CargoType> cargoTypeList = cs.getAllCargoTypes();
-        cargoTypeList.forEach(cargoType -> cargoType.setName(getLocalCargoType(cargoType)));
+//        cargoTypeList.forEach(cargoType -> cargoType.setName(getLocalCargoType(cargoType)));
         List<CargoTypeDto> dtoList = cargoTypeList.stream().map(currifyUriInfo(CargoTypeDto::fromCargoType)).collect(Collectors.toList());
         Response.ResponseBuilder response = Response.ok(new GenericEntity<List<CargoTypeDto>>(dtoList){});
         CacheHelper.setUnconditionalCache(response);
