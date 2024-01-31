@@ -1,126 +1,136 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Button,
-    Card, Cascader,
-    DatePicker, Image,
-    Input,
-    InputNumber,
-    message,
-    Typography,
-    Upload,
-    UploadProps
+    Card,
+    DatePicker, Input,
+    InputNumber, message, Select,
+    Typography
 } from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
-import {UploadOutlined} from "@ant-design/icons";
-import type { DefaultOptionType } from 'antd/es/cascader';
-import {RcFile} from "antd/es/upload";
+import {getCargoTypes} from "../api/cargoTypeApi.tsx";
+import {getCities} from "../api/citiesApi.tsx";
+import {createAlert} from "../api/alertApi.tsx";
+import {useNavigate} from "react-router-dom";
+import {Dayjs} from "dayjs";
 
 
-const { Title, Text } = Typography;
+const { Title } = Typography;
 
+const {RangePicker} = DatePicker;
+
+type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
 const CreateAlert: React.FC = () => {
 
     const {t} = useTranslation();
+    const router = useNavigate();
 
-    const [uploadPreviewSrc, setUploadPreviewSrc] = useState('');
 
-    const filter = (inputValue: string, path: DefaultOptionType[]) =>
-        path.some(
-            (option) => (option.label as string).toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
-        );
 
-    interface Option {
-        value: string;
-        label: string;
-        children?: Option[];
-        disabled?: boolean;
+    const [cargoOptions, setCargoOptions] = useState<{label:string,value:string}[]>([]);
+    const [cityOptions, setCityOptions] = useState<{label:string,value:string}[]>([])
+
+    const [selectedCity, setSelectedCity] = useState<string>();
+    const [selectedCargoType, setSelectedCargoType] = useState<string>();
+    const [maxVolume, setMaxVolume] = useState<string>();
+    const [maxWeight, setMaxWeight] = useState<string>();
+    const [dateRange, setDateRange] = useState<RangeValue>(null);
+    async function handleAlertCreation(city: string | undefined, cargoType: string | undefined, maxVolume: string | undefined, maxWeight:string | undefined, departureDate:string | undefined, arrivalDate:string | undefined){
+        if (departureDate == undefined && city == undefined){
+            message.error("Departure Date and City must be specified")
+            return;
+        }
+        else if (departureDate == undefined){
+            message.error("Departure Date must be specified")
+            return;
+        }
+        else if (city == undefined){
+            message.error("City must be specified")
+            return;
+        }
+        try{
+            await createAlert(Number(maxWeight), Number(maxVolume),departureDate, arrivalDate, city, cargoType);
+            router('/myAlert');
+        }
+        catch (e) {
+            message.error("Unexpected error")
+        }
     }
 
-    //TODO: llenar con ciudades de backend
-    const cityOptions: Option[] = [
-        {
-            value: 'Buenos Aires',
-            label: 'Buenos Aires',
-        },
-        {
-            value: 'Cordoba',
-            label: 'Cordoba',
-        },
-        {
-            value: 'Rosario',
-            label: 'Rosario',
-        }
-    ];
+    useEffect( () => {
+        getCargoTypes().then((cargoTypes) => {
+            setCargoOptions(cargoTypes.map((type) => {
+                return {
+                    label: t(`cargoType.${type.toLowerCase()}`),
+                    value: type
+                }
+            }))
+            getCities().then((cities) =>{
+                setCityOptions(cities.map((city) => {
+                    return {
+                        label: city.cityName,
+                        value: city.cityName
+                    }
+                }))
+            })
+        });
 
 
-    const cargoOptions: Option[] = [
-        {
-            value: 'Refrigerated',
-            label: t('cargoType.refrigerated'),
-        },
-        {
-            value: 'Normal',
-            label: t("cargoType.normal"),
-        },
-        {
-            value: 'Hazardous',
-            label: t('cargoType.hazardous'),
-        },
-    ];
+    },[]);
+
 
     return (
         <div className="flex-center">
-            <Card title={t("alert.create")} className="w-50 m-0">
+            <Card title={t("myAlert.create")} className="w-50 m-0">
                 <div className="flex-center space-around">
                     <div>
                         <Title level={5} className="m-0">{t("common.cargoType")}</Title>
-                        <Cascader
-                            options={cargoOptions}
+                        <Select className='w-100' options={cargoOptions} onChange={(value) => { setSelectedCargoType(value) }}
                         />
+
                     </div>
                     <div>
                         <Title level={5} className="m-0">{t("common.origin")}</Title>
-                        <Cascader
+                        <Select className='w-100'
+                            onChange={(value) => {setSelectedCity(value)}}
                             options={cityOptions}
-                            showSearch={{filter}}
                         />
                     </div>
                 </div>
                 <div className="flex-center space-around">
-                    <div>
-                        <Title level={5}>{t("common.departureDate")}</Title>
-                        <DatePicker showTime></DatePicker>
-                    </div>
-                    <div>
-                        <Title level={5}>{t("common.arrivalDate")}</Title>
-                        <DatePicker showTime></DatePicker>
-                    </div>
+                    <RangePicker className="w-100"
+                                 onChange={(val) => {
+                                     setDateRange(val);
+                                 }}
+                                 allowEmpty={[false,true]}
+                    ></RangePicker>
                 </div>
                 <div className="flex-center space-around">
                     <div>
                         <Title level={5}>{t("common.maxVolume")}</Title>
-                        <InputNumber
+                        <Input
                             className="w-100"
+                            type="number"
+                            onChange={(e) => setMaxVolume(e.target.value)}
                             min={0}
-                            formatter={(value) => `${value} m3`}
-                            parser={(value) => value!.replace('m3', '')}
+                            suffix="M3"
                         />
                     </div>
                     <div>
                         <Title level={5}>{t('common.maxWeight')}</Title>
-                        <InputNumber
+                        <Input
+                            type='number'
                             className="w-100"
                             min={1}
-                            formatter={(value) => `${value} kg`}
-                            parser={(value) => value!.replace('kg', '')}
+                            onChange={(e) => setMaxWeight(e.target.value)}
+                            suffix='kg'
                         />
                     </div>
                 </div>
                 <div className="flex-center" style={{marginTop: '5vh'}}>
-                    <Button type="primary">{t("alert.create")}</Button>
+                    <Button type="primary" onClick={() => handleAlertCreation(selectedCity,selectedCargoType,maxVolume,maxWeight,dateRange?.[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : undefined, dateRange?.[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss'): undefined)}>{t("myAlert.create")}</Button>
                 </div>
             </Card>
         </div>
