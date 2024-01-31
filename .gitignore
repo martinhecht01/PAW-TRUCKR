@@ -76,3 +76,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#Frontend
+build/
+node/

@@ -17,48 +17,65 @@
 
 
   <dependencies>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
     </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
     </dependency>
+
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
     </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>models</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>interfacesServices</artifactId>
       <version>${project.version}</version>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>services</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
+
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>persistence</artifactId>
       <version>${project.version}</version>
       <scope>runtime</scope>
     </dependency>
+
+    <dependency>
+      <groupId>ar.edu.itba.paw</groupId>
+      <artifactId>Front</artifactId>
+      <version>${parent.version}</version>
+      <type>pom</type>
+    </dependency>
+
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
@@ -217,10 +234,20 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
         </plugin>
+
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
           <version>3.2.2</version>
+          <configuration>
+            <packagingExcludes>**/logback-test.xml</packagingExcludes>
+<!--            <webResources>-->
+<!--              <resource>-->
+<!--                <directory>../frontend/build</directory>-->
+<!--              </resource>-->
+<!--            </webResources>-->
+          </configuration>
         </plugin>
+
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>
