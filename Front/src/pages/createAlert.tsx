@@ -2,8 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
     Button,
     Card,
-    DatePicker, Input,
-    InputNumber, message, Select,
+    DatePicker, Input, message, Select,
     Typography
 } from 'antd';
 import '../styles/main.scss';
@@ -55,7 +54,7 @@ const CreateAlert: React.FC = () => {
             router('/myAlert');
         }
         catch (e) {
-            message.error("Unexpected error")
+            message.error("You already have an existing alert. Delete it to create a new one.")
         }
     }
 

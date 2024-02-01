@@ -5,7 +5,6 @@ import '../styles/myAlert.scss';
 import {useTranslation} from "react-i18next";
 import {Alert} from "../models/Alert";
 import {getAlert} from "../api/alertApi";
-import {getUserById} from "../api/userApi";
 import {User} from "../models/User";
 
 const { Title } = Typography;
@@ -20,20 +19,17 @@ const myAlert: React.FC = () => {
         </div>
     )
 
-    const [user, setUser] = useState<User>();
     const [myAlert, setMyAlert] = useState<Alert>();
 
     useEffect(() => {
-        getUserById('2').then((user) => {
-            setUser(user);
-        });
-
         getAlert().then((alert) => {
             setMyAlert(alert);
+            console.log(myAlert)
         })
-    });
+    },[]);
 
-    if (user?.alert != undefined) {
+
+    if (myAlert !== undefined) {
         return (
             <div>
                 <div className='flex-center'>
@@ -41,27 +37,27 @@ const myAlert: React.FC = () => {
                         <Row className='infoRow'>
                             <Col span={7}>
                                 <Title level={5}>{t('common.origin')}</Title>
-                                <Input disabled defaultValue={myAlert?.city}></Input>
+                                <Input disabled defaultValue={myAlert.city}></Input>
                             </Col>
                             <Col span={3}/>
                             <Col span={14}>
                                 <Title level={5}>{t('common.from')}-{t('common.to')}</Title>
                                 <Input disabled
-                                       defaultValue={`${myAlert?.fromDate.toDateString()} - ${myAlert?.fromDate.toDateString()}`}></Input>
+                                       defaultValue={`${myAlert.fromDate} - ${myAlert.fromDate}`}></Input>
                             </Col>
                         </Row>
                         <Row className='infoRow'>
                             <Col span={7}>
                                 <Title level={5}>{t('common.maxWeight')}</Title>
-                                <Input disabled defaultValue={myAlert?.maxWeight} suffix={'Kg'}></Input>
+                                <Input disabled defaultValue={myAlert.maxWeight} suffix={'Kg'}></Input>
                             </Col>
                             <Col span={7}>
                                 <Title level={5}>{t('common.maxVolume')}</Title>
-                                <Input disabled defaultValue={myAlert?.maxVolume} suffix={'m3'}></Input>
+                                <Input disabled defaultValue={myAlert.maxVolume} suffix={'m3'}></Input>
                             </Col>
                             <Col span={7}>
                                 <Title level={5}>{t('common.cargoType')}</Title>
-                                <Input disabled defaultValue={myAlert?.cargoType}></Input>
+                                <Input disabled defaultValue={myAlert.cargoType}></Input>
                             </Col>
                         </Row>
                     </Card>
