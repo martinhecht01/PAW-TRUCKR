@@ -161,4 +161,18 @@ public class TripControllerApi {
         }
         return Response.noContent().build();
     }
+
+
+    @DELETE
+    @Path("{id:\\d+}")
+    @PreAuthorize("@accessHandler.isTripOwner(#id)")
+    public Response deletePublication(@PathParam("id") int id){
+        Trip publication = ts.getTripOrRequestById(id).orElseThrow(TripOrRequestNotFoundException::new);
+        try {
+            ts.deletePublication(publication);
+        }catch(IllegalArgumentException e){
+            throw new BadRequestException();
+        }
+        return Response.noContent().build();
+    }
 }
