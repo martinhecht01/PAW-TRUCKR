@@ -26,7 +26,7 @@ const TripCard = (props: TripCardProps) => {
     const router = useNavigate();
     return(
        
-            <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} hoverable
+            <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} 
                 cover={
                     <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>}  color="blue" >
                         <img
@@ -37,7 +37,9 @@ const TripCard = (props: TripCardProps) => {
                     </Badge.Ribbon>
                 }
 
-                onClick={() => router(`${props.clickUrl}/${props.id}`)}
+                hoverable={props.clickUrl != '' ? true : false}
+
+                onClick={() => props.clickUrl != '' ? router(`${props.clickUrl}/${props.id}`) : null}
             >
                 <Meta
                     title={

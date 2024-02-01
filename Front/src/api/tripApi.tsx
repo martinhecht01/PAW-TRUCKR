@@ -111,14 +111,14 @@ export async function getTrips(
 
 export async function getTripById(id: string): Promise<Trip> {
 
-    const token = sessionStorage.getItem('token')
 
     const response = await api.get(`/trips/${id}`, {
         headers: {
             Accept: 'application/vnd.trip.v1+json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${getToken()}`
         }
     });
+
     return Trip.tripFromJson(response.data);
 }
 
@@ -172,13 +172,11 @@ export async function getTripByUrl(url: string): Promise<Trip> {
 
 export async function confirmTrip(id: string): Promise<void> {
 
-    const token = sessionStorage.getItem('token')
-
     await api.patch(`/trips/${id}`, {}, {
         headers: {
             Accept: 'application/vnd.trip.v1+json',
             "Content-Type": 'application/vnd.trip.v1+json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${getToken()}`
         }
     });
 }

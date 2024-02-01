@@ -60,6 +60,7 @@ const WebApp = () => {
             <Route path="/register" element={<Register/>} />
             <Route path="/myItinerary" element={<MyItinerary/>} />
             <Route path="/myAlert" element={<MyAlert/>} />
+            <Route path="/profile/:userId" element={<Profile/>} />
             <Route path="/profile" element={<Profile/>} />
             <Route path="/profile/edit" element={<EditProfile/>} />
             <Route path="/pastTrips" element={<PastTrips/>}></Route>

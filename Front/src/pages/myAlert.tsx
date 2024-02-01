@@ -24,7 +24,7 @@ const myAlert: React.FC = () => {
     const [myAlert, setMyAlert] = useState<Alert>();
 
     useEffect(() => {
-        getUserById(2).then((user) => {
+        getUserById('2').then((user) => {
             setUser(user);
         });
 

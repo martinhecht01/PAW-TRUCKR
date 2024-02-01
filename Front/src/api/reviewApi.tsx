@@ -9,6 +9,11 @@ export async function createReview(review: Review): Promise<Review> {
         review: review.review,
         rating: review.rating,
         tripId: review.trip
+    }, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/vnd.review.v1+json'
+        }
     });
     return Review.reviewFromJson(response.data);
 }

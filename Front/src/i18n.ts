@@ -16,14 +16,14 @@ i18n
     debug: true,
     fallbackLng: 'en',
     defaultNS: 'translations',
-    backend: {
-      // path where resources get loaded from
-      loadPath: './locales/{{lng}}/{{ns}}.json'
-    },
+    // backend: {
+    //   // path where resources get loaded from
+    //   loadPath: './locales/{{lng}}/{{ns}}.json'
+    // },
 
-    interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
-    }
+    // interpolation: {
+    //   escapeValue: false, // not needed for react as it escapes by default
+    // }
   });
 
 export default i18n;
