@@ -49,7 +49,7 @@ public class AlertsControllerApi {
     @Produces("application/vnd.alert.v1+json")
     public Response createAlert(@Valid AlertForm form){
         final User user = us.getCurrentUser().orElseThrow(UserNotFoundException::new);
-        Alert alert = as.createAlert(user, form.getOrigin(), form.getMaxWeight(), form.getMaxWeight(), LocalDateTime.parse(form.getFromDate()), (form.getToDate() == null || form.getToDate().isEmpty()) ? null : LocalDateTime.parse(form.getToDate()), form.getCargoType()).get();
+        Alert alert = as.createAlert(user, form.getOrigin(), form.getMaxWeight(), form.getMaxVolume(), LocalDateTime.parse(form.getFromDate()), (form.getToDate() == null || form.getToDate().isEmpty()) ? null : LocalDateTime.parse(form.getToDate()), form.getCargoType()).get();
         return Response.created(uriInfo.getBaseUriBuilder().path("/alerts").build()).entity(AlertDto.fromAlert(uriInfo,alert)).build();
     }
 
