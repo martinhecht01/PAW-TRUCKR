@@ -5,11 +5,13 @@ import { Typography } from 'antd';
 import LandingCard from '../Components/landingCard';
 import '../styles/main.scss';
 import { useNavigate } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 
 const { Title } =Typography;
 
 const Landing: React.FC = () => {
 
+    const {t} = useTranslation();
     const router = useNavigate();
 
     const contentForTruckers: () => React.ReactNode = () => {
@@ -25,23 +27,23 @@ const Landing: React.FC = () => {
     //TODO: change the content for providers
     const contentForProviders: () => React.ReactNode = () => {
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
-            <LandingCard  title='1. Browse Cargo' subtitle='Browse the cargo that is available. Filter however is more convinient for you.'></LandingCard>
-            <LandingCard title='2. Select the best cargo option for you' subtitle='Select the cargo that you want to ship and send an offer.'></LandingCard>
-            <LandingCard title='3. One more step' subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
-            <LandingCard title='4. Ship it!' subtitle='Once the order is confirmed, get in touch with the provider and ship the cargo.'></LandingCard>
-            <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>Browse Trips</Button>
+            <LandingCard  title={'1.' + t('landing.BrowseCargo')} subtitle={t('landing.NewLanding1')}></LandingCard>
+            <LandingCard title={'2.' + t('landing.NewLanding2')} subtitle={t('landing.NewLanding3')}></LandingCard>
+            <LandingCard title={'3.' + t('landing.OneMoreStep')} subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
+            <LandingCard title={'4.' + t('landing.ShipitE')} subtitle={t('landing.NewLanding5')}></LandingCard>
+            <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>{t('landing.BrowseCargo')}</Button>
         </div>;
     };
 
     const items: TabsProps['items'] = [
         {
             key: '1',
-            label: 'For Truckers',
+            label: t('landing.ForTrucker'),
             children: contentForTruckers(),
         },
         {
             key: '2',
-            label: 'For Providers',
+            label: t('landing.ForProvider'),
             children: contentForProviders(),
         },
     ];
@@ -54,15 +56,15 @@ const Landing: React.FC = () => {
         <Row style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <Col span={12}>
                 <Title style={{fontWeight: 'bold', fontSize: 60}}>Truckr.</Title>
-                <Title level={2}>The platform that connects drivers and cargo providers.</Title>
-                <Title level={4} style={{fontWeight: 'normal'}}>Choose a role as trucker or provider and start trucking!</Title>
+                <Title level={2}>{t('landing.LandingMainMessage')}</Title>
+                <Title level={4} style={{fontWeight: 'normal'}}>{t('landing.LandingMainSubMessage')}</Title>
                 <Flex gap='middle'>
                     <Row className='w-80 space-around mt-2vh'>
                         <Col span={10}>
-                            <Button type='primary' className='w-100' size='large' onClick={() => router('/trips')}>Book a trucker</Button>
+                            <Button type='primary' className='w-100' size='large' onClick={() => router('/trips')}>{t('landing.BookATrucker')}</Button>
                         </Col>
                         <Col span={10}>
-                            <Button type='primary' className='w-100' size='large' onClick={() => router('/cargo')}>Drive with Truckr</Button>
+                            <Button type='primary' className='w-100' size='large' onClick={() => router('/cargo')}>{t('landing.DriveWithTruckr')}</Button>
                         </Col>
                     </Row>
                 </Flex>
@@ -78,7 +80,7 @@ const Landing: React.FC = () => {
 
         </div>
         <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center',marginTop:'20vh'}}>
-            <Title style={{marginBottom:'0vh'}}><b>How does Truckr work?</b></Title>
+            <Title style={{marginBottom:'0vh'}}><b>{t('landing.HowTruckrWorks')}</b></Title>
             <br></br>
             <Tabs style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}} size="large" defaultActiveKey="1" items={items} />
         </div>
