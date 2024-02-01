@@ -1,6 +1,8 @@
 package ar.edu.itba.paw.models;
 
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Locale;
@@ -36,7 +38,6 @@ public class User {
     @Column(name = "locale")
     private Locale locale;
 
-
     @ManyToOne
     @JoinColumn(name = "imageid")
     private Image image;
@@ -55,6 +56,9 @@ public class User {
 
     @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     private Alert alert;
+
+    @Formula("(SELECT COUNT(*) FROM trips r WHERE ((r.provider_id = userid AND r.trucker_id IS NOT NULL) OR (r.trucker_id = userid AND r.provider_id IS NOT NULL)) AND r.provider_confirmation = true AND r.trucker_confirmation = true)")
+    private Integer completedTripsCount;
 
     // Constructors, getters, and setters
 
@@ -117,6 +121,14 @@ public class User {
 
 // Getters and setters
 
+
+    public Integer getCompletedTripsCount() {
+        return completedTripsCount;
+    }
+
+    public void setCompletedTripsCount(Integer completedTripsCount) {
+        this.completedTripsCount = completedTripsCount;
+    }
 
     public Alert getAlert() {
         return alert;

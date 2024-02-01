@@ -16,6 +16,7 @@ public class UserDto {
     private String role;
     private URI reviews;
     private Double rating;
+    private Integer completedTripsCount;
 
     public static UserDto fromUser(final UriInfo uri, final User user){
         final UserDto dto = new UserDto();
@@ -25,6 +26,7 @@ public class UserDto {
         dto.name = user.getName();
         dto.role = user.getRole();
         dto.rating = user.getRating();
+        dto.completedTripsCount = user.getCompletedTripsCount();
 
         //TODO ver si esto es correcto
         dto.reviews = uri.getBaseUriBuilder().path("/reviews/").queryParam("userId",user.getUserId().toString()).build();
@@ -35,6 +37,13 @@ public class UserDto {
         return dto;
     }
 
+    public Integer getCompletedTripsCount() {
+        return completedTripsCount;
+    }
+
+    public void setCompletedTripsCount(Integer completedTripsCount) {
+        this.completedTripsCount = completedTripsCount;
+    }
 
     public String getName() {
         return name;
