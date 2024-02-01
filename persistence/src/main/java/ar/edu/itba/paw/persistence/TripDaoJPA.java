@@ -102,17 +102,22 @@ public class TripDaoJPA implements TripDaoV2 {
     public List<Proposal> getAllProposalsForTripId(int tripId, int pag, int pagesize){
         String query = "SELECT proposal_id FROM proposals WHERE trip_id = :tripId";
         Query q = entityManager.createNativeQuery(query);
-//        q.setFirstResult(pag);
-//        q.setMaxResults(pagesize);
+        q.setFirstResult((pag-1) * pagesize);
+        q.setMaxResults(pagesize);
         q.setParameter("tripId", tripId);
 
         @SuppressWarnings("unchecked")
         final List<Integer> idList = (List<Integer>) q.getResultList()
                 .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        if(idList.isEmpty()){
+            return Collections.emptyList();
+        }
+
         final TypedQuery<Proposal> typedQuery = entityManager.createQuery("SELECT p FROM Proposal p WHERE p.proposalId IN :idList", Proposal.class);
         typedQuery.setParameter("idList", idList);
-        return typedQuery.getResultList();
 
+        return typedQuery.getResultList();
     }
 
     @Override
@@ -164,7 +169,6 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public Optional<Trip> getTripOrRequestById(int tripId) {
-
         Trip trip = entityManager.find(Trip.class, tripId);
         if(trip == null) {
             LOGGER.info("Trip with id {} not found", tripId);
@@ -282,7 +286,7 @@ public class TripDaoJPA implements TripDaoV2 {
         final TypedQuery<Trip> query3 = entityManager.createQuery(query2.toString(), Trip.class);
         query3.setParameter("ids", idList);
 
-        return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
     }
 
     @Override
@@ -305,7 +309,7 @@ public class TripDaoJPA implements TripDaoV2 {
         final TypedQuery<Trip> query3 = entityManager.createQuery(query2.toString(), Trip.class);
         query3.setParameter("ids", idList);
 
-        return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
     }
 
 
@@ -349,7 +353,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
     final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
     tripQuery.setParameter("ids", idList);
-    List<Trip> trips = idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+    List<Trip> trips = idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
 
     // Fetch the count of proposals for each trip
     for (Trip trip : trips) {
@@ -379,7 +383,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
         final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
         tripQuery.setParameter("ids", idList);
-        return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
 
     }
     @Override
@@ -414,6 +418,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
         return (int) Math.ceil((double) idList.size() / ITEMS_PER_PAGE);
     }
+
     @Override
     public List<Trip> getAllExpiredPublications(Integer userId, Integer pag) {
         String tripIdQuery = "SELECT trip_id " +
@@ -431,7 +436,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
         final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
         tripQuery.setParameter("ids", idList);
-        return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
     }
 
     @Override
@@ -451,7 +456,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
 
         final TypedQuery<Trip> tripQuery = entityManager.createQuery("FROM Trip  WHERE tripId IN (:ids)", Trip.class);
         tripQuery.setParameter("ids", idList);
-        return idList.isEmpty() ? new ArrayList<>() : tripQuery.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : tripQuery.getResultList();
 
     }
 
@@ -474,7 +479,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         final TypedQuery<Trip> query3 = entityManager.createQuery("FROM Trip WHERE tripId IN (:ids)", Trip.class);
         query3.setParameter("ids", idList);
 
-        return idList.isEmpty() ? new ArrayList<>() : query3.getResultList();
+        return idList.isEmpty() ? Collections.emptyList() : query3.getResultList();
 
     }
 
