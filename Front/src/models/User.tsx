@@ -1,6 +1,5 @@
 import { Alert } from "./Alert";
 import { Offer } from "./Offer";
-import { Review } from "./Review";
 import { Trip } from "./Trip";
 
 export class User {
@@ -20,8 +19,9 @@ export class User {
     providerTrips: Trip[];
     reviewsURL: string;
     alert: Alert;
+    completedTripsCount: number;
     
-   constructor(id: number, name: string, email: string, cuit: string, password: string, repeatPassword: string, rating: number, ratingCount: number, role: string, imageUrl: string, offers: Offer[], truckerTrips: Trip[], providerTrips: Trip[], reviewsURL: string, alert: Alert) {
+   constructor(id: number, name: string, email: string, cuit: string, password: string, repeatPassword: string, rating: number, ratingCount: number, role: string, imageUrl: string, offers: Offer[], truckerTrips: Trip[], providerTrips: Trip[], reviewsURL: string, alert: Alert, completedTripsCount: number) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -37,10 +37,11 @@ export class User {
         this.providerTrips = providerTrips;
         this.reviewsURL = reviewsURL;
         this.alert = alert;
+        this.completedTripsCount = completedTripsCount;
     }
 
     static userFromJson(json: any): User {
-        return new User(json.id, json.name, json.email, json.cuit, json.password, json.repeatPassword, json.rating, json.ratingCount, json.role, json.image, json.offers, json.truckerTrips, json.providerTrips, json.reviews, json.alert);
+        return new User(json.id, json.name, json.email, json.cuit, json.password, json.repeatPassword, json.rating, json.ratingCount, json.role, json.image, json.offers, json.truckerTrips, json.providerTrips, json.reviews, json.alert, json.completedTripsCount);
     }
 
     static userToJson(user: User): any {
@@ -59,7 +60,8 @@ export class User {
             truckerTrips: user.truckerTrips,
             providerTrips: user.providerTrips,
             reviews: user.reviewsURL,
-            alert: user.alert
+            alert: user.alert,
+            completedTripsCount: user.completedTripsCount
         }
     }
 
