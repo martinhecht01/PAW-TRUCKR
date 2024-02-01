@@ -174,16 +174,17 @@ public class TripServiceV2Impl implements TripServiceV2 {
         if (tripId != null)
             return getAllProposalsForTripId(tripId, page, pageSize);
         User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        return user.getProposals();
+        return tripDaoV2.getAllProposalsForUser(userId, page, pageSize);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Integer findOfferCount(Integer tripId, Integer userId) {
-        if (tripId != null)
-            return getProposalCountForTripId(tripId);
+    public Integer getTotalOffersPages(Integer tripId, Integer userId, Integer pageSize) {
+        if (tripId != null) {
+            return (int) Math.ceil((double) getProposalCountForTripId(tripId) / pageSize);
+        }
         User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
-        return getProposalCountForUserId(userId);
+        return (int) Math.ceil((double)getProposalCountForUserId(userId) / pageSize);
     }
 
     @Transactional(readOnly = true)

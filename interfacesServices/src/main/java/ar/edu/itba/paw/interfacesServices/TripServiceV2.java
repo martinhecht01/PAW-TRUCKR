@@ -45,7 +45,7 @@ public interface TripServiceV2 {
 
     Integer getProposalCountForUserId(int userId);
 
-    Integer findOfferCount(Integer tripId, Integer userId);
+//    Integer findOfferCount(Integer tripId, Integer userId);
 
     Optional<Proposal> getProposalById(int proposalId);
 
@@ -116,4 +116,7 @@ public interface TripServiceV2 {
     Trip getTripOrRequestByIdAndUserId(Integer id, User user);
 
     void deletePublication(Trip publication);
+
+    Integer getTotalOffersPages(Integer tripId, Integer userId, Integer pageSize);
+
 }

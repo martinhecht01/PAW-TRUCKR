@@ -114,4 +114,6 @@ public interface TripDaoV2 {
     Integer getProposalsCountForUserId(int userId);
 
     void deletePublication(Trip publication);
+
+    List<Proposal> getAllProposalsForUser(int userId, int page, int pageSize);
 }

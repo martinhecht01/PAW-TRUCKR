@@ -121,6 +121,28 @@ public class TripDaoJPA implements TripDaoV2 {
     }
 
     @Override
+    public List<Proposal> getAllProposalsForUser(int userId, int page, int pageSize){
+        String query = "SELECT proposal_id FROM proposals WHERE user_id = :userId";
+        Query q = entityManager.createNativeQuery(query);
+        q.setFirstResult((page-1) * pageSize);
+        q.setMaxResults(pageSize);
+        q.setParameter("userId", userId);
+
+        @SuppressWarnings("unchecked")
+        final List<Integer> idList = (List<Integer>) q.getResultList()
+                .stream().map(n -> ((Number)n).intValue()).collect(Collectors.toList());
+
+        if(idList.isEmpty()){
+            return Collections.emptyList();
+        }
+
+        final TypedQuery<Proposal> typedQuery = entityManager.createQuery("SELECT p FROM Proposal p WHERE p.proposalId IN :idList", Proposal.class);
+        typedQuery.setParameter("idList", idList);
+
+        return typedQuery.getResultList();
+    }
+
+    @Override
     public Integer getProposalsCountForTripId(int tripId){
         String query = "SELECT COUNT(proposal_id) FROM proposals WHERE trip_id = :tripId";
         Query q = entityManager.createNativeQuery(query);
