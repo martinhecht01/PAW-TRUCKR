@@ -25,7 +25,9 @@ public class UserDto {
         dto.name = user.getName();
         dto.role = user.getRole();
         dto.rating = user.getRating();
-        dto.reviews = uri.getBaseUriBuilder().path("/reviews/").path(user.getUserId().toString()).build();
+
+        //TODO ver si esto es correcto
+        dto.reviews = uri.getBaseUriBuilder().path("/reviews/").queryParam("userId",user.getUserId().toString()).build();
 
         if(user.getImage() != null){
             dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(user.getImage().getImageid())).build();
