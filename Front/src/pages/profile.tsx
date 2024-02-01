@@ -7,7 +7,7 @@ import {StarFilled, UserOutlined} from "@ant-design/icons";
 import ReviewContainer from '../Components/reviewContainer';
 import {getClaims, getUserById, getUserByUrl} from "../api/userApi";
 import {User} from "../models/User";
-import {getReview, getReviewsByURL, getReviewsByUser} from "../api/reviewApi";
+import {getReviewsByUser} from "../api/reviewApi";
 import { Review } from '../models/Review';
 import NotFound404 from './404';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -38,12 +38,7 @@ const Profile: React.FC = () => {
         userId ? getUserById(userId).then((user) => {
 
             setUser(user);
-            if (user.role == 'PROVIDER'){
-                setCompletedTrips(user.providerTrips ? user.providerTrips.length : 0);
-            }
-            else{
-                setCompletedTrips(user.truckerTrips ? user.truckerTrips.length : 0);
-            }
+            setCompletedTrips(user.completedTripsCount);
         
             getReviewsByUser(user.id).then((reviews) => {
                 setReviews(reviews);
@@ -128,7 +123,7 @@ const Profile: React.FC = () => {
                             >
                                 { reviews && reviews.length > 0 ?
                                     <div className='reviewsContainerStyle'>
-                                        {reviews.map((review, index) => (
+                                        {reviews.map((review) => (
                                             // Each item in the array is mapped to a JSX element
                                             <ReviewContainer avgRating={review.rating} comment={review.review}></ReviewContainer>
                                         ))}
