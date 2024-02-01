@@ -668,4 +668,9 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         entityManager.remove(counterOffer);
     }
 
+    @Override
+    public void deletePublication(Trip publication){
+        entityManager.remove(publication);
+    }
+
 }

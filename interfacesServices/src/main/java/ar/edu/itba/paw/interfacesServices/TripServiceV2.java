@@ -114,4 +114,6 @@ public interface TripServiceV2 {
     void deleteCounterOffer(Integer offerId);
 
     Trip getTripOrRequestByIdAndUserId(Integer id, User user);
+
+    void deletePublication(Trip publication);
 }

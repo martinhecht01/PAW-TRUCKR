@@ -129,7 +129,8 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.PATCH, "/api/users/{id:\\d+}").authenticated()
 
                 .antMatchers(HttpMethod.POST, "/api/trips").authenticated()
-                .antMatchers(HttpMethod.PATCH, "/api/trips").authenticated()
+                .antMatchers(HttpMethod.PATCH, "/api/trips/{id:\\d+}").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/trips/{id:\\d+}").authenticated()
 
                 .antMatchers(HttpMethod.POST, "/api/reviews").authenticated()
 

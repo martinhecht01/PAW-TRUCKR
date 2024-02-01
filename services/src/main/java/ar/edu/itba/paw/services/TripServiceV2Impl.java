@@ -343,6 +343,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
         return tripDaoV2.getTotalPagesActivePublications(user);
     }
 
+    @Transactional
+    @Override
+    public void deletePublication(Trip publication){
+        if (publication.getTrucker() != null && publication.getProvider() !=null)
+            throw new IllegalArgumentException();
+
+        tripDaoV2.deletePublication(publication);
+    }
+
 
 //---------  ITINERARY  ---------
 

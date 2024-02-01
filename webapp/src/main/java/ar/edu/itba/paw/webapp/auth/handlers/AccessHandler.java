@@ -4,7 +4,6 @@ import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
 import ar.edu.itba.paw.models.*;
-import ar.edu.itba.paw.webapp.form.OfferForm;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
