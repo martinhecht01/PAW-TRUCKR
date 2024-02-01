@@ -79,7 +79,7 @@ const CreateTrip: React.FC = () => {
                 image = await uploadImage(selectedFile);
 
             const trip = await createTrip(licensePlate, availableWeight, availableVolume, price, dateRange?.[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : '', dateRange?.[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss') : '', cargoType, origin, destination, image);
-            router('/trips/manage' + trip.tripId);
+            router('/trips/manage/' + trip.tripId);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 // Log the error for debugging

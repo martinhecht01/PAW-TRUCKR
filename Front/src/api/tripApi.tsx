@@ -3,6 +3,7 @@ import { Publication } from '../models/Publication';
 import { Trip } from '../models/Trip';
 import api from './config'
 import { getToken } from './userApi';
+import { getMaxPage } from './paginationHelper';
 
 export async function getPublications(
     userId: string,
@@ -41,9 +42,6 @@ export async function getPublications(
     if (arrivalDate) params.arrivalDate = arrivalDate;
     if (cargoType) params.cargoType = cargoType;
 
-    // Log for debugging
-    console.log(params);
-
     const response = await api.get('/trips', {
         headers: {
             Accept: 'application/vnd.publicationList.v1+json'
@@ -56,6 +54,9 @@ export async function getPublications(
     for (const pub of response.data) {
         toRet.push(Publication.publicationFromJson(pub));
     }
+
+    if(response.status === 200)
+        toRet[0].maxPage = getMaxPage(response.headers['link']).toString();
 
     return toRet;
 }
@@ -104,6 +105,9 @@ export async function getTrips(
     for (const trip of response.data) {
         toRet.push(Trip.tripFromJson(trip));
     }
+    
+    if(response.status === 200)
+        toRet[0].maxPage = getMaxPage(response.headers['link']).toString();
 
     return toRet;
 

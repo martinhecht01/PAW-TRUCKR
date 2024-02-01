@@ -20,8 +20,9 @@ export class Trip {
     type: string;
     volume: number;
     weight: number;
+    maxPage: string;
 
-    constructor(arrivalDate: Date, departureDate: Date, creator:string,destination: string, image: string, licensePlate: string, origin: string, price: number, proposalCount: number, proposals: string, provider: string, providerConfirmation: boolean, providerSubmittedHisReview: boolean, self: string, tripId: number, trucker: string, truckerConfirmation: boolean, truckerSubmittedHisReview: boolean, type: string, volume: number, weight: number) {
+    constructor(arrivalDate: Date, departureDate: Date, creator:string,destination: string, image: string, licensePlate: string, origin: string, price: number, proposalCount: number, proposals: string, provider: string, providerConfirmation: boolean, providerSubmittedHisReview: boolean, self: string, tripId: number, trucker: string, truckerConfirmation: boolean, truckerSubmittedHisReview: boolean, type: string, volume: number, weight: number, maxPage: string) {
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.creator = creator;
@@ -43,6 +44,7 @@ export class Trip {
         this.type = type;
         this.volume = volume;
         this.weight = weight;
+        this.maxPage = maxPage
     }
 
     static tripFromJson(json: any): Trip {
@@ -67,7 +69,8 @@ export class Trip {
             json.truckerSubmittedHisReview,
             json.type,
             json.volume,
-            json.weight
+            json.weight,
+            json.maxPage
         )
     }
 

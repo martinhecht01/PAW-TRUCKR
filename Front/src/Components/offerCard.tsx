@@ -39,7 +39,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo,userImg ,
                 <div style={{display:'block'}}>
                     <div style={{display:'flex',alignItems:'center'}}>
                         <StarFilled style={{margin:'0vh', marginRight:'1vh'}}/>
-                        <Text>{reviewScore === 0 ? '-' : reviewScore}</Text>
+                        <Text>{reviewScore === 0 ? '-' : new Number(reviewScore).toFixed(1)}</Text>
                     </div>
                 </div>
                 <Title level={5} style={{margin:'0vh'}}>${price}</Title>

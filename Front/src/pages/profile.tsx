@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Avatar, Button, Card, Col, Row, Skeleton, Typography} from 'antd';
+import {Avatar, Button, Card, Col, Pagination, Row, Skeleton, Typography} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
@@ -23,12 +23,19 @@ const Profile: React.FC = () => {
     const [ reviews, setReviews] = useState<Review[]>([]);
     const [ completedTrips, setCompletedTrips] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    
+    const [page, setPage] = useState<number>(1);
+    const [pageSize, setPageSize] = useState<number>(4);
+    const [maxPage, setMaxPage] = useState<number>(0);
+    const [loadingReviews, setLoadingReviews] = useState<boolean>(true);
 
     const {userId} = useParams();
 
     const router = useNavigate();
 
     useEffect(() => {
+
+        setLoadingReviews(true);
         const claims = getClaims();
 
         if (claims == null){
@@ -40,18 +47,21 @@ const Profile: React.FC = () => {
             setUser(user);
             setCompletedTrips(user.completedTripsCount);
         
-            getReviewsByUser(user.id).then((reviews) => {
+            getReviewsByUser(user.id, page.toString(), pageSize.toString()).then((reviews) => {
                 setReviews(reviews);
+                setMaxPage(reviews[0].maxPage ? Number.parseInt(reviews[0].maxPage) : 0);
                 setIsLoading(false);
             })
 
             setIsLoading(false);
+            setLoadingReviews(false);
         })
 
         :
 
         getUserByUrl(claims!.userURL).then((user) => {
             setUser(user);
+
             if (user.role == 'PROVIDER'){
                 setCompletedTrips(user.providerTrips ? user.providerTrips.length : 0);
             }
@@ -59,15 +69,16 @@ const Profile: React.FC = () => {
                 setCompletedTrips(user.truckerTrips ? user.truckerTrips.length : 0);
             }
         
-            getReviewsByUser(user.id).then((reviews) => {
+            getReviewsByUser(user.id, page.toString(), pageSize.toString()).then((reviews) => {
                 setReviews(reviews);
+                setMaxPage(reviews[0].maxPage ? Number.parseInt(reviews[0].maxPage) : 0);
                 setIsLoading(false);
             })
 
             setIsLoading(false);
         })
 
-    }, [])
+    }, [page])
     
     if( isLoading ){
         return (
@@ -111,25 +122,29 @@ const Profile: React.FC = () => {
                 <div className='space-evenly'>
                     <Row className='w-80 space-evenly mt-5' style={{alignItems: 'start'}}>
                         <Col span={20}>
-                            <Card
-                                title={
-                                    reviews && reviews.length > 0 ?  
-                                        <Title level={3}>
-                                            <StarFilled /> 
-                                            {" "}{reviews.reduce((a, b) => a + b.rating, 0) / reviews.length} ({reviews.length} review{reviews.length !== 1 ? 's' : ''})
-                                        </Title>
-                                    : <Title level={3}>No reviews yet</Title>
-                                }
-                            >
-                                { reviews && reviews.length > 0 ?
-                                    <div className='reviewsContainerStyle'>
-                                        {reviews.map((review) => (
-                                            // Each item in the array is mapped to a JSX element
-                                            <ReviewContainer avgRating={review.rating} comment={review.review}></ReviewContainer>
-                                        ))}
-                                    </div>
-                                    : <></>
-                                 }
+                            <Card>
+                                <Skeleton loading={loadingReviews}>
+                                    {
+                                        reviews && reviews.length > 0 ?  
+                                            <Title level={3}>
+                                                <StarFilled /> 
+                                                {" "}{new Number(user.rating).toFixed(1)}
+                                            </Title>
+                                        : <Title level={3}>No reviews yet</Title>
+                                    }
+                                    { reviews && reviews.length > 0 ?
+                                        <div>
+                                            {reviews.map((review) => (
+                                                // Each item in the array is mapped to a JSX element
+                                                <ReviewContainer avgRating={review.rating} comment={review.review}></ReviewContainer>
+                                            ))}
+                                            <div className='w-100 flex-center mt-2vh'>
+                                                <Pagination current={page} total={maxPage*pageSize} pageSize={pageSize} onChange={(page) => setPage(page)} />
+                                            </div>
+                                        </div>
+                                        : <></>
+                                    }
+                                </Skeleton>
                             </Card>
                         </Col>
                     </Row>

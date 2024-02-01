@@ -19,8 +19,14 @@ const MyItinerary: React.FC = () => {
     const [ongoingTrips, setOngoingTrips] = useState<Array<ItineraryTripCardProps>>([]);
     const [futureTrips, setFutureTrips] = useState<Array<ItineraryTripCardProps>>([]);
 
+    const [ongoingPage, setOngoingPage] = useState<number>(1);
+    const [maxOngoingPage, setMaxOngoingPage] = useState<number>(0)
+
+    const [futurePage, setFuturePage] = useState<number>(1);
+    const [maxFuturePage, setMaxFuturePage] = useState<number>(0)
+
     useEffect(() => {
-        getTrips('ONGOING', '1', '12').then((trips) => {
+        getTrips('ONGOING', ongoingPage.toString(), '12').then((trips) => {
             const userPromises = trips.map((trip) => {
                 return getUserByUrl(claims?.role === 'PROVIDER' ? trip.trucker : trip.provider)
                     .then((user) => {
@@ -40,8 +46,10 @@ const MyItinerary: React.FC = () => {
     
             Promise.all(userPromises).then((ongoingTrips) => {
                 setOngoingTrips(ongoingTrips);
+                if(trips.length > 0)
+                    setMaxOngoingPage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'))
             }).then(() => {
-                getTrips('FUTURE', '1', '12').then((trips) => {
+                getTrips('FUTURE', futurePage.toString(), '12').then((trips) => {
                     const futureUserPromises = trips.map((trip) => {
                         return getUserByUrl(claims?.role === 'PROVIDER' ? trip.trucker : trip.provider)
                             .then((user) => {
@@ -61,12 +69,14 @@ const MyItinerary: React.FC = () => {
     
                     Promise.all(futureUserPromises).then((futureTrips) => {
                         setFutureTrips(futureTrips);
+                        if(trips.length > 0)
+                            setMaxFuturePage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'))
                         setIsLoading(false);
                     });
                 });
             });
         });
-    }, []);
+    }, [ongoingPage, futurePage]);
     
 
     return(
@@ -85,7 +95,7 @@ const MyItinerary: React.FC = () => {
                     {ongoingTrips.length === 0 ? <Row className="w-100 flex-center">
                         <Title level={3}>No Ongoing Trips</Title> </Row>:
                     <Row className="w-100 flex-center">
-                        <Pagination className="text-center mt-2vh" defaultCurrent={1} total={50}/>
+                        <Pagination className="text-center mt-2vh" current={ongoingPage} pageSize={12} total={maxOngoingPage*12} onChange={(page) => setOngoingPage(page)}/>
                     </Row>
                     }
                 </Skeleton>
@@ -103,7 +113,7 @@ const MyItinerary: React.FC = () => {
                     {futureTrips.length === 0 ? <Row className="w-100 flex-center">
                         <Title level={3}>No Future Trips</Title> </Row>:
                         <Row className="w-100 flex-center">
-                            <Pagination className="text-center mt-2vh" defaultCurrent={1} total={50}/>
+                            <Pagination className="text-center mt-2vh" defaultCurrent={futurePage} total={maxFuturePage*12} pageSize={12} onChange={(page) => setFuturePage(page)}/>
                         </Row>
                     }
                 </Skeleton>
