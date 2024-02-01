@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.dto;
 
-import ar.edu.itba.paw.models.City;
 import ar.edu.itba.paw.models.Image;
 
 import javax.ws.rs.core.UriInfo;

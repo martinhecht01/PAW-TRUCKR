@@ -41,7 +41,7 @@ public class ImageControllerApi {
 
     @GET
     @Path("/{id:\\d+}")
-//    @Produces("image/*")
+    @Produces({ "image/png", "image/jpeg", "image/gif", MediaType.APPLICATION_JSON })
     public Response getImage(
             @PathParam("id") int id,
             @DefaultValue("SQUARE") @Pattern(regexp = "FULL|PROFILE|SQUARE", message = "validation.ImageSize.Pattern") @QueryParam("size") String size,
@@ -59,10 +59,11 @@ public class ImageControllerApi {
 
     @POST
     @Consumes(value = {MediaType.MULTIPART_FORM_DATA})
-//    @Produces("image/*")
+    @Produces("application/vnd.image.v1+json")
     public Response uploadImage(
             @RequireImage @FormDataParam("image") FormDataBodyPart image,
             @Size(max = MAX_IMAGE_SIZE, message = "validation.Image.Size") @FormDataParam("image") byte[] imageBytes){
+
         int id = is.uploadImage(imageBytes);
         Image img = is.getImage(id).orElseThrow(ImageNotFoundException::new);
         return Response.created(uriInfo.getBaseUriBuilder()
