@@ -12,12 +12,19 @@ export async function getAlert(): Promise<Alert> {
     return Alert.alertFromJson(response.data);
 }
 
-export async function deleteAlert(): Promise<Alert>{
-    const response = await api.delete(`/alerts`);
+export async function deleteAlert(id: number): Promise<Alert>{
+    const response = await api.delete(`/alerts/${id}`,{
+        headers:{
+            authorization: `Bearer ${getToken()}`
+        }
+    });
+    if (response.status != 200){
+        throw new Error(response.statusText)
+    }
     return Alert.alertFromJson(response.data);
 }
 
-export async function createAlert(maxWeight:number | undefined, maxVolume:number | undefined, fromDate: string, toDate:string | undefined, origin:String, cargoType:String | undefined): Promise<Alert>{
+export async function createAlert(maxWeight:number | undefined, maxVolume:number | undefined, fromDate: string | undefined, toDate:string | undefined, origin:String | undefined, cargoType:String | undefined): Promise<Alert>{
     const response = await api.post(`/alerts`,{
         "maxWeight":maxWeight,
         "maxVolume":maxVolume,
@@ -33,7 +40,8 @@ export async function createAlert(maxWeight:number | undefined, maxVolume:number
         }
     });
     if (response.status != 201){
-        throw new Error(response.statusText);
+        console.log(response)
+        throw new Error()
     }
     return Alert.alertFromJson(response.data);
 }
