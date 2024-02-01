@@ -76,6 +76,7 @@ const Profile: React.FC = () => {
             })
 
             setIsLoading(false);
+            setLoadingReviews(false);
         })
 
     }, [page])
