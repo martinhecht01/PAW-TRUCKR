@@ -104,7 +104,7 @@ const CreateAlert: React.FC = () => {
 
                     </div>
                     <div>
-                        <Title level={5} className="m-0">{t("common.origin")}</Title>
+                        <Title level={5} className="m-0">{t("common.origin")}*</Title>
                         <Select className='w-100'
                             onChange={(value) => {setSelectedCity(value)}}
                             options={cityOptions}
@@ -112,7 +112,7 @@ const CreateAlert: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex-column space-around">
-                    <Title level={5} className=''>{t("common.departureDate")} - {t("common.arrivalDate")}</Title>
+                    <Title level={5} className=''>{t("common.departureDate")}* - {t("common.arrivalDate")}</Title>
                     <RangePicker className="w-80"
                                  onChange={(val) => {
                                      setDateRange(val);
