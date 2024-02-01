@@ -2,7 +2,8 @@ import {Button, Col, Flex, Image, Row, Tabs, TabsProps} from 'antd';
 import React from 'react';
 import {DownOutlined} from "@ant-design/icons";
 import { Typography } from 'antd';
-import LandingCard from '../components/landingCard';
+import LandingCard from '../Components/landingCard';
+import '../styles/main.scss';
 
 const { Title } =Typography;
 
@@ -42,19 +43,25 @@ const Landing: React.FC = () => {
         },
     ];
 
-
+    const {Title, Text} = Typography;
 
 
     return (
     <>
         <Row style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
             <Col span={12}>
-                <h1>Truckr.</h1>
-                <h3>The platform that connects drivers and cargo providers.</h3>
-                <span>Choose a role as trucker or provider and start trucking!</span>
+                <Title style={{fontWeight: 'bold', fontSize: 60}}>Truckr.</Title>
+                <Title level={2}>The platform that connects drivers and cargo providers.</Title>
+                <Title level={4} style={{fontWeight: 'normal'}}>Choose a role as trucker or provider and start trucking!</Title>
                 <Flex gap='middle'>
-                    <Button type='primary'>Book a trucker</Button>
-                    <Button type='primary'>Drive with Truckr</Button>
+                    <Row className='w-80 space-around mt-2vh'>
+                        <Col span={10}>
+                            <Button type='primary' className='w-100' size='large'>Book a trucker</Button>
+                        </Col>
+                        <Col span={10}>
+                            <Button type='primary' className='w-100' size='large'>Drive with Truckr</Button>
+                        </Col>
+                    </Row>
                 </Flex>
             </Col>
             <Col span={8} style={{display: 'flex', justifyContent: 'center'}}>

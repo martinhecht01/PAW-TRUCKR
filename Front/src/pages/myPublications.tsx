@@ -58,7 +58,7 @@ const MyPublications: React.FC = () => {
                             image: publication.image,
                             cargoType: publication.type,
                             id: publication.tripId,
-                            clickUrl: '/trips/manage'
+                            clickUrl: ''
                         }
                     }))
                     setIsLoading(false);

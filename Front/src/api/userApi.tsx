@@ -53,7 +53,7 @@ export async function getUserByUrl(url: string): Promise<User> {
     return User.userFromJson(response.data);
 }
 
-export async function getUserById(id: number): Promise<User> {
+export async function getUserById(id: string): Promise<User> {
     const response = await api.get(`${usersEndpoint}/${id}`);
     return User.userFromJson(response.data);
 }

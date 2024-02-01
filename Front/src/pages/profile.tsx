@@ -10,7 +10,7 @@ import {User} from "../models/User";
 import {getReview, getReviewsByURL, getReviewsByUser} from "../api/reviewApi";
 import { Review } from '../models/Review';
 import NotFound404 from './404';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 const { Title, Text } = Typography;
@@ -24,6 +24,8 @@ const Profile: React.FC = () => {
     const [ completedTrips, setCompletedTrips] = useState<number>(0);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
+    const {userId} = useParams();
+
     const router = useNavigate();
 
     useEffect(() => {
@@ -32,6 +34,26 @@ const Profile: React.FC = () => {
         if (claims == null){
             router('/login');
         }
+
+        userId ? getUserById(userId).then((user) => {
+
+            setUser(user);
+            if (user.role == 'PROVIDER'){
+                setCompletedTrips(user.providerTrips ? user.providerTrips.length : 0);
+            }
+            else{
+                setCompletedTrips(user.truckerTrips ? user.truckerTrips.length : 0);
+            }
+        
+            getReviewsByUser(user.id).then((reviews) => {
+                setReviews(reviews);
+                setIsLoading(false);
+            })
+
+            setIsLoading(false);
+        })
+
+        :
 
         getUserByUrl(claims!.userURL).then((user) => {
             setUser(user);
@@ -42,7 +64,7 @@ const Profile: React.FC = () => {
                 setCompletedTrips(user.truckerTrips ? user.truckerTrips.length : 0);
             }
         
-            getReviewsByURL(user.reviewsURL).then((reviews) => {
+            getReviewsByUser(user.id).then((reviews) => {
                 setReviews(reviews);
                 setIsLoading(false);
             })
@@ -76,7 +98,10 @@ const Profile: React.FC = () => {
                                 <Text>{user!.cuit}</Text>
                                 {/* <Title level={5}>{t('profile.email')}</Title>
                                 <Text>{user!.email}</Text> */}
+                                { !userId ?
                                 <Button style={{width: '100%', marginTop: '5vh'}} type='primary' onClick={() => router('./edit')}>{t("profile.editProfile")}</Button>
+                                : null
+                                }
                             </Card>
                         </Col>
                         <Col span={7}>

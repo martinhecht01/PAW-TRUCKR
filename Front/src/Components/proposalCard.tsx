@@ -1,76 +1,83 @@
-import { Card,Button, Typography, Divider } from "antd";
-import {useTranslation} from "react-i18next";
+import React from 'react';
+import { Card, Button, Typography, Divider, Row, Col } from "antd";
+import { useTranslation } from "react-i18next";
 import '../styles/main.scss';
 import '../styles/proposals.scss';
 
-const {Title, Text} = Typography;
-
-
+const { Title, Text } = Typography;
 
 export type ProposalProps = {
+    id: string,
     description: string,
     offeredPrice: number,
     userPhoto: string,
     userName: string,
-    counterOffered: boolean,
-    userMail?: string
+    userMail?: string,
+    counterOffer: string,
+    acceptAction: (id: string, action: 'ACCEPT' | 'REJECT') => void,
 }
 
+
 const ProposalCard = (props: ProposalProps) => {
+    const { t } = useTranslation();
 
-    const {t} = useTranslation();
-
-    return(
+    return (
         <div>
             <Card>
-                <div>
-                    <Title level={4} className='m-0'>{props.userName}</Title>
-                </div>
-                <div>
-                    <Title level={5}>{t('manage.description')}</Title>
-                </div>
-                <div>
-                    <Text>{props.description}</Text>
-                </div>
-                <div className='mt-2vh'>
-                    <Title level={5}>{t('common.offeredPrice')}</Title>
-                </div>
-                <div>
-                    <Text>{props.offeredPrice}</Text>
-                </div>
-                {!props.counterOffered &&
-                <div className='flex-center mt-2vh'>
-                    <Button className='m-1vh acceptButton'>{t('manage.accept')}</Button>
-                    <Button className='m-1vh counterOfferButton'>{t('manage.counterOffer')}</Button>
-                    <Button className='m-1vh rejectButton'>{t('manage.reject')}</Button>
-                </div>
-                }
-                {props.counterOffered &&
-                    <div>
-                        <Divider/>
-                        <Title level={4}>{t('manage.counterOffer')}</Title>
-                        <div>
-                            <Title level={5}>{t('manage.description')}</Title>
+                <Row gutter={16}>
+                    <Col span={24}>
+                        <Title level={4} className='m-0'>{props.userName}</Title>
+                    </Col>
+                    <Col span={24}>
+                        <Title level={5}>{t('manage.description')}</Title>
+                    </Col>
+                    <Col span={24}>
+                        <Text>{props.description}</Text>
+                    </Col>
+                    <Col span={24} className='mt-2vh'>
+                        <Title level={5}>{t('common.offeredPrice')}</Title>
+                    </Col>
+                    <Col span={24}>
+                        <Text>{props.offeredPrice}</Text>
+                    </Col>
+                    {!props.counterOffer &&
+                        <div className='space-around w-100'>
+                            <Col span={6} className='flex-center'>
+                                <Button className='m-1vh acceptButton' onClick={() => props.acceptAction(props.id, 'ACCEPT')}>{t('manage.accept')}</Button>
+                            </Col>
+                            <Col span={6} className='flex-center'>                                
+                                <Button className='m-1vh counterOfferButton'>{t('manage.counterOffer')}</Button>
+                            </Col>
+                            <Col span={6} className='flex-center' >
+                                <Button className='m-1vh rejectButton' onClick={() => props.acceptAction(props.id, 'REJECT')}>{t('manage.reject')}</Button>
+                            </Col>
                         </div>
-                        <div>
-                            <Text>{props.description}</Text>
-                        </div>
-                        <div className='mt-2vh'>
-                            <Title level={5}>{t('common.offeredPrice')}</Title>
-                        </div>
-                        <div>
-                            <Text>{props.offeredPrice}</Text>
-                        </div>
-                        <div className='mt-2vh'>
-                            <Button className='m-1vh' danger>{t('manage.cancel')}</Button>
-                        </div>
-                    </div>
-
-
-                }
+                    }
+                    {props.counterOffer &&
+                        <Col span={24}>
+                            <Divider />
+                            <Title level={4}>{t('manage.counterOffer')}</Title>
+                            <Col span={24}>
+                                <Title level={5}>{t('manage.description')}</Title>
+                            </Col>
+                            <Col span={24}>
+                                <Text>{props.description}</Text>
+                            </Col>
+                            <Col span={24} className='mt-2vh'>
+                                <Title level={5}>{t('common.offeredPrice')}</Title>
+                            </Col>
+                            <Col span={24}>
+                                <Text>{props.offeredPrice}</Text>
+                            </Col>
+                            <Col span={24} className='mt-2vh'>
+                                <Button className='m-1vh' danger>{t('manage.cancel')}</Button>
+                            </Col>
+                        </Col>
+                    }
+                </Row>
             </Card>
         </div>
-    )
+    );
 }
 
 export default ProposalCard;

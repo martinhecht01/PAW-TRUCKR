@@ -84,7 +84,7 @@ const SearchTrips: React.FC = () => {
                     image: publication.image,
                     cargoType: publication.type,
                     id: publication.tripId,
-                    clickUrl: '/trip'
+                    clickUrl: '/trips'
                 }
             }))
             setSearch(false)

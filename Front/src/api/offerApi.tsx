@@ -2,13 +2,26 @@ import {Offer} from "../models/Offer.tsx";
 import api from "./config";
 import {getToken} from "./userApi";
 
-export async function acceptOffer(offer: Offer): Promise<Offer> {
-    const response = await api.put(`/offers/${offer.id}`);
+export async function acceptOffer(id: string, action: 'ACCEPT' | 'REJECT'): Promise<Offer> {
+    const response = await api.patch(`/offers/${id}`, {
+        action: action
+    },
+    {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/vnd.offer.v1+json',
+        }
+    }
+    );
     return Offer.offerFromJson(response.data);
 }
 
 export async function getOffersByTrip(id: string): Promise<Offer[]> {
-    const response = await api.get(`/offers?tripId=${id}`);
+    const response = await api.get(`/offers?tripId=${id}`, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`,
+        }
+    });
 
     const toRet = []
     for (const offer of response.data) {
