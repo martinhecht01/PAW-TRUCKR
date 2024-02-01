@@ -1,4 +1,39 @@
 {
+  "landing":{
+    "ThisIs": "Esto es",
+    "Truckr": "Truckr.",
+    "ThisIsTruckr": "Esto es Truckr.",
+    "LandingMainMessage": "La plataforma que conecta camioneros y proveedores de mercadería.",
+    "LandingMainSubMessage": "Determina tu rol de camionero o proveedor y comienza a utilizar la plataforma!",
+    "TrustworthyTruckers": "Transportistas confiables.",
+    "TrustworthyTruckersMessage": "Contamos con una amplia selección de transportistas confiables para asegurarnos de que tu carga llegue a su destino final de manera segura y eficiente.",
+    "EconomicSolutions": "Soluciones económicas.",
+    "EconomicSolutionsMessage": "Trabajamos con una gran variedad de ofertas de viajes para que puedas comparar precios y seleccionar la que mejor se adapta a tu negocio.",
+    "ExploitReturns": "Capitalizá las vueltas!",
+    "ExploitReturnsMessage": "Aprovechá el retorno de tus viajes ofreciendo el espacio vacío de tu camión.",
+    "BookATrucker": "Reserva un camionero",
+    "DriveWithTruckr": "Conduzca con Truckr",
+    "NewLanding1": "Explora el cargamento que está disponible. Filtra como quieras!",
+    "NewLanding2": "Elegí el cargamento que más te convenga",
+    "NewLanding3": "Elegí el cargo que querés llevar y envía una oferta",
+    "OneMoreStep": "Un paso más",
+    "NewLanding4": "Espera a que el proveedor te confirme la oferta. Siempre podés modificarla o mandarle una contraoferta",
+    "ShipitE": "Envíalo!",
+    "NewLanding5": "Una vez que se confirme la orden, comunícate con el proveedor y envía el cargamento",
+    "CreateCustomSearch": "Crea una búsqueda personalizada",
+    "SelectBestTrip": "Selecciona el mejor viaje para vos",
+    "SelectBestTripsOffer": "Selecciona el mejor viaje para vos y envía una oferta",
+    "WaitForConfirmation": "Espera que el camionero te confirme la oferta. Siempre podés modificarla o mandarle una contraoferta",
+    "WaitForItE": "Espera el cargamento!",
+    "GetInTouch": "Una vez que se confirme la orden, podés comunicarte con el camionero y coordinar el envío",
+    "HowTruckrWorks": "Cómo funciona Truckr?",
+    "ForTrucker": "Para Camioneros",
+    "ForProvider": "Para Proveedores",
+    "BrowseCargo": "Buscar Cargamento"
+
+  }
+,
+
   "greeting": {
     "hello": "¡Hola Mundo!"
   },
