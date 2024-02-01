@@ -4,10 +4,13 @@ import {DownOutlined} from "@ant-design/icons";
 import { Typography } from 'antd';
 import LandingCard from '../Components/landingCard';
 import '../styles/main.scss';
+import { useNavigate } from 'react-router-dom';
 
 const { Title } =Typography;
 
 const Landing: React.FC = () => {
+
+    const router = useNavigate();
 
     const contentForTruckers: () => React.ReactNode = () => {
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
@@ -56,10 +59,10 @@ const Landing: React.FC = () => {
                 <Flex gap='middle'>
                     <Row className='w-80 space-around mt-2vh'>
                         <Col span={10}>
-                            <Button type='primary' className='w-100' size='large'>Book a trucker</Button>
+                            <Button type='primary' className='w-100' size='large' onClick={() => router('/trips')}>Book a trucker</Button>
                         </Col>
                         <Col span={10}>
-                            <Button type='primary' className='w-100' size='large'>Drive with Truckr</Button>
+                            <Button type='primary' className='w-100' size='large' onClick={() => router('/cargo')}>Drive with Truckr</Button>
                         </Col>
                     </Row>
                 </Flex>

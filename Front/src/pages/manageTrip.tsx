@@ -131,7 +131,6 @@ const ManageTrip: React.FC = () => {
                                     <img
                                     src={publication?.image}
                                     style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
-                                    alt="A giant squid swimming deep in the sea"
                                     />
                         </Badge.Ribbon>
                     </div>
@@ -172,7 +171,7 @@ const ManageTrip: React.FC = () => {
 
                     {publication?.provider && publication?.trucker ?
                         <>
-                            <Card onClick={() => router('/profile/' + user?.id)}>
+                            <Card onClick={() => router('/profile/' + user?.id)} hoverable>
                                 <div className="w-100 space-between">
                                     <Avatar size={64} src={user?.imageUrl} icon={<UserOutlined/>}></Avatar>
                                     <Title level={3}>{user?.name}</Title>

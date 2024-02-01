@@ -53,6 +53,7 @@ const PublicationDetails: React.FC = () => {
         getUserByUrl(claims!.userURL).then((user) => {
             createOffer(Number.parseInt(tripId!), inputValue, description ).then((offer) => {
                 message.success('Offer sent successfully')
+                router('/sentOffers')
             }
         )
     })
@@ -71,7 +72,6 @@ const PublicationDetails: React.FC = () => {
                                         <img
                                         src={publication?.image}
                                         style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
-                                        alt="A giant squid swimming deep in the sea"
                                         />
                             </Badge.Ribbon>
                         </div>
@@ -109,7 +109,7 @@ const PublicationDetails: React.FC = () => {
                         </Row>
                     </Col>
                     <Col span={8}>
-                        <Card>
+                        <Card onClick={() => router('/profile/' + user?.id)} hoverable>
                             <div className="w-100 space-between">
                                 <Avatar size={64} src={user?.imageUrl}></Avatar>
                                 <Title level={3}>{user?.name}</Title>

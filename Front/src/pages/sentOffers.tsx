@@ -71,6 +71,7 @@ export type OfferCardProps = {
                                         reviewScore: user.rating,
                                         price: offer.price,
                                         id: offer.id,
+                                        description: offer.description,
                                         onCancel: cancelOffer
                                     };
                                 });
@@ -97,7 +98,7 @@ export type OfferCardProps = {
                         </Col>
                         {offers.map((offer) => (
                             <Col span={18}>
-                                <OfferCard from={offer.from} to={offer.to} dateFrom={offer.dateFrom} dateTo={offer.dateTo} userImg={offer.userImg} reviewScore={offer.reviewScore} price={offer.price} id={offer.id} onCancel={cancelOffer}></OfferCard>
+                                <OfferCard from={offer.from} to={offer.to} dateFrom={offer.dateFrom} dateTo={offer.dateTo} userImg={offer.userImg} reviewScore={offer.reviewScore} price={offer.price} id={offer.id} onCancel={cancelOffer} description={offer.description}></OfferCard>
                             </Col>
                         ))}
                     </>
