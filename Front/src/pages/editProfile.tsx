@@ -49,8 +49,10 @@ const EditProfile: React.FC = () => {
           message.success('Profile updated successfully');
           router('/profile');
         })
-      ) : null
-
+      ) : updateUser(name, user!.imageUrl!, user!.id).then(() => {
+        message.success('Profile updated successfully');
+        router('/profile');
+      })
     }
 
     const props: UploadProps = {
