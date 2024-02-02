@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, Button, Rate} from 'antd';
+import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, Button, Rate, Pagination} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
@@ -36,6 +36,9 @@ const ManageTrip: React.FC = () => {
     const [tripConfirmed, setTripConfirmed] = useState<boolean>(false);
     const [offerAccepted, setOfferAccepted] = useState<boolean>(false);
 
+    const [offersPage, setOffersPage] = useState<number>(1);
+    const [offersMaxPage, setOffersMaxPage] = useState<number>(0);
+
     const [rating, setRating] = useState<number>(0);
     const [review, setReview] = useState<string>('');
 
@@ -43,7 +46,7 @@ const ManageTrip: React.FC = () => {
 
 
     async function submitReview(){
-        createReview(new Review(0, tripId!, rating, review)).then(() => {
+        createReview(new Review(0, tripId!, rating, review, '')).then(() => {
             message.success('Review submitted');
             setReviewSubmitted(true);
         }).catch((err) => {
@@ -82,7 +85,7 @@ const ManageTrip: React.FC = () => {
                 setUser(userData);
 
                 if (!trip.provider || !trip.trucker) {
-                    const offersData = await getOffersByTrip(tripId);
+                    const offersData = await getOffersByTrip(tripId, offersPage.toString(), '6');
                     const offersPromises = offersData.map(async (offer) => {
                         const user = await getUserByUrl(offer.userUrl);
                         return {
@@ -96,9 +99,10 @@ const ManageTrip: React.FC = () => {
                             acceptAction: acceptOfferAction
                         };
                     });
-    
-                    const resolvedOffers = await Promise.all(offersPromises);
-                    setOffers(resolvedOffers);
+                    setOffersMaxPage(offersData[0].maxPage ? Number.parseInt(offersData[0].maxPage) : 0);
+                    await Promise.all(offersPromises).then((offers) => 
+                        setOffers(offers)
+                    );
                 }
             } catch (error) {
                 message.error('Error loading data');
@@ -109,14 +113,17 @@ const ManageTrip: React.FC = () => {
 
         fetchTripDetails();
 
-    }, [reviewSubmitted, tripConfirmed, offerAccepted]);
+    }, [reviewSubmitted, tripConfirmed, offerAccepted, offersPage]);
 
     async function acceptOfferAction(id: string, action: 'ACCEPT' | 'REJECT' ){
+        setIsLoading(true);
         acceptOffer(id, action).then(() => {
             message.success('Success');
             setOfferAccepted(true);
         }).catch((err) => {
             message.error('Error accepting offer');
+        }).finally (() =>{
+            setIsLoading(false);
         })
     }
     
@@ -176,7 +183,7 @@ const ManageTrip: React.FC = () => {
                                     <Avatar size={64} src={user?.imageUrl} icon={<UserOutlined/>}></Avatar>
                                     <Title level={3}>{user?.name}</Title>
                                     <div>
-                                        <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : user?.rating }</Title>
+                                        <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : new Number(user?.rating).toFixed(1)}</Title>
                                     </div>
                                 </div>
                             </Card>
@@ -238,15 +245,23 @@ const ManageTrip: React.FC = () => {
                         :
 
                         <>
-                            {offers.map((offer) => (
-                                <ProposalCard {...offer}></ProposalCard>
-                            ))}
                             {
-                                offers.length == 0 ?
+                                offers.length != 0 ?
+                                <>
+                                    <Skeleton loading={isLoading}>
+                                        {offers.map((offer) => (
+                                            <ProposalCard {...offer}></ProposalCard>
+                                        ))}
+                                        <div className='w-100 mt-2vh flex-center'>
+                                            <Pagination onChange={(page) => setOffersPage(page)} total={offersMaxPage*6} pageSize={6}/>
+                                        </div>
+                                    </Skeleton>
+                                </>
+
+                                :
                                 <Card>
                                     <Title level={4}>No offers yet</Title>
                                 </Card>
-                                : null
                             
                             }
                         </>

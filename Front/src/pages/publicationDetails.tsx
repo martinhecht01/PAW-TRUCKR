@@ -114,7 +114,7 @@ const PublicationDetails: React.FC = () => {
                                 <Avatar size={64} src={user?.imageUrl}></Avatar>
                                 <Title level={3}>{user?.name}</Title>
                                 <div>
-                                    <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : user?.rating }</Title>
+                                    <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : new Number(user?.rating).toFixed(1) }</Title>
                                 </div>
                             </div>
                         </Card>

@@ -1,7 +1,6 @@
-import { Button, Card, Col, DatePicker, Divider, Grid, Input, Pagination, Row, Select, Skeleton, Slider, Switch, Typography } from "antd"
+import { Card, Col, DatePicker, Divider, Input, Pagination, Row, Select, Skeleton, Slider, Typography } from "antd"
 import { useEffect, useState } from "react";
 import TripCard, { TripCardProps } from "../Components/tripCard";
-import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import '../styles/main.scss';
 import { getPublications } from "../api/tripApi";
 import { Dayjs } from "dayjs";
@@ -36,6 +35,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
     const [sortBy, setSortBy] = useState<string>(sortOptions[0]);
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(12);
+    const [maxPage, setMaxPage] = useState<number>(0);
     const [cargoTypes, setCargoTypes] = useState<Array<string>>([]);
     const [cargoType, setCargoType] = useState<string>('');
     const [dateRange, setDateRange] = useState<RangeValue>(null);
@@ -88,6 +88,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     clickUrl: '/trips'
                 }
             }))
+            setMaxPage(Number.parseInt(publications[0].maxPage ? publications[0].maxPage : '1'));
             setIsLoading(false);
         })
     }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest, dateRange, cargoType])
@@ -161,7 +162,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                             <Pagination 
                                 className="text-center mt-2vh" 
                                 defaultCurrent={1} 
-                                total={50} // Update this total with the actual total number of items
+                                total={maxPage*pageSize}
                                 current={page}
                                 pageSize={pageSize}
                                 onChange={handlePaginationChange}
