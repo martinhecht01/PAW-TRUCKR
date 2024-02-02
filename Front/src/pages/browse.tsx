@@ -60,6 +60,10 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
     const handleCargoTypeChange = (value: string) => setCargoType(value);
 
     useEffect(() => {
+        setPage(1);
+    }, [tripOrRequest])
+
+    useEffect(() => {
         setIsLoading(true);
 
         getCities().then((cities) => {
@@ -92,6 +96,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
             setIsLoading(false);
         })
     }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest, dateRange, cargoType])
+
 
     return (
         <Row>
