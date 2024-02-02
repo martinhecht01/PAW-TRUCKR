@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { loginUser } from '../api/userApi';
-
 const useAuth = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [token, setToken] = useState('');
