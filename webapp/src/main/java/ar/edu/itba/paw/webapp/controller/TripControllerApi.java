@@ -131,16 +131,15 @@ public class TripControllerApi {
         int maxPages;
         Integer userId;
 
-        try{
-            userId = Integer.parseInt(form.getUserId());
-        }catch (Exception e){
-            throw new BadRequestException();
-        }
-
         if(form.getUserId() == null ){
             tripList = ts.getAllActiveTripsOrRequests(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getSortOrder(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest(), form.getPage(), form.getPageSize());
             maxPages = ts.getActiveTripsOrRequestsTotalPages(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest());
         }else {
+            try {
+                userId = Integer.parseInt(form.getUserId());
+            } catch (Exception e) {
+                throw new BadRequestException();
+            }
             user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
             tripList = ts.getPublications(user.getUserId(), form.getStatus(), form.getPage());
             maxPages = ts.getTotalPagesPublications(user, form.getStatus());
