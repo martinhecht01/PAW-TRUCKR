@@ -8,7 +8,7 @@
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "test": "react-scripts test --transformIgnorePatterns \"/node_modules/(?!@web3-storage|react-copy-to-clipboard).+(js|jsx)$\""
+    "test": "vitest"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
