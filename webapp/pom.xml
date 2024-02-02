@@ -240,11 +240,11 @@
           <version>3.2.2</version>
           <configuration>
             <packagingExcludes>**/logback-test.xml</packagingExcludes>
-<!--            <webResources>-->
-<!--              <resource>-->
-<!--                <directory>../frontend/build</directory>-->
-<!--              </resource>-->
-<!--            </webResources>-->
+            <webResources>
+              <resource>
+                <directory>../frontend/build</directory>
+              </resource>
+            </webResources>
           </configuration>
         </plugin>
 
