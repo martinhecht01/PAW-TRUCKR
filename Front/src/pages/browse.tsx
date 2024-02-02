@@ -60,6 +60,10 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
     const handleCargoTypeChange = (value: string) => setCargoType(value);
 
     useEffect(() => {
+        setPage(1);
+    }, [tripOrRequest])
+
+    useEffect(() => {
         setIsLoading(true);
 
         getCities().then((cities) => {
@@ -91,7 +95,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
             setMaxPage(Number.parseInt(publications[0].maxPage ? publications[0].maxPage : '1'));
             setIsLoading(false);
         })
-    }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, dateRange, cargoType])
+    }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest, dateRange, cargoType])
+
 
     return (
         <Row>
