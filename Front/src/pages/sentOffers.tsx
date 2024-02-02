@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Row, Skeleton, Typography, message} from 'antd';
+import {Button, Card, Col, Pagination, Row, Skeleton, Typography, message} from 'antd';
 import '../styles/main.scss';
 import OfferCard, { OfferCardProps } from '../Components/offerCard';
 import {User} from "../models/User";
@@ -24,6 +24,9 @@ const SentOffers: React.FC = () => {
     const [ user, setUser] = useState<User>();
     const [ offers, setOffers] = useState<OfferCardProps[]>([]);
     const [ isLoading, setIsLoading] = useState<boolean>(true);
+
+    const [page, setPage] = useState<number>(1);
+    const [maxPage, setMaxPage] = useState<number>(0);
 
     /*
 export type OfferCardProps = {
@@ -52,12 +55,14 @@ export type OfferCardProps = {
     useEffect(() => {
         const claims = getClaims();
 
+        setIsLoading(true);
+
         if(claims == null)
             router('/login')
 
         getUserByUrl(claims!.userURL).then((user) => {
-            getOffersByUser(user.id).then((offers) => {
-                const userPromises = offers.map((offer) => {
+            getOffersByUser(user.id, page.toString(), '6').then((offersRet) => {
+                const userPromises = offersRet.map((offer) => {
                     return getUserByUrl(offer.userUrl)
                         .then((user) => {
                             return getPublicationByUrl(offer.tripUrl)
@@ -80,12 +85,13 @@ export type OfferCardProps = {
 
                 Promise.all(userPromises).then((offers) => {
                     setOffers(offers);
+                    if(offers.length > 0)
+                        setMaxPage(offersRet[0].maxPage ? Number.parseInt(offersRet[0].maxPage) : 1);
                     setIsLoading(false);
-
                 })
             })
         })
-    }, [])
+    }, [page])
     
 
     return (
@@ -103,6 +109,15 @@ export type OfferCardProps = {
                         ))}
                     </>
                 }
+
+            </Row>
+            <Row className='w-100 flex-center mt-2vh'>
+                <Pagination 
+                    onChange={(page) => {setPage(page)}}
+                    total={6*maxPage}
+                    pageSize={6}
+                    current={page}
+                />  
             </Row>
         </Skeleton>
     )

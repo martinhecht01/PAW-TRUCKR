@@ -35,6 +35,7 @@ const SearchTrips: React.FC = () => {
 
     const [page, setPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(12);
+    const [maxPage, setMaxPage] = useState<number>(0);
 
     const handleOriginChange = (value: string) => setOrigin(value);
     const handleDestinationChange = (value: string) => setDestination(value);
@@ -52,18 +53,22 @@ const SearchTrips: React.FC = () => {
         setPage(page);
         if (pageSize) setPageSize(pageSize);
     };
+
     
     useEffect(() => {
         setIsLoading(true);
-        getCities().then((cities) => {
-            setCities(cities.map((city) => city.cityName));
-            getCargoTypes().then((cargoTypes) => {
-                console.log(cargoTypes)
-                setCargoTypes(cargoTypes);
-                setIsLoading(false);
+        if(cities.length === 0)
+            getCities().then((cities) => {
+                setCities(cities.map((city) => city.cityName));
+                getCargoTypes().then((cargoTypes) => {
+                    console.log(cargoTypes)
+                    setCargoTypes(cargoTypes);
+                    setIsLoading(false);
+                })
             })
-        })
-    }, [])
+        else
+            searchAction()
+    }, [page])
 
     async function searchAction(){
         //ACA FALTA EL TYPE!!
@@ -87,6 +92,8 @@ const SearchTrips: React.FC = () => {
                     clickUrl: '/trips'
                 }
             }))
+            if(trips.length > 0)
+                setMaxPage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'));
             setSearch(false)
             setIsLoading(false);
         })
@@ -191,7 +198,7 @@ const SearchTrips: React.FC = () => {
                         <Pagination 
                             className="text-center mt-2vh" 
                             defaultCurrent={1} 
-                            total={50}
+                            total={maxPage*pageSize}
                             current={page}
                             pageSize={pageSize}
                             onChange={handlePaginationChange}

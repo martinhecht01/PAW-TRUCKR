@@ -1,5 +1,6 @@
 import {Offer} from "../models/Offer.tsx";
 import api from "./config";
+import { getMaxPage } from "./paginationHelper.tsx";
 import {getToken} from "./userApi";
 
 export async function acceptOffer(id: string, action: 'ACCEPT' | 'REJECT'): Promise<Offer> {
@@ -16,8 +17,8 @@ export async function acceptOffer(id: string, action: 'ACCEPT' | 'REJECT'): Prom
     return Offer.offerFromJson(response.data);
 }
 
-export async function getOffersByTrip(id: string): Promise<Offer[]> {
-    const response = await api.get(`/offers?tripId=${id}`, {
+export async function getOffersByTrip(id: string, page: string, pageSize: string): Promise<Offer[]> {
+    const response = await api.get(`/offers?tripId=${id}&page=${page}&pageSize=${pageSize}`, {
         headers: {
             'Authorization': `Bearer ${getToken()}`,
         }
@@ -28,11 +29,14 @@ export async function getOffersByTrip(id: string): Promise<Offer[]> {
         toRet.push(Offer.offerFromJson(offer))
     }
 
+    if(response.status === 200)
+        toRet[0].maxPage = getMaxPage(response.headers['link']).toString();
+
     return toRet;
 }
 
-export async function getOffersByUser(id: number): Promise<Offer[]> {
-    const response = await api.get('/offers?userId=' + id,{
+export async function getOffersByUser(id: number, page: string, pageSize: string): Promise<Offer[]> {
+    const response = await api.get(`/offers?userId=${id}&page=${page}&pageSize=${pageSize}`,{
         headers:{
             'Authorization': `Bearer ${getToken()}`,
             "Accept": "application/vnd.offerList.v1+json"
@@ -43,6 +47,9 @@ export async function getOffersByUser(id: number): Promise<Offer[]> {
     for (const offer of response.data) {
         toRet.push(Offer.offerFromJson(offer))
     }
+
+    if(response.status === 200)
+        toRet[0].maxPage = getMaxPage(response.headers['link']).toString();
 
     return toRet;
 }

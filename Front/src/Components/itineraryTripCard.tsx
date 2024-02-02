@@ -1,4 +1,4 @@
-import { ArrowRightOutlined } from "@ant-design/icons";
+import { ArrowRightOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Card, Col, Rate, Row, Typography } from "antd"
 import { useNavigate } from "react-router-dom";
 
@@ -45,7 +45,7 @@ const ItineraryTripCard = (trip: ItineraryTripCardProps) => {
                             <Rate disabled defaultValue={trip.rating} allowHalf/> 
                         </div>
                         <div>
-                            <Avatar src={trip.userUrl} size={80}></Avatar>
+                            <Avatar src={trip.userUrl} size={80} icon={<UserOutlined/>}></Avatar>
                         </div>
                     </div>
                 </Col>

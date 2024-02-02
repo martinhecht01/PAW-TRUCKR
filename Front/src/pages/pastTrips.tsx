@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Col, Pagination, Row, Typography} from 'antd';
+import {Col, Pagination, Row, Skeleton, Typography} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import {useTranslation} from "react-i18next";
@@ -14,9 +14,14 @@ const PastTrips: React.FC = () => {
     const {Title} = Typography;
 
     const [trips, setTrips] = useState<TripCardProps[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [page, setPage] = useState<number>(1);
+    const [maxPage, setMaxPage] = useState<number>(0);
+    const [pageSize, setPageSize] = useState<number>(12);
 
     useEffect(() => {
-        getTrips('PAST', '1', '12').then((trips) => {
+        setIsLoading(true);
+        getTrips('PAST', page.toString(), pageSize.toString()).then((trips) => {
             setTrips(trips.map((trip) => {
                 return {
                     id: trip.tripId,
@@ -33,26 +38,30 @@ const PastTrips: React.FC = () => {
                     clickUrl: '/trips/manage'
                 }
             }));
+            setMaxPage(trips[0].maxPage ? Number.parseInt(trips[0].maxPage) : 1)
+            setIsLoading(false);
         });
 
-    }, []); // The empty dependency array ensures that this effect runs only once
+    }, [page]); // The empty dependency array ensures that this effect runs only once
 
     return (
         <div style={{display: "flex", flexDirection: 'column'}}>
-            <Row gutter={15} className='flex-center'>
-                {trips.map((trip,index) => (
-                        <Col xxl={5} xl={8} lg={12} md={12} sm={22} xs={22} key={index}>
-                            <TripCard {...trip}></TripCard>
-                        </Col>
-                    )
-                )}
-            </Row>
-            {trips.length === 0 ?
+            <Skeleton loading={isLoading}>
                 <Row gutter={15} className='flex-center'>
-                    <Title level={3}>{t('trips.noPastTrips')}</Title>
-                </Row>:
-            <Pagination className="text-center mt-2vh" defaultCurrent={1} total={50} />
-            }
+                    {trips.map((trip,index) => (
+                            <Col xxl={6} xl={6} lg={8} md={12} sm={22} xs={22} key={index}>
+                                <TripCard {...trip}></TripCard>
+                            </Col>
+                        )
+                    )}
+                </Row>
+                {trips.length === 0 ?
+                    <Row gutter={15} className='flex-center'>
+                        <Title level={3}>{t('trips.noPastTrips')}</Title>
+                    </Row>:
+                    <Pagination className="text-center mt-2vh" current={page} total={pageSize*maxPage} pageSize={pageSize} onChange={(page) => setPage(page)} />
+                }
+            </Skeleton>
         </div>
     );
 };

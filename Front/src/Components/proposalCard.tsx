@@ -23,7 +23,7 @@ const ProposalCard = (props: ProposalProps) => {
 
     return (
         <div>
-            <Card>
+            <Card className='mb-2vh'>
                 <Row gutter={16}>
                     <Col span={24}>
                         <Title level={4} className='m-0'>{props.userName}</Title>

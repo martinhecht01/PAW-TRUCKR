@@ -16,7 +16,10 @@ const MyPublications: React.FC = () => {
     const [expiredTrips, setExpiredTrips] = useState(Array<TripCardProps>());
 
     const [ activePage, setActivePage ] = useState<number>(1);
+    const [ maxActivePage, setMaxActivePage ] = useState<number>(0)
+
     const [ expiredPage, setExpiredPage ] = useState<number>(1);
+    const [ maxExpiredPage, setMaxExpiredPage ] = useState<number>(0)
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -43,6 +46,9 @@ const MyPublications: React.FC = () => {
                         clickUrl: '/trips/manage'
                     }
                 }))
+
+                if(trips.length > 0)
+                    setMaxActivePage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'))
     
                 getPublications(user.id.toString(), 'TRIP', '', '', 'EXPIRED', 1, 1, '', '', '', 0, 0, expiredPage, 12, 'departureDate ASC').then((trips) => {
                     setExpiredTrips(trips.map((publication) => {
@@ -61,6 +67,8 @@ const MyPublications: React.FC = () => {
                             clickUrl: ''
                         }
                     }))
+                    if(trips.length > 0)
+                        setMaxExpiredPage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'))
                     setIsLoading(false);
                 })
     
@@ -75,7 +83,7 @@ const MyPublications: React.FC = () => {
                     {activeTrips.length == 0 ? 
                         <div className="w-100 flex-center flex-column">
                             <Title level={3}>You have no active publications</Title>
-                            <Button type="primary" onClick={() => navigate('/trips')}>Create Publication</Button>
+                            <Button type="primary" onClick={() => navigate('/trips/create')}>Create Publication</Button>
                         </div>
                                 
                                 
@@ -92,7 +100,11 @@ const MyPublications: React.FC = () => {
                                 </Row>
                             </div>
                             <Row className="w-100 flex-center">
-                                <Pagination className="text-center mt-2vh" onChange={(page) => setActivePage(page)} defaultCurrent={1} total={50}/>
+                                <Pagination className="text-center mt-2vh" 
+                                onChange={(page) => setActivePage(page)} 
+                                current={activePage}
+                                pageSize={12}
+                                total={maxActivePage*12}/>
                             </Row>
                         </div>
                     }
@@ -119,7 +131,12 @@ const MyPublications: React.FC = () => {
                                 </Row>
                             </div>
                             <Row className="w-100 flex-center">
-                                <Pagination className="text-center mt-2vh" onChange={(page) => setExpiredPage(page)} defaultCurrent={1} total={50}/>
+                                <Pagination className="text-center mt-2vh"
+                                 onChange={(page) => setExpiredPage(page)} 
+                                 current={expiredPage}
+                                 pageSize={12}
+                                 total={maxExpiredPage*12}/>
+                            
                             </Row>
                         </div>
                     }

@@ -27,8 +27,10 @@ export class Publication {
     type: string;
     volume: number;
     weight: number;
+    maxPage: string;
 
-    constructor(arrivalDate: Date, creator: string, departureDate: Date, destination: string, image: string, origin: string, price: number, self: string, tripId: number, type: string, volume: number, weight: number) {
+
+    constructor(arrivalDate: Date, creator: string, departureDate: Date, destination: string, image: string, origin: string, price: number, self: string, tripId: number, type: string, volume: number, weight: number, maxPage: string) {
         this.arrivalDate = arrivalDate;
         this.creator = creator;
         this.departureDate = departureDate;
@@ -41,6 +43,7 @@ export class Publication {
         this.type = type;
         this.volume = volume;
         this.weight = weight;
+        this.maxPage = maxPage;
     }
 
     static publicationFromJson(json: any): Publication {
@@ -56,11 +59,26 @@ export class Publication {
             json.tripId,
             json.type,
             json.volume,
-            json.weight
+            json.weight,
+            json.maxPage
         );
     }
 
-    static publicationToJson(publication: Publication): string {
-        return JSON.stringify(publication);
+    static publicationToJson(publication: Publication): any {
+        return {
+            arrivalDate: publication.arrivalDate,
+            creator: publication.creator,
+            departureDate: publication.departureDate,
+            destination: publication.destination,
+            image: publication.image,
+            origin: publication.origin,
+            price: publication.price,
+            self: publication.self,
+            tripId: publication.tripId,
+            type: publication.type,
+            volume: publication.volume,
+            weight: publication.weight,
+            maxPage: publication.maxPage
+        };
     }
 }
