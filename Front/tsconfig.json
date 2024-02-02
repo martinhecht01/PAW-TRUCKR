@@ -19,7 +19,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "esModuleInterop": true
+
+    //added for vitest
+    "types": ["vitest/globals"],
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
