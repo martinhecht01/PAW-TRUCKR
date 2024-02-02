@@ -1,7 +1,12 @@
 package ar.edu.itba.paw.webapp.dto;
 
+import ar.edu.itba.paw.webapp.controller.utils.EndpointsUri;
+import org.springframework.web.util.UriComponentsBuilder;
+import javax.ws.rs.core.UriInfo;
+
+
+
 public class DescriptionLinkDto {
-    private final static String BASE_URI = "http://localhost:8080/api";
 
     String usersUri;
     String tripsUri;
@@ -16,21 +21,35 @@ public class DescriptionLinkDto {
     public DescriptionLinkDto() {
     }
 
-    public static DescriptionLinkDto fromDescriptionLink() {
+    public static DescriptionLinkDto fromDescriptionLink(final UriInfo uriInfo) {
         DescriptionLinkDto dto = new DescriptionLinkDto();
-        dto.alertsUri = BASE_URI + "/alerts{/alertId}";
-        dto.cargoTypeUri = BASE_URI + "/cargoTypes{/cargoTypeId}";
-        dto.citiesUri = BASE_URI + "/cities{/cityId}";
-        dto.imagesUri = BASE_URI + "/images{/imageId}";
-        dto.publicationFilterUri = BASE_URI + "/trips?userId={userId}&tripOrRequest={tripOrRequest}&status={status}" +
-                "&page={page}&pageSize={pageSize}&weight={weight}&volume={volume}&cargoType={cargoType}" +
-                "&departureDate={departureDate}&arrivalDate={arrivalDate}&origin={origin}" +
-                "&destination={destination}&sortOrder={sortOrder}&minPrice={minPrice}&maxPrice={maxPrice}";
-        dto.reviewsUri = BASE_URI + "/reviews{/reviewId}";
-        dto.tripsFilterUri = BASE_URI + "/trips?status={tripId}&page={page}&pageSize={pageSize}";
-        dto.tripsUri = BASE_URI + "/trips{/tripId}";
-        dto.usersUri = BASE_URI + "/users{/userId}";
+
+        UriComponentsBuilder ucb = UriComponentsBuilder.fromUri(uriInfo.getBaseUri());
+
+        dto.alertsUri = ucb.cloneBuilder().path(EndpointsUri.Alerts.getUri()).build().toString();
+        dto.cargoTypeUri = ucb.cloneBuilder().path(EndpointsUri.CargoType.getUri()).build().toString();
+        dto.citiesUri = ucb.cloneBuilder().path(EndpointsUri.Cities.getUri()).build().toString();
+        dto.imagesUri = ucb.cloneBuilder().path(EndpointsUri.Images.getUri()).build().toString();
+        dto.publicationFilterUri = ucb.cloneBuilder().path(EndpointsUri.PublicationFilter.getUri()).build().toString();
+        dto.reviewsUri = ucb.cloneBuilder().path(EndpointsUri.Reviews.getUri()).build().toString();
+        dto.tripsFilterUri = ucb.cloneBuilder().path(EndpointsUri.TripsFilter.getUri()).build().toString();
+        dto.tripsUri = ucb.cloneBuilder().path(EndpointsUri.Trips.getUri()).build().toString();
+        dto.usersUri = ucb.cloneBuilder().path(EndpointsUri.Users.getUri()).build().toString();
         return dto;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = usersUri != null ? usersUri.hashCode() : 0;
+        result = 31 * result + (tripsUri != null ? tripsUri.hashCode() : 0);
+        result = 31 * result + (publicationFilterUri != null ? publicationFilterUri.hashCode() : 0);
+        result = 31 * result + (tripsFilterUri != null ? tripsFilterUri.hashCode() : 0);
+        result = 31 * result + (citiesUri != null ? citiesUri.hashCode() : 0);
+        result = 31 * result + (reviewsUri != null ? reviewsUri.hashCode() : 0);
+        result = 31 * result + (cargoTypeUri != null ? cargoTypeUri.hashCode() : 0);
+        result = 31 * result + (alertsUri != null ? alertsUri.hashCode() : 0);
+        result = 31 * result + (imagesUri != null ? imagesUri.hashCode() : 0);
+        return result;
     }
 
     public String getUsersUri() {
