@@ -64,7 +64,6 @@ public class AlertsControllerApi {
         return Response.ok(AlertDto.fromAlert(uriInfo,alert)).build();
     }
 
-    //TODO decidir si queremos que este pueda ser publico
     @GET
     @Path("/{id:\\d+}")
     @Produces("application/vnd.alert.v1+json")

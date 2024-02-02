@@ -18,7 +18,7 @@ public class FilterForm {
     private static final String PAGE_SIZE = "12";
 
     @QueryParam("userId")
-    private Integer userId;
+    private String userId;
 
     @QueryParam("tripOrRequest")
     @DefaultValue("TRIP")
@@ -38,11 +38,15 @@ public class FilterForm {
     @DefaultValue(PAGE_SIZE)
     int pageSize;
 
-    @Range(min=1, max=100000, message = "validation.Weight.Range")
+
+    @Min(value = 1, message = "validation.Weight.Range")
+    @Max(value = 100000, message = "validation.Weight.Range")
     @QueryParam("weight")
     private Integer weight;
 
-    @Range(min = 1, max=1000, message = "validation.Volume.Range")
+
+    @Min(value = 1, message = "validation.Volume.Range")
+    @Max(value = 1000, message = "validation.Volume.Range")
     @QueryParam("volume")
     private Integer volume;
 
@@ -72,11 +76,15 @@ public class FilterForm {
     @Pattern(regexp="\\b(departureDate|arrivalDate|price)\\s+(ASC|DESC)\\b", message="validation.SortOrder")
     private String sortOrder;
 
-    @Range(min=0, max=999999, message="validation.MinPrice.Range")
+
+    @Min(value = 0, message = "validation.MinPrice.Range")
+    @Max(value = 1000000, message = "validation.MinPrice.Range")
     @QueryParam("minPrice")
     private Integer minPrice;
 
-    @Range(min=0, max=1000000, message="validation.MaxPrice.Range")
+
+    @Min(value = 0, message = "validation.MaxPrice.Range")
+    @Max(value = 1000000, message = "validation.MaxPrice.Range")
     @QueryParam("maxPrice")
     private Integer maxPrice;
 
@@ -161,11 +169,11 @@ public class FilterForm {
         return destination;
     }
 
-    public Integer getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

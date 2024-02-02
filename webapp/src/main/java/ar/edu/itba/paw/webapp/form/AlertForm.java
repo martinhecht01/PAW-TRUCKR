@@ -4,18 +4,23 @@ import ar.edu.itba.paw.webapp.form.constraints.annotations.*;
 
 import org.hibernate.validator.constraints.Range;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
 @AlertDateValidation(start="fromDate", end="toDate")
 public class AlertForm {
 
-    @Range(min=1, max=100000, message = "validation.Weight.Range")
+
+    @Min(value = 1, message = "validation.Weight.Range")
+    @Max(value = 100000, message = "validation.Weight.Range")
     private Integer maxWeight;
 
-    @Range(min=1, max=1000, message = "validation.Volume.Range")
+
+    @Min(value = 1, message = "validation.Volume.Range")
+    @Max(value = 1000, message = "validation.Volume.Range")
     private Integer maxVolume;
 
     @PreventPast
