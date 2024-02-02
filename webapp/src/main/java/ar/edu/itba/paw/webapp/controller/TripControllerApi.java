@@ -131,7 +131,7 @@ public class TripControllerApi {
         int maxPages;
         Integer userId;
 
-        if(form.getUserId() == null ){
+        if(form.getUserId() == null || form.getUserId().isEmpty() ){
             tripList = ts.getAllActiveTripsOrRequests(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getSortOrder(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest(), form.getPage(), form.getPageSize());
             maxPages = ts.getActiveTripsOrRequestsTotalPages(form.getOrigin(), form.getDestination(), form.getVolume(), form.getWeight(), form.getMinPrice(), form.getMaxPrice(), form.getDepartureDate(), form.getArrivalDate(), form.getCargoType(), form.getTripOrRequest());
         }else {
