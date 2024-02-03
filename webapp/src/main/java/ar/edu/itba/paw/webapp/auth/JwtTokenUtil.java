@@ -14,7 +14,9 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
 
-    private static final int EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000; //1 week (in millis)
+    private static final int EXPIRY_TIME = 24 * 60 * 60 * 1000; //1 day (in millis)
+    private static final int REFRESH_EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000; //1 week (in millis)
+
 
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -53,5 +55,27 @@ public class JwtTokenUtil {
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRY_TIME))
                 .signWith(jwtKey)
                 .compact();
+    }
+
+    public String createRefreshToken(User user) {
+        Claims claims = Jwts.claims();
+
+        claims.setSubject(user.getCuit());
+        claims.put("refresh", true);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + REFRESH_EXPIRY_TIME))
+                .signWith(jwtKey)
+                .compact();
+    }
+
+    public boolean isRefreshToken(String token){
+        try {
+            final Claims claims = Jwts.parserBuilder().setSigningKey(jwtKey).build().parseClaimsJws(token).getBody();
+            return claims.get("refresh", Boolean.class);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

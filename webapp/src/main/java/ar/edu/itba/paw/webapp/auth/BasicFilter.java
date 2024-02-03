@@ -41,6 +41,7 @@ public class BasicFilter extends OncePerRequestFilter {
     private static final int CUIT = 0;
     private static final int PASSWORD = 1;
     private static final int NONCE = 1;
+    private static final String REFRESH = "X-Refresh";
 
 
     @Autowired
@@ -75,12 +76,18 @@ public class BasicFilter extends OncePerRequestFilter {
                 if(!userService.validateToken(Integer.valueOf(credentials[NONCE]), user.getLocale()))
                     throw new AuthErrorException();
                 response.addHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request)));
+                response.addHeader(REFRESH, jwtTokenUtil.createRefreshToken(user));
                 userService.deleteToken(credentials[NONCE]);
                 authentication = nonceAuthentication(user);
             }else {
                 authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(credentials[CUIT], credentials[PASSWORD]));
-                userService.getUserByCuit(credentials[CUIT]).ifPresent(user -> response.setHeader("X-JWT", jwtTokenUtil.createToken(user, baseUrl(request))));
+
+                //add both headers in one go:
+                if (userService.getUserByCuit(credentials[CUIT]).isPresent()){
+                    response.addHeader("X-JWT", jwtTokenUtil.createToken(userService.getUserByCuit(credentials[CUIT]).get(), baseUrl(request)));
+                    response.addHeader(REFRESH, jwtTokenUtil.createRefreshToken(userService.getUserByCuit(credentials[CUIT]).get()));
+                }
             }
         } catch (AuthenticationException failed) {
             if(failed instanceof DisabledException){
