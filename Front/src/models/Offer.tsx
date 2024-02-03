@@ -6,6 +6,7 @@ export class Offer {
     userUrl: string;
     tripUrl: string;
     maxPage: string;
+    parentOffer: string;
 
 
     
@@ -21,7 +22,7 @@ export class Offer {
 }
     */
 
-    constructor(id: number, description: string, price: number, conterOfferUrl: string, userUrl: string, tripUrl: string, maxPage: string) {
+    constructor(id: number, description: string, price: number, conterOfferUrl: string, userUrl: string, tripUrl: string, maxPage: string, parentOffer: string ) {
         this.id = id;
         this.description = description;
         this.price = price;
@@ -29,6 +30,7 @@ export class Offer {
         this.userUrl = userUrl;
         this.tripUrl = tripUrl;
         this.maxPage = maxPage;
+        this.parentOffer = parentOffer;
     }
 
     /*
@@ -49,7 +51,8 @@ export class Offer {
             json.counterOffer,
             json.user,
             json.trip,
-            json.maxPage
+            json.maxPage,
+            json.parentOffer
         );
     }
 
@@ -59,7 +62,8 @@ export class Offer {
             price: offer.price,
             user: offer.userUrl,
             trip: offer.tripUrl,
-            counterOffer: offer.conterOfferUrl
+            counterOffer: offer.conterOfferUrl,
+            parentOffer: offer.parentOffer
         }
     }
 }

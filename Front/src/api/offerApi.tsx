@@ -55,7 +55,22 @@ export async function getOffersByUser(id: number, page: string, pageSize: string
 }
 
 export async function getOffer(offerId : number) : Promise<Offer> {
-    const response = await api.get(`/offers/${offerId}`);
+    const response = await api.get(`/offers/${offerId}`, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/vnd.offer.v1+json',
+        }
+    });
+    return Offer.offerFromJson(response.data);
+}
+
+export async function getOfferByUrl(url: string): Promise<Offer> {
+    const response = await api.get(url, {
+        headers: {
+            'Authorization': `Bearer ${getToken()}`,
+            'Content-Type': 'application/vnd.offer.v1+json',
+        }
+    });
     return Offer.offerFromJson(response.data);
 }
 

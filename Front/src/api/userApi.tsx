@@ -59,10 +59,17 @@ export async function getUserById(id: string): Promise<User> {
 }
 
 export async function updateUser(name: string, imageId: string, id: number): Promise<User> {
-    const response = await api.patch(`${usersEndpoint}/${id}`, {
-        imageId: imageId,
-        name: name
-    }, {
+    const params : any = {};
+    
+    if(name) 
+        params.name = name;
+    
+
+    if(imageId) 
+        params.imageId = imageId;
+    
+
+    const response = await api.patch(`${usersEndpoint}/${id}`, params, {
         headers: {
             'Authorization': `Bearer ${getToken()}`,
             'Content-Type': 'application/vnd.user.v1+json'

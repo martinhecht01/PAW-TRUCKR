@@ -17,7 +17,7 @@ const PastTrips: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [page, setPage] = useState<number>(1);
     const [maxPage, setMaxPage] = useState<number>(0);
-    const [pageSize, setPageSize] = useState<number>(12);
+    const [pageSize] = useState<number>(12);
 
     useEffect(() => {
         setIsLoading(true);
@@ -38,7 +38,8 @@ const PastTrips: React.FC = () => {
                     clickUrl: '/trips/manage'
                 }
             }));
-            setMaxPage(trips[0].maxPage ? Number.parseInt(trips[0].maxPage) : 1)
+            if(trips.length > 0)
+                setMaxPage(trips[0].maxPage ? Number.parseInt(trips[0].maxPage) : 1)
             setIsLoading(false);
         });
 
@@ -57,7 +58,7 @@ const PastTrips: React.FC = () => {
                 </Row>
                 {trips.length === 0 ?
                     <Row gutter={15} className='flex-center'>
-                        <Title level={3}>{t('trips.noPastTrips')}</Title>
+                        <Title level={3}>{t('pastTrips.noPastTrips')}</Title>
                     </Row>:
                     <Pagination className="text-center mt-2vh" current={page} total={pageSize*maxPage} pageSize={pageSize} onChange={(page) => setPage(page)} />
                 }

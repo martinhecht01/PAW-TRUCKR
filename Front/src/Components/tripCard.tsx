@@ -18,6 +18,7 @@ export type TripCardProps = {
     image: string;
     cargoType: string;
     clickUrl: string;
+    notifications?: number;
 }   
 
 
@@ -28,13 +29,24 @@ const TripCard = (props: TripCardProps) => {
        
             <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} 
                 cover={
-                    <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>}  color="blue" >
-                        <img
-                            style={{width: '100%'}}
-                            alt="example"
-                            src={props.image}
-                        />
-                    </Badge.Ribbon>
+                    <>
+                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>} placement="start" color="blue" >
+                            {props.notifications ? <Badge size="default" count={props.notifications} > 
+                                    <img
+                                        style={{width: '100%'}}
+                                        alt="example"
+                                        src={props.image}
+                                    />
+                                </Badge> :
+                                <img
+                                style={{width: '100%'}}
+                                alt="example"
+                                src={props.image}
+                            />
+                    }
+
+                        </Badge.Ribbon>
+                    </>
                 }
 
                 hoverable={props.clickUrl != '' ? true : false}

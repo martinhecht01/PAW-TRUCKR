@@ -38,28 +38,6 @@ const CreateAlert: React.FC = () => {
     const [dateRange, setDateRange] = useState<RangeValue>(null);
 
     async function handleAlertCreation(city: string | undefined, cargoType: string | undefined, maxVolume: string | undefined, maxWeight:string | undefined, departureDate:string | undefined, arrivalDate:string | undefined){
-        // if (departureDate == undefined && city == undefined){
-        //     message.error("Departure Date and City must be specified")
-        //     return;
-        // }
-        // else if (departureDate == undefined){
-        //     message.error("Departure Date must be specified")
-        //     return;
-        // }
-        // else if (city == undefined){
-        //     message.error("City must be specified")
-        //     return;
-        // }
-
-        // if (Number(maxWeight) > 10000 || Number(maxWeight) < 0){
-        //     message.error("Max Weight should be between 0 and 10000")
-        //     return;
-        // }
-        // if (Number(maxVolume) > 1000 || Number(maxVolume) < 1){
-        //     message.error("Max Volume should be between 1 and 1000")
-        //     return;
-        // }
-
         try{
             await createAlert(Number(maxWeight), Number(maxVolume),departureDate, arrivalDate, city, cargoType);
             router('/myAlert');
@@ -108,6 +86,7 @@ const CreateAlert: React.FC = () => {
                         <Select className='w-100'
                             onChange={(value) => {setSelectedCity(value)}}
                             options={cityOptions}
+                            showSearch
                         />
                     </div>
                 </div>

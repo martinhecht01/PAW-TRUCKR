@@ -20,13 +20,10 @@ const { Title, Text } = Typography;
 
 const ManageTrip: React.FC = () => {
 
-    const {t} = useTranslation();
+    // const {t} = useTranslation();
     const router = useNavigate();
 
     const {tripId} = useParams();
-
-    let offerCount = 1;
-    //TODO: get offer data from backend
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [publication, setPublication] = useState<Trip>();
@@ -35,6 +32,8 @@ const ManageTrip: React.FC = () => {
     const [reviewSubmitted, setReviewSubmitted] = useState<boolean>(false);
     const [tripConfirmed, setTripConfirmed] = useState<boolean>(false);
     const [offerAccepted, setOfferAccepted] = useState<boolean>(false);
+
+    const [proposalLoading, setProposalLoading] = useState<boolean>(true);
 
     const [offersPage, setOffersPage] = useState<number>(1);
     const [offersMaxPage, setOffersMaxPage] = useState<number>(0);
@@ -49,7 +48,7 @@ const ManageTrip: React.FC = () => {
         createReview(new Review(0, tripId!, rating, review, '')).then(() => {
             message.success('Review submitted');
             setReviewSubmitted(true);
-        }).catch((err) => {
+        }).catch(() => {
             message.error('Error submitting review');
         })
     }
@@ -58,13 +57,14 @@ const ManageTrip: React.FC = () => {
         confirmTrip(tripId!).then(() => {
             message.success('Trip confirmed');
             setTripConfirmed(true);
-        }).catch((err) => {
+        }).catch(() => {
             message.error('Error confirming trip');
         })
     }
 
     useEffect(() => {
         // Function to fetch trip details and related data
+        setProposalLoading(true);
         const fetchTripDetails = async () => {
             if (!tripId) {
                 router('/404');
@@ -85,7 +85,7 @@ const ManageTrip: React.FC = () => {
                 setUser(userData);
 
                 if (!trip.provider || !trip.trucker) {
-                    const offersData = await getOffersByTrip(tripId, offersPage.toString(), '6');
+                    const offersData = await getOffersByTrip(tripId, offersPage.toString(), '3');
                     const offersPromises = offersData.map(async (offer) => {
                         const user = await getUserByUrl(offer.userUrl);
                         return {
@@ -96,7 +96,8 @@ const ManageTrip: React.FC = () => {
                             userName: user.name,
                             userMail: user.email,
                             counterOffer: offer.conterOfferUrl,
-                            acceptAction: acceptOfferAction
+                            acceptAction: acceptOfferAction,
+                            tripId: tripId
                         };
                     });
                     setOffersMaxPage(offersData[0].maxPage ? Number.parseInt(offersData[0].maxPage) : 0);
@@ -108,6 +109,7 @@ const ManageTrip: React.FC = () => {
                 message.error('Error loading data');
             } finally {
                 setIsLoading(false);
+                setProposalLoading(false);
             }
         };
 
@@ -120,7 +122,7 @@ const ManageTrip: React.FC = () => {
         acceptOffer(id, action).then(() => {
             message.success('Success');
             setOfferAccepted(true);
-        }).catch((err) => {
+        }).catch(() => {
             message.error('Error accepting offer');
         }).finally (() =>{
             setIsLoading(false);
@@ -248,14 +250,14 @@ const ManageTrip: React.FC = () => {
                             {
                                 offers.length != 0 ?
                                 <>
-                                    <Skeleton loading={isLoading}>
+                                    <Skeleton loading={proposalLoading}>
                                         {offers.map((offer) => (
                                             <ProposalCard {...offer}></ProposalCard>
                                         ))}
-                                        <div className='w-100 mt-2vh flex-center'>
-                                            <Pagination onChange={(page) => setOffersPage(page)} total={offersMaxPage*6} pageSize={6}/>
-                                        </div>
                                     </Skeleton>
+                                    <div className='w-100 mt-2vh flex-center'>
+                                            <Pagination onChange={(page) => setOffersPage(page)} total={offersMaxPage*3} pageSize={3}/>
+                                    </div>
                                 </>
 
                                 :

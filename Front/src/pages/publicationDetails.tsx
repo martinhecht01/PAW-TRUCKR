@@ -1,15 +1,14 @@
-import { Avatar, Badge, Button, Card, Col, Divider, Image, InputNumber, Row, Skeleton, Slider, Table, Typography, message } from "antd";
+import { Avatar, Badge, Button, Card, Col, Image, InputNumber, Row, Skeleton, Slider, Typography, message } from "antd";
 import '../styles/main.scss'
-import { ArrowRightOutlined, EnvironmentOutlined, StarFilled } from "@ant-design/icons";
+import { ArrowRightOutlined, StarFilled, UserOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Publication } from "../models/Publication";
 import { getPublicationById } from "../api/tripApi";
-import { getClaims, getToken, getUserByUrl } from "../api/userApi";
+import { getClaims, getUserByUrl } from "../api/userApi";
 import { User } from "../models/User";
 import { createOffer } from "../api/offerApi";
-import { Offer } from "../models/Offer";
 
 const {Title, Text} = Typography;
 
@@ -111,7 +110,7 @@ const PublicationDetails: React.FC = () => {
                     <Col span={8}>
                         <Card onClick={() => router('/profile/' + user?.id)} hoverable>
                             <div className="w-100 space-between">
-                                <Avatar size={64} src={user?.imageUrl}></Avatar>
+                                <Avatar size={64} src={user?.imageUrl} icon={<UserOutlined/>}></Avatar>
                                 <Title level={3}>{user?.name}</Title>
                                 <div>
                                     <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : new Number(user?.rating).toFixed(1) }</Title>
