@@ -23,11 +23,15 @@ const PublicationDetails: React.FC = () => {
     const router = useNavigate()
 
     useEffect(() => {
-
+        const claims = getClaims();
         getPublicationById(tripId!).then((publication) => {
             setPublication(publication);
             setInputValue(publication.price);
             getUserByUrl(publication.creator).then((user) => {
+                if(claims && (user.role == claims.role)){
+                    router('/404')
+                    return;
+                }
                 setUser(user);
                 setIsLoading(false);
             })

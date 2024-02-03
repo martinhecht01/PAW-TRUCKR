@@ -1,8 +1,12 @@
-import { Card, Button, Typography, Divider, Row, Col } from "antd";
+import { Card, Button, Typography, Divider, Row, Col, Avatar, Skeleton, message } from "antd";
 import { useTranslation } from "react-i18next";
 import '../styles/main.scss';
 import '../styles/proposals.scss';
 import { useNavigate } from 'react-router-dom';
+import { StarFilled, UserOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { Offer } from "../models/Offer";
+import { deleteOffer, getOfferByUrl } from "../api/offerApi";
 
 const { Title, Text } = Typography;
 
@@ -12,10 +16,11 @@ export type ProposalProps = {
     offeredPrice: number,
     userPhoto: string,
     userName: string,
-    userMail?: string,
     counterOffer: string,
     acceptAction: (id: string, action: 'ACCEPT' | 'REJECT') => void,
-    tripId: string
+    tripId: string,
+    rating: number,
+    userId: string
 }
 
 
@@ -23,12 +28,41 @@ const ProposalCard = (props: ProposalProps) => {
     const { t } = useTranslation();
     const router = useNavigate();
 
+    const [counterOfferObject, setCounterOfferObject] = useState<Offer>();
+    const [loading, setIsLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (props.counterOffer) {
+            getOfferByUrl(props.counterOffer).then((offer) => {
+                setCounterOfferObject(offer);
+                setIsLoading(false);
+            })
+        } else {
+            setIsLoading(false);
+        }
+    }, [])
+
+    async function cancelOffer(id: number){
+        try{
+            deleteOffer(id);
+            setCounterOfferObject(undefined);
+            message.success('Counter offer canceled successfully');
+        }
+        catch (e){
+            message.error('Error deleting offer')
+        }
+    }
+
     return (
         <div>
             <Card className='mb-2vh'>
                 <Row gutter={16}>
-                    <Col span={24}>
-                        <Title level={4} className='m-0'>{props.userName}</Title>
+                    <Col span={24} onClick={() => router(`/profile/${props.userId}`)}>
+                        <Row className="space-between">
+                            <Avatar icon={<UserOutlined />} src={props.userPhoto} size={64} />
+                            <Title level={5} className='m-0'>{props.userName}</Title>
+                            <Title level={5} className='m-0'><StarFilled/> {props.rating == 0 ? '-' : Number(props.rating).toFixed(1)}</Title>
+                        </Row>
                     </Col>
                     <Col span={24}>
                         <Title level={5}>{t('manage.description')}</Title>
@@ -42,7 +76,8 @@ const ProposalCard = (props: ProposalProps) => {
                     <Col span={24}>
                         <Text>{props.offeredPrice}</Text>
                     </Col>
-                    {!props.counterOffer &&
+                    <Skeleton loading={loading}>
+                    {!counterOfferObject &&
                         <div className='space-around w-100'>
                             <Col span={6} className='flex-center'>
                                 <Button className='m-1vh acceptButton' onClick={() => props.acceptAction(props.id, 'ACCEPT')}>{t('manage.accept')}</Button>
@@ -55,27 +90,28 @@ const ProposalCard = (props: ProposalProps) => {
                             </Col>
                         </div>
                     }
-                    {props.counterOffer &&
-                        <Col span={24}>
-                            <Divider />
-                            <Title level={4}>{t('manage.counterOffer')}</Title>
+                    {counterOfferObject &&
                             <Col span={24}>
-                                <Title level={5}>{t('manage.description')}</Title>
+                                <Divider />
+                                <Title level={5}>{t('manage.counterOffer')}</Title>
+                                <Col span={24}>
+                                    <Title level={5}>{t('manage.description')}</Title>
+                                </Col>
+                                <Col span={24}>
+                                    <Text>{counterOfferObject?.description}</Text>
+                                </Col>
+                                <Col span={24} className='mt-2vh'>
+                                    <Title level={5}>{t('common.offeredPrice')}</Title>
+                                </Col>
+                                <Col span={24}>
+                                    <Text>{counterOfferObject?.price}</Text>
+                                </Col>
+                                <Col span={24} className='mt-2vh flex-center'>
+                                    <Button className='m-1vh' danger onClick={() => cancelOffer(counterOfferObject.id)}>{t('manage.cancel')}</Button>
+                                </Col>
                             </Col>
-                            <Col span={24}>
-                                <Text>{props.description}</Text>
-                            </Col>
-                            <Col span={24} className='mt-2vh'>
-                                <Title level={5}>{t('common.offeredPrice')}</Title>
-                            </Col>
-                            <Col span={24}>
-                                <Text>{props.offeredPrice}</Text>
-                            </Col>
-                            <Col span={24} className='mt-2vh'>
-                                <Button className='m-1vh' danger>{t('manage.cancel')}</Button>
-                            </Col>
-                        </Col>
                     }
+                    </Skeleton>
                 </Row>
             </Card>
         </div>
