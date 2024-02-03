@@ -100,7 +100,7 @@ public class TripDaoJPA implements TripDaoV2 {
     //ejemplo de 1+1 query
     @Override
     public List<Proposal> getAllProposalsForTripId(int tripId, int pag, int pagesize){
-        String query = "SELECT proposal_id FROM proposals WHERE trip_id = :tripId";
+        String query = "SELECT proposal_id FROM proposals WHERE trip_id = :tripId AND parent_proposal_id IS NULL";
         Query q = entityManager.createNativeQuery(query);
         q.setFirstResult((pag-1) * pagesize);
         q.setMaxResults(pagesize);
@@ -144,7 +144,7 @@ public class TripDaoJPA implements TripDaoV2 {
 
     @Override
     public Integer getProposalsCountForTripId(int tripId){
-        String query = "SELECT COUNT(proposal_id) FROM proposals WHERE trip_id = :tripId";
+        String query = "SELECT COUNT(proposal_id) FROM proposals WHERE trip_id = :tripId AND parent_proposal_id IS NULL";
         Query q = entityManager.createNativeQuery(query);
         q.setParameter("tripId", tripId);
         return ((Number) q.getSingleResult()).intValue();
