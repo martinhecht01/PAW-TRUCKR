@@ -9,7 +9,7 @@ import { Trip } from '../models/Trip.tsx';
 import { User } from '../models/User.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { confirmTrip, getTripById } from '../api/tripApi.tsx';
-import { acceptOffer, getOffersByTrip } from '../api/offerApi.tsx';
+import { acceptOffer, deleteOffer, getOffersByTrip } from '../api/offerApi.tsx';
 import { getClaims, getUserByUrl } from '../api/userApi.tsx';
 import TextArea from 'antd/es/input/TextArea';
 import { createReview } from '../api/reviewApi.tsx';
@@ -97,7 +97,9 @@ const ManageTrip: React.FC = () => {
                             userMail: user.email,
                             counterOffer: offer.conterOfferUrl,
                             acceptAction: acceptOfferAction,
-                            tripId: tripId
+                            tripId: tripId,
+                            rating: user.rating,
+                            userId: user.id.toString()
                         };
                     });
                     setOffersMaxPage(offersData[0].maxPage ? Number.parseInt(offersData[0].maxPage) : 0);
