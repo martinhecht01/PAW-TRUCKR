@@ -113,9 +113,8 @@ public class AccessHandler {
         if (offer.isPresent()) {
             Trip trip = offer.get().getTrip();
             return offer.get().getUser().getUserId().equals(user.getUserId())
-                    || ((trip.getTrucker() != null && user.getUserId().equals(trip.getTrucker().getUserId())) ||
-                            (trip.getProvider() != null && user.getUserId().equals(trip.getProvider().getUserId())))
-                    || (offer.get().getProposalId() != 0 && ts.getProposalById(offer.get().getProposalId()).orElseThrow(ProposalNotFoundException:: new).getUser().equals(user));
+                    || (isTripOwner(trip.getTripId())
+                    || (offer.get().getParentProposal() != null && offer.get().getParentProposal().getUser().equals(user)));
         }
         return false;
     }
