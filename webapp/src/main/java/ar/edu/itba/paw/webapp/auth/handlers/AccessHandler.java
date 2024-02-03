@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.auth.handlers;
 import ar.edu.itba.paw.interfacesServices.AlertService;
 import ar.edu.itba.paw.interfacesServices.TripServiceV2;
 import ar.edu.itba.paw.interfacesServices.UserService;
+import ar.edu.itba.paw.interfacesServices.exceptions.ProposalNotFoundException;
 import ar.edu.itba.paw.models.*;
 import ar.edu.itba.paw.webapp.form.ReviewForm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,9 +112,10 @@ public class AccessHandler {
 
         if (offer.isPresent()) {
             Trip trip = offer.get().getTrip();
-            return offer.get().getUser().getUserId().equals(user.getUserId()) ||
-                    ((trip.getTrucker() != null && user.getUserId().equals(trip.getTrucker().getUserId())) ||
-                            (trip.getProvider() != null && user.getUserId().equals(trip.getProvider().getUserId())));
+            return offer.get().getUser().getUserId().equals(user.getUserId())
+                    || ((trip.getTrucker() != null && user.getUserId().equals(trip.getTrucker().getUserId())) ||
+                            (trip.getProvider() != null && user.getUserId().equals(trip.getProvider().getUserId())))
+                    || (offer.get().getProposalId() != 0 && ts.getProposalById(offer.get().getProposalId()).orElseThrow(ProposalNotFoundException:: new).getUser().equals(user));
         }
         return false;
     }
