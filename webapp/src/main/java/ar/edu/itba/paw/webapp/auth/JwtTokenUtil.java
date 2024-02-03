@@ -50,6 +50,7 @@ public class JwtTokenUtil {
         claims.setSubject(user.getCuit());
         claims.put("userURL", baseUrl + "/users/" + user.getUserId());
         claims.put("authorization", user.getRole());
+        claims.put("refresh", false);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
