@@ -20,7 +20,7 @@ const Register: React.FC = () => {
 
     async function createAccountAction() {
         try {
-            const user = await createUser(new User(0, name, email, cuit, pass, confirmPass, 0, 0, role, '', [], [], [], '', new Alert(0,0,'0',0,0,new Date,new Date, ''), 0));
+            await createUser(new User(0, name, email, cuit, pass, confirmPass, 0, 0, role, '', [], [], [], '', new Alert(0,0,'0',0,0,new Date,new Date, ''), 0));
             message.success('Account created successfully');
             router('/login');
         } catch (error) {
