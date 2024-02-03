@@ -23,6 +23,6 @@
     //added for vitest
     "types": ["vitest/globals"],
   },
-  "include": ["src"],
+  "include": ["src", "public"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
