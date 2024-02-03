@@ -1,8 +1,11 @@
 package ar.edu.itba.paw.services;
 
 
+import ar.edu.itba.paw.interfacesPersistence.SecureTokenDao;
 import ar.edu.itba.paw.interfacesPersistence.UserDao;
+import ar.edu.itba.paw.interfacesServices.exceptions.CuitAlreadyExistsException;
 import ar.edu.itba.paw.interfacesServices.exceptions.UserNotFoundException;
+import ar.edu.itba.paw.models.SecureToken;
 import ar.edu.itba.paw.models.User;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,6 +17,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -31,8 +35,11 @@ public class UserServiceImplTest {
 
 
     @Mock
+    private SecureTokenDao secureTokenDao;
+
+    @Mock
     private UserDao userDao;
-    @Spy
+    @Mock
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @InjectMocks
     private UserServiceImpl userService;
@@ -52,6 +59,7 @@ public class UserServiceImplTest {
                 .thenReturn( new User(USERID, EMAIL, NAME, CUIT, ROLE, PASSWORD, false, null,Locale.ENGLISH));
 
         when(passwordEncoder.encode(anyString())).thenReturn(PASSWORD);
+        when(secureTokenDao.createSecureToken(any(User.class),anyInt())).thenReturn(1);
 
         //2 Ejercitar
         User user = userService.createUser(EMAIL, NAME, CUIT, ROLE, PASSWORD, Locale.ENGLISH);
@@ -65,7 +73,7 @@ public class UserServiceImplTest {
         Assert.assertEquals(PASSWORD, user.getPassword());
     }
 
-    @Test
+    @Test(expected = CuitAlreadyExistsException.class)
     public void testCreateUserWithExistingId() {
         // 1 Precondiciones
         when(userDao.existsUser(anyString()))
@@ -74,17 +82,16 @@ public class UserServiceImplTest {
         //2 Ejercitar
         User user = userService.createUser(EMAIL, NAME, CUIT, ROLE, PASSWORD, Locale.ENGLISH);
 
-        //3 Postcondiciones
-        Assert.assertNull(user);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void testCreateUserWithNullId() {
+        // 1 Precondiciones
+        when(userDao.existsUser(anyString()))
+                .thenReturn(false);
         //2 Ejercitar
-        User user = userService.createUser(EMAIL, NAME, null, ROLE, PASSWORD, Locale.ENGLISH);
 
-        //3 Postcondiciones
-        Assert.assertNull(user);
+        User user = userService.createUser(EMAIL, NAME, null, ROLE, PASSWORD, Locale.ENGLISH);
     }
 
     @Test(expected = UserNotFoundException.class)
@@ -116,6 +123,21 @@ public class UserServiceImplTest {
         Assert.assertEquals(PASSWORD, user.getPassword());
     }
 
+    @Test
+    public void testResetUserPassword() {
+        // 1 Precondiciones
+        User existingUser = new User(USERID, EMAIL, NAME, CUIT, ROLE, PASSWORD, false, null, Locale.ENGLISH);
+        when(userDao.getUserById(anyInt())).thenReturn(Optional.of(existingUser));
+
+        String newPassword = "newPassword";
+        when(passwordEncoder.encode(eq(newPassword))).thenReturn(newPassword);
+
+        // 2 Ejercitar
+        userService.resetPassword(USERID, newPassword);
+
+        // 3 Postcondiciones
+        verify(userDao, times(1)).resetPassword(eq(USERID), eq(newPassword));
+    }
 
 
 }

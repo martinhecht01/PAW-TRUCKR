@@ -173,7 +173,7 @@ public class TripServiceV2ImplTest {
 
 
         //2 Ejercitar
-        Proposal proposal = tripService.createProposal(TRIPID_NOT_EXISTENT, user1, PROPOSAL_DESCRIPTION, PRICE_NOT_EXISTENT, 0,Locale.ENGLISH);
+        Proposal proposal = tripService.createProposal(TRIPID_NOT_EXISTENT, user1, PROPOSAL_DESCRIPTION, PRICE_NOT_EXISTENT, null,Locale.ENGLISH);
 
         //3 Postcondiciones
         Assert.assertNotNull(proposal);

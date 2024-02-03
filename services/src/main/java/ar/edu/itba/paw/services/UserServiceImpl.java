@@ -55,7 +55,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User createUser(String email, String name, String cuit, String role, String password, Locale locale){
-
+       if(cuit == null || cuit.isEmpty() || email == null || email.isEmpty() || name == null || name.isEmpty() || role == null || role.isEmpty() || password == null || password.isEmpty()){
+            LOGGER.warn("User could not be created: missing fields");
+            throw new IllegalArgumentException();
+        }
         if( userDao.existsUser(cuit)){
             LOGGER.warn("User could not be created: id already exists, CUIT: {}", cuit);
             throw new CuitAlreadyExistsException();
