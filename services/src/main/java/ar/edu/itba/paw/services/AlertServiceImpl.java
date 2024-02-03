@@ -70,6 +70,7 @@ public class AlertServiceImpl implements AlertService{
 
     @Override
     public Optional<Alert> getAlertById(Integer alertId) {
-        return alertDao.getAlertById(alertId);
+        Alert toRet = alertDao.getAlertById(alertId).orElseThrow(AlertNotFoundException::new);
+        return Optional.of(toRet);
     }
 }
