@@ -38,9 +38,20 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
-
         //Get JwtToken and UserDetails
-        final String token = header.split(" ")[1].trim();
+        final String token;
+        try {
+            token = header.split(" ")[1].trim();
+            if (!jwtTokenUtil.validateAccessToken(token)) {
+                chain.doFilter(request, response);
+                return;
+            }
+        }
+        catch(Exception e){
+            chain.doFilter(request, response);
+            return;
+        }
+
         UserDetails userDetails = jwtTokenUtil.parseToken(token);
 
         // Validate userDetails

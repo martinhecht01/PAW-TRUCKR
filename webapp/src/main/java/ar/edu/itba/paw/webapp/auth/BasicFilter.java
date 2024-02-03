@@ -83,7 +83,6 @@ public class BasicFilter extends OncePerRequestFilter {
                 authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(credentials[CUIT], credentials[PASSWORD]));
 
-                //add both headers in one go:
                 if (userService.getUserByCuit(credentials[CUIT]).isPresent()){
                     response.addHeader("X-JWT", jwtTokenUtil.createToken(userService.getUserByCuit(credentials[CUIT]).get(), baseUrl(request)));
                     response.addHeader(REFRESH, jwtTokenUtil.createRefreshToken(userService.getUserByCuit(credentials[CUIT]).get()));

@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.auth;
 
 import ar.edu.itba.paw.models.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +15,8 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
 
-    private static final int EXPIRY_TIME = 24 * 60 * 60 * 1000; //1 day (in millis)
-    private static final int REFRESH_EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000; //1 week (in millis)
+    private static final int EXPIRY_TIME = 29 * 1000; //1 day (in millis)
+    private static final int REFRESH_EXPIRY_TIME = 30 * 1000; //1 week (in millis)
 
 
     @Autowired
@@ -77,5 +78,10 @@ public class JwtTokenUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean validateAccessToken(String token) {
+        final Claims claims = Jwts.parserBuilder().setSigningKey(jwtKey).build().parseClaimsJws(token).getBody();
+        return claims.get("refresh", Boolean.class) != null && !(new Date(System.currentTimeMillis()).after(claims.getExpiration()));
     }
 }
