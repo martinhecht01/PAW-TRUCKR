@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import { Publication } from '../models/Publication';
 import { Trip } from '../models/Trip';
 import api from './config'

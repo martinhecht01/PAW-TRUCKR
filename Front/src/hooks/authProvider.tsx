@@ -1,8 +1,6 @@
 import React, { createContext, useContext, ReactNode } from 'react';
 import useAuth from './authState';
 
-import api from '../api/config'
-
 // Define the shape of your authentication context data
 interface AuthContextData {
   isAuthenticated: boolean;

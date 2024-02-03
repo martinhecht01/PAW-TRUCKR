@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import type { MenuProps } from 'antd';
-import { Avatar, Col, Image, Menu, Row, Typography } from 'antd';
+import { Image, Menu } from 'antd';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { getClaims } from '../api/userApi';
 
 import '../styles/main.scss'
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { LogoutOutlined } from '@ant-design/icons';
 import { useAuthContext } from '../hooks/authProvider';
 
 const noAuth = [
@@ -63,10 +62,9 @@ const provider = [
 ]
 
 const NavBar: React.FC = () => {
-  const [current, setCurrent] = useState('/');
   const [role, setRole] = useState<string>('');
 
-  const {t} = useTranslation();
+  const {} = useTranslation();
   const auth = useAuthContext();
 
   const navigate = useNavigate();
@@ -81,13 +79,6 @@ const NavBar: React.FC = () => {
       setRole('');
     }
   }, [auth.isAuthenticated]);
-
-
-  const onClick: MenuProps['onClick'] = (e) => {
-    navigate(`/${e.key}`)
-    setCurrent(e.key);
-  };
-
   function logout(){
     auth.logout();
     navigate('/');

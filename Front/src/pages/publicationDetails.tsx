@@ -35,7 +35,7 @@ const PublicationDetails: React.FC = () => {
                 setUser(user);
                 setIsLoading(false);
             })
-        }).catch((err) => {
+        }).catch(() => {
             router('/404')
         })
     }, []);
@@ -53,8 +53,8 @@ const PublicationDetails: React.FC = () => {
             router('/login')
         }
 
-        getUserByUrl(claims!.userURL).then((user) => {
-            createOffer(Number.parseInt(tripId!), inputValue, description ).then((offer) => {
+        getUserByUrl(claims!.userURL).then(() => {
+            createOffer(Number.parseInt(tripId!), inputValue, description ).then(() => {
                 message.success('Offer sent successfully')
                 router('/sentOffers')
             }
@@ -62,11 +62,8 @@ const PublicationDetails: React.FC = () => {
     })
         
     }
-
-    const formatter = (value: number | undefined) => `$${value}`;
-
     return (
-            <div className="w-100 flex-center">
+        <div className="w-100 flex-center">
             <Row style={{justifyContent: 'space-evenly'}} className="w-80">
                 <Skeleton loading={isLoading}>
                     <Col span={10}>

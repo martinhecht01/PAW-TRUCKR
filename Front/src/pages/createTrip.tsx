@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import {
     Button,
-    Card, Cascader,
-    DatePicker, Image,
+    Card,
+    DatePicker,
     Input,
     InputNumber,
     message,
@@ -18,17 +18,15 @@ import '../styles/main.scss';
 import '../styles/profile.scss';
 import { useTranslation } from "react-i18next";
 import { UploadOutlined } from "@ant-design/icons";
-import { RcFile } from "antd/es/upload";
 import { getCities } from '../api/citiesApi';
 import { getCargoTypes } from '../api/cargoTypeApi';
 import { useNavigate } from 'react-router-dom';
 import { createTrip } from '../api/tripApi';
-import { Trip } from '../models/Trip';
 import { uploadImage } from '../api/imageApi';
 import {Dayjs} from 'dayjs';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
-const { Title, Text } = Typography;
+const { Title} = Typography;
 
 const {RangePicker} = DatePicker;
 

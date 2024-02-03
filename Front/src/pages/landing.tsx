@@ -7,8 +7,6 @@ import '../styles/main.scss';
 import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
 
-const { Title } =Typography;
-
 const Landing: React.FC = () => {
 
     const {t} = useTranslation();
@@ -48,7 +46,7 @@ const Landing: React.FC = () => {
         },
     ];
 
-    const {Title, Text} = Typography;
+    const {Title} = Typography;
 
 
     return (

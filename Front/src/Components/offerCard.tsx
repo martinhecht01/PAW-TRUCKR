@@ -89,7 +89,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                 router('/trips/manage'+id);
             else
                 setAction(actionEvent + 1);
-        }).catch((err) => {
+        }).catch(() => {
             message.error('Error accepting offer');
         }).finally (() =>{
             setIsLoading(false);
