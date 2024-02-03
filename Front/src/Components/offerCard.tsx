@@ -7,7 +7,7 @@ import TextArea from 'antd/es/input/TextArea';
 import { useNavigate } from 'react-router';
 import { Offer } from '../models/Offer';
 import { acceptOffer, getOfferByUrl } from '../api/offerApi';
-import { getClaims, getUserByUrl } from '../api/userApi';
+import { getUserByUrl } from '../api/userApi';
 
 const { Title, Text } =Typography;
 
