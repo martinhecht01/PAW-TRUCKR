@@ -37,6 +37,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
     const [userImg, setUserImg] = useState<string>('');
     const [reviewScore, setReviewScore] = useState<number>(0);
     const [name, setName] = useState<string>('');
+    const [actionEvent, setAction] = useState<number>(0);
 
     console.log(parentOffer);
     console.log(counterOffer);
@@ -78,13 +79,16 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
             })
         }
 
-    }, []);
+    }, [actionEvent]);
 
     async function acceptOfferAction(id: string, action: 'ACCEPT' | 'REJECT' ){
         setIsLoading(true);
         acceptOffer(id, action).then(() => {
             message.success('Success');
-            router('/trips/manage'+id);
+            if(action === 'ACCEPT')
+                router('/trips/manage'+id);
+            else
+                setAction(actionEvent + 1);
         }).catch((err) => {
             message.error('Error accepting offer');
         }).finally (() =>{
