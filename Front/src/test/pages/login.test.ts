@@ -11,7 +11,7 @@ import {loginUser} from "../../api/userApi.tsx";
 // });
 
 afterEach(() => {
-    sessionStorage.clear();
+    localStorage.clear();
     mockLogin.mockClear();
 })
 
@@ -34,5 +34,5 @@ test('Login page', async () => {
 
     await userEvent.click(screen.getByTestId('button-login'));
 
-    expect(sessionStorage.getItem('token')).not.toBeNull();
+    expect(localStorage.getItem('token')).not.toBeNull();
 })

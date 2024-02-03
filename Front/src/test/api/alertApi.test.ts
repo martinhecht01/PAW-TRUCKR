@@ -9,7 +9,7 @@ afterEach(() => {
     mockedGet.mockClear();
     mockedPost.mockClear();
     mockedDelete.mockClear();
-    sessionStorage.clear();
+    localStorage.clear();
 })
 
 const mockedGet = vi.spyOn(api,'get');
@@ -38,7 +38,7 @@ test('Get alert fail', async () => {
 
 test('Delete alert', async () => {
     mockedDelete.mockResolvedValueOnce({data:alertMock,status:200});
-    sessionStorage.setItem('token', 'null');
+    localStorage.setItem('token', 'null');
 
     const res = await deleteAlert(alertMock.id);
 
@@ -53,7 +53,7 @@ test('Delete alert', async () => {
 
 test('Delete alert fail', async () => {
     mockedDelete.mockRejectedValue(new Error('error'));
-    sessionStorage.setItem('token', 'null')
+    localStorage.setItem('token', 'null')
 
     try{
         await deleteAlert(alertMock.id);
@@ -74,7 +74,7 @@ test('Delete alert fail', async () => {
 
 test('Create alert', async () => {
     mockedPost.mockResolvedValueOnce({data:alertMock,status:201});
-    sessionStorage.setItem('token', 'null')
+    localStorage.setItem('token', 'null')
 
     const res = await createAlert(alertMock.maxWeight, alertMock.maxWeight,alertMock.fromDate, alertMock.toDate, alertMock.city, alertMock.cargoType);
 
@@ -100,7 +100,7 @@ test('Create alert', async () => {
 
 test('Create alert fail', async () => {
     mockedPost.mockRejectedValue(new Error('error'));
-    sessionStorage.setItem('token', 'null')
+    localStorage.setItem('token', 'null')
 
     try{
         await createAlert(alertMock.maxWeight, alertMock.maxWeight,alertMock.fromDate, alertMock.toDate, alertMock.city, alertMock.cargoType);

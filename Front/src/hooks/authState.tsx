@@ -4,7 +4,7 @@ const useAuth = () => {
     const [token, setToken] = useState('');
 
     useEffect(() => {
-        const storedToken = sessionStorage.getItem('token');
+        const storedToken = localStorage.getItem('token');
         if (storedToken) {
             setToken(storedToken);
             setIsAuthenticated(true);
@@ -19,7 +19,7 @@ const useAuth = () => {
     const logout = () => {
         // Implement logout logic here
         // For example, remove user data from local storage
-        sessionStorage.removeItem('token');
+        localStorage.removeItem('token');
         setToken('');
         setIsAuthenticated(false);
     };

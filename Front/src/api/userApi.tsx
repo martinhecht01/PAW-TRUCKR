@@ -1,3 +1,4 @@
+import { e } from "vite-node/dist/index-WT31LSgS.js";
 import { Claims } from "../models/Claims";
 import { User } from "../models/User";
 import api from "./config";
@@ -88,16 +89,35 @@ export async function loginUser(email: string, password: string): Promise<string
         })
         console.log(response);
         const token = response.headers['x-jwt'];
-        sessionStorage.setItem("token", token );
+        const refresh = response.headers['x-refresh'];
+        localStorage.setItem("token", token );
+        localStorage.setItem("refresh", refresh);
         return token;
     } catch(e){
         return null
     }
+}
 
+export async function refreshToken(): Promise<string | null> {
+    try {
+        const refreshToken = localStorage.getItem("refresh");
+        const response = await api.get('/', {
+            headers: {
+                'Authorization': `Bearer ${refreshToken}`
+            }
+        })
+        const token = response.headers['x-jwt'];
+        const refresh = response.headers['x-refresh'];
+        localStorage.setItem("token", token );
+        localStorage.setItem("refresh", refresh);
+        return token;
+    } catch(e){
+        return null
+    }
 }
 
 export function getToken(): string | null {
-    return sessionStorage.getItem("token");
+    return localStorage.getItem("token");
 }
 
 export function getClaims() : Claims | null {

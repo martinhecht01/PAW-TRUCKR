@@ -86,7 +86,7 @@ export async function getTrips(
     pageSize: string
 ): Promise<Trip[]> {
 
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
 
     const response = await api.get('/trips', {
         headers: {
@@ -128,7 +128,7 @@ export async function getTripById(id: string): Promise<Trip> {
 
 export async function getTripByUrl(url: string): Promise<Trip> {
 
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
 
     const response = await api.get(url, {
         headers: {

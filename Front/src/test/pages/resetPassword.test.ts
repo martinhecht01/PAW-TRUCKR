@@ -10,7 +10,7 @@ import '@testing-library/jest-dom'
 // });
 
 afterEach(() => {
-    sessionStorage.clear();
+    localStorage.clear();
 })
 
 test('Reset password request', async () => {
