@@ -13,6 +13,21 @@
     flex-direction: row;
 }
 
+.align-center {
+    display: flex;
+    align-items: center;
+}
+
+.align-start {
+    display: flex;
+    align-items: flex-start;
+}
+
+.align-end {
+    display: flex;
+    align-items: flex-end;
+}
+
 .space-between {
     display: flex;
     align-items: center;

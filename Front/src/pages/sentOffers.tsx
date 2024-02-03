@@ -1,14 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Col, Pagination, Row, Skeleton, Typography, message} from 'antd';
+import {Col, Pagination, Row, Skeleton, Typography, message} from 'antd';
 import '../styles/main.scss';
 import OfferCard, { OfferCardProps } from '../Components/offerCard';
-import {User} from "../models/User";
-import {getClaims, getUserById, getUserByUrl} from "../api/userApi";
-import {Offer} from "../models/Offer";
+import {getClaims, getUserByUrl} from "../api/userApi";
 import {deleteOffer, getOffersByUser} from "../api/offerApi";
-import NotFound404 from "./404";
-import {Trip} from "../models/Trip";
-import {getPublicationById, getPublicationByUrl, getTripByUrl} from "../api/tripApi";
+import {getPublicationByUrl} from "../api/tripApi";
 import {useTranslation} from "react-i18next";
 import { useNavigate } from 'react-router-dom';
 
@@ -20,26 +16,11 @@ const SentOffers: React.FC = () => {
 
     const {t} = useTranslation();
     const router = useNavigate();
-
-    const [ user, setUser] = useState<User>();
     const [ offers, setOffers] = useState<OfferCardProps[]>([]);
     const [ isLoading, setIsLoading] = useState<boolean>(true);
 
     const [page, setPage] = useState<number>(1);
     const [maxPage, setMaxPage] = useState<number>(0);
-
-    /*
-export type OfferCardProps = {
-    from: string;
-    to: string;
-    dateFrom: Date;
-    dateTo: Date;
-    userImg: string;
-    reviewScore: number;
-    reviewNumber: number;
-    price: number;
-};
-    */
 
     async function cancelOffer(id: number){
         try{
@@ -63,24 +44,22 @@ export type OfferCardProps = {
         getUserByUrl(claims!.userURL).then((user) => {
             getOffersByUser(user.id, page.toString(), '6').then((offersRet) => {
                 const userPromises = offersRet.map((offer) => {
-                    return getUserByUrl(offer.userUrl)
-                        .then((user) => {
-                            return getPublicationByUrl(offer.tripUrl)
-                                .then((trip) => {
-                                    return {
-                                        from: trip.origin,
-                                        to: trip.destination,
-                                        dateFrom: trip.departureDate,
-                                        dateTo: trip.arrivalDate,
-                                        userImg: user.imageUrl,
-                                        reviewScore: user.rating,
-                                        price: offer.price,
-                                        id: offer.id,
-                                        description: offer.description,
-                                        onCancel: cancelOffer
-                                    };
-                                });
-                        });
+                    return getPublicationByUrl(offer.tripUrl).then((trip) => {
+                                return {
+                                    from: trip.origin,
+                                    to: trip.destination,
+                                    dateFrom: trip.departureDate,
+                                    dateTo: trip.arrivalDate,
+                                    price: offer.price,
+                                    id: offer.id,
+                                    description: offer.description,
+                                    tripId: trip.tripId,
+                                    parentOffer: offer.parentOffer,
+                                    counterOffer: offer.conterOfferUrl,
+                                    tripCreator: trip.creator,
+                                    onCancel: cancelOffer
+                                };
+                    });
                 });
 
                 Promise.all(userPromises).then((offers) => {
@@ -97,20 +76,21 @@ export type OfferCardProps = {
     return (
         <Skeleton loading={isLoading}>
             <Row gutter={20} className='flex-center w-100'>
-                {offers.length === 0 ? <Title level={3}>{t('noOffers')}</Title> : 
+                {offers.length === 0 ? <Title level={3}>{t('sentOffers.noOffers')}</Title> : 
                     <>
                         <Col span={18}>
-                            <Title  level={3}>Sent Offers</Title>
+                            <Title  level={3}>{t('sentOffers.sentOffers')}</Title>
                         </Col>
                         {offers.map((offer) => (
                             <Col span={18}>
-                                <OfferCard from={offer.from} to={offer.to} dateFrom={offer.dateFrom} dateTo={offer.dateTo} userImg={offer.userImg} reviewScore={offer.reviewScore} price={offer.price} id={offer.id} onCancel={cancelOffer} description={offer.description}></OfferCard>
+                                <OfferCard from={offer.from} to={offer.to} dateFrom={offer.dateFrom} dateTo={offer.dateTo} price={offer.price} id={offer.id} onCancel={cancelOffer} description={offer.description} tripId={offer.tripId} key={offer.id} parentOffer={offer.parentOffer} counterOffer={offer.counterOffer} tripCreator={offer.tripCreator}></OfferCard>
                             </Col>
                         ))}
                     </>
                 }
 
             </Row>
+            {offers.length > 0 ?
             <Row className='w-100 flex-center mt-2vh'>
                 <Pagination 
                     onChange={(page) => {setPage(page)}}
@@ -119,6 +99,9 @@ export type OfferCardProps = {
                     current={page}
                 />  
             </Row>
+            :
+            null
+            }
         </Skeleton>
     )
     

@@ -31,13 +31,13 @@ const ResetPasswordRequest: React.FC = () => {
                     </div>
                     {!ResetState ?
                         <div>
-                            <Input placeholder='CUIT 00-00000000-0' className='mb-1vh mt-1vh' onChange={(e) => setCuit(e.target.value)}></Input>
-                            <Button type='primary' className='w-100' onClick={sendRequest}>Reset Password</Button>
+                            <Input placeholder='CUIT 00-00000000-0' data-testid='cuit-resetPasswordRequest' className='mb-1vh mt-1vh' onChange={(e) => setCuit(e.target.value)}></Input>
+                            <Button type='primary' className='w-100' data-testid='button-resetPasswordRequest' onClick={sendRequest}>Reset Password</Button>
                         </div>
 
                         :
 
-                    <Text className='w-100 text-center' type='success'>Email sent! Please check your inbox</Text>
+                    <Text className='w-100 text-center' data-testid='sent-ResetPasswordRequest' type='success'>Email sent! Please check your inbox</Text>
             
                 }
                 

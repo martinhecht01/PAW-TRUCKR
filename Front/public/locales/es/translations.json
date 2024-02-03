@@ -89,7 +89,8 @@
   },
 
   "pastTrips": {
-    "lastUpdate": "Ultima actualización"
+    "lastUpdate": "Ultima actualización",
+    "noPastTrips": "No tienes viajes completados"
   },
 
   "trip": {

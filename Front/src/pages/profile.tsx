@@ -38,8 +38,12 @@ const Profile: React.FC = () => {
         setLoadingReviews(true);
         const claims = getClaims();
 
-        if (claims == null){
+        console.log(claims);
+        console.log(userId);
+
+        if (claims === null && userId === undefined){
             router('/login');
+            return;
         }
 
         userId ? getUserById(userId).then((user) => {
@@ -61,13 +65,7 @@ const Profile: React.FC = () => {
 
         getUserByUrl(claims!.userURL).then((user) => {
             setUser(user);
-
-            if (user.role == 'PROVIDER'){
-                setCompletedTrips(user.providerTrips ? user.providerTrips.length : 0);
-            }
-            else{
-                setCompletedTrips(user.truckerTrips ? user.truckerTrips.length : 0);
-            }
+            setCompletedTrips(user.completedTripsCount);
         
             getReviewsByUser(user.id, page.toString(), pageSize.toString()).then((reviews) => {
                 setReviews(reviews);

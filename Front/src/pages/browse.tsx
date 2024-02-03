@@ -92,7 +92,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     clickUrl: '/trips'
                 }
             }))
-            setMaxPage(Number.parseInt(publications[0].maxPage ? publications[0].maxPage : '1'));
+            if(publications.length > 0)
+                setMaxPage(Number.parseInt(publications[0].maxPage ? publications[0].maxPage : '1'));
             setIsLoading(false);
         })
     }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest, dateRange, cargoType])
@@ -105,30 +106,30 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Title level={3} style={{marginTop: 0}}>Filters</Title>
                     <Divider></Divider>
                     <Text>Origin:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleOriginChange}>
+                    <Select placeholder="-" className="w-100" onChange={handleOriginChange} showSearch allowClear>
                         {cities.map((city, index) => (
                             <Select.Option key={index} value={city}>{city}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
                     <Text>Destination:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleDestinationChange}>
+                    <Select placeholder="-" className="w-100" onChange={handleDestinationChange} showSearch allowClear> 
                         {cities.map((city, index) => (
                             <Select.Option key={index} value={city}>{city}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
                     <Text>Weight:</Text>
-                    <Input type="number" placeholder="-" min={0} onChange={handleWeightChange} suffix='Kg'></Input>
+                    <Input type="number" placeholder="-" min={0} onChange={handleWeightChange} suffix='Kg' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>Volume:</Text>
-                    <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3'></Input>
+                    <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>Price:</Text>
                     <Slider range min={0} max={100000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
                     <Text>Cargo type:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange}>
+                    <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange} allowClear>
                         {cargoTypes.map((cargoType, index) => (
                             <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
                         ))}
@@ -138,11 +139,12 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <RangePicker className="w-100"
                         onChange={(val) => {
                             setDateRange(val);
-                        }}   
+                        }}    
+                        allowClear
                     ></RangePicker>
                     <div className="m-10"></div>
                     <Text>Sort by:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleSortByChange}>
+                    <Select placeholder="-" className="w-100" onChange={handleSortByChange} allowClear>
                         {sortOptions.map((option, index) => (
                             <Select.Option key={index} value={option}>{option}</Select.Option>
                         )

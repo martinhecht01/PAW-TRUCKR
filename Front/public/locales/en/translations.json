@@ -88,7 +88,8 @@
     },
 
     "pastTrips": {
-        "lastUpdate": "Last Update"
+        "lastUpdate": "Last Update",
+        "noPastTrips": "You haven't completed any trips yet"
     },
 
     "trip": {

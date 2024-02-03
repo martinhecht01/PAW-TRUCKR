@@ -40,7 +40,6 @@ const CreateTrip: React.FC = () => {
     const {t} = useTranslation();
     const router = useNavigate();
 
-    const [imageUrl, setImageUrl] = useState<string>('');
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(true); // Start with loading true
     const [cities, setCities] = useState<string[]>([]);
@@ -118,8 +117,6 @@ const CreateTrip: React.FC = () => {
           if (info.file.status === 'done') {
             message.success(`${info.file.name} file uploaded successfully`);
             if (info.file.originFileObj instanceof Blob) {
-              const newImageUrl = URL.createObjectURL(info.file.originFileObj);
-              setImageUrl(newImageUrl);
               setSelectedFile(info.file.originFileObj as File);
           }
           } else if (info.file.status === 'error') {
@@ -157,13 +154,13 @@ const CreateTrip: React.FC = () => {
                     <Row className="w-100 space-around">
                         <Col span={11}>
                             <Title level={5}>{t("common.origin")}</Title>
-                            <Select className='w-100' onChange={(value) => setOrigin(value)}>
+                            <Select className='w-100' onChange={(value) => setOrigin(value)} showSearch>
                                 {cities.map((city) => <Select.Option value={city}>{city}</Select.Option>)}
                             </Select>
                         </Col>
                         <Col span={11}>
                             <Title level={5}>{t('common.destination')}</Title>
-                            <Select className='w-100' onChange={(value) => setDestination(value)}>
+                            <Select className='w-100' onChange={(value) => setDestination(value)} showSearch>
                                 {cities.map((city) => <Select.Option value={city}>{city}</Select.Option>)}
                             </Select>
                         </Col>

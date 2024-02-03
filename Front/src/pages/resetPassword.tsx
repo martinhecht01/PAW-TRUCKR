@@ -44,14 +44,14 @@ const ResetPassword: React.FC = () => {
                 </div>
                 {!ResetState ? 
                     <div>
-                        <Input.Password placeholder='Password' className='mb-1vh' onChange={(e) => setPassword(e.target.value)}></Input.Password>
-                        <Input.Password placeholder='Confirm Password' className='mb-1vh' onChange={(e) => setConfirmPassword(e.target.value)}></Input.Password>
-                        <Button type='primary' className='w-100' onClick={ResetPassword}>Reset Password</Button>
+                        <Input.Password data-testid='password-resetPassword' placeholder='Password' className='mb-1vh' onChange={(e) => setPassword(e.target.value)}></Input.Password>
+                        <Input.Password data-testid='repeatPassword-resetPassword' placeholder='Confirm Password' className='mb-1vh' onChange={(e) => setConfirmPassword(e.target.value)}></Input.Password>
+                        <Button type='primary' data-testid='button-resetPassword' className='w-100' onClick={ResetPassword}>Reset Password</Button>
                     </div>
 
                     :
 
-                    <Text className='w-100 text-center'> Password change successfully! <Link href='/login'>Login back</Link></Text>
+                    <Text data-testid='success-resetPassword' className='w-100 text-center'> Password change successfully! <Link href='/login'>Login back</Link></Text>
             
                 }
                 

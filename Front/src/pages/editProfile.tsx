@@ -1,14 +1,14 @@
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, Input, Row, Typography, Upload, UploadFile, UploadProps, message } from "antd";
+import { Avatar, Button, Card, Col, Input, Row, Typography, Upload, UploadProps, message } from "antd";
 import { useTranslation } from "react-i18next";
 import '../styles/profile.scss';
 import '../styles/main.scss';
 import { useEffect, useState } from "react";
 import React from "react";
 import { User } from "../models/User";
-import { getClaims, getToken, getUserByUrl, updateUser } from "../api/userApi";
+import { getClaims, getUserByUrl, updateUser } from "../api/userApi";
 import { useNavigate } from "react-router-dom";
-import { getImage, uploadImage } from "../api/imageApi";
+import { uploadImage } from "../api/imageApi";
 
 
 const {Title, Text} = Typography;
@@ -35,9 +35,7 @@ const EditProfile: React.FC = () => {
       getUserByUrl(claims?.userURL!).then((user) => {
         setUser(user);
         setName(user.name);
-        getImage(user.imageUrl!).then((image) => {
-          setImageUrl(URL.createObjectURL(image));
-        })
+        setImageUrl(user.imageUrl);
         setIsLoading(false);
 
       })
@@ -45,11 +43,11 @@ const EditProfile: React.FC = () => {
 
     async function save(){
       selectedFile? uploadImage(selectedFile).then((id) => 
-        updateUser(name, id, user!.id).then(() => {
+        updateUser(name ? name : '', id, user!.id).then(() => {
           message.success('Profile updated successfully');
           router('/profile');
         })
-      ) : updateUser(name, user!.imageUrl!, user!.id).then(() => {
+      ) : updateUser(name ? name : '', '', user!.id).then(() => {
         message.success('Profile updated successfully');
         router('/profile');
       })

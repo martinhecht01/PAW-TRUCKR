@@ -5,8 +5,9 @@ import TripCard, { TripCardProps } from "../Components/tripCard";
 import { useEffect, useState } from "react";
 import { getPublications } from "../api/tripApi";
 import { getClaims, getUserByUrl } from "../api/userApi";
+import { getOffersByTrip } from "../api/offerApi";
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
 const MyPublications: React.FC = () => {
 
@@ -30,22 +31,38 @@ const MyPublications: React.FC = () => {
 
         getUserByUrl(getClaims()?.userURL || '').then((user) => {
             getPublications(user.id.toString(), 'TRIP', '', '', 'ACTIVE', 1, 1, '', '', '', 0, 0, activePage, 12, 'departureDate ASC').then((trips) => {
-                setActiveTrips(trips.map((publication) => {
-                    return {
-                        type: 'trip',
-                        from: publication.origin,
-                        to: publication.destination,
-                        fromDate: publication.departureDate,
-                        toDate: publication.arrivalDate,
-                        weight: publication.weight,
-                        volume: publication.volume,
-                        price: publication.price,
-                        image: publication.image,
-                        cargoType: publication.type,
-                        id: publication.tripId,
-                        clickUrl: '/trips/manage'
-                    }
-                }))
+                // Convert each trip to a promise that resolves to the trip details including offers
+                const tripPromises = trips.map((publication) => {
+                    return getOffersByTrip(publication.tripId.toString(), '1', '10').then((offers) => {
+                        // Return a new object for each trip with the required properties
+                        return {
+                            type: 'trip',
+                            from: publication.origin,
+                            to: publication.destination,
+                            fromDate: publication.departureDate,
+                            toDate: publication.arrivalDate,
+                            weight: publication.weight,
+                            volume: publication.volume,
+                            price: publication.price,
+                            image: publication.image,
+                            cargoType: publication.type,
+                            id: publication.tripId,
+                            clickUrl: '/trips/manage',
+                            notifications: offers.length
+                        };
+                    });
+                });
+            
+                // Wait for all promises to resolve, then set the active trips state with the resolved values
+                Promise.all(tripPromises).then((resolvedTrips) => {
+                    setActiveTrips(resolvedTrips as TripCardProps[]);
+                }).catch(error => {
+                    console.error("Failed to load trips or offers", error);
+                    // Handle any errors or failed requests here
+                }).finally(() => {
+                    setIsLoading(false);
+                })
+            
 
                 if(trips.length > 0)
                     setMaxActivePage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'))
@@ -64,12 +81,13 @@ const MyPublications: React.FC = () => {
                             image: publication.image,
                             cargoType: publication.type,
                             id: publication.tripId,
-                            clickUrl: ''
+                            clickUrl: '',
+
                         }
                     }))
                     if(trips.length > 0)
                         setMaxExpiredPage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'))
-                    setIsLoading(false);
+                    
                 })
     
             })
@@ -77,7 +95,7 @@ const MyPublications: React.FC = () => {
     }, [activePage, expiredPage])
 
     return(
-        <Tabs type="line">
+        <Tabs type="line"  tabBarExtraContent={activeTrips.length > 0 ? {right: <Button type="primary" onClick={() => navigate('/trips/create')}>Create publication</Button>} : null}>
             <Tabs.TabPane tab="Active Publications" key="1">
                 <Skeleton loading={isLoading}>
                     {activeTrips.length == 0 ? 

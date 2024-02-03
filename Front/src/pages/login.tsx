@@ -38,13 +38,15 @@ const Login: React.FC = () => {
                         </div>
                         
                         <Input 
-                            placeholder='CUIT 00-00000000-0' 
+                            placeholder='CUIT 00-00000000-0'
+                            data-testid='cuit-login'
                             className='mb-1vh mt-1vh'
                             value={cuit}
                             onChange={(e) => setCuit(e.target.value)}
                         />
                         <Input.Password 
-                            placeholder='Password' 
+                            placeholder='Password'
+                            data-testid='password-login'
                             className='mb-1vh'
                             value={pass}
                             onChange={(e) => setPass(e.target.value)}
@@ -54,7 +56,7 @@ const Login: React.FC = () => {
                         {/* <Checkbox className='mb-1vh'><Text>Remember me</Text></Checkbox>
                         <br></br> */}
                         
-                        <Button type='primary' className='w-100' onClick={loginAction}>Login</Button>
+                        <Button type='primary' className='w-100' data-testid='button-login' onClick={loginAction}>Login</Button>
                     </Card>
                 </Col>
             </div>

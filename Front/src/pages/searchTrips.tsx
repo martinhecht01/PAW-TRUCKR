@@ -1,11 +1,10 @@
-import { Button, Card, Col, DatePicker, Divider, Dropdown, Input, Pagination, Row, Select, Skeleton, Slider, Typography } from 'antd';
+import { Button, Card, Col, DatePicker, Divider, Input, Pagination, Row, Select, Skeleton, Slider, Typography } from 'antd';
 import '../styles/main.scss';
 import { ArrowRightOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { getCities } from '../api/citiesApi';
 import TripCard, { TripCardProps } from '../Components/tripCard';
 import { getPublications } from '../api/tripApi';
-import { RangeValue } from 'rc-picker/lib/interface';
 import { Dayjs } from 'dayjs';
 import { getCargoTypes } from '../api/cargoTypeApi';
 
@@ -73,8 +72,18 @@ const SearchTrips: React.FC = () => {
     async function searchAction(){
         //ACA FALTA EL TYPE!!
         console.log(dates?.[0], dates?.[1])
+
+
         setIsLoading(true);
-        //2024-03-01T12:00:00
+        
+        if(weight < 1){
+            setWeight(1);
+        }
+
+        if(volume < 1){
+            setVolume(1);
+        }
+
         getPublications('', 'TRIP', dates?.[0] ? dates[0].format('YYYY-MM-DDTHH:MM:ss') : '', dates?.[1] ? dates[1].format('YYYY-MM-DDTHH:MM:ss'): '', 'ACTIVE', volume, weight, type, origin, destination, priceRange[0], priceRange[1], page, pageSize, 'departureDate ASC').then((trips) => {
             setPublications(trips.map((publication) => {
                 return {
@@ -127,7 +136,7 @@ const SearchTrips: React.FC = () => {
                             <Divider></Divider>
                             <Row className='w-100 space-between'>
                                 <Col span={11}>
-                                    <Select placeholder="Origin" className='w-100 mb-1vh' onChange={handleOriginChange}>
+                                    <Select placeholder="Origin" className='w-100 mb-1vh' onChange={handleOriginChange} allowClear showSearch>
                                         {cities.map((city, index) => (
                                             <Select.Option key={index} value={city}>{city}</Select.Option>
                                         ))}
@@ -137,25 +146,25 @@ const SearchTrips: React.FC = () => {
                                     <ArrowRightOutlined/>
                                 </Col>
                                 <Col span={11}>
-                                    <Select placeholder="Destination" className='w-100 mb-1vh' onChange={handleDestinationChange}>
+                                    <Select placeholder="Destination" className='w-100 mb-1vh' onChange={handleDestinationChange} allowClear showSearch>
                                         {cities.map((city, index) => (
                                             <Select.Option key={index} value={city}>{city}</Select.Option>
                                         ))}
                                     </Select>
                                 </Col>
                             </Row>
-                            <DatePicker.RangePicker className='w-100 mb-1vh' onChange={(val) => setDates(val)}></DatePicker.RangePicker>
-                            <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange}>
+                            <DatePicker.RangePicker className='w-100 mb-1vh' onChange={(val) => setDates(val)} allowClear></DatePicker.RangePicker>
+                            <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange} allowClear>
                                 {cargoTypes.map((cargoType, index) => (
                                     <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
                                 ))}
                             </Select>
                             <Row className='w-100 space-between'>
                                 <Col span={11}>
-                                    <Input type='number' placeholder='Weight' className='mb-1vh' onChange={handleWeightChange} suffix={'Kg'}></Input>
+                                    <Input type='number' placeholder='Weight' className='mb-1vh' onChange={handleWeightChange} suffix={'Kg'} allowClear></Input>
                                 </Col>
                                 <Col span={12}>
-                                    <Input type='number' placeholder='Volume' className='mb-1vh' onChange={handleVolumeChange} suffix={'M3'}></Input>
+                                    <Input type='number' placeholder='Volume' className='mb-1vh' onChange={handleVolumeChange} suffix={'M3'} allowClear></Input>
                                 </Col>
                             </Row>
                             <Row className='w-100 flex-center'>

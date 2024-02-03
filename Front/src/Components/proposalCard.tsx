@@ -1,8 +1,8 @@
-import React from 'react';
 import { Card, Button, Typography, Divider, Row, Col } from "antd";
 import { useTranslation } from "react-i18next";
 import '../styles/main.scss';
 import '../styles/proposals.scss';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
@@ -15,11 +15,13 @@ export type ProposalProps = {
     userMail?: string,
     counterOffer: string,
     acceptAction: (id: string, action: 'ACCEPT' | 'REJECT') => void,
+    tripId: string
 }
 
 
 const ProposalCard = (props: ProposalProps) => {
     const { t } = useTranslation();
+    const router = useNavigate();
 
     return (
         <div>
@@ -46,7 +48,7 @@ const ProposalCard = (props: ProposalProps) => {
                                 <Button className='m-1vh acceptButton' onClick={() => props.acceptAction(props.id, 'ACCEPT')}>{t('manage.accept')}</Button>
                             </Col>
                             <Col span={6} className='flex-center'>                                
-                                <Button className='m-1vh counterOfferButton'>{t('manage.counterOffer')}</Button>
+                                <Button className='m-1vh counterOfferButton' onClick={() => router(`/sendCounterOffer?tripId=${props.tripId}&offerId=${props.id}`)}>{t('manage.counterOffer')}</Button>
                             </Col>
                             <Col span={6} className='flex-center' >
                                 <Button className='m-1vh rejectButton' onClick={() => props.acceptAction(props.id, 'REJECT')}>{t('manage.reject')}</Button>

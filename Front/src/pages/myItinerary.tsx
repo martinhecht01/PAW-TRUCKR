@@ -5,7 +5,6 @@ import ItineraryTripCard, { ItineraryTripCardProps } from "../Components/itinera
 import { useEffect, useState } from "react";
 import { getTrips } from "../api/tripApi";
 import { getClaims, getUserByUrl } from "../api/userApi";
-import TripCard from "../Components/tripCard";
 
 const MyItinerary: React.FC = () => {
 
