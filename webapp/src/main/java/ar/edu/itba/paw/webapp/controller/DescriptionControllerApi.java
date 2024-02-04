@@ -20,12 +20,12 @@ public class DescriptionControllerApi {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getDescription(@Context Request request){
-        EntityTag eTag = new EntityTag(String.valueOf(DescriptionLinkDto.fromDescriptionLink(uriInfo).hashCode()));
-        Response.ResponseBuilder response = CacheHelper.getConditionalCacheResponse(request, eTag);
-        if (response == null){
-            return Response.ok(DescriptionLinkDto.fromDescriptionLink(uriInfo)).tag(eTag).build();
-        }
-        return response.build();
+//        EntityTag eTag = new EntityTag(String.valueOf(DescriptionLinkDto.fromDescriptionLink(uriInfo).hashCode()));
+//        Response.ResponseBuilder response = CacheHelper.getConditionalCacheResponse(request, eTag);
+//        if (response == null){
+            return Response.ok(DescriptionLinkDto.fromDescriptionLink(uriInfo)).build();
+//        }
+//        return response.build();
     }
 
 }
