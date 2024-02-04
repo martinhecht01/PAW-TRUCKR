@@ -27,7 +27,6 @@ const Register: React.FC = () => {
             if (error instanceof AxiosError && error.response) {
                 message.error(`${error.response.data.message}`);
             } else{
-                console.log(error);
                 message.error('Unexpected error');
             }
         }

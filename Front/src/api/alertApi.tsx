@@ -40,7 +40,6 @@ export async function createAlert(maxWeight:number | undefined, maxVolume:number
         }
     });
     if (response.status != 201){
-        console.log(response)
         throw new Error()
     }
     return Alert.alertFromJson(response.data);

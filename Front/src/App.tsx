@@ -35,7 +35,6 @@ const WebApp = () => {
 
   useEffect(() => {
     const lng = navigator.language;
-    console.log(lng);
     i18n.changeLanguage(lng);
   }, [])
 

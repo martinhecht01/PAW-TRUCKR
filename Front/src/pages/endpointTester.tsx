@@ -31,7 +31,7 @@ const Tester: React.FC = () => {
         try {
             const parsedPayload = JSON.parse(decodedPayload);
             // Do something with the parsed payload
-            console.log(parsedPayload);
+            (parsedPayload);
         } catch (e) {
             console.error('Invalid payload: not a valid JSON string');
         }

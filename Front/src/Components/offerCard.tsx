@@ -39,8 +39,6 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
     const [name, setName] = useState<string>('');
     const [actionEvent, setAction] = useState<number>(0);
 
-    console.log(parentOffer);
-    console.log(counterOffer);
 
     useEffect(() => {
         if(parentOffer){

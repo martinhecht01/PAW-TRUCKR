@@ -80,7 +80,6 @@ const CreateTrip: React.FC = () => {
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 // Log the error for debugging
-                console.log(error);
     
                 if (error.response && Array.isArray(error.response.data)) {
                     error.response.data.forEach(err => {

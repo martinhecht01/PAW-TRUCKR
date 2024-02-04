@@ -25,7 +25,6 @@ const myAlert: React.FC = () => {
     useEffect(() => {
         getAlert().then((alert) => {
             setMyAlert(alert);
-            console.log(alert)
         })
     },[]);
 

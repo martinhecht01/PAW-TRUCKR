@@ -43,7 +43,6 @@ const CreateAlert: React.FC = () => {
             router('/myAlert');
         }
         catch (e: any) {
-            // console.log(e)
             message.error("Unexpected error. Try again.")
 
         }

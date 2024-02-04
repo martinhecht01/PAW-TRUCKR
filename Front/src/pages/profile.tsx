@@ -38,9 +38,6 @@ const Profile: React.FC = () => {
         setLoadingReviews(true);
         const claims = getClaims();
 
-        console.log(claims);
-        console.log(userId);
-
         if (claims === null && userId === undefined){
             router('/login');
             return;
@@ -53,7 +50,8 @@ const Profile: React.FC = () => {
         
             getReviewsByUser(user.id, page.toString(), pageSize.toString()).then((reviews) => {
                 setReviews(reviews);
-                setMaxPage(reviews[0].maxPage ? Number.parseInt(reviews[0].maxPage) : 0);
+                if(reviews.length > 0)
+                    setMaxPage(reviews[0].maxPage ? Number.parseInt(reviews[0].maxPage) : 0);
                 setIsLoading(false);
             })
 
@@ -69,7 +67,8 @@ const Profile: React.FC = () => {
         
             getReviewsByUser(user.id, page.toString(), pageSize.toString()).then((reviews) => {
                 setReviews(reviews);
-                setMaxPage(reviews[0].maxPage ? Number.parseInt(reviews[0].maxPage) : 0);
+                if(reviews.length > 0)
+                    setMaxPage(reviews[0].maxPage ? Number.parseInt(reviews[0].maxPage) : 0);
                 setIsLoading(false);
             })
 

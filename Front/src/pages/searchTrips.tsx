@@ -60,7 +60,6 @@ const SearchTrips: React.FC = () => {
             getCities().then((cities) => {
                 setCities(cities.map((city) => city.cityName));
                 getCargoTypes().then((cargoTypes) => {
-                    console.log(cargoTypes)
                     setCargoTypes(cargoTypes);
                     setIsLoading(false);
                 })
@@ -70,10 +69,6 @@ const SearchTrips: React.FC = () => {
     }, [page])
 
     async function searchAction(){
-        //ACA FALTA EL TYPE!!
-        console.log(dates?.[0], dates?.[1])
-
-
         setIsLoading(true);
         
         if(weight < 1){

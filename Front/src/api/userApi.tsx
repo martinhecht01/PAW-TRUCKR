@@ -2,6 +2,7 @@ import { Claims } from "../models/Claims";
 import { User } from "../models/User";
 import api from "./config";
 
+
 const usersEndpoint = '/users'
 
 export async function createUser(user: User): Promise<User> {
@@ -86,9 +87,9 @@ export async function loginUser(email: string, password: string): Promise<string
                 'Authorization': `Basic ${credentials}`
             }
         })
-        console.log(response);
         const token = response.headers['x-jwt'];
         const refresh = response.headers['x-refresh'];
+
         localStorage.setItem("token", token );
         localStorage.setItem("refresh", refresh);
         return token;
@@ -97,26 +98,37 @@ export async function loginUser(email: string, password: string): Promise<string
     }
 }
 
-export async function refreshToken(): Promise<string | null> {
-    try {
-        const refreshToken = localStorage.getItem("refresh");
-        const response = await api.get('/', {
-            headers: {
-                'Authorization': `Bearer ${refreshToken}`
-            }
-        })
-        const token = response.headers['x-jwt'];
-        const refresh = response.headers['x-refresh'];
-        localStorage.setItem("token", token );
-        localStorage.setItem("refresh", refresh);
-        return token;
-    } catch(e){
-        return null
+export async function refreshToken(): Promise<void> {
+    const refreshToken = localStorage.getItem("refresh");
+    const response = await api.get('/', {
+        headers: {
+            'Authorization': `Bearer ${refreshToken}`
+        }
+    })
+
+    if(response.status !== 200) {
+        localStorage.clear();
+        window.location.href = '/'
     }
+
+    console.log('refreshed')
+
+    console.log("Old " + localStorage.getItem("token"))
+
+    const token = response.headers['x-jwt'];
+    const refresh = response.headers['x-refresh'];
+    localStorage.setItem("token", token );
+    localStorage.setItem("refresh", refresh);
+    console.log("New " + localStorage.getItem("token"))
+
 }
 
 export function getToken(): string | null {
-    return localStorage.getItem("token");
+    const token = localStorage.getItem("token");
+    if(token == null) {
+        return null;
+    }
+    return token;
 }
 
 export function getClaims() : Claims | null {

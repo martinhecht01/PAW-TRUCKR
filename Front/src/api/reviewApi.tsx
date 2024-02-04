@@ -27,7 +27,6 @@ export async function getReview(review: Review): Promise<Review> {
 export async function getReviewsByUser(id: number, page: string, pageSize: string): Promise<Review[]> {
     const response = await api.get(`${reviewsEndpoint}?userId=${id}&page=${page}&pageSize=${pageSize}`);
 
-    console.log(response.data)
 
     const toRet = []
 
@@ -48,7 +47,6 @@ export async function getReviewsByURL(url: string): Promise<Review[]> {
         }
     });
 
-    console.log(response.data)
 
     const toRet = []
     for (const review of response.data) {

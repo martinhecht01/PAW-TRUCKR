@@ -13,13 +13,10 @@ export async function uploadImage(image: File): Promise<string> {
         }
     });
 
-    console.log(response.data['imageId'])
     return response.data['imageId'];
 }
 
-export async function getImage(URL: string): Promise<File> {
-    console.log("URL img " + URL)
-    
+export async function getImage(URL: string): Promise<File> {    
     const response = await api.get(URL)
     return response.data as File;  
 };

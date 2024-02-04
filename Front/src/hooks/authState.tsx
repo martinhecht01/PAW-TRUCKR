@@ -20,6 +20,7 @@ const useAuth = () => {
         // Implement logout logic here
         // For example, remove user data from local storage
         localStorage.removeItem('token');
+        localStorage.removeItem('regresh')
         setToken('');
         setIsAuthenticated(false);
     };
