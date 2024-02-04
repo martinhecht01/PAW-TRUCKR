@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth.handlers;
 
+import ar.edu.itba.paw.webapp.dto.ErrorDto;
 import ar.edu.itba.paw.webapp.exceptions.AuthErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -21,18 +22,12 @@ public class TruckrAuthenticationEntryPoint implements org.springframework.secur
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException {
-        response.addHeader("WWW-Authenticate", "Basic realm=realmName must be specified");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON);
-        String message;
 
-        try {
-            message = messageSource.getMessage(e.getMessage(), null, request.getLocale());
-        } catch (Exception ex) {
-            response.getWriter().write(String.format("{\n \"message\": \"%s\"\n}", e.getMessage()));
-            return;
-        }
+        String message = messageSource.getMessage("exception.Unauthorized", null, LocaleContextHolder.getLocale());
         response.getWriter().write(String.format("{\n \"message\": \"%s\"\n}", message));
+
 
     }
 }
