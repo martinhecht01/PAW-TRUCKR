@@ -23,7 +23,6 @@ export type ProposalProps = {
     userId: string
 }
 
-
 const ProposalCard = (props: ProposalProps) => {
     const { t } = useTranslation();
     const router = useNavigate();
@@ -40,16 +39,16 @@ const ProposalCard = (props: ProposalProps) => {
         } else {
             setIsLoading(false);
         }
-    }, [])
+    }, [props.counterOffer])
 
     async function cancelOffer(id: number){
         try{
-            deleteOffer(id);
+            await deleteOffer(id);
             setCounterOfferObject(undefined);
-            message.success('Counter offer canceled successfully');
+            message.success(t('messages.counterOfferCanceledSuccess'));
         }
         catch (e){
-            message.error('Error deleting offer')
+            message.error(t('messages.errorDeletingOffer'));
         }
     }
 
@@ -61,7 +60,7 @@ const ProposalCard = (props: ProposalProps) => {
                         <Row className="space-between">
                             <Avatar icon={<UserOutlined />} src={props.userPhoto} size={64} />
                             <Title level={5} className='m-0'>{props.userName}</Title>
-                            <Title level={5} className='m-0'><StarFilled/> {props.rating == 0 ? '-' : Number(props.rating).toFixed(1)}</Title>
+                            <Title level={5} className='m-0'><StarFilled/> {props.rating === 0 ? '-' : Number(props.rating).toFixed(1)}</Title>
                         </Row>
                     </Col>
                     <Col span={24}>

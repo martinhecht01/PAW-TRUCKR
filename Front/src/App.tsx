@@ -24,10 +24,10 @@ import SendCounterOffer from "./pages/sendCounterOffer.tsx";
 import CustomLayout from './Components/customLayout.tsx';
 import CreateAlert from "./pages/createAlert";
 import SentOffers from "./pages/sentOffers";
-import Tester from './pages/endpointTester.tsx';
 import AuthProvider from './hooks/authProvider.tsx';
 import { CustomRoute } from './Components/PrivateRoute.tsx';
 import InternalError500 from './pages/500.tsx';
+import AccessDenied403 from './pages/403.tsx';
 
 
 const WebApp = () => {
@@ -52,8 +52,6 @@ const WebApp = () => {
       <AuthProvider>
         <CustomLayout>
           <Routes>
-
-            <Route path='/test' element={<Tester/>}/>
             <Route path="/" element={<Landing/>}/>
             <Route path="/trips" element={<CustomRoute render={() => <BrowseTrips tripOrRequest='TRIP'/>} noAuth possibleRoles={['PROVIDER']}></CustomRoute>}/>
             <Route path="/cargo" element={<CustomRoute render={() => <BrowseTrips tripOrRequest='REQUEST'/>} noAuth possibleRoles={['TRUCKER']}></CustomRoute>}/>
@@ -84,6 +82,7 @@ const WebApp = () => {
             <Route path="*" element={<NotFound404/>} />
             <Route path="/404" element={<NotFound404/>} />
             <Route path='/500' element={<InternalError500/>}/>
+            <Route path='/403' element={<AccessDenied403/>}/>
           </Routes>
         </CustomLayout>
       </AuthProvider>

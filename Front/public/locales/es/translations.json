@@ -29,8 +29,13 @@
     "HowTruckrWorks": "Cómo funciona Truckr?",
     "ForTrucker": "Para Camioneros",
     "ForProvider": "Para Proveedores",
-    "BrowseCargo": "Buscar Cargamento"
-
+    "BrowseCargo": "Buscar Cargamento",
+    "BrowseTrips": "Buscar Viajes",
+    "SearchTrips": "Buscar Viajes",
+    "myItinerary": "Mi Itinerario",
+    "MyPublications": "Mis Publicaciones",
+    "SentOffers": "Ofertas Enviadas",
+    "MyAlert": "Mi Alerta"
   }
 ,
   "provider": "Proveedor",
@@ -68,7 +73,9 @@
     "delete": "Borrar",
     "cargoType": "Tipo de Carga",
     "availableWeight": "Peso Disponible",
+    "avlWeight": "Peso Disponible",
     "availableVolume": "Volumen Disponible",
+    "avlVolume": "Volumen Disponible",
     "suggestedPrice": "Precio Sugerido",
     "arrivalDate": "Fecha de Llegada",
     "departureDate": "Fecha de Salida",
@@ -87,7 +94,11 @@
     "enterPriceValidation": "El precio debe ser entre 1 y 1.000.000",
     "upload": "Subir imagen",
     "save": "Guardar",    
-    "sendOffer": "Enviar oferta"
+    "sendOffer": "Enviar oferta",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "dateRange": "Rango de fechas"
+
   },
 
   "profile": {
@@ -97,7 +108,11 @@
     "editProfile":"Editar Perfil",
     "completedTrips": "Viajes completos",
     "profile": "Perfil",
-    "role": "Rol"
+    "role": "Rol",
+    "picture": "Foto de perfil",
+    "updateSuccess": "Perfil actualizado con éxito",
+    "fileUploaded": "Archivo subido con éxito",
+    "fileUploadError": "Error subiendo archivo"
   },
 
   "review": {
@@ -118,7 +133,9 @@
     "uploadClick": "Click para subir",
     "uploadSuccessful": "Archivo subido exitosamente",
     "uploadError": "Error al subir el archivo",
-    "notPng": "El archivo debe ser una imagen .png"
+    "notPng": "El archivo debe ser una imagen .png",
+    "requireImageForPublication": "Se requiere una imagen para la publicación",
+    "errorCreatingPublicatoin": "Error creando publicacion"
   },
 
   "manage": {
@@ -129,12 +146,106 @@
     "accept": "Aceptar",
     "counterOffer": "Contraoferta",
     "reject": "Rechazar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "offeredPrice": "Precio Ofrecido"  
   },
 
   "sentOffers": {
     "noOffers": "No has mandado ninguna oferta",
     "sentOffers": "Ofertas enviadas"
+  },
+
+  "offerCard": {
+    "originalOffer": "Oferta original",
+    "yourOffer": "Tu oferta",
+    "counterOffer": "Contraoferta",
+    "cancel": "Cancelar",
+    "reject": "Rechazar",
+    "accept": "Aceptar",
+    "errorGettingOffer": "Error obteniendo oferta",
+    "errorGettingCounterOffer": "Error obteniendo contraoferta",
+    "errorAcceptingOffer": "Error aceptando oferta",
+    "offerAccepted": "Oferta aceptada"
+  },
+
+  "messages": {
+    "counterOfferCanceledSuccess": "Contraoferta cancelada con éxito",
+    "errorDeletingOffer": "Error borrando oferta",
+    "alertCreatedSuccess": "Alerta creada con éxito",
+    "unexpectedErrorTryAgain": "Ocurrió un error inesperado. Por favor intente nuevamente"
+  },
+
+  "errorPages":{
+    "error404": "Error 404",
+    "error404Message": "La página que estás buscando no existe",
+    "error500": "Error 500",
+    "error500Message": "Ocurrió un error inesperado",
+    "error403": "Error 403",
+    "error403Message": "No tienes permisos para acceder a esta página",
+    "back": "Volver"
+  },
+
+  "filters": {
+    "title": "Filtros",
+    "origin": "Origen",
+    "destination": "Destino",
+    "weight": "Peso",
+    "volume": "Volumen",
+    "price": "Precio",
+    "cargoType": "Tipo de Carga",
+    "dateRange": "Rango de Fechas",
+    "sortBy": "Ordenar por"
+  },
+
+  "validation": {
+    "cargoTypeRequired": "Tipo de carga es requerido",
+    "originRequired": "Origen es requerido",
+    "dateRangeRequired": "Fecha de inicial requerida",
+    "invalidValueForVolumeWeight": "Valor inválido para volumen/peso",
+    "volumeRequired": "Volumen es requerido",
+    "weightRequired": "Peso es requerido"
+  },
+  
+  "login": {
+    "title": "Iniciar sesión",
+    "newToTruckr": "¿Eres nuevo en Truckr?",
+    "signUpNow": "Regístrate ahora",
+    "cuitRequired": "¡Por favor, ingresa tu CUIT!",
+    "invalidCUITFormat": "¡Formato de CUIT inválido!",
+    "passwordRequired": "¡Por favor, ingresa tu contraseña!",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "loginButton": "Iniciar sesión",
+    "invalidCredentials": "Credenciales inválidas o usuario no verificado",
+    "loginFailed": "Error al iniciar sesión. Por favor, intenta de nuevo.",
+    "cuitPlaceholder": "CUIT 00-00000000-0",
+    "passwordPlaceholder": "Contraseña"
+  },
+
+  "register": {
+    "cuitPlaceholder": "CUIT 00-00000000-0",
+    "namePlaceholder": "Nombre",
+    "emailPlaceholder": "Correo electrónico",
+    "passwordPlaceholder": "Contraseña",
+    "confirmPasswordPlaceholder": "Confirmar contraseña",
+    "createAccount": "Crear cuenta",
+    "alreadyAUser": "¿Ya eres usuario?",
+    "login": "Iniciar sesión",
+    "accountCreatedSuccessfully": "Cuenta creada exitosamente",
+    "unexpectedError": "Error inesperado",
+    "createAccountButton": "Crear cuenta",
+    "pleaseInputYourCUIT": "Por favor, ingresa tu CUIT",
+    "invalidCUITFormat": "Formato de CUIT inválido",
+    "pleaseInputYourName": "Por favor, ingresa tu nombre",
+    "invalidNameFormat": "Formato de nombre inválido",
+    "pleaseInputYourEmail": "Por favor, ingresa tu correo electrónico",
+    "inputNotValidEmail": "El correo ingresado no es válido",
+    "pleaseSelectYourRole": "Por favor, selecciona tu rol",
+    "trucker": "Camionero",
+    "provider": "Proveedor",
+    "pleaseInputYourPassword": "Por favor, ingresa tu contraseña",
+    "passwordAtLeastCharacters": "La contraseña debe tener al menos 6 caracteres",
+    "pleaseConfirmYourPassword": "Por favor, confirma tu contraseña",
+    "passwordsDoNotMatch": "Las contraseñas no coinciden"
   }
 }
   

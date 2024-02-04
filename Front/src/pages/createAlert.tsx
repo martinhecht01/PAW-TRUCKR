@@ -1,26 +1,17 @@
 import React, { useEffect } from 'react';
-import {
-  Button,
-  Card,
-  DatePicker,
-  Input,
-  Form,
-  Select,
-  message
-} from 'antd';
+import { Button, Card, DatePicker, Input, Form, Select, message } from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import { useTranslation } from "react-i18next";
-import { getCargoTypes } from "../api/cargoTypeApi.tsx";
-import { getCities } from "../api/citiesApi.tsx";
-import { createAlert } from "../api/alertApi.tsx";
+import { getCargoTypes } from "../api/cargoTypeApi";
+import { getCities } from "../api/citiesApi";
+import { createAlert } from "../api/alertApi";
 import { useNavigate } from "react-router-dom";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
 
-
-const CreateAlertForm: React.FC = () => {
+const CreateAlertForm = () => {
     const { t } = useTranslation();
     const router = useNavigate();
     const [form] = Form.useForm();
@@ -44,15 +35,16 @@ const CreateAlertForm: React.FC = () => {
         const departureDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : undefined;
         const arrivalDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss') : undefined;
 
-        if((maxVolume && maxVolume < 1) || (maxWeight && maxWeight < 1)){
-            message.error("Invalid value for max volume or max weight");
+        if ((maxVolume && maxVolume < 1) || (maxWeight && maxWeight < 1)) {
+            message.error(t("validation.invalidValueForVolumeWeight"));
             return;
         }
         try {
             await createAlert(Number(maxWeight), Number(maxVolume), departureDate, arrivalDate, selectedCity, selectedCargoType);
+            message.success(t("messages.alertCreatedSuccess"));
             router('/myAlert');
         } catch (e) {
-            message.error("Unexpected error. Try again.");
+            message.error(t("messages.unexpectedErrorTryAgain"));
         }
     };
 
@@ -67,49 +59,40 @@ const CreateAlertForm: React.FC = () => {
                     <Form.Item
                         name="selectedCargoType"
                         label={t("common.cargoType")}
-                        rules={[{ message: t("validation.cargoType.Required") }]}
+                        rules={[{ message: t("validation.cargoTypeRequired") }]}
                     >
                         <Select options={cargoOptions} allowClear />
                     </Form.Item>
 
                     <Form.Item
                         name="selectedCity"
-                        label={t("common.origin") + "*"}
-                        rules={[{ required: true, message: t("validation.origin.Required") }]}
+                        label={t("common.origin")}
+                        rules={[{ required: true, message: t("validation.originRequired") }]}
                     >
                         <Select
                             showSearch
                             options={cityOptions}
+                            allowClear
                         />
                     </Form.Item>
 
                     <Form.Item
                         name="dateRange"
-                        label={t("common.departureDate") + "* - " + t("common.arrivalDate")}
-                        rules={[{ type: 'array', required: true, message: t("validation.dateRange.Required") }]}
+                        label={t("common.dateRange")}
+                        rules={[{ type: 'array', required: true, message: t("validation.dateRangeRequired") }]}
                     >
-                        <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))}  allowEmpty={[false, true]} className='w-100'/>
+                        <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} allowEmpty={[false, true]} className='w-100'/>
                     </Form.Item>
 
                     <Form.Item
                         name="maxVolume"
                         label={t("common.maxVolume")}
-                        rules={[
-                            { 
-                                required: false, 
-                                message: t("validation.Volume.Required"),
-                                validator: (_, value) => {
-                                    if (!value) {
-                                        return Promise.resolve();
-                                    }
-                                    const numberValue = Number(value);
-                                    if (numberValue >= 1 && numberValue <= 1000) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(new Error(t("validation.Volume.Range")));
-                                }
-                            }
-                        ]}
+                        rules={[{
+                            message: t("validation.volumeRequired"),
+                            type: 'number',
+                            min: 1,
+                            max: 1000,
+                        }]}
                     >
                         <Input type="number" suffix="M3" allowClear />
                     </Form.Item>
@@ -117,26 +100,15 @@ const CreateAlertForm: React.FC = () => {
                     <Form.Item
                         name="maxWeight"
                         label={t('common.maxWeight')}
-                        rules={[
-                            { 
-                                required: false, 
-                                message: t("validation.Weight.Required"),
-                                validator: (_, value) => {
-                                    if (!value) {
-                                        return Promise.resolve();
-                                    }
-                                    const numberValue = Number(value);
-                                    if (numberValue >= 1 && numberValue <= 100000) {
-                                        return Promise.resolve();
-                                    }
-                                    return Promise.reject(new Error(t("validation.Weight.Range")));
-                                }
-                            }
-                        ]}
+                        rules={[{
+                            message: t("validation.weightRequired"),
+                            type: 'number',
+                            min: 1,
+                            max: 100000,
+                        }]}
                     >
                         <Input type="number" suffix="kg" allowClear />
                     </Form.Item>
-
 
                     <Form.Item>
                         <Button type="primary" htmlType="submit">{t("myAlert.create")}</Button>

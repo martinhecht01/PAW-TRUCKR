@@ -8,55 +8,56 @@ import '../styles/main.scss'
 import { LogoutOutlined } from '@ant-design/icons';
 import { useAuthContext } from '../hooks/authProvider';
 
+// Ensure these labels are translated in your JSON file
 const noAuth = [
   {
-    label: 'Browse Trips',
+    label: 'BrowseTrips',
     key: 'trips',
   },
   {
-    label: 'Browse Cargo',
+    label: 'BrowseCargo',
     key: 'cargo',
   }
 ];
 
 const trucker = [
   {
-    label: 'Browse Cargo',
+    label: 'BrowseCargo',
     key: 'cargo',
   },
   {
-    label: 'My Itinerary',
+    label: 'myItinerary',
     key: 'myItinerary',
   },
   {
-    label: 'My Publications',
+    label: 'MyPublications',
     key: 'myPublications',
   },
   {
-    label: 'Sent Offers',
+    label: 'SentOffers',
     key: 'sentOffers',
   },
   {
-    label: 'My Alert',
+    label: 'MyAlert',
     key: 'myAlert',
   }
 ]
 
 const provider = [
   {
-    label: 'Search Trips',
+    label: 'SearchTrips',
     key: 'searchTrips'
   },
   {
-    label: 'My Itinerary',
+    label: 'myItinerary',
     key: 'myItinerary',
   },
   {
-    label: 'My Publications',
+    label: 'MyPublications',
     key: 'myPublications',
   },
   {
-    label: 'Sent Offers',
+    label: 'SentOffers',
     key: 'sentOffers',
   }
 ]
@@ -64,7 +65,7 @@ const provider = [
 const NavBar: React.FC = () => {
   const [role, setRole] = useState<string>('');
 
-  const {} = useTranslation();
+  const { t } = useTranslation();
   const auth = useAuthContext();
 
   const navigate = useNavigate();
@@ -79,6 +80,7 @@ const NavBar: React.FC = () => {
       setRole('');
     }
   }, [auth.isAuthenticated]);
+  
   function logout(){
     auth.logout();
     navigate('/');
@@ -91,17 +93,16 @@ return (
         role === 'TRUCKER' ? 
         <>
           {trucker.map((item) => (
-              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
+              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{t("landing." + item.label)}</Menu.Item>
           ))}
           <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>{getClaims()?.cuit}</Menu.Item>
           <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
         </>
-                   
         : 
         role === 'PROVIDER' ? 
         <>
             {provider.map((item) => (
-              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
+              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{t("landing."+item.label)}</Menu.Item>
             ))}
             <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>{getClaims()?.cuit}</Menu.Item>
             <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
@@ -109,10 +110,10 @@ return (
         : 
           <>
             {noAuth.map((item) => (
-              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
+              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{t('landing.' + item.label)}</Menu.Item>
             ))}
-            <Menu.Item key="login" style={{marginLeft: 'auto'}} onClick={() => navigate('/login')}>Ingresar</Menu.Item>
-            <Menu.Item key="register" style={{fontWeight: 'normal'}} onClick={() => navigate('/register')}>Crear cuenta</Menu.Item>
+            <Menu.Item key="login" style={{marginLeft: 'auto'}} onClick={() => navigate('/login')}>{t('common.login')}</Menu.Item>
+            <Menu.Item key="register" style={{fontWeight: 'normal'}} onClick={() => navigate('/register')}>{t('common.register')}</Menu.Item>
           </>
       }
       

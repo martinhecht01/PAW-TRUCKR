@@ -45,7 +45,7 @@ const EditProfile: React.FC = () => {
 
         action().then((imageId) => {
             updateUser(name, imageId, user!.id).then(() => {
-                message.success('Profile updated successfully');
+                message.success(t("profile.updateSuccess"));
                 router('/profile');
             });
         });
@@ -60,14 +60,14 @@ const EditProfile: React.FC = () => {
         maxCount: 1,
         onChange(info) {
             if (info.file.status === 'done') {
-                message.success(`${info.file.name} file uploaded successfully`);
+                message.success(t("profile.fileUploaded"));
                 if (info.file.originFileObj instanceof Blob) {
                     const newImageUrl = URL.createObjectURL(info.file.originFileObj);
                     setImageUrl(newImageUrl);
                     setSelectedFile(info.file.originFileObj as File);
                 }
             } else if (info.file.status === 'error') {
-                message.error(`${info.file.name} file upload failed.`);
+                message.error(t("profile.fileUploadError"));
             }
         },
     };
@@ -81,7 +81,7 @@ const EditProfile: React.FC = () => {
                             <div className='flex-center'>
                                 <Avatar size={124} icon={<UserOutlined />} src={imageUrl} />
                             </div>
-                            <Title level={5}>Profile Picture</Title>
+                            <Title level={5}>{t('profile.picture')}</Title>
                             <Upload {...uploadProps}>
                                 <Button icon={<UploadOutlined />}>{t("common.upload")}</Button>
                             </Upload>

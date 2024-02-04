@@ -1,6 +1,7 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Badge, Card, Divider, Image, Typography } from "antd";
 import Meta from "antd/es/card/Meta";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 
 const {Title, Text} = Typography;
@@ -25,6 +26,7 @@ export type TripCardProps = {
 
 const TripCard = (props: TripCardProps) => {
     const router = useNavigate();
+    const {t} = useTranslation()
     return(
        
             <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} 
@@ -33,9 +35,9 @@ const TripCard = (props: TripCardProps) => {
                         <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>} placement="start" color="blue" >
                             {props.notifications ? <Badge size="default" count={props.notifications} > 
                                     <Image
-                                        style={{ width: '100%',       // Full width of the container
-                                        height: '350px',     // Fixed height for all images
-                                        objectFit: 'cover',  // Cover the space without stretching
+                                        style={{ width: '100%',
+                                        height: '350px',
+                                        objectFit: 'cover',
                                         objectPosition: 'center center'}}
                                         alt="example"
                                         src={props.image}
@@ -43,9 +45,9 @@ const TripCard = (props: TripCardProps) => {
                                     />
                                 </Badge> :
                                     <Image
-                                    style={{ width: '100%',       // Full width of the container
-                                    height: '350px',     // Fixed height for all images
-                                    objectFit: 'cover',  // Cover the space without stretching
+                                    style={{ width: '100%',
+                                    height: '350px',
+                                    objectFit: 'cover',
                                     objectPosition: 'center center'}}
                                     alt="example"
                                     src={props.image}
@@ -83,11 +85,11 @@ const TripCard = (props: TripCardProps) => {
                             <div style={{display: 'flex'}}>
                                 <div style={{width: '50%'}}>
                                     <Title level={5} style={{margin: 0}}>{props.weight} kg</Title>
-                                    <Text>Avl. Weight</Text>
+                                    <Text>{t('common.avlWeight')}</Text>
                                 </div>
                                 <div style={{width: '50%'}}>
                                     <Title level={5} style={{margin: 0}}>{props.volume} m3</Title>
-                                    <Text>Avl. Volume</Text>
+                                    <Text>{t('common.avlVolume')}</Text>
                                 </div>
                             </div>
                             <Divider style={{margin: 7}}></Divider>

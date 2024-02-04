@@ -59,12 +59,23 @@ const CreateTrip: React.FC = () => {
 
     }, [])
 
+    /*
+    "create": {
+      "uploadClick": "Click to Upload",
+      "uploadSuccessful": "File uploaded successfully",
+      "uploadError": "File uploaded failed",
+      "notPng": "File is not a png",
+      "requireImageForPublication": "An image is required for the publication",
+      "errorCreatingPublication": "Error creating publication"
+    },
+    */
+
     async function createTripAction(values: any) {
         try {
             var image = '';
 
             if(!selectedFile){
-                message.error("Please upload an image for your trip.");
+                message.error(t("create.requireImageForPublication"));
                 return;
             }
 
@@ -75,7 +86,7 @@ const CreateTrip: React.FC = () => {
             const trip = await createTrip(licensePlate, availableWeight, availableVolume, price, dateRange[0].format('YYYY-MM-DDTHH:mm:ss'), dateRange[1].format('YYYY-MM-DDTHH:mm:ss'), cargoType, origin, destination, image);
             router('/trips/manage/' + trip.tripId);
         } catch (error) {
-            message.error("An error occurred while creating the trip.");
+            message.error(t("create.errorCreatingPublication"));
         }
     }
     const props: UploadProps = {
@@ -91,12 +102,12 @@ const CreateTrip: React.FC = () => {
             console.log(info.file, info.fileList);
           }
           if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
+            message.success(t("create.uploadSuccessful"));
             if (info.file.originFileObj instanceof Blob) {
               setSelectedFile(info.file.originFileObj as File);
           }
           } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+            message.error(t("create.uploadError"));
           }
         },
     };
@@ -111,7 +122,7 @@ const CreateTrip: React.FC = () => {
                     <Card title={t("trip.createPublication")} className="w-100">
                         <div className='w-100 text-center flex-center'>
                             <Upload {...props}>
-                                <Button className='w-100' icon={<UploadOutlined />}>Click to Upload Image</Button>
+                                <Button className='w-100' icon={<UploadOutlined />}>{t('create.uploadClick')}</Button>
                             </Upload>
                         </div>
                         <Row gutter={16} className='mt-2vh'>

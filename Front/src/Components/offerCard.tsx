@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router';
 import { Offer } from '../models/Offer';
 import { acceptOffer, getOfferByUrl } from '../api/offerApi';
 import { getUserByUrl } from '../api/userApi';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } =Typography;
 
@@ -29,6 +30,7 @@ export type OfferCardProps = {
 
 
 const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, id, onCancel, description, tripId, parentOffer, counterOffer, tripCreator}) => {
+    const { t } = useTranslation(); // Initialize useTranslation hook
     const router = useNavigate();
 
     const [parentOfferObject, setParentOffer] = useState<Offer>();
@@ -50,7 +52,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                     setName(user.name);
                 })
             }).catch(() => {
-                message.error('Error getting offer');
+                message.error(t('offerCard.errorGettingOffer'));
             }).finally(() => {
                 setIsLoading(false);
             })
@@ -60,7 +62,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
             getOfferByUrl(counterOffer).then((offer) => {
                 setCounterOffer(offer);
             }).catch(() => {
-                message.error('Error getting counter offer');
+                message.error(t('offerCard.errorGettingCounterOffer'));
                 setIsLoading(false);
             }).finally(() => {
                 setIsLoading(false);
@@ -82,13 +84,13 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
     async function acceptOfferAction(id: string, action: 'ACCEPT' | 'REJECT' ){
         setIsLoading(true);
         acceptOffer(id, action).then(() => {
-            message.success('Success');
+            message.success(t('offerCard.offerAccepted'));
             if(action === 'ACCEPT')
                 router('/trips/manage'+id);
             else
                 setAction(actionEvent + 1);
         }).catch(() => {
-            message.error('Error accepting offer');
+            message.error(t('offerCard.errorAcceptingOffer'));
         }).finally (() =>{
             setIsLoading(false);
         })
@@ -123,7 +125,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                     <Divider/>
                     <Row className='w-100 space-around mt-2vh'>
                         <Col span={4} className='text-center'>
-                            <Title level={5}>Original offer: </Title>
+                            <Title level={5}>{t('offerCard.originalOffer')}: </Title>
                         </Col>
                         <Col span={10}>
                             <TextArea value={parentOfferObject.description} disabled/>
@@ -141,7 +143,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                 <Divider/>
                 <Row className='w-100 space-around mt-2vh'>
                     <Col span={4} className='text-center'>
-                        <Title level={5}>Your offer: </Title>
+                        <Title level={5}>{t('offerCard.yourOffer')}: </Title>
                     </Col>
                     <Col span={10}>
                         <TextArea value={description} disabled/>
@@ -152,7 +154,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                     </Col>
                     <Col span={4}>
                         {!counterOfferObject ?
-                        <Button type='dashed' danger onClick={() => onCancel(id)}>Cancel</Button>
+                        <Button type='dashed' danger onClick={() => onCancel(id)}>{t('offerCard.cancel')}</Button>
                         :
                         null}
                     </Col>
@@ -162,7 +164,7 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                     <Divider/>
                     <Row className='w-100 space-around mt-2vh'>
                         <Col span={4} className='text-center'> 
-                            <Title level={5}>Counter offer: </Title>
+                            <Title level={5}>{t('offerCard.counterOffer')}: </Title>
                         </Col>
                         <Col span={10}>
                             <TextArea value={counterOfferObject.description} disabled/>
@@ -174,7 +176,10 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                         <Col span={4} className='space-between'>
                             <Button type='dashed' danger onClick={() => acceptOfferAction(counterOfferObject.id.toString(), 'REJECT')}>Reject</Button>
                             <Button type='primary' onClick={() => acceptOffer(counterOfferObject.id.toString(), 'ACCEPT')}>Accept</Button>
-
+                        </Col>
+                        <Col span={4} className='space-between'>
+                            <Button type='dashed' danger onClick={() => acceptOfferAction(counterOfferObject.id.toString(), 'REJECT')}>{t('offerCard.reject')}</Button>
+                            <Button type='primary' onClick={() => acceptOfferAction(counterOfferObject.id.toString(), 'ACCEPT')}>{t('offerCard.accept')}</Button>
                         </Col>
                     </Row>              
                     </>

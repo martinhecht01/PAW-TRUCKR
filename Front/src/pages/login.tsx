@@ -4,26 +4,27 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/main.scss';
 import { loginUser } from '../api/userApi';
 import { useAuthContext } from '../hooks/authProvider';
+import { useTranslation } from 'react-i18next';
 
-const { Text, Link, Title } = Typography;
+const { Text, Title } = Typography;
 
 const Login: React.FC = () => {
     const [form] = Form.useForm();
     const auth = useAuthContext();
     const router = useNavigate();
+    const { t } = useTranslation();
 
     async function loginAction(values: any) {
         const { cuit, password } = values;
         loginUser(cuit, password).then((token) => {
             if(token == null) {
-                message.error('Invalid credentials or user not verified');
+                message.error(t('login.invalidCredentials'));
             } else {
                 auth.login(token);
                 router('/profile');
             }
         }).catch(() => {
-            // Handle error if necessary
-            message.error('Login failed. Please try again.');
+            message.error(t('login.loginFailed'));
         });
     }
 
@@ -34,33 +35,33 @@ const Login: React.FC = () => {
                     <Card className='w-100'>
                         <Form form={form} layout="vertical" onFinish={loginAction}>
                             <div className='w-100 text-center'>
-                                <Title level={2}>Login</Title>
-                                <Text>New to Truckr? <Link href='/register'>Sign up now</Link></Text>
+                                <Title level={2}>{t('login.title')}</Title>
+                                <Text>{t('login.newToTruckr')} <a href='/register'>{t('login.signUpNow')}</a></Text>
                             </div>
                             
                             <Form.Item name="cuit" className='mt-2vh' rules={[
-                                { required: true, message: 'Please input your CUIT!' },
-                                { pattern: new RegExp('^(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]$'), message: 'Invalid CUIT format!' }
+                                { required: true, message: t('login.cuitRequired') },
+                                { pattern: new RegExp('^(20|23|24|25|26|27|30)-[0-9]{8}-[0-9]$'), message: t('login.invalidCUITFormat') }
                             ]}>
                                 <Input 
-                                    placeholder='CUIT 00-00000000-0'
+                                    placeholder={t('login.cuitPlaceholder')}
                                     data-testid='cuit-login'
                                 />
                             </Form.Item>
                             
-                            <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
+                            <Form.Item name="password" rules={[{ required: true, message: t('login.passwordRequired') }]}>
                                 <Input.Password 
-                                    placeholder='Password'
+                                    placeholder={t('login.passwordPlaceholder')}
                                     data-testid='password-login'
                                 />
                             </Form.Item>
                             
                             <Form.Item>
-                                <Link href='/resetPasswordRequest'>Forgot your password?</Link>
+                                <a href='/resetPasswordRequest'>{t('login.forgotPassword')}</a>
                             </Form.Item>
                             
                             <Form.Item>
-                                <Button type='primary' htmlType="submit" className='w-100' data-testid='button-login'>Login</Button>
+                                <Button type='primary' htmlType="submit" className='w-100' data-testid='button-login'>{t('login.loginButton')}</Button>
                             </Form.Item>
                         </Form>
                     </Card>

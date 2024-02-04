@@ -6,6 +6,7 @@ import { getPublications } from "../api/tripApi";
 import { Dayjs } from "dayjs";
 import { getCities } from "../api/citiesApi";
 import { getCargoTypes } from "../api/cargoTypeApi";
+import { useTranslation } from "react-i18next";
 
 const {Text, Title} = Typography;
 
@@ -21,6 +22,8 @@ interface BrowseTripsProps {
 
 
 const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
+
+    const {t} = useTranslation();
 
     const sortOptions = ['departureDate ASC', 'departureDate DESC', 'arrivalDate ASC', 'arrivalDate DESC', 'price ASC', 'price DESC']
 
@@ -103,39 +106,39 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
         <Row>
             <Col xxl={4} xl={4} lg={8} md={24} sm={24} xs={24}>
                 <Card style={{margin: 25}}>
-                    <Title level={3} style={{marginTop: 0}}>Filters</Title>
+                    <Title level={3} style={{marginTop: 0}}>{t('filters.title')}</Title>
                     <Divider></Divider>
-                    <Text>Origin:</Text>
+                    <Text>{t('filters.origin')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleOriginChange} showSearch allowClear>
                         {cities.map((city, index) => (
                             <Select.Option key={index} value={city}>{city}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
-                    <Text>Destination:</Text>
+                    <Text>{t('filters.destination')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleDestinationChange} showSearch allowClear> 
                         {cities.map((city, index) => (
                             <Select.Option key={index} value={city}>{city}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
-                    <Text>Weight:</Text>
+                    <Text>{t('filters.weight')}:</Text>
                     <Input type="number" placeholder="-" min={0} onChange={handleWeightChange} suffix='Kg' allowClear></Input>
                     <div className="m-10"></div>
-                    <Text>Volume:</Text>
+                    <Text>{t('filters.volume')}:</Text>
                     <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3' allowClear></Input>
                     <div className="m-10"></div>
-                    <Text>Price:</Text>
+                    <Text>{t('filters.price')}:</Text>
                     <Slider range min={0} max={100000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
-                    <Text>Cargo type:</Text>
+                    <Text>{t('filters.cargoType')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange} allowClear>
                         {cargoTypes.map((cargoType, index) => (
-                            <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
+                            <Select.Option key={index} value={cargoType}>{t('cargoType.'+cargoType.toLocaleLowerCase())}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
-                    <Text>Date Range</Text>
+                    <Text>{t('filters.dateRange')}</Text>
                     <RangePicker className="w-100"
                         onChange={(val) => {
                             setDateRange(val);
@@ -143,16 +146,16 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                         allowClear
                     ></RangePicker>
                     <div className="m-10"></div>
-                    <Text>Sort by:</Text>
+                    <Text>{t('filters.sortBy')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleSortByChange} allowClear>
                         {sortOptions.map((option, index) => (
                             <Select.Option key={index} value={option}>{option}</Select.Option>
-                        )
-                        )}
+                        ))}
                     </Select>                                      
                     <div className="m-10"></div>                    
                 </Card>
             </Col>
+
             <Col xxl={20} xl={20} lg={16} md={24} sm={24} xs={24}>
                 <Skeleton loading={isLoading}>
                     <div style={{display: "flex", flexDirection: 'column'}}>

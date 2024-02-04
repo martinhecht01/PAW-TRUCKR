@@ -1,15 +1,17 @@
 import { Button, Result, Typography } from "antd"
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom"
 
 const {Title, Text} = Typography;
 const AccessDenied403 = () => {
     const navigate = useNavigate();
+    const {t} = useTranslation();
     return (
         <Result
         status="403"
-        title={<Title>403</Title>}
-        subTitle={<Text>Sorry, you can't access this page</Text>}
-        extra={<Button type="primary" onClick={() => navigate(-1)}>Back</Button>}
+        title={<Title>{t('errorPages.error403')}</Title>}
+        subTitle={<Text>{t('errorPages.error403Message')}</Text>}
+        extra={<Button type="primary" onClick={() => navigate('/')}>{t('errorPages.back')}</Button>}
       />
     )
 }

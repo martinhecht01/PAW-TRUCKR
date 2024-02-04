@@ -29,7 +29,12 @@
       "HowTruckrWorks": "How does Truckr work?",
       "ForTrucker": "For Truckers",
       "ForProvider": "For Providers",
-      "BrowseCargo": "Browse Cargo"
+      "BrowseCargo": "Browse Cargo",
+      "SearchTrips": "Search Trips",
+      "myItinerary": "My Itinerary",
+      "MyPublications": "My Publications",
+      "SentOffers": "Sent Offers",
+      "MyAlerts": "My Alert"
     }
 ,
     "provider": "Provider" ,
@@ -53,7 +58,9 @@
       "delete": "Delete",
       "cargoType": "Cargo Type",
       "availableWeight": "Available Weight",
+      "avlWeight": "Avl. Weight",
       "availableVolume": "Available Volume",
+      "avlVolume": "Avl. Volume",
       "suggestedPrice": "Suggested Price",
       "arrivalDate": "Arrival Date",
       "departureDate": "Departure Date",
@@ -72,7 +79,10 @@
       "enterPriceValidation": "Price must be between 1 and 1,000,000",
       "upload": "Upload image",
       "save": "Save",
-      "sendOffer": "Send Offer"
+      "sendOffer": "Send Offer",
+      "login": "Login",
+      "register": "Register",
+      "dateRange": "Date Range"
     },
 
     "cargoType": {
@@ -97,7 +107,11 @@
       "editProfile":"Edit Profile",
       "completedTrips": "Completed Trips",
       "profile": "Profile",
-      "role": "Role"
+      "role": "Role",
+      "picture": "Profile Picture",
+      "updateSuccess": "Profile updated successfully",
+      "fileUploaded": "File uploaded successfully",
+      "fileUploadError": "File uploaded failed"
     },
 
     "review": {
@@ -118,7 +132,9 @@
       "uploadClick": "Click to Upload",
       "uploadSuccessful": "File uploaded successfully",
       "uploadError": "File uploaded failed",
-      "notPng": "File is not a png"
+      "notPng": "File is not a png",
+      "requireImageForPublication": "An image is required for the publication",
+      "errorCreatingPublication": "Error creating publication"
     },
 
     "manage": {
@@ -129,12 +145,106 @@
       "accept": "Accept",
       "counterOffer": "Counter-Offer",
       "reject": "Reject",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "offeredPrice": "Offered Price"  
     },
 
   "sentOffers": {
     "noOffers": "You haven't sent any offers",
     "sentOffers": "Sent Offers"
+  },
+
+  "offerCard": {
+    "originalOffer": "Original offer",
+    "yourOffer": "Your offer",
+    "counterOffer": "Counter offer",
+    "cancel": "Cancel",
+    "reject": "Reject",
+    "accept": "Accept",
+    "errorGettingOffer": "Error getting offer",
+    "errorGettingCounterOffer": "Error getting counter offer",
+    "errorAcceptingOffer": "Error accepting offer",
+    "offerAccepted": "Offer accepted"
+  },
+
+  "messages": {
+    "counterOfferCanceledSuccess": "Counter offer canceled successfully",
+    "errorDeletingOffer": "Error deleting offer",
+    "alertCreatedSuccess": "Alert created successfully",
+    "unexpectedErrorTryAgain": "Unexpected error. Try again."
+  },
+
+  "errorPages":{
+    "error404": "Error 404",
+    "error404Message": "The page you are looking for does not exist",
+    "error500": "Error 500",
+    "error500Message": "An error occurred while processing your request",
+    "error403": "Error 403",
+    "error403Message": "You are not authorized to access this page",
+    "back": "Back"
+  },
+
+  "filters": {
+    "title": "Filters",
+    "origin": "Origin",
+    "destination": "Destination",
+    "weight": "Weight",
+    "volume": "Volume",
+    "price": "Price",
+    "cargoType": "Cargo Type",
+    "dateRange": "Date Range",
+    "sortBy": "Sort by"
+  },
+
+  "validation": {
+    "cargoTypeRequired": "Cargo type is required",
+    "originRequired": "Origin is required",
+    "dateRangeRequired": "Date range is required",
+    "invalidValueForVolumeWeight": "Invalid value for max volume or max weight",
+    "volumeRequired": "Max volume is required",
+    "weightRequired": "Max weight is required"
+  },
+
+  "login": {
+    "title": "Login",
+    "newToTruckr": "New to Truckr?",
+    "signUpNow": "Sign up now",
+    "cuitRequired": "Please input your CUIT!",
+    "invalidCUITFormat": "Invalid CUIT format!",
+    "passwordRequired": "Please input your password!",
+    "forgotPassword": "Forgot your password?",
+    "loginButton": "Login",
+    "invalidCredentials": "Invalid credentials or user not verified",
+    "loginFailed": "Login failed. Please try again.",
+    "cuitPlaceholder": "CUIT 00-00000000-0",
+    "passwordPlaceholder": "Password"
+  },
+
+  "register": {
+    "cuitPlaceholder": "CUIT 00-00000000-0",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm Password",
+    "createAccount": "Create an account",
+    "alreadyAUser": "Already a user?",
+    "login": "Login",
+    "accountCreatedSuccessfully": "Account created successfully",
+    "unexpectedError": "An unexpected error occurred. Please try again.",
+    "createAccountButton": "Create Account",
+    "pleaseInputYourCUIT": "Please input your CUIT!",
+    "invalidCUITFormat": "Invalid CUIT format!",
+    "pleaseInputYourName": "Please input your name!",
+    "invalidNameFormat": "Invalid name format!",
+    "pleaseInputYourEmail": "Please input your email!",
+    "inputNotValidEmail": "Input is not a valid email!",
+    "pleaseSelectYourRole": "Please select your role!",
+    "trucker": "Trucker",
+    "provider": "Provider",
+    "pleaseInputYourPassword": "Please input your password!",
+    "passwordAtLeastCharacters": "Password must be at least 8 characters long!",
+    "pleaseConfirmYourPassword": "Please confirm your password!",
+    "passwordsDoNotMatch": "Passwords do not match!"
   }
 
 }
