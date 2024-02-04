@@ -6,7 +6,6 @@ import {
   Input,
   Form,
   Select,
-  Typography,
   message
 } from 'antd';
 import '../styles/main.scss';
@@ -16,12 +15,9 @@ import { getCargoTypes } from "../api/cargoTypeApi.tsx";
 import { getCities } from "../api/citiesApi.tsx";
 import { createAlert } from "../api/alertApi.tsx";
 import { useNavigate } from "react-router-dom";
-import { Dayjs } from "dayjs";
 
-const { Title } = Typography;
 const { RangePicker } = DatePicker;
 
-type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
 const CreateAlertForm: React.FC = () => {
     const { t } = useTranslation();

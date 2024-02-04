@@ -21,7 +21,7 @@ const Login: React.FC = () => {
                 auth.login(token);
                 router('/profile');
             }
-        }).catch(err => {
+        }).catch(() => {
             // Handle error if necessary
             message.error('Login failed. Please try again.');
         });

@@ -6,7 +6,6 @@ import {
     Input,
     InputNumber,
     message,
-    Typography,
     Upload,
     UploadProps,
     Row,

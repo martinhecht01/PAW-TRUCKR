@@ -5,6 +5,7 @@ import '../styles/myAlert.scss';
 import {useTranslation} from "react-i18next";
 import {Alert} from "../models/Alert";
 import {deleteAlert, getAlert} from "../api/alertApi";
+import {useNavigate} from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -12,6 +13,7 @@ const { Title } = Typography;
 const myAlert: React.FC = () => {
 
     const {t} = useTranslation();
+    const router = useNavigate();
     const popoverContent = (
         <div>
             <p>{t('myAlert.alertExplanation')}</p>
@@ -106,7 +108,7 @@ const myAlert: React.FC = () => {
                 <div className="flex-center">
                     <div className='flex-column' style={{textAlign: 'center'}}>
                         <Title className='m-0' level={5}>{t('myAlert.noAlert')}</Title>
-                        <Button style={{marginTop: '2vh'}} href='/createAlert'
+                        <Button style={{marginTop: '2vh'}} onClick={() => router('/createAlert')}
                                 type='primary'>{t('myAlert.create')}</Button>
                     </div>
                 </div>
