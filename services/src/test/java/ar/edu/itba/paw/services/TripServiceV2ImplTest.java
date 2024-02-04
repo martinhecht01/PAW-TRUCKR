@@ -168,8 +168,6 @@ public class TripServiceV2ImplTest {
         when(tripDao.getTripOrRequestById(TRIPID_NOT_EXISTENT))
                 .thenReturn(Optional.of(trip1));
 
-        when(userDao.getUserById(anyInt()))
-                .thenReturn(Optional.of(user1));
 
 
         //2 Ejercitar

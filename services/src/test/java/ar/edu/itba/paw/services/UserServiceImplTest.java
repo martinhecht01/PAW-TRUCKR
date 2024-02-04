@@ -86,10 +86,6 @@ public class UserServiceImplTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateUserWithNullId() {
-        // 1 Precondiciones
-        when(userDao.existsUser(anyString()))
-                .thenReturn(false);
-        //2 Ejercitar
 
         User user = userService.createUser(EMAIL, NAME, null, ROLE, PASSWORD, Locale.ENGLISH);
     }
@@ -127,7 +123,6 @@ public class UserServiceImplTest {
     public void testResetUserPassword() {
         // 1 Precondiciones
         User existingUser = new User(USERID, EMAIL, NAME, CUIT, ROLE, PASSWORD, false, null, Locale.ENGLISH);
-        when(userDao.getUserById(anyInt())).thenReturn(Optional.of(existingUser));
 
         String newPassword = "newPassword";
         when(passwordEncoder.encode(eq(newPassword))).thenReturn(newPassword);

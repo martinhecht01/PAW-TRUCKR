@@ -41,6 +41,7 @@ public class ReviewDaoImplTest {
     private static final float RATING_EXISTENT2 = 3;
     private static final float RATING_EXISTENT3 = 1;
     private static final float RATING_EXISTENT4 = 2;
+    private static final float RATING_EXISTENT5 = 4;
     private static final float RATING_NOT_EXISTENT = 2;
     private static final String PASSWORD = "1234567890";
     private static final String REVIEW_EXISTENT = "Excelente viaje, muy recomendable";
@@ -71,13 +72,12 @@ public class ReviewDaoImplTest {
     @Rollback
     @Test
     public void testGetReviewByTripAndUserId() {
-        // 2. Ejercitar
-
-        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.createQuery("SELECT t from Trip t WHERE t.tripId = :tripId", Trip.class).setParameter("tripId", TRIPID_EXISTENT).getSingleResult(),em.createQuery("SELECT u from User u WHERE u.userId = :userId", User.class).setParameter("userId", USERID_EXISTENT).getSingleResult());
+        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.find(Trip.class, TRIPID_EXISTENT5), em.find(User.class, USERID_EXISTENT));
 
         // 3. Postcondiciones
         Assert.assertTrue(maybeReview.isPresent());
-        Assert.assertEquals(RATING_EXISTENT, maybeReview.get().getRating(),0);
+
+        Assert.assertEquals(RATING_EXISTENT5, maybeReview.get().getRating(), 0);
         Assert.assertEquals(REVIEW_EXISTENT, maybeReview.get().getReview());
     }
 
@@ -86,7 +86,7 @@ public class ReviewDaoImplTest {
     public void testGetReviewByTripAndUserIdNotExistent() {
 
         // 2. Ejercitar
-        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.createQuery("SELECT t from Trip t WHERE t.tripId = :tripId", Trip.class).setParameter("tripId", TRIPID_EXISTENT5).getSingleResult(), em.find(User.class, USERID_EXISTENT));
+        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.createQuery("SELECT t from Trip t WHERE t.tripId = :tripId", Trip.class).setParameter("tripId", TRIPID_EXISTENT).getSingleResult(), em.find(User.class, USERID_EXISTENT));
 
         // 3. Postcondiciones
         Assert.assertFalse(maybeReview.isPresent());
@@ -94,27 +94,39 @@ public class ReviewDaoImplTest {
 
     @Rollback
     @Test
-    public void testCreateReview(){
+    public void testCreateReview() {
+        // 1. Preconditions - Set up necessary data
+        User user = em.find(User.class, USERID_EXISTENT);
+        Trip trip = em.find(Trip.class, TRIPID_EXISTENT5);
+        float rating = RATING_NOT_EXISTENT;
+        String reviewText = REVIEW_NOT_EXISTENT;
 
+        // 2. Exercise
+        Review createdReview = reviewDao.createReview(trip, user, rating, reviewText);
 
-        // 2. Ejercitar
-        reviewDao.createReview(em.find(Trip.class, TRIPID_EXISTENT5), em.find(User.class, USERID_EXISTENT), RATING_NOT_EXISTENT, REVIEW_NOT_EXISTENT);
-
+        // Flush changes to synchronize with the database
         em.flush();
 
-        // 3. Postcondiciones
-        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "reviews", "tripid = 5 AND userid = 1 AND rating = 2 AND review = 'No me gusto el viaje. Tardo mucho en contestar.'"));
+        // 3. Postconditions
+        // Retrieve the review from the database using the ID of the created review
+        Review retrievedReview = em.find(Review.class, createdReview.getReviewId());
+
+        // Assert the properties of the retrieved review
+        Assert.assertNotNull(retrievedReview);
+        Assert.assertEquals(trip.getTripId(), retrievedReview.getTripId());
+        Assert.assertEquals(rating, retrievedReview.getRating(), 0.01); // Add a delta for floating-point precision
+        Assert.assertEquals(reviewText, retrievedReview.getReview());
     }
+
 
     @Rollback
     @Test
-    public void testGetUserRating(){
-
+    public void testGetUserRating() {
         // 2. Ejercitar
         Double rating = reviewDao.getUserRating(em.find(User.class, USERID_EXISTENT));
 
         // 3. Postcondiciones
-        double correctRating = (double) ((RATING_EXISTENT+RATING_EXISTENT2+RATING_EXISTENT3+RATING_EXISTENT4)/4);
+        double correctRating = ( RATING_EXISTENT2 + RATING_EXISTENT3 + RATING_EXISTENT4 + RATING_EXISTENT5 ) / 4.0;
         Assert.assertEquals(correctRating, rating, 0);
     }
 
@@ -130,22 +142,32 @@ public class ReviewDaoImplTest {
 
     @Rollback
     @Test
-    public void testGetUserReviews(){
-        String sql = "SELECT * FROM users WHERE userid = ?";
+    public void testGetUserReviews() {
+        // Insert reviews into the database before running the test
 
         // 2. Ejercitar
-        List<Review> reviews = reviewDao.getUserReviews(em.find(User.class, USERID_EXISTENT),1,12);//TODO:harcodie el first page desp vemo
+        List<Review> reviews = reviewDao.getUserReviews(em.find(User.class, USERID_EXISTENT), 1, 12);
 
         // 3. Postcondiciones
         Assert.assertEquals(4, reviews.size());
+
+        // Check the properties of each review
         Assert.assertNotNull(reviews.get(0));
-        Assert.assertEquals(RATING_EXISTENT, reviews.get(0).getRating(), 0);
+        Assert.assertEquals(3.0, reviews.get(0).getRating(), 0);
+        Assert.assertEquals("Good. Met the agreed terms.", reviews.get(0).getReview());
+
         Assert.assertNotNull(reviews.get(1));
-        Assert.assertEquals(RATING_EXISTENT2, reviews.get(1).getRating(), 0);
+        Assert.assertEquals(1.0, reviews.get(1).getRating(), 0);
+        Assert.assertEquals("Did not keep their word.", reviews.get(1).getReview());
+
         Assert.assertNotNull(reviews.get(2));
-        Assert.assertEquals(RATING_EXISTENT3, reviews.get(2).getRating(), 0);
+        Assert.assertEquals(2.0, reviews.get(2).getRating(), 0);
+        Assert.assertEquals("Average job. Did not arrive on time.", reviews.get(2).getReview());
+
         Assert.assertNotNull(reviews.get(3));
-        Assert.assertEquals(RATING_EXISTENT4, reviews.get(3).getRating(), 0);
+        Assert.assertEquals(4.0, reviews.get(3).getRating(), 0);
+        Assert.assertEquals("Excelente viaje, muy recomendable", reviews.get(3).getReview());
     }
+
 
 }
