@@ -50,8 +50,12 @@ public class ImageControllerApi {
         Response.ResponseBuilder response;
         try {
             response = Response.ok(ImageHelper.valueOf(size).resizeImage(image.getImage()));
-        }catch(IOException e){
-            throw new CustomInternalServerErrorException("exception.ResizeImage");
+        }catch(Exception e){
+            try{
+                response = Response.ok(image.getImage());
+            }catch (Exception e2) {
+                throw new CustomInternalServerErrorException("exception.ResizeImage");
+            }
         }
         CacheHelper.setUnconditionalCache(response);
         return response.build();
