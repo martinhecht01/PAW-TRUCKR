@@ -19,7 +19,6 @@ const Login: React.FC = () => {
         loginUser(cuit, pass).then((token) => {
             if(token == null)
                 message.error('Invalid credentials or user not verified')
-                //TODO: MARTIN
             else{
                 auth.login(token);
                 router('/profile');
