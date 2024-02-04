@@ -15,8 +15,8 @@ import java.util.Date;
 @Component
 public class JwtTokenUtil {
 
-    private static final int EXPIRY_TIME = 29 * 1000; //1 day (in millis)
-    private static final int REFRESH_EXPIRY_TIME = 30 * 1000; //1 week (in millis)
+    private static final int EXPIRY_TIME = 24 * 60 * 60 * 1000; //1 day (in millis)
+    private static final int REFRESH_EXPIRY_TIME = 7 * 24 * 60 * 60 * 1000; //1 week (in millis)
 
 
     @Autowired
