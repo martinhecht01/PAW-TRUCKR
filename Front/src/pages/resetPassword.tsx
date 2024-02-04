@@ -15,7 +15,7 @@ const ResetPassword: React.FC = () => {
     const [ResetState, setResetState] = useState(false);
 
     async function handleResetPassword(values: any) {
-        const { password, confirmPassword } = values;
+        const { password} = values;
         if (cuit == null || hash == null || userId == null) {
             message.error('Please request a valid reset password link');
             return;
