@@ -22,3 +22,35 @@ export const userMock = {
     "self": "http://localhost:8080/api/users/44"
 }
 
+export const tripMock = {
+    "arrivalDate": "2024-03-01T12:00:00-03:00",
+    "cargoType": "Refrigerated",
+    "departureDate": "2024-03-01T12:00:00-03:00",
+    "destination": "Buenos Aires",
+    "id": 7,
+    "maxVolume": 200,
+    "maxWeight": 200,
+    "origin": "Buenos Aires",
+    "self": "http://localhost:8080/api/trips/7",
+    "status": "COMPLETED",
+    "trucker": "http://localhost:8080/api/users/44"
+
+}
+
+
+export const offerMock = {
+    "description": "asdfsdaf",
+    "offerId": 12,
+    "price": 12333,
+    "self": "http://localhost:8080/api/offers/12",
+    "trip": "http://localhost:8080/api/trips/4",
+    "user": "http://localhost:8080/api/users/50"
+}
+
+export const reviewMock = {
+    "user" : "http://localhost:8080/api/users/50",
+    "trip" : "http://localhost:8080/api/trips/4",
+    "rating" : 3,
+    "review" : "good"
+}
+

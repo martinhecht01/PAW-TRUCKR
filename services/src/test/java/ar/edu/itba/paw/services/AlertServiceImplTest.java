@@ -148,7 +148,6 @@ public class AlertServiceImplTest {
     @Test
     public void testGetAlertsThatMatch() {
         // Arrange
-        when(alertDao.getAlertsThatMatch(any(Trip.class))).thenReturn(Arrays.asList(new Alert(), new Alert()));
         when(tripService.getTripOrRequestById(anyInt())).thenReturn(Optional.of(trip1));
 
         // Mock the list of alerts

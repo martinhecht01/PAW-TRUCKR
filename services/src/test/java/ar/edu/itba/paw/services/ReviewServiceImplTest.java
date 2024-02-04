@@ -156,7 +156,6 @@ public class ReviewServiceImplTest {
 
         when(userDao.getUserById(userId)).thenReturn(Optional.of(user1));
         when(tripDao.getTripOrRequestById(tripId)).thenReturn(Optional.empty());
-        when(reviewDao.getReviewByTripAndUserId(trip1, user1)).thenReturn(Optional.of(new Review()));
 
         // Act
         reviewService.createReview(tripId, userId, rating, comment);

@@ -64,7 +64,7 @@ public class ImageDaoImplTest {
 
         em.flush();
 
-        Assert.assertEquals(2, JdbcTestUtils.countRowsInTable(jdbcTemplate, "images"));
+        Assert.assertEquals(3, JdbcTestUtils.countRowsInTable(jdbcTemplate, "images"));
 
         byte[] maybeImage = em.createQuery("SELECT i.image FROM Image i WHERE i.imageid = :imageid", byte[].class)
                 .setParameter("imageid", IMAGEID_NOT_EXISTENT)

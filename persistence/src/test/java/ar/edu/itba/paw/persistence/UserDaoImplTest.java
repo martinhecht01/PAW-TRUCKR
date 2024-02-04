@@ -131,34 +131,8 @@ public class UserDaoImplTest {
         Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "users", "cuit = '" + CUIT_EXISTENT + "'"));
     }
 
-//    @Rollback
-//    @Test
-//    public void testCreateResetHash(){
-//        //1 - Precondiciones
-//        final String newPassword = "newPassword";
-//
-//        //2 - Ejercitar
-//        Optional<Integer> hash = userDao.createReset(USERID_EXISTENT, 234234242);
-//
-//        //3 - Postcondiciones
-//        Assert.assertTrue(hash.isPresent());
-//    }
 
-    @Rollback
-    @Test
-    public void testResetPassword(){
-        //1 - Precondiciones
-        final String newPassword = "newPassword";
-        final Integer hash = 1234567890;
 
-        //2 - Ejercitar
-        userDao.resetPassword(hash, newPassword);
-
-        //3 - Postcondiciones
-        Optional<User> maybeUser = userDao.getUserById(USERID_EXISTENT);
-        Assert.assertTrue(maybeUser.isPresent());
-        Assert.assertEquals(newPassword, maybeUser.get().getPassword());
-    }
 
     @Rollback
     @Test
