@@ -10,20 +10,51 @@ const api = axios.create({
     timeout: 5000,
 });
 
-api.interceptors.response.use((response) => {
-  return response
-}, async function (error) {
-  const originalRequest = error.config;
-  
-  if (error.response.status === 403 && !originalRequest._retry) {
-    originalRequest._retry = true;
-    await refreshToken();
-    return api(originalRequest);
-  } else if (error.response.status === 401) {
-    useAuth().logout();
+api.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalConfig = error.config;    
+
+    if (error.response) {
+      if ((error.response.status === 401) && !originalConfig._retry) {
+        
+        const token = localStorage.getItem('refresh')
+
+        if(!token || !tokenValid(token)){
+          localStorage.clear();
+          window.location.href = '/login'
+        }
+
+        originalConfig._retry = true;
+        await refreshToken();
+        return api(originalConfig);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export function tokenValid(token: string){
+  const parts = token.split('.');
+  if(parts.length !== 3) {
+      throw new Error('Invalid token');
   }
 
-  return Promise.reject(error);
-});
+  const payload = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+  const decodedPayload = atob(decodeURIComponent(payload));
+
+  const jwtData = JSON.parse(decodedPayload);
+
+  console.log(jwtData.exp)
+
+  if(jwtData.exp < Date.now() / 1000){
+    return false;
+  }
+  
+  return true;
+}
 
 export default api;
