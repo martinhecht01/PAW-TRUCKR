@@ -11,7 +11,7 @@ const Tester: React.FC = () => {
     
 
     async function test(){
-        loginUser('20-43988795-5', '12345678').then((user) => {
+        loginUser('20-43988795-5', '12345678').then(() => {
             setToken(localStorage.getItem("token"));
         })
     }

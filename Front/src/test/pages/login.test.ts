@@ -1,8 +1,8 @@
-import {afterEach, vi} from 'vitest';
-import {act, fireEvent, render, screen} from '@testing-library/react';
+// import {afterEach, vi} from 'vitest';
+import { fireEvent, screen} from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import '@testing-library/jest-dom'
-import {loginUser} from "../../api/userApi.tsx";
+// import {loginUser} from "../../api/userApi.tsx";
 // import Login from "../../pages/login.tsx";
 //
 // const customRender = (ui: React.ReactElement, options = {}) => render(ui, {
@@ -12,10 +12,10 @@ import {loginUser} from "../../api/userApi.tsx";
 
 afterEach(() => {
     localStorage.clear();
-    mockLogin.mockClear();
+    // mockLogin.mockClear();
 })
 
-const mockLogin = vi.spyOn();
+// const mockLogin = vi.spyOn();
 
 test('Login page', async () => {
 

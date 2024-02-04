@@ -25,7 +25,7 @@ const Profile: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     
     const [page, setPage] = useState<number>(1);
-    const [pageSize, setPageSize] = useState<number>(4);
+    const [pageSize] = useState<number>(4);
     const [maxPage, setMaxPage] = useState<number>(0);
     const [loadingReviews, setLoadingReviews] = useState<boolean>(true);
 

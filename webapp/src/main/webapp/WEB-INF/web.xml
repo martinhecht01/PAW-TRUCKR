@@ -99,38 +99,46 @@ http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <url-pattern>/static/*</url-pattern>
   </filter-mapping>
 
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/static/*</url-pattern>
-  </servlet-mapping>
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>default</servlet-name>-->
+<!--    <url-pattern>/static/*</url-pattern>-->
+<!--  </servlet-mapping>-->
 
-  <servlet>
-    <servlet-name>index</servlet-name>
-    <jsp-file>/index.html</jsp-file>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>index</servlet-name>
-    <url-pattern>/*</url-pattern>
-  </servlet-mapping>
+  <filter-mapping>
+    <filter-name>StaticCacheFilter</filter-name>
+    <url-pattern>/assets/*</url-pattern>
+  </filter-mapping>
+
+<!--  <servlet>-->
+<!--    <servlet-name>index</servlet-name>-->
+<!--    <jsp-file>/index.html</jsp-file>-->
+<!--  </servlet>-->
+<!--  <servlet-mapping>-->
+<!--    <servlet-name>index</servlet-name>-->
+<!--    <url-pattern>/*</url-pattern>-->
+<!--  </servlet-mapping>-->
 
   <mime-mapping>
     <extension>ico</extension>
     <mime-type>image/x-icon</mime-type>
   </mime-mapping>
-
   <mime-mapping>
     <extension>png</extension>
     <mime-type>image/png</mime-type>
   </mime-mapping>
-
   <mime-mapping>
     <extension>jpeg</extension>
     <mime-type>image/jpeg</mime-type>
   </mime-mapping>
-
   <mime-mapping>
     <extension>jpg</extension>
     <mime-type>image/jpeg</mime-type>
   </mime-mapping>
+
+  <error-page>
+    <error-code>404</error-code>
+    <location>/index.html</location>
+  </error-page>
+
 
 </web-app>

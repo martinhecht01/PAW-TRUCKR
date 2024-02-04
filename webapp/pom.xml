@@ -242,7 +242,7 @@
             <packagingExcludes>**/logback-test.xml</packagingExcludes>
             <webResources>
               <resource>
-                <directory>../frontend/build</directory>
+                <directory>../Front/dist</directory>
               </resource>
             </webResources>
           </configuration>

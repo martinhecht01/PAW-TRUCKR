@@ -31,7 +31,7 @@ import { CustomRoute } from './Components/PrivateRoute.tsx';
 
 const WebApp = () => {
 
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
 
   useEffect(() => {
     const lng = navigator.language;
@@ -47,7 +47,6 @@ const WebApp = () => {
           "colorInfo": "#142d4c",
           "colorLink": "#385170"
         }
-      
   }}>
     <Router>
       <AuthProvider>
@@ -55,7 +54,6 @@ const WebApp = () => {
           <Routes>
 
             <Route path='/test' element={<Tester/>}/>
-            
             <Route path="/" element={<Landing/>}/>
             <Route path="/trips" element={<CustomRoute render={() => <BrowseTrips tripOrRequest='TRIP'/>} noAuth possibleRoles={['PROVIDER']}></CustomRoute>}/>
             <Route path="/cargo" element={<CustomRoute render={() => <BrowseTrips tripOrRequest='REQUEST'/>} noAuth possibleRoles={['TRUCKER']}></CustomRoute>}/>

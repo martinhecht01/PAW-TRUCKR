@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { uploadImage } from "../api/imageApi";
 
 
-const {Title, Text} = Typography;
+const {Title} = Typography;
 
 const EditProfile: React.FC = () => {
     

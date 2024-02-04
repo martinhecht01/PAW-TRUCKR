@@ -1,5 +1,5 @@
-import {afterEach, vi} from 'vitest';
-import {act, fireEvent, render, screen} from '@testing-library/react';
+import {afterEach} from 'vitest';
+import { fireEvent, screen} from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import '@testing-library/jest-dom'
 // import Login from "../../pages/login.tsx";

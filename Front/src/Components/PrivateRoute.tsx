@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/authState';
 import { getClaims } from '../api/userApi';
 import AccessDenied403 from '../pages/403';

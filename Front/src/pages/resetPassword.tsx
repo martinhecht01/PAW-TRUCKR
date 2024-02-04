@@ -8,7 +8,7 @@ const {Text, Title} = Typography;
 
 const ResetPassword: React.FC = () => {
 
-    const [searchParams, setSearchParams] = useSearchParams()
+    const [searchParams] = useSearchParams()
     const hash = searchParams.get('hash');
     const cuit = searchParams.get('cuit');
     const userId = searchParams.get('userid');
