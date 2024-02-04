@@ -72,7 +72,20 @@
     "departureDate": "Fecha de Salida",
     "licensePlate": "Patente",
     "offeredPrice": "Precio Ofrecido",
-    "browse": "Buscar publicaciones"
+    "browse": "Buscar publicaciones",
+    "uploadImage": "Clic para subir imagen",
+    "invalidLicensePlate": "Formato de patente inválido",
+    "selectCargoType": "Por favor seleccione un tipo de carga",
+    "selectOrigin": "Por favor seleccione una ciudad de origen",
+    "selectDestination": "Por favor seleccione una ciudad de destino",
+    "selectDateRange": "Por favor seleccione un rango de fechas",
+    "enterVolume": "Por favor ingrese el volumen disponible",
+    "enterWeight": "Por favor ingrese el peso disponible",
+    "enterPrice": "Por favor ingrese un precio",
+    "enterPriceValidation": "El precio debe ser entre 1 y 1.000.000",
+    "upload": "Subir imagen",
+    "save": "Guardar",    
+    "sendOffer": "Enviar oferta"
   },
 
   "profile": {

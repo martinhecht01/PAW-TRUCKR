@@ -1,131 +1,124 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import {
-    Button,
-    Card,
-    DatePicker, Input, message, Select,
-    Typography
+  Button,
+  Card,
+  DatePicker,
+  Input,
+  Form,
+  Select,
+  Typography,
+  message
 } from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
-import {useTranslation} from "react-i18next";
-import {getCargoTypes} from "../api/cargoTypeApi.tsx";
-import {getCities} from "../api/citiesApi.tsx";
-import {createAlert} from "../api/alertApi.tsx";
-import {useNavigate} from "react-router-dom";
-import {Dayjs} from "dayjs";
-
+import { useTranslation } from "react-i18next";
+import { getCargoTypes } from "../api/cargoTypeApi.tsx";
+import { getCities } from "../api/citiesApi.tsx";
+import { createAlert } from "../api/alertApi.tsx";
+import { useNavigate } from "react-router-dom";
+import { Dayjs } from "dayjs";
 
 const { Title } = Typography;
-
-const {RangePicker} = DatePicker;
+const { RangePicker } = DatePicker;
 
 type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
-const CreateAlert: React.FC = () => {
-
-    const {t} = useTranslation();
+const CreateAlertForm: React.FC = () => {
+    const { t } = useTranslation();
     const router = useNavigate();
+    const [form] = Form.useForm();
 
+    const [cargoOptions, setCargoOptions] = React.useState<{ label: string, value: string }[]>([]);
+    const [cityOptions, setCityOptions] = React.useState<{ label: string, value: string }[]>([]);
 
+    useEffect(() => {
+        async function fetchData() {
+            const cargoTypes = await getCargoTypes();
+            setCargoOptions(cargoTypes.map(type => ({ label: t(`cargoType.${type.toLowerCase()}`), value: type })));
 
-    const [cargoOptions, setCargoOptions] = useState<{label:string,value:string}[]>([]);
-    const [cityOptions, setCityOptions] = useState<{label:string,value:string}[]>([])
+            const cities = await getCities();
+            setCityOptions(cities.map(city => ({ label: city.cityName, value: city.cityName })));
+        }
+        fetchData();
+    }, [t]);
 
-    const [selectedCity, setSelectedCity] = useState<string>();
-    const [selectedCargoType, setSelectedCargoType] = useState<string>();
-    const [maxVolume, setMaxVolume] = useState<string>();
-    const [maxWeight, setMaxWeight] = useState<string>();
-    const [dateRange, setDateRange] = useState<RangeValue>(null);
+    const handleAlertCreation = async (values: any) => {
+        const { selectedCity, selectedCargoType, maxVolume, maxWeight, dateRange } = values;
+        const departureDate = dateRange[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : undefined;
+        const arrivalDate = dateRange[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss') : undefined;
 
-    async function handleAlertCreation(city: string | undefined, cargoType: string | undefined, maxVolume: string | undefined, maxWeight:string | undefined, departureDate:string | undefined, arrivalDate:string | undefined){
-        try{
-            await createAlert(Number(maxWeight), Number(maxVolume),departureDate, arrivalDate, city, cargoType);
+        try {
+            await createAlert(Number(maxWeight), Number(maxVolume), departureDate, arrivalDate, selectedCity, selectedCargoType);
             router('/myAlert');
+        } catch (e) {
+            message.error("Unexpected error. Try again.");
         }
-        catch (e: any) {
-            message.error("Unexpected error. Try again.")
-
-        }
-    }
-
-    useEffect( () => {
-        getCargoTypes().then((cargoTypes) => {
-            setCargoOptions(cargoTypes.map((type) => {
-                return {
-                    label: t(`cargoType.${type.toLowerCase()}`),
-                    value: type
-                }
-            }))
-            getCities().then((cities) =>{
-                setCityOptions(cities.map((city) => {
-                    return {
-                        label: city.cityName,
-                        value: city.cityName
-                    }
-                }))
-            })
-        });
-
-
-    },[]);
-
+    };
 
     return (
         <div className="flex-center">
             <Card title={t("myAlert.create")} className="w-50 m-0">
-                <div className="flex-center space-around">
-                    <div>
-                        <Title level={5} className="m-0">{t("common.cargoType")}</Title>
-                        <Select className='w-100' options={cargoOptions} onChange={(value) => { setSelectedCargoType(value) }}
-                        />
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleAlertCreation}
+                >
+                    <Form.Item
+                        name="selectedCargoType"
+                        label={t("common.cargoType")}
+                        rules={[{ required: true, message: t("validation.cargoType.Required") }]}
+                    >
+                        <Select options={cargoOptions} />
+                    </Form.Item>
 
-                    </div>
-                    <div>
-                        <Title level={5} className="m-0">{t("common.origin")}*</Title>
-                        <Select className='w-100'
-                            onChange={(value) => {setSelectedCity(value)}}
-                            options={cityOptions}
+                    <Form.Item
+                        name="selectedCity"
+                        label={t("common.origin") + "*"}
+                        rules={[{ required: true, message: t("validation.origin.Required") }]}
+                    >
+                        <Select
                             showSearch
+                            options={cityOptions}
                         />
-                    </div>
-                </div>
-                <div className="flex-column space-around">
-                    <Title level={5} className=''>{t("common.departureDate")}* - {t("common.arrivalDate")}</Title>
-                    <RangePicker className="w-80"
-                                 onChange={(val) => {
-                                     setDateRange(val);
-                                 }}
-                                 allowEmpty={[false,true]}
-                    ></RangePicker>
-                </div>
-                <div className="flex-center space-around">
-                    <div>
-                        <Title level={5}>{t("common.maxVolume")}</Title>
-                        <Input
-                            className="w-100"
-                            type="number"
-                            onChange={(e) => setMaxVolume(e.target.value)}
-                            maxLength={3}
-                            suffix="M3"
-                        />
-                    </div>
-                    <div>
-                        <Title level={5}>{t('common.maxWeight')}</Title>
-                        <Input
-                            type='number'
-                            className="w-100"
-                            maxLength={6}
-                            onChange={(e) => setMaxWeight(e.target.value)}
-                            suffix='kg'
-                        />
-                    </div>
-                </div>
-                <div className="flex-center" style={{marginTop: '5vh'}}>
-                    <Button type="primary" onClick={() => handleAlertCreation(selectedCity,selectedCargoType,maxVolume,maxWeight,dateRange?.[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : undefined, dateRange?.[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss'): undefined)}>{t("myAlert.create")}</Button>
-                </div>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="dateRange"
+                        label={t("common.departureDate") + "* - " + t("common.arrivalDate")}
+                        rules={[{ type: 'array', required: true, message: t("validation.dateRange.Required") }]}
+                    >
+                        <RangePicker allowEmpty={[false, true]} className='w-100'/>
+                    </Form.Item>
+
+                    <Form.Item
+                        name="maxVolume"
+                        label={t("common.maxVolume")}
+                        rules={[
+                            { required: true, message: t("validation.Volume.Required") },
+                            { type: 'number', min: 1, max: 1000, message: t("validation.Volume.Range"), transform: value => Number(value) }
+                        ]}
+                    >
+                        <Input type="number" suffix="M3" max={1000} min={1} />
+                    </Form.Item>
+
+                    <Form.Item
+                        name="maxWeight"
+                        label={t('common.maxWeight')}
+                        rules={[
+                            { required: true, message: t("validation.Weight.Required") },
+                            { type: 'number', min: 1, max: 100000, message: t("validation.Weight.Range"), transform: value => Number(value) }
+                        ]}
+                    >
+                        <Input type="number" suffix="kg" max={100000}/>
+                    </Form.Item>
+
+                    <Form.Item>
+                        <Button type="primary" htmlType="submit">{t("myAlert.create")}</Button>
+                    </Form.Item>
+                </Form>
             </Card>
         </div>
     );
 };
 
-export default CreateAlert;
+export default CreateAlertForm;

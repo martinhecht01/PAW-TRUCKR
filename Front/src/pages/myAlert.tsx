@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, Input, Popover, Typography, Row, Col, message} from 'antd';
+import {Button, Card, Input, Popover, Typography, Row, Col, message, Skeleton} from 'antd';
 import '../styles/main.scss';
 import '../styles/myAlert.scss';
 import {useTranslation} from "react-i18next";
@@ -21,10 +21,12 @@ const myAlert: React.FC = () => {
 
 
     const [myAlert, setMyAlert] = useState<Alert>();
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getAlert().then((alert) => {
             setMyAlert(alert);
+            setLoading(false);
         })
     },[]);
 
@@ -40,6 +42,15 @@ const myAlert: React.FC = () => {
         catch (e) {
             message.error("Unexpected error. Try again.");
         }
+    }
+    
+
+    if(loading){
+        return (
+            <Card title={t('myAlert.myAlert')}>
+                <Skeleton active/>
+            </Card>
+        );
     }
 
 

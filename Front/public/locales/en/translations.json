@@ -56,7 +56,20 @@
       "departureDate": "Departure Date",
       "licensePlate": "License Plate",
       "offeredPrice": "Offered Price",
-      "browse": "Browse publications"
+      "browse": "Browse publications",
+      "uploadImage": "Click to Upload Image",
+      "invalidLicensePlate": "Invalid license plate format",
+      "selectCargoType": "Please select a cargo type",
+      "selectOrigin": "Please select an origin city",
+      "selectDestination": "Please select a destination city",
+      "selectDateRange": "Please select a date range",
+      "enterVolume": "Please enter available volume",
+      "enterWeight": "Please enter available weight",
+      "enterPrice": "Please enter a price",
+      "enterPriceValidation": "Price must be between 1 and 1,000,000",
+      "upload": "Upload image",
+      "save": "Save",
+      "sendOffer": "Send Offer"
     },
 
     "cargoType": {

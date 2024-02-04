@@ -9,3 +9,16 @@ export const alertMock = {
     toDate: "2024-04-01T12:00:00-03:00",
     user: "http://localhost:8080/api/users/1"
 }
+
+export const userMock = {
+    "completedTripsCount": 10,
+    "cuit": "20-43724688-3",
+    "id": 44,
+    "image": "http://localhost:8080/api/images/1",
+    "name": "Julian Verification",
+    "rating": 3.0,
+    "reviews": "http://localhost:8080/api/reviews/?userId=44",
+    "role": "TRUCKER",
+    "self": "http://localhost:8080/api/users/44"
+}
+

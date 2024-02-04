@@ -1,9 +1,8 @@
 import axios from 'axios';
-import useAuth from '../hooks/authState';
 import { refreshToken } from './userApi';
 
-// const API_URL = 'http://localhost:8080/api';
-const API_URL = 'http://pawserver.it.itba.edu.ar/paw-2023a-08/api'
+const API_URL = 'http://localhost:8080/api';
+// const API_URL = 'http://pawserver.it.itba.edu.ar/paw-2023a-08/api'
 
 const api = axios.create({
     baseURL: API_URL,
