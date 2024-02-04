@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, Button, Rate, Pagination, Form} from 'antd';
+import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, Button, Rate, Pagination, Form, Popconfirm} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import ProposalCard, { ProposalProps } from "../Components/proposalCard.tsx";
@@ -7,7 +7,7 @@ import {ArrowRightOutlined, CheckCircleTwoTone, MinusCircleTwoTone, StarFilled, 
 import { Trip } from '../models/Trip.tsx';
 import { User } from '../models/User.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { confirmTrip, getTripById } from '../api/tripApi.tsx';
+import { confirmTrip, deletePublication, getTripById } from '../api/tripApi.tsx';
 import { acceptOffer, getOffersByTrip } from '../api/offerApi.tsx';
 import { getClaims, getUserByUrl } from '../api/userApi.tsx';
 import TextArea from 'antd/es/input/TextArea';
@@ -101,13 +101,14 @@ const ManageTrip: React.FC = () => {
                             userId: user.id.toString()
                         };
                     });
-                    setOffersMaxPage(offersData[0].maxPage ? Number.parseInt(offersData[0].maxPage) : 0);
+                    if(offersData.length > 0)
+                        setOffersMaxPage(offersData[0].maxPage ? Number.parseInt(offersData[0].maxPage) : 0);
                     await Promise.all(offersPromises).then((offers) => 
                         setOffers(offers)
                     );
                 }
             } catch (error) {
-                message.error('Error loading data');
+                console.log(error);
             } finally {
                 setIsLoading(false);
                 setProposalLoading(false);
@@ -129,19 +130,48 @@ const ManageTrip: React.FC = () => {
             setIsLoading(false);
         })
     }
+
+    async function confirmDelete(){
+        deletePublication(tripId!).then(() => {
+            message.success('Publication deleted');
+            router('/myPublications');
+        }).catch(() => {
+            message.error('Error deleting publication');
+        })
+    }
     
 
     return (
         <div className="w-100 flex-center">
         <Row style={{justifyContent: 'space-evenly'}} className="w-80">
             <Skeleton loading={isLoading}>
+                {!publication?.provider || !publication?.trucker  ?
+                    <Col span={2}>
+                    <Popconfirm
+                        title="Delete publication"
+                        description="Are you sure to delete this publication?"
+                        onConfirm={confirmDelete}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <Button danger>Delete</Button>
+                    </Popconfirm>
+                    
+                    </Col>
+                    : null
+                }
                 <Col span={10}>
                     <div>
                         <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color="blue">
-                                    <img
+                                <Image
+                                    style={{ width: '100%',
+                                    height: '450px',
+                                    objectFit: 'cover',
+                                    objectPosition: 'center center'}}
+                                    alt="example"
                                     src={publication?.image}
-                                    style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
-                                    />
+                                    preview={false}
+                                />
                         </Badge.Ribbon>
                     </div>
                     <Card className="mt-5">

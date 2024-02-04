@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Card, Col, Form, Input, InputNumber, Row, Skeleton, Typography, message } from "antd";
+import { Avatar, Badge, Button, Card, Col, Form, Image, Input, InputNumber, Row, Skeleton, Typography, message } from "antd";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { User } from "../models/User";
@@ -70,10 +70,15 @@ const SendCounterOffer: React.FC = () => {
                  <Col span={8}>
                      <div>
                          <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color="blue">
-                             <img
-                             src={publication?.image}
-                             style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
-                             />
+                                <Image
+                                    style={{ width: '100%',
+                                    height: '450px',
+                                    objectFit: 'cover',
+                                    objectPosition: 'center center'}}
+                                    alt="example"
+                                    src={publication?.image}
+                                    preview={false}
+                                />
                          </Badge.Ribbon>
                      </div>
                      <Card className="mt-5">

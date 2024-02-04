@@ -33,6 +33,8 @@
 
   }
 ,
+  "provider": "Proveedor",
+  "trucker": "Camionero",
 
   "greeting": {
     "hello": "¡Hola Mundo!"
@@ -94,7 +96,8 @@
     "email": "Email",
     "editProfile":"Editar Perfil",
     "completedTrips": "Viajes completos",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "role": "Rol"
   },
 
   "review": {
@@ -107,7 +110,8 @@
   },
 
   "trip": {
-    "create": "Crear Viaje"
+    "create": "Crear Viaje",
+    "createPublication": "Crear Publicacion"
   },
 
   "create": {

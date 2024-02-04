@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { getCities } from '../api/citiesApi';
 import TripCard, { TripCardProps } from '../Components/tripCard';
 import { getPublications } from '../api/tripApi';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { getCargoTypes } from '../api/cargoTypeApi';
 
 
@@ -148,7 +148,7 @@ const SearchTrips: React.FC = () => {
                                     </Select>
                                 </Col>
                             </Row>
-                            <DatePicker.RangePicker className='w-100 mb-1vh' onChange={(val) => setDates(val)} allowClear></DatePicker.RangePicker>
+                            <DatePicker.RangePicker className='w-100 mb-1vh' disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} onChange={(val) => setDates(val)} allowClear></DatePicker.RangePicker>
                             <Select placeholder='Cargo Type' className='w-100 mb-1vh' onChange={handleCargoTypeChange} allowClear>
                                 {cargoTypes.map((cargoType, index) => (
                                     <Select.Option key={index} value={cargoType}>{cargoType}</Select.Option>
@@ -177,7 +177,7 @@ const SearchTrips: React.FC = () => {
                 </Row>
                 <Row className='flex-center w-100'>
                     <Col span={12} style={{textAlign: 'end', textDecoration: 'underline'}} className='mt-5' onClick={viewAll}>
-                        <Text>View all trips</Text>
+                        <Text><a>View all trips</a></Text>
                     </Col>            
                 </Row>
             </div>

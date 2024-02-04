@@ -32,6 +32,9 @@
       "BrowseCargo": "Browse Cargo"
     }
 ,
+    "provider": "Provider" ,
+    "trucker": "Trucker" ,
+
 
     "greeting": {
       "hello": "Hello World!"
@@ -93,7 +96,8 @@
       "email": "Email",
       "editProfile":"Edit Profile",
       "completedTrips": "Completed Trips",
-      "profile": "Profile"
+      "profile": "Profile",
+      "role": "Role"
     },
 
     "review": {
@@ -106,7 +110,8 @@
     },
 
     "trip": {
-      "create": "Create Trip"
+      "create": "Create Trip",
+      "createPublication": "Create Publication"
     },
 
     "create": {

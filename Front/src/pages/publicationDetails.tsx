@@ -34,7 +34,7 @@ const PublicationDetails: React.FC = () => {
             setPublication(publication);
             form.setFieldsValue({ inputValue: publication.price });
             getUserByUrl(publication.creator).then((user) => {
-                if(claims && (user.role == claims.role)){
+                if(claims && (user.role === claims.role)){
                     router('/404')
                     return;
                 }
@@ -73,9 +73,14 @@ const PublicationDetails: React.FC = () => {
                     <Col span={10}>
                         <div>
                             <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>} color="blue">
-                                <img
+                                <Image
+                                    style={{ width: '100%',
+                                    height: '450px',
+                                    objectFit: 'cover',
+                                    objectPosition: 'center center'}}
+                                    alt="example"
                                     src={publication?.image}
-                                    style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
+                                    preview={false}
                                 />
                             </Badge.Ribbon>
                         </div>

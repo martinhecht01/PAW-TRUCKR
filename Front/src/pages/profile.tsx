@@ -100,8 +100,8 @@ const Profile: React.FC = () => {
                                 <Text>{user!.name}</Text>
                                 <Title level={5}>{t('profile.cuit')}</Title>
                                 <Text>{user!.cuit}</Text>
-                                {/* <Title level={5}>{t('profile.email')}</Title>
-                                <Text>{user!.email}</Text> */}
+                                <Title level={5}>{t('profile.role')}</Title>
+                                <Text>{t(user.role.toLocaleLowerCase())}</Text>
                                 { !userId ?
                                 <Button style={{width: '100%', marginTop: '5vh'}} type='primary' onClick={() => router('./edit')}>{t("profile.editProfile")}</Button>
                                 : null

@@ -6,6 +6,7 @@ import LandingCard from '../Components/landingCard';
 import '../styles/main.scss';
 import { useNavigate } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
+import { getClaims } from '../api/userApi';
 
 const Landing: React.FC = () => {
 
@@ -18,8 +19,10 @@ const Landing: React.FC = () => {
             <LandingCard title='2. Select the best cargo option for you' subtitle='Select the cargo that you want to ship and send an offer.'></LandingCard>
             <LandingCard title='3. One more step' subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
             <LandingCard title='4. Ship it!' subtitle='Once the order is confirmed, get in touch with the provider and ship the cargo.'></LandingCard>
+            { !getClaims() ?
             <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>Browse Cargo</Button>
-        </div>;
+                :null}
+            </div>;
     };
 
     //TODO: change the content for providers
@@ -29,7 +32,9 @@ const Landing: React.FC = () => {
             <LandingCard title={'2.' + t('landing.NewLanding2')} subtitle={t('landing.NewLanding3')}></LandingCard>
             <LandingCard title={'3.' + t('landing.OneMoreStep')} subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
             <LandingCard title={'4.' + t('landing.ShipitE')} subtitle={t('landing.NewLanding5')}></LandingCard>
+            { !getClaims() ?
             <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>{t('landing.BrowseCargo')}</Button>
+            : null}
         </div>;
     };
 
@@ -58,12 +63,16 @@ const Landing: React.FC = () => {
                 <Title level={4} style={{fontWeight: 'normal'}}>{t('landing.LandingMainSubMessage')}</Title>
                 <Flex gap='middle'>
                     <Row className='w-80 space-around mt-2vh'>
-                        <Col span={10}>
-                            <Button type='primary' className='w-100' size='large' onClick={() => router('/trips')}>{t('landing.BookATrucker')}</Button>
-                        </Col>
-                        <Col span={10}>
-                            <Button type='primary' className='w-100' size='large' onClick={() => router('/cargo')}>{t('landing.DriveWithTruckr')}</Button>
-                        </Col>
+                        {!getClaims() ?
+                            <>
+                            <Col span={10}>
+                                <Button type='primary' className='w-100' size='large' onClick={() => router('/trips')}>{t('landing.BookATrucker')}</Button>
+                            </Col>
+                            <Col span={10}>
+                                <Button type='primary' className='w-100' size='large' onClick={() => router('/cargo')}>{t('landing.DriveWithTruckr')}</Button>
+                            </Col>
+                            </>
+                        : null }
                     </Row>
                 </Flex>
             </Col>

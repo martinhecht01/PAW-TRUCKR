@@ -23,6 +23,8 @@ import { getCargoTypes } from '../api/cargoTypeApi';
 import { useNavigate } from 'react-router-dom';
 import { createTrip } from '../api/tripApi';
 import { uploadImage } from '../api/imageApi';
+import { getClaims } from '../api/userApi';
+import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -32,6 +34,8 @@ const CreateTrip: React.FC = () => {
     const {t} = useTranslation();
     const router = useNavigate();
     const [form] = Form.useForm();
+
+    const claims = getClaims();
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [loading, setLoading] = useState<boolean>(true); // Start with loading true
@@ -104,13 +108,15 @@ const CreateTrip: React.FC = () => {
         <div className="flex-center">
             <Skeleton loading={loading}>
                 <Form form={form} layout="vertical" onFinish={createTripAction}>
-                    <Card title={t("trip.create")} className="w-100">
+                    <Card title={t("trip.createPublication")} className="w-100">
                         <div className='w-100 text-center flex-center'>
                             <Upload {...props}>
                                 <Button className='w-100' icon={<UploadOutlined />}>Click to Upload Image</Button>
                             </Upload>
                         </div>
                         <Row gutter={16} className='mt-2vh'>
+                            {claims?.role === 'TRUCKER' ?
+                            <>
                             <Col span={12}>
                                 <Form.Item
                                     name="licensePlate"
@@ -134,6 +140,21 @@ const CreateTrip: React.FC = () => {
                                     </Select>
                                 </Form.Item>
                             </Col>
+                            </>
+                            :
+                            <Col span={24}>
+                                <Form.Item
+                                    name="cargoType"
+                                    rules={[{ required: true, message: t('common.selectCargoType') }]}
+                                >
+                                    <Select placeholder={t("common.cargoType")}>
+                                        {cargoTypes.map((type) => (
+                                            <Option key={type} value={type}>{type}</Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                            </Col>        
+                            }
                         </Row>
                         <Row gutter={16}>
                             <Col span={12}>
@@ -165,7 +186,7 @@ const CreateTrip: React.FC = () => {
                             name="dateRange"
                             rules={[{ required: true, message: t('common.selectDateRange') }]}
                         >
-                            <RangePicker className='w-100' />
+                            <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} className='w-100' />
                         </Form.Item>
                         <Row gutter={16}>
                             <Col span={8}>

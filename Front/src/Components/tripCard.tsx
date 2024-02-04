@@ -1,5 +1,5 @@
 import { ArrowRightOutlined } from "@ant-design/icons";
-import { Badge, Card, Divider, Typography } from "antd";
+import { Badge, Card, Divider, Image, Typography } from "antd";
 import Meta from "antd/es/card/Meta";
 import { useNavigate } from "react-router-dom";
 
@@ -32,17 +32,25 @@ const TripCard = (props: TripCardProps) => {
                     <>
                         <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>} placement="start" color="blue" >
                             {props.notifications ? <Badge size="default" count={props.notifications} > 
-                                    <img
-                                        style={{width: '100%'}}
+                                    <Image
+                                        style={{ width: '100%',       // Full width of the container
+                                        height: '350px',     // Fixed height for all images
+                                        objectFit: 'cover',  // Cover the space without stretching
+                                        objectPosition: 'center center'}}
                                         alt="example"
                                         src={props.image}
+                                        preview={false}
                                     />
                                 </Badge> :
-                                <img
-                                style={{width: '100%'}}
-                                alt="example"
-                                src={props.image}
-                            />
+                                    <Image
+                                    style={{ width: '100%',       // Full width of the container
+                                    height: '350px',     // Fixed height for all images
+                                    objectFit: 'cover',  // Cover the space without stretching
+                                    objectPosition: 'center center'}}
+                                    alt="example"
+                                    src={props.image}
+                                    preview={false}
+                                />
                     }
 
                         </Badge.Ribbon>

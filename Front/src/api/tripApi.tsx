@@ -41,6 +41,9 @@ export async function getPublications(
     if (arrivalDate) params.arrivalDate = arrivalDate;
     if (cargoType) params.cargoType = cargoType;
 
+    if (!weight || weight < 1) delete params.weight;
+    if (!volume || volume < 1) delete params.volume;
+
     const response = await api.get('/trips', {
         headers: {
             Accept: 'application/vnd.publicationList.v1+json'
@@ -176,6 +179,16 @@ export async function getTripByUrl(url: string): Promise<Trip> {
 export async function confirmTrip(id: string): Promise<void> {
 
     await api.patch(`/trips/${id}`, {}, {
+        headers: {
+            Accept: 'application/vnd.trip.v1+json',
+            "Content-Type": 'application/vnd.trip.v1+json',
+            Authorization: `Bearer ${getToken()}`
+        }
+    });
+}
+
+export async function deletePublication(id: string): Promise<void> {
+    await api.delete(`/trips/${id}`, {
         headers: {
             Accept: 'application/vnd.trip.v1+json',
             "Content-Type": 'application/vnd.trip.v1+json',

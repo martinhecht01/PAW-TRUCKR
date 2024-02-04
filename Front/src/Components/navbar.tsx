@@ -93,7 +93,7 @@ return (
           {trucker.map((item) => (
               item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
           ))}
-          <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>Profile</Menu.Item>
+          <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>{getClaims()?.cuit}</Menu.Item>
           <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
         </>
                    
@@ -103,7 +103,7 @@ return (
             {provider.map((item) => (
               item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{item.label}</Menu.Item>
             ))}
-            <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>Profile</Menu.Item>
+            <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>{getClaims()?.cuit}</Menu.Item>
             <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
         </>
         : 
