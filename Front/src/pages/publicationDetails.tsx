@@ -1,4 +1,4 @@
-import { Avatar, Badge, Button, Card, Col, Image, InputNumber, Row, Skeleton, Slider, Typography, message } from "antd";
+import { Avatar, Badge, Button, Card, Col, Form, Image, Row, Skeleton, Slider, Typography, message } from "antd";
 import '../styles/main.scss'
 import { ArrowRightOutlined, StarFilled, UserOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
@@ -9,8 +9,12 @@ import { getPublicationById } from "../api/tripApi";
 import { getClaims, getUserByUrl } from "../api/userApi";
 import { User } from "../models/User";
 import { createOffer } from "../api/offerApi";
+import { useTranslation } from "react-i18next";
 
 const {Title, Text} = Typography;
+
+const formatter = (value: number | undefined) => `$${value}`;
+
 
 const PublicationDetails: React.FC = () => {
 
@@ -18,15 +22,17 @@ const PublicationDetails: React.FC = () => {
     const [publication, setPublication] = useState<Publication>();
     const [user, setUser] = useState<User>();
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [description, setDescription] = useState<string>('');
+    const [form] = Form.useForm();
 
     const router = useNavigate()
+
+    const {t} = useTranslation();
 
     useEffect(() => {
         const claims = getClaims();
         getPublicationById(tripId!).then((publication) => {
             setPublication(publication);
-            setInputValue(publication.price);
+            form.setFieldsValue({ inputValue: publication.price });
             getUserByUrl(publication.creator).then((user) => {
                 if(claims && (user.role == claims.role)){
                     router('/404')
@@ -40,39 +46,37 @@ const PublicationDetails: React.FC = () => {
         })
     }, []);
 
-    const [inputValue, setInputValue] = useState(1);
-
-    const onChange = (newValue: number | null) => {
-      setInputValue(newValue ? newValue : 0);
-    };
-
-    async function sendOffer(){
+    const sendOffer = async (values: {
+        inputValue: number,
+        description: string
+    }) => {
+        const { inputValue, description } = values;
         const claims = getClaims();
 
         if(claims == null){
             router('/login')
+            return;
         }
 
         getUserByUrl(claims!.userURL).then(() => {
-            createOffer(Number.parseInt(tripId!), inputValue, description ).then(() => {
-                message.success('Offer sent successfully')
-                router('/sentOffers')
-            }
-        )
-    })
-        
-    }
+            createOffer(Number.parseInt(tripId!), inputValue, description).then(() => {
+                message.success('Offer sent successfully');
+                router('/sentOffers');
+            });
+        });
+    };
+
     return (
         <div className="w-100 flex-center">
             <Row style={{justifyContent: 'space-evenly'}} className="w-80">
                 <Skeleton loading={isLoading}>
                     <Col span={10}>
                         <div>
-                            <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color="blue">
-                                        <img
-                                        src={publication?.image}
-                                        style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
-                                        />
+                            <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>} color="blue">
+                                <img
+                                    src={publication?.image}
+                                    style={{width: '100%', height: '100%', objectFit: 'cover', overflow: 'hidden'}}
+                                />
                             </Badge.Ribbon>
                         </div>
                         <Card className="mt-5">
@@ -85,9 +89,9 @@ const PublicationDetails: React.FC = () => {
                                     <div className="w-100 flex-center"><Image height={45} preview={false} src="https://i.pinimg.com/originals/e0/8b/14/e08b1415885d4d2ddd7fd3f75967da29.png"></Image></div>
                                     <div className="w-100 flex-center">
                                         <div style={{border: '1px solid black', width: '100%'}}/><ArrowRightOutlined/>
-                                    </div>                            
+                                    </div>
                                 </Col>
-                                <Col span={8}  className="text-center">
+                                <Col span={8} className="text-center">
                                     <Title level={4}>{publication?.destination}</Title>
                                     <Text>{publication?.arrivalDate ? new Date(publication.arrivalDate).toDateString() : ''}</Text>
                                 </Col>
@@ -114,38 +118,48 @@ const PublicationDetails: React.FC = () => {
                                 <Avatar size={64} src={user?.imageUrl} icon={<UserOutlined/>}></Avatar>
                                 <Title level={3}>{user?.name}</Title>
                                 <div>
-                                    <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : new Number(user?.rating).toFixed(1) }</Title>
+                                    <Title level={4}><StarFilled/>{user?.rating === 0 ? '-' : user?.rating.toFixed(1) }</Title>
                                 </div>
                             </div>
                         </Card>
-                        <Card className="mt-5">
-                            <Title level={5}>Description</Title>
-                            <TextArea rows={4} className="w-100 mt-5" onChange={(value) => setDescription(value.target.value)}></TextArea>
-                            <Row className="mt-5">
-                                <Col span={16}>
-                                    <Slider
-                                    min={1}
-                                    max={100000}
-                                    onChange={onChange}
-                                    tooltipVisible={false}
-                                    value={typeof inputValue === 'number' ? inputValue : 0}
-                                    />
-                                </Col>
-                                <Col span={4}>
-                                    <InputNumber
-                                    min={1}
-                                    max={100000}
-                                    style={{ margin: '0 16px' }}
-                                    value={inputValue}
-                                    prefix={'$'}
-                                    onChange={onChange}
-                                    />
-                                </Col>
-                            </Row>
-                            <Button className="mt-5" type="primary" block onClick={sendOffer}>Send Offer</Button>
+                        <Card className="mt-2vh">
+                            <Title level={4}>{t('common.sendOffer')}</Title>
+                            <Form form={form} onFinish={sendOffer}>
+                                <Form.Item
+                                    name="description"
+                                    rules={[
+                                        { required: true, message: 'Please input your description!' },
+                                        { min: 1, max: 250, message: 'Description must be between 1 and 250 characters' }
+                                    ]}
+                                >
+                                    <TextArea rows={4} className="w-100 mt-5" placeholder="Enter your description"/>
+                                </Form.Item>
+                                <Form.Item
+                                    name="inputValue"
+                                    rules={[
+                                        { required: true, message: 'Please input your offer!' },
+                                        { type: 'number', min: 1, max: 1000000, message: 'Offer must be between $1 and $100000' }
+                                    ]}
+                                >
+                                    <Row>
+                                        <Slider
+                                            min={1}
+                                            max={100000}
+                                            tipFormatter={formatter}
+                                            tooltipVisible
+                                            onChange={value => form.setFieldsValue({ inputValue: value })}
+                                            className="w-100 mt-10"
+                                        />
+                                    </Row>
+                                </Form.Item>
+                                <Form.Item>
+                                    <Button type="primary" htmlType="submit" block className="mt-5">{t('common.sendOffer')}</Button>
+                                </Form.Item>
+                            </Form>
                         </Card>
                     </Col>
                 </Skeleton>
+
             </Row>
         </div>
     );

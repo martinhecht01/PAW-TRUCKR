@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, Button, Rate, Pagination} from 'antd';
+import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, Button, Rate, Pagination, Form} from 'antd';
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import ProposalCard, { ProposalProps } from "../Components/proposalCard.tsx";
@@ -37,13 +37,13 @@ const ManageTrip: React.FC = () => {
     const [offersPage, setOffersPage] = useState<number>(1);
     const [offersMaxPage, setOffersMaxPage] = useState<number>(0);
 
-    const [rating, setRating] = useState<number>(0);
-    const [review, setReview] = useState<string>('');
+    const [form] = Form.useForm();
 
     const claims = getClaims();
 
 
-    async function submitReview(){
+    const submitReview = async (values: { review: string; rating: number }) => {
+        const { review, rating } = values;
         createReview(new Review(0, tripId!, rating, review, '')).then(() => {
             message.success('Review submitted');
             setReviewSubmitted(true);
@@ -230,9 +230,31 @@ const ManageTrip: React.FC = () => {
                                 ((claims?.role === 'PROVIDER' && !publication.providerSubmittedHisReview ) || (claims?.role === 'TRUCKER' && !publication.truckerSubmittedHisReview)) && publication.providerConfirmation && publication.truckerConfirmation ?
 
                                 <Card className="mt-5">
-                                    <Rate allowHalf defaultValue={0} onChange={(value) => setRating(value)}/>
-                                    <TextArea rows={4} className="mt-2vh" placeholder="Write a review" onChange={(e) => setReview(e.target.value)}/>
-                                    <Button type="primary" className="w-100 mt-2vh" onClick={submitReview}>Submit Review</Button>
+                                    <Form form={form} onFinish={submitReview} layout="vertical">
+                                    <Form.Item
+                                        name="rating"
+                                        rules={[
+                                        { required: true, message: "validation.NotNull" },
+                                        { type: 'number', min: 1, message: "validation.Rating.Min" },
+                                        { type: 'number', max: 5, message: "validation.Rating.Max" }
+                                        ]}
+                                    >
+                                        <Rate allowHalf />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="review"
+                                        rules={[
+                                        { required: true, message: "validation.NotNull" },
+                                        { min: 1, message: "validation.Review" },
+                                        { max: 250, message: "validation.Review" }
+                                        ]}
+                                    >
+                                        <TextArea rows={4} placeholder="Write a review" />
+                                    </Form.Item>
+                                    <Form.Item>
+                                        <Button type="primary" htmlType="submit" className="w-100">Submit Review</Button>
+                                    </Form.Item>
+                                    </Form>
                                 </Card>
 
                                 : (claims?.role === 'PROVIDER' && publication.providerSubmittedHisReview) || (claims?.role === 'TRUCKER' && publication.truckerSubmittedHisReview) ?
