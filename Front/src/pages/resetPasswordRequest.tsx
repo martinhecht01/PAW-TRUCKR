@@ -46,7 +46,7 @@ const ResetPasswordRequest: React.FC = () => {
                             </Form.Item>
                         </Form>
                     ) : (
-                        <Text className='w-100 text-center' data-testid='sent-ResetPasswordRequest' type='success'>{t('resetPasswordRequest.emailSentMessage')}</Text>
+                        <Text className='w-100 text-center' data-testid='sent-resetPasswordRequest' type='success'>{t('resetPasswordRequest.emailSentMessage')}</Text>
                     )}
                 </Card>
             </Col>
