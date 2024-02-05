@@ -330,8 +330,8 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
           <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
             <p style="font-size: 14px; line-height: 140%;">
               <strong th:text="#{ContactEmail}"></strong>
-              <span th:if="${user.role == 'TRUCKER'}" th:text="${trip.getProvider().getEmail()}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>
-              <span th:unless="${user.role == 'TRUCKER'}" th:text="${trip.getTrucker().getEmail()}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>
+<!--              <span th:if="${user.role == 'TRUCKER'}" th:text="${trip.getProvider().getEmail()}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>-->
+<!--              <span th:unless="${user.role == 'TRUCKER'}" th:text="${trip.getTrucker().getEmail()}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>-->
             </p>
           </div>
         </td>
