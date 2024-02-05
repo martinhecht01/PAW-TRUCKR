@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { refreshToken } from './userApi';
+import { getClaims, refreshToken } from './userApi';
 
 const API_URL = 'http://localhost:8080/api';
 // const API_URL = 'http://pawserver.it.itba.edu.ar/paw-2023a-08/api'
@@ -17,7 +17,7 @@ api.interceptors.response.use(
     const originalConfig = error.config;    
 
     if (error.response) {
-      if ((error.response.status === 401) && !originalConfig._retry) {
+      if ((error.response.status === 401) && !originalConfig._retry && getClaims()) {
         
         const token = localStorage.getItem('refresh')
 
