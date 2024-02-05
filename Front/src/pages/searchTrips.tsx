@@ -9,7 +9,6 @@ import dayjs, { Dayjs } from 'dayjs';
 import { getCargoTypes } from '../api/cargoTypeApi';
 import { useTranslation } from 'react-i18next';
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {Simulate} from "react-dom/test-utils";
 
 
 const {Title, Text} = Typography;
