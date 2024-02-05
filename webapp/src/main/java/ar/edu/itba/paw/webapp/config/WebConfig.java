@@ -129,6 +129,9 @@ public class WebConfig {
     @Value("classpath:schema.sql")
     private Resource schemaSql;
 
+    @Value("classpath:preInserts.sql")
+    private Resource preInsertsSql;
+
     @Bean
     public DataSourceInitializer dataSourceInitializer(final DataSource ds) {
         final DataSourceInitializer dsi = new DataSourceInitializer();
@@ -140,6 +143,7 @@ public class WebConfig {
     private DatabasePopulator databasePopulator(){
         final ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
         populator.addScript(schemaSql);
+        populator.addScript(preInsertsSql);
         return populator;
     }
 

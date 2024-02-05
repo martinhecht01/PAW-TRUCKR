@@ -63,20 +63,23 @@ public class ReviewDaoImplTest {
     private EntityManager em;
 
     private JdbcTemplate jdbcTemplate;
+    private User user;
+    private Trip trip;
 
     @Before
     public void setup() {
         jdbcTemplate = new JdbcTemplate(ds);
+        user = em.find(User.class, USERID_EXISTENT);
+        trip = em.find(Trip.class, TRIPID_EXISTENT5);
     }
 
     @Rollback
     @Test
     public void testGetReviewByTripAndUserId() {
-        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.find(Trip.class, TRIPID_EXISTENT5), em.find(User.class, USERID_EXISTENT));
+        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(trip, user);
 
         // 3. Postcondiciones
         Assert.assertTrue(maybeReview.isPresent());
-
         Assert.assertEquals(RATING_EXISTENT5, maybeReview.get().getRating(), 0);
         Assert.assertEquals(REVIEW_EXISTENT, maybeReview.get().getReview());
     }
@@ -86,7 +89,7 @@ public class ReviewDaoImplTest {
     public void testGetReviewByTripAndUserIdNotExistent() {
 
         // 2. Ejercitar
-        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.createQuery("SELECT t from Trip t WHERE t.tripId = :tripId", Trip.class).setParameter("tripId", TRIPID_EXISTENT).getSingleResult(), em.find(User.class, USERID_EXISTENT));
+        Optional<Review> maybeReview = reviewDao.getReviewByTripAndUserId(em.createQuery("SELECT t from Trip t WHERE t.tripId = :tripId", Trip.class).setParameter("tripId", TRIPID_EXISTENT).getSingleResult(), user);
 
         // 3. Postcondiciones
         Assert.assertFalse(maybeReview.isPresent());
@@ -96,8 +99,6 @@ public class ReviewDaoImplTest {
     @Test
     public void testCreateReview() {
         // 1. Preconditions - Set up necessary data
-        User user = em.find(User.class, USERID_EXISTENT);
-        Trip trip = em.find(Trip.class, TRIPID_EXISTENT5);
         float rating = RATING_NOT_EXISTENT;
         String reviewText = REVIEW_NOT_EXISTENT;
 
@@ -108,14 +109,12 @@ public class ReviewDaoImplTest {
         em.flush();
 
         // 3. Postconditions
-        // Retrieve the review from the database using the ID of the created review
-        Review retrievedReview = em.find(Review.class, createdReview.getReviewId());
-
         // Assert the properties of the retrieved review
-        Assert.assertNotNull(retrievedReview);
-        Assert.assertEquals(trip.getTripId(), retrievedReview.getTripId());
-        Assert.assertEquals(rating, retrievedReview.getRating(), 0.01); // Add a delta for floating-point precision
-        Assert.assertEquals(reviewText, retrievedReview.getReview());
+        Assert.assertNotNull(createdReview);
+        Assert.assertEquals(trip.getTripId(), createdReview.getTripId());
+        Assert.assertEquals(rating, createdReview.getRating(), 0.01); // Add a delta for floating-point precision
+        Assert.assertEquals(reviewText, createdReview.getReview());
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "reviews", "reviewId = " + createdReview.getReviewId()));
     }
 
 
