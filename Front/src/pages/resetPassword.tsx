@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Form, Input, Typography, message } from "antd";
 import Link from "antd/es/typography/Link";
-import { useSearchParams } from 'react-router-dom';
+import {useNavigate, useSearchParams} from 'react-router-dom';
 import { resetPassword } from "../api/userApi";
 
 const { Text, Title } = Typography;
@@ -13,7 +13,7 @@ const ResetPassword: React.FC = () => {
     const cuit = searchParams.get('cuit');
     const userId = searchParams.get('userid');
     const [ResetState, setResetState] = useState(false);
-
+    const router = useNavigate();
     async function handleResetPassword(values: any) {
         const { password} = values;
         if (cuit == null || hash == null || userId == null) {
@@ -70,7 +70,7 @@ const ResetPassword: React.FC = () => {
                             </Form.Item>
                         </Form>
                     ) : (
-                        <Text data-testid='success-resetPassword' className='w-100 text-center'> Password changed successfully! <Link href='/login'>Login back</Link></Text>
+                        <Text data-testid='success-resetPassword' className='w-100 text-center'> Password changed successfully! <Link onClick={()=> router('/login')}>Login back</Link></Text>
                     )}
                 </Card>
             </Col>

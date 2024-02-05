@@ -38,7 +38,7 @@ const Register: React.FC = () => {
                         <Form form={form} layout="vertical" onFinish={createAccountAction} className='w-100'>
                             <div style={{ width: '100%', textAlign: 'center' }}>
                                 <Title level={2}>{t('register.createAccount')}</Title>
-                                <Text>{t('register.alreadyAUser')} <a href='/login'>{t('register.login')}</a></Text>
+                                <Text>{t('register.alreadyAUser')} <a onClick={()=> router('/login')}>{t('register.login')}</a></Text>
                             </div>
 
                             <Form.Item
