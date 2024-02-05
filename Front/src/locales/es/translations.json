@@ -112,7 +112,9 @@
     "weight": "Peso",
     "volume": "Volumen",
     "viewAllTrips": "Ver todos los viajes",
-    "searchAgain": "Buscar de nuevo"
+    "searchAgain": "Buscar de nuevo",
+    "invalidLInk": "Enlace inválido",
+    "accountVerified": "Cuenta verificada"
   },
 
   "profile": {

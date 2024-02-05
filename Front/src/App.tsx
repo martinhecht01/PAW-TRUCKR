@@ -28,6 +28,7 @@ import AuthProvider from './hooks/authProvider.tsx';
 import { CustomRoute } from './Components/PrivateRoute.tsx';
 import InternalError500 from './pages/500.tsx';
 import AccessDenied403 from './pages/403.tsx';
+import VerifyAccount from './pages/verifyUser.tsx';
 
 
 const WebApp = () => {
@@ -78,6 +79,8 @@ const WebApp = () => {
             <Route path="/resetPassword" element={<CustomRoute render={() => <ResetPassword/>} noAuth/>}></Route>
             <Route path="/resetPasswordRequest" element={<CustomRoute render={() => <ResetPasswordRequest/>} noAuth/>}></Route>
             <Route path="/sendCounterOffer" element={<CustomRoute render={() => <SendCounterOffer/>} possibleRoles={['TRUCKER', 'PROVIDER']}/>}></Route>
+
+            <Route path="/verifyAccount" element={<CustomRoute render={() => <VerifyAccount/>} noAuth/>}></Route>
             
             <Route path="*" element={<NotFound404/>} />
             <Route path="/404" element={<NotFound404/>} />
