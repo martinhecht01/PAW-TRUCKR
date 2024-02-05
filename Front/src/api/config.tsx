@@ -32,12 +32,12 @@ api.interceptors.response.use(
       }
 
       if (error.response.status === 500) {
-        window.location.href = '/500'
+        window.location.href = '/paw-2023a-08/500'
         return;
       }
 
       if (error.response.status === 404) {
-        window.location.href = '/404'
+        window.location.href = '/paw-2023a-08/404'
         return;
       }
       
