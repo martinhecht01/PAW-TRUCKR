@@ -1,7 +1,5 @@
 import {afterEach, vi} from 'vitest';
-import {createAlert, deleteAlert, getAlert} from "../../api/alertApi.tsx";
-import {Alert} from "../../models/Alert.tsx";
-import {alertMock, offerMock} from '../mocks/models.ts'
+import { offerMock} from '../mocks/models.ts'
 import api from '../../api/config.tsx'
 import {getToken} from "../../api/userApi.tsx";
 import {acceptOffer, getOffersByTrip} from "../../api/offerApi";

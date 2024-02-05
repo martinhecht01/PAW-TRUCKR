@@ -1,15 +1,10 @@
 import {afterEach, vi} from 'vitest';
-import {createAlert, deleteAlert, getAlert} from "../../api/alertApi.tsx";
 
 import {reviewMock} from '../mocks/models.ts'
 
 import api from '../../api/config.tsx'
-import {getToken} from "../../api/userApi.tsx";
-import {getPublicationById, getPublicationByUrl, getPublications} from "../../api/tripApi";
-import {Publication} from "../../models/Publication";
-import {Trip} from "../../models/Trip";
 import {Review} from "../../models/Review";
-import {createReview, getReview, getReviewsByURL, getReviewsByUser} from "../../api/reviewApi";
+import {createReview, getReview, getReviewsByUser} from "../../api/reviewApi";
 
 
 afterEach(() => {

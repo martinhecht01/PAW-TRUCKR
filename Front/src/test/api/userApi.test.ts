@@ -1,21 +1,12 @@
 import {afterEach, vi} from 'vitest';
-import {createAlert, deleteAlert, getAlert} from "../../api/alertApi.tsx";
-import {Alert} from "../../models/Alert.tsx";
-import {alertMock} from '../mocks/models.ts'
 import {userMock} from '../mocks/models.ts'
-import {publicationMock} from '../mocks/models.ts'
 import api from '../../api/config.tsx'
 import {
     createUser,
-    getToken,
     getUserById,
     getUserByUrl,
-    resetPassword,
-    resetPasswordRequest, updateUser
+    updateUser
 } from "../../api/userApi.tsx";
-import {getPublicationById, getPublicationByUrl, getPublications} from "../../api/tripApi";
-import {Publication} from "../../models/Publication";
-import {Trip} from "../../models/Trip";
 import {User} from "../../models/User";
 
 
