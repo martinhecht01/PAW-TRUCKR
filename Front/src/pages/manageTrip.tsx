@@ -84,6 +84,8 @@ const ManageTrip: React.FC = () => {
                 const userData = await getUserByUrl(userUrl);
                 setUser(userData);
 
+                document.title = userData?.role === 'PROVIDER' ? t('pageTitles.manageRequest') : t('pageTitles.manageTrip');
+
                 if (!trip.provider || !trip.trucker) {
                     const offersData = await getOffersByTrip(tripId, offersPage.toString(), '3');
                     const offersPromises = offersData.map(async (offer) => {
@@ -147,7 +149,7 @@ const ManageTrip: React.FC = () => {
         <Row style={{justifyContent: 'space-evenly'}} className="w-80">
             <Skeleton loading={isLoading}>
                 {!publication?.provider || !publication?.trucker  ?
-                    <Col span={2}>
+                    <Col span={4}>
                     <Popconfirm
                         title={t('manage.deletePublicationPop.title')}
                         description={t('manage.deletePublicationPop.message')}

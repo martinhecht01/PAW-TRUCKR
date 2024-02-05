@@ -103,13 +103,13 @@ const SendCounterOffer: React.FC = () => {
                          <Col span={7}>
                              <Card className="w-100 text-center">
                                  <Title level={3}>{publication?.weight} Kg</Title>
-                                 <Text>Weight</Text>
+                                 <Text>{t('filters.weight')}</Text>
                              </Card>
                          </Col>
                          <Col span={7}>
                              <Card className="w-100 text-center">
                                  <Title level={3}>{publication?.volume} M3</Title>
-                                 <Text>Volume</Text>
+                                 <Text>{t('filters.volume')}</Text>
                              </Card>
                          </Col>
                          <Col span={7}>

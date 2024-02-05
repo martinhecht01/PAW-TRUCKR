@@ -40,6 +40,9 @@ const PublicationDetails: React.FC = () => {
                 setPublication(publicationData);
                 form.setFieldsValue({ inputValue: publicationData.price });
                 const userData = await getUserByUrl(publicationData.creator);
+
+                document.title = userData.role === 'PROVIDER' ? t('pageTitles.requestDetails') : t('pageTitles.tripDetails');
+                
                 setUser(userData);
             } catch (error) {
                 message.error(t('publicationDetails.fetchError'));

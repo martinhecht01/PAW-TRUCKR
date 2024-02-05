@@ -25,6 +25,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
 
     const {t} = useTranslation();
 
+    document.title = tripOrRequest === 'TRIP' ? t('pageTitles.browseTrips') : t('pageTitles.browseRequests');
+
     const sortOptions = ['departureDate ASC', 'departureDate DESC', 'arrivalDate ASC', 'arrivalDate DESC', 'price ASC', 'price DESC']
 
     const [cities, setCities] = useState<Array<string>>([]);

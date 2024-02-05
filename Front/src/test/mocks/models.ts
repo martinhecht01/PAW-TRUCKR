@@ -14,15 +14,12 @@ export const userMock = {
     "completedTripsCount": 10,
     "cuit": "20-43724688-3",
     "id": 44,
-    "image": "http://localhost:8080/api/images/1",
     "name": "Julian Verification",
     "rating": 3.0,
-    "reviews": "http://localhost:8080/api/reviews/?userId=44",
     "role": "TRUCKER",
-    "self": "http://localhost:8080/api/users/44"
 }
 
-export const tripMock =  {
+export const publicationMock =  {
     "arrivalDate": "2024-03-11T22:47:57-03:00",
     "creator": "http://pawserver.it.itba.edu.ar/paw-2023a-08/api/users/23",
     "departureDate": "2024-02-13T22:47:57-03:00",
@@ -41,7 +38,7 @@ export const offerMock = {
     "description": "asdfsdaf",
     "offerId": 12,
     "price": 12333,
-    "self": "http://localhost:8080/api/offers/12",
+    "maxPage":"0",
     "trip": "http://localhost:8080/api/trips/4",
     "user": "http://localhost:8080/api/users/50"
 }
@@ -50,6 +47,7 @@ export const reviewMock = {
     "user" : "http://localhost:8080/api/users/50",
     "trip" : "http://localhost:8080/api/trips/4",
     "rating" : 3,
-    "review" : "good"
+    "review" : "good",
+    "maxPage" : "0"
 }
 
