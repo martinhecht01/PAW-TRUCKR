@@ -82,6 +82,7 @@ public class TripDaoImplTest {
         Assert.assertEquals(TYPE, trip.getType());
         Assert.assertEquals(depDate, trip.getDepartureDate());
         Assert.assertEquals(arrDate, trip.getArrivalDate());
+        Assert.assertEquals(1, JdbcTestUtils.countRowsInTableWhere(jdbcTemplate, "trips", "trip_id =" + trip.getTripId()));
     }
 
 
