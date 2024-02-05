@@ -11,6 +11,8 @@ const PastTrips: React.FC = () => {
 
     const {t} = useTranslation();
 
+    document.title = t('pageTitles.pastTrips');
+
     const {Title} = Typography;
 
     const [trips, setTrips] = useState<TripCardProps[]>([]);

@@ -6,6 +6,9 @@ const {Title, Text} = Typography;
 const AccessDenied403 = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
+
+    document.title = t('pageTitles.error403');
+
     return (
         <Result
         status="403"

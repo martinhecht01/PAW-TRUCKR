@@ -35,6 +35,8 @@ const CreateTrip: React.FC = () => {
     const router = useNavigate();
     const [form] = Form.useForm();
 
+    document.title = t("pageTitles.createTrip");
+
     const claims = getClaims();
 
     const [selectedFile, setSelectedFile] = useState<File | null>(null);

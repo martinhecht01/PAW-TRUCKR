@@ -13,6 +13,8 @@ const Register: React.FC = () => {
     const router = useNavigate();
     const { t } = useTranslation();
 
+    document.title = t('pageTitles.register');
+
     const { Title, Text } = Typography;
 
     async function createAccountAction(values: any) {

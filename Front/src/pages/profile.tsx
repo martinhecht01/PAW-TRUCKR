@@ -19,6 +19,8 @@ const Profile: React.FC = () => {
 
     const {t} = useTranslation();
 
+    document.title = t('pageTitles.profile');
+
     const [ user, setUser] = useState<User>();
     const [ reviews, setReviews] = useState<Review[]>([]);
     const [ completedTrips, setCompletedTrips] = useState<number>(0);

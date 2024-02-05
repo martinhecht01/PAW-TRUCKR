@@ -13,6 +13,9 @@ const { Title } = Typography;
 
 const EditProfile: React.FC = () => {
     const { t } = useTranslation();
+
+    document.title = t("pageTitles.editProfile");
+
     const [form] = Form.useForm();
     const [user, setUser] = useState<User>();
     const [isLoading, setIsLoading] = useState<boolean>(true);

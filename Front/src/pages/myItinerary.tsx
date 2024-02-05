@@ -13,6 +13,8 @@ const MyItinerary: React.FC = () => {
 
     const {t} = useTranslation();
 
+    document.title = t('pageTitles.myItinerary')
+
     const claims = getClaims();
 
     const navigate = useNavigate();

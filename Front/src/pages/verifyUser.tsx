@@ -15,6 +15,8 @@ const VerifyAccount: React.FC = () => {
     const router = useNavigate();
     const { t } = useTranslation();
 
+    document.title = t('pageTitles.verifyAccount');
+
     const auth = useAuthContext();
     
 

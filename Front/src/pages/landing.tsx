@@ -13,6 +13,8 @@ const Landing: React.FC = () => {
     const {t} = useTranslation();
     const router = useNavigate();
 
+    document.title = t('pageTitles.landing');
+
     const contentForProviders: () => React.ReactNode = () => {
         /*
     "browseTrip": "1. Explorar viajes",

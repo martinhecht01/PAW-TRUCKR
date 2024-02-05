@@ -16,6 +16,8 @@ const ResetPassword: React.FC = () => {
     const [ResetState, setResetState] = useState(false);
     const { t } = useTranslation();
 
+    document.title = t('pageTitles.resetPassword');
+
     const router = useNavigate();
     async function handleResetPassword(values: any) {
         const { password } = values;
