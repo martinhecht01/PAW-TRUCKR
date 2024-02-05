@@ -10,7 +10,6 @@ import { getCargoTypes } from '../api/cargoTypeApi';
 import { useTranslation } from 'react-i18next';
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {Simulate} from "react-dom/test-utils";
-import reset = Simulate.reset;
 
 
 const {Title, Text} = Typography;
