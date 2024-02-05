@@ -159,7 +159,7 @@ const PublicationDetails: React.FC = () => {
                                     <Row>
                                         <Slider
                                             min={1}
-                                            max={100000}
+                                            max={1000000}
                                             tipFormatter={formatter}
                                             defaultValue={publication?.price}
                                             tooltipVisible

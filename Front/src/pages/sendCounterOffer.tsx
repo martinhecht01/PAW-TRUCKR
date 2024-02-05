@@ -158,7 +158,7 @@ const SendCounterOffer: React.FC = () => {
                                     <InputNumber
                                         className="w-100"
                                         min={1}
-                                        max={100000}
+                                        max={1000000}
                                         placeholder={t('common.offeredPrice')}
                                         prefix="$"
                                     />

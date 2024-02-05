@@ -3,29 +3,41 @@ import {  Skeleton, message } from "antd";
 import {useNavigate, useSearchParams} from 'react-router-dom';
 import { loginUser } from "../api/userApi";
 import { useTranslation } from "react-i18next";
+import { useAuthContext } from "../hooks/authProvider";
 
 const VerifyAccount: React.FC = () => {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
     const cuit = searchParams.get('cuit');
+    
+    console.log(searchParams.get('token'))
 
     const router = useNavigate();
     const { t } = useTranslation();
+
+    const auth = useAuthContext();
     
 
     useEffect(() => {
 
         if(cuit == null || token == null){
-            message.error(t('message.invalidLink'));
+            message.error(t('common.invalidLink'));
             router('/login');
             return;
         }
 
         loginUser(cuit, token).then(() => {
-            message.success(t('message.accountVerified'));
-            router('/login');
+            if(token == null) {
+                message.error(t('common.invalidLink'));
+                router('/login');
+            }else{
+                message.success(t('common.accountVerified'));
+                auth.login(token);
+                router('/login');
+            }
+            
         }).catch(() => {
-            message.error(t('message.invalidLink'));
+            message.error(t('common.invalidLink'));
             router('/login');
         });
 

@@ -129,7 +129,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>{t('filters.price')}:</Text>
-                    <Slider range min={0} max={100000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
+                    <Slider range min={0} max={1000000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
                     <Text>{t('filters.cargoType')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange} allowClear>
