@@ -113,18 +113,24 @@ const PublicationDetails: React.FC = () => {
                             </Row>
                         </Card>
                         <Row className="mt-5 space-between">
-                            <Col span={11}>
+                            <Col span={7}>
                                 <Card className="w-100 text-center">
                                     <Title level={3}>{publication?.weight} Kg</Title>
                                     <Text>{t('publicationDetails.weight')}</Text>
                                 </Card>
                             </Col>
-                            <Col span={11}>
+                            <Col span={7}>
                                 <Card className="w-100 text-center">
                                     <Title level={3}>{publication?.volume} M3</Title>
                                     <Text>{t('publicationDetails.volume')}</Text>
                                 </Card>
                             </Col>
+                            <Col span={7}>
+                            <Card className="w-100 text-center">
+                                <Title level={3}>${publication?.price}</Title>
+                                <Text>{t('filters.price')}</Text>
+                            </Card>
+                        </Col>
                         </Row>
                     </Col>
                     <Col span={8}>
