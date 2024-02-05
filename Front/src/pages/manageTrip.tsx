@@ -147,7 +147,7 @@ const ManageTrip: React.FC = () => {
         <Row style={{justifyContent: 'space-evenly'}} className="w-80">
             <Skeleton loading={isLoading}>
                 {!publication?.provider || !publication?.trucker  ?
-                    <Col span={2}>
+                    <Col span={4}>
                     <Popconfirm
                         title={t('manage.deletePublicationPop.title')}
                         description={t('manage.deletePublicationPop.message')}
