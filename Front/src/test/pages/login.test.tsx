@@ -80,6 +80,4 @@ test('Login page with invalid credentials', async () => {
     await userEvent.click(screen.getByTestId('button-login'));
 
     expect(localStorage.getItem('token')).toBeNull();
-    // expect(mocks.useNavigate).not.toHaveBeenCalledOnce();
-    // TODO: get screen text using i18n "react-i18next:: You will need to pass in an i18next instance by using initReactI18next"
 });

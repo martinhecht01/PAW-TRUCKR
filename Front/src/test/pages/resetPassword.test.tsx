@@ -47,7 +47,7 @@ test('Reset password request', async () => {
     customRender(<ResetPasswordRequest></ResetPasswordRequest>);
 
         fireEvent.change(screen.getByTestId('cuit-resetPasswordRequest'),
-        { target: { value: '20-43724688-3' }  //TODO: deshardcodear cuit, contra y todo eso. Mockear?
+        { target: { value: '20-43724688-3' }
         });
 
         await userEvent.click(screen.getByTestId('button-resetPasswordRequest'));
@@ -74,46 +74,3 @@ test('Reset password request fail', async () => {
 
 });
 
-test('Reset password', async () => {
-
-    // mocks.useSearchParams.mockReturnValueOnce({
-    //     toString: () => toString,
-    // });
-    // // mocks.useSearchParams.mockReturnValueOnce([new URLSearchParams('?hash=00000&cuit=20-43724688-3&userid=1')]);
-    //
-    // customRender(<ResetPassword/>);
-    //
-    // fireEvent.change(screen.getByTestId('password-resetPassword'),
-    // { target: { value: 'holahola1' }
-    // });
-    //
-    // fireEvent.change(screen.getByTestId('repeatPassword-resetPassword'),
-    // { target: { value: 'holahola1' }
-    // });
-    //
-    // await userEvent.click(screen.getByTestId('button-resetPassword'));
-    //
-    // console.log(screen.debug())
-
-    // expect(screen.getByTestId('success-resetPassword')).toBeInTheDocument();
-})
-
-//TODO: arreglar estos 2 tests
-
-test('Reset password fail different password', async () => {
-
-    // // const {container} = render(<Login/>);
-    // // const {container} = customRender(<Login/>);
-    //
-    // fireEvent.change(screen.getByTestId('password-resetPassword'),
-    // { target: { value: 'holahola1' }
-    // });
-    //
-    // fireEvent.change(screen.getByTestId('repeatPassword-resetPassword'),
-    // { target: { value: 'holahola2' }
-    // });
-    //
-    // await userEvent.click(screen.getByTestId('button-resetPassword'));
-    //
-    // expect(screen.getByTestId('success-resetPassword')).not.toBeInTheDocument();
-});

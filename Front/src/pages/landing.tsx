@@ -37,7 +37,6 @@ const Landing: React.FC = () => {
             </div>;
     };
 
-    //TODO: change the content for providers
     const contentForTruckers: () => React.ReactNode = () => {
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <LandingCard  title={'1. ' + t('landing.BrowseCargo')} subtitle={t('landing.NewLanding1')}></LandingCard>
