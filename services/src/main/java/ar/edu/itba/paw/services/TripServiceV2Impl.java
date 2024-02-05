@@ -142,8 +142,15 @@ public class TripServiceV2Impl implements TripServiceV2 {
         Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(OfferNotFoundException::new);
 
         if(proposal.getParentProposal() != null){
-            if(action.equals("ACCEPT"))
+            if(action.equals("ACCEPT")) {
+                int tripId = proposal.getTrip().getTripId();
                 acceptCounterOffer(proposalId);
+                Trip trip = tripDaoV2.getTripOrRequestById(tripId).orElseThrow(TripOrRequestNotFoundException::new);
+                User trucker = trip.getTrucker();
+                User provider = trip.getProvider();
+                ms.sendTripEmail(provider, trucker,trip, locale);
+                ms.sendTripEmail(trucker, provider,trip,locale);
+            }
             else if(action.equals("REJECT"))
                 rejectCounterOffer(proposalId);
             return;

@@ -174,10 +174,6 @@ const OfferCard: React.FC<OfferCardProps> = ({ from,to,dateFrom,dateTo, price, i
                             <Title level={5} style={{margin:'0vh'}}>${counterOfferObject.price}</Title>
                         </Col>
                         <Col span={4} className='space-between'>
-                            <Button type='dashed' danger onClick={() => acceptOfferAction(counterOfferObject.id.toString(), 'REJECT')}>Reject</Button>
-                            <Button type='primary' onClick={() => acceptOffer(counterOfferObject.id.toString(), 'ACCEPT')}>Accept</Button>
-                        </Col>
-                        <Col span={4} className='space-between'>
                             <Button type='dashed' danger onClick={() => acceptOfferAction(counterOfferObject.id.toString(), 'REJECT')}>{t('offerCard.reject')}</Button>
                             <Button type='primary' onClick={() => acceptOfferAction(counterOfferObject.id.toString(), 'ACCEPT')}>{t('offerCard.accept')}</Button>
                         </Col>

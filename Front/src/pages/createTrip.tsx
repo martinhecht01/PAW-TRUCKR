@@ -213,9 +213,9 @@ const CreateTrip: React.FC = () => {
                             <Col span={8}>
                                 <Form.Item
                                     name="availableWeight"
-                                    rules={[{ required: true, message: t('common.enterWeight'), type: 'number', min: 5 }]}
+                                    rules={[{ required: true, message: t('common.enterWeight'), type: 'number', min: 50 }]}
                                 >
-                                    <InputNumber placeholder={t('common.availableWeight')} className='w-100' min={5} max={100000} />
+                                    <InputNumber placeholder={t('common.availableWeight')} className='w-100' min={50} max={100000} />
                                 </Form.Item>
                             </Col>
                             <Col span={8}>
