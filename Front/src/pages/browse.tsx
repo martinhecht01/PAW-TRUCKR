@@ -7,6 +7,7 @@ import { Dayjs } from "dayjs";
 import { getCities } from "../api/citiesApi";
 import { getCargoTypes } from "../api/cargoTypeApi";
 import { useTranslation } from "react-i18next";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 const {Text, Title} = Typography;
 
@@ -15,6 +16,7 @@ const formatter = (value: number | undefined) => `$${value}`;
 const {RangePicker} = DatePicker;
 
 type RangeValue = [Dayjs | null, Dayjs | null] | null;
+
 
 interface BrowseTripsProps {
     tripOrRequest: 'TRIP' | 'REQUEST';
@@ -25,47 +27,87 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
 
     const {t} = useTranslation();
 
+    const router = useNavigate();
+
     document.title = tripOrRequest === 'TRIP' ? t('pageTitles.browseTrips') : t('pageTitles.browseRequests');
 
     const sortOptions = ['departureDate ASC', 'departureDate DESC', 'arrivalDate ASC', 'arrivalDate DESC', 'price ASC', 'price DESC']
 
     const [cities, setCities] = useState<Array<string>>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [trips, setTrips] = useState<Array<TripCardProps>>([]);
-    const [origin, setOrigin] = useState<string>('');
-    const [destination, setDestination] = useState<string>('');
-    const [weight, setWeight] = useState<number>(1);
-    const [volume, setVolume] = useState<number>(1);
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
-    const [sortBy, setSortBy] = useState<string>(sortOptions[0]);
-    const [page, setPage] = useState<number>(1);
-    const [pageSize, setPageSize] = useState<number>(12);
-    const [maxPage, setMaxPage] = useState<number>(0);
     const [cargoTypes, setCargoTypes] = useState<Array<string>>([]);
-    const [cargoType, setCargoType] = useState<string>('');
-    const [dateRange, setDateRange] = useState<RangeValue>(null);
+    const [trips, setTrips] = useState<Array<TripCardProps>>([]);
+
+    const [searchParams] = useSearchParams();
+
+    const [origin, setOrigin] = useState<string>(searchParams.get('origin')?? '');
+    const [destination, setDestination] = useState<string>(searchParams.get('destination') ?? '');
+    const [weight, setWeight] = useState<string>(searchParams.get('weight') ?? '1');
+    const [volume, setVolume] = useState<string>(searchParams.get('volume') ?? '1');
+    const [type, setType] = useState<string>(searchParams.get('type') ?? '');
+    const [departureDate, setDepartureDate] = useState<string>(searchParams.get('departureDate') ?? '');
+    const [arrivalDate, setArrivalDate] = useState<string>(searchParams.get('arrivalDate') ?? '');
+    const [minPrice, setMinPrice] = useState<string>(searchParams.get('minPrice') ?? '0');
+    const [maxPrice, setMaxPrice] = useState<string>(searchParams.get('maxPrice') ?? '1000000');
+    const [page, setPage] = useState<string>(searchParams.get('page') ?? '1');
+    const [pageSize, setPageSize] = useState<string>(searchParams.get('pageSize') ?? '12');
+    const [maxPage, setMaxPage] = useState<string>(searchParams.get('maxPage') ?? '0');
+    const [sortBy, setSortBy] = useState<string>(searchParams.get('sortBy') ?? sortOptions[0]);
+
+
+    // let origin = searchParams.get('origin')?? '';
+    // let destination = searchParams.get('destination') ?? '';
+    // let weight = searchParams.get('weight') ?? '1';
+    // let volume = searchParams.get('volume') ?? '1';
+    // let type = searchParams.get('type') ?? '';
+    // let departureDate = searchParams.get('departureDate') ?? '';
+    // let arrivalDate = searchParams.get('arrivalDate') ?? '';
+    // let minPrice = searchParams.get('minPrice') ?? '0';
+    // let maxPrice = searchParams.get('maxPrice') ?? '1000000';
+    // let page = searchParams.get('page') ?? '1';
+    // let pageSize = searchParams.get('pageSize') ?? '12';
+    // let maxPage = searchParams.get('maxPage') ?? '0';
+    // let sortBy = searchParams.get('sortBy') ?? sortOptions[0];
 
     const handleOriginChange = (value: string) => setOrigin(value);
     const handleDestinationChange = (value: string) => setDestination(value);
-    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(+e.target.value);
-    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => setVolume(+e.target.value);
+    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(e.target.value);
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => setVolume(e.target.value);
+    const handleCargoTypeChange = (value: string) => setType(value);
+
+    const handleSortByChange = (value: string) => setSortBy(value);
 
     const handlePriceRangeChange = (value: number | number[]) => {
         if (Array.isArray(value) && value.length === 2) {
-            setPriceRange(value as [number, number]);
+            // setPriceRange(value as [number, number]);
+            setMinPrice(value[0].toString());
+            setMaxPrice(value[1].toString());
         }
     };
 
-    const handlePaginationChange = (page: number, pageSize?: number) => {
-        setPage(page);
-        if (pageSize) setPageSize(pageSize);
+    const handleDatesChange = (dates: RangeValue) => {
+        if (dates == null){
+            return;
+        }
+        if(dates[0] && dates[1]){
+            setDepartureDate(dates[0].format('YYYY-MM-DDTHH:MM:ss'));
+            setArrivalDate(dates[1].format('YYYY-MM-DDTHH:MM:ss'));
+        }
+        else if (dates[0]){
+            setDepartureDate(dates[0].format('YYYY-MM-DDTHH:MM:ss'));
+        }
+        else if (dates[1]){
+            setArrivalDate(dates[1].format('YYYY-MM-DDTHH:MM:ss'));
+        }
+    }
+
+    const handlePaginationChange = (pagex: number, pageSizex?: number) => {
+        setPage(pagex.toString());
+        if (pageSizex) setPageSize(pageSizex.toString());
     };
 
-    const handleSortByChange = (value: string) => setSortBy(value);
-    const handleCargoTypeChange = (value: string) => setCargoType(value);
-
     useEffect(() => {
-        setPage(1);
+        setPage('1');
     }, [tripOrRequest])
 
     useEffect(() => {
@@ -80,7 +122,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
             setCargoTypes(cargoTypes);
         });
 
-        getPublications('' ,tripOrRequest, dateRange?.[0] ? dateRange[0].format('YYYY-MM-DDTHH:MM:ss') : '', dateRange?.[1] ? dateRange[1].format('YYYY-MM-DDTHH:MM:ss'): '', 'ACTIVE', volume, weight, cargoType, origin, destination, priceRange[0], priceRange[1], page, pageSize, sortBy).then((publications) => {
+        getPublications('' ,tripOrRequest, departureDate, arrivalDate, 'ACTIVE', Number(volume), Number(weight), type, origin, destination, Number(minPrice), Number(maxPrice), Number(page), Number(pageSize), sortBy).then((publications) => {
             setTrips(publications.map((publication) => {
                 return {
                     type: 'trip',
@@ -98,10 +140,17 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                 }
             }))
             if(publications.length > 0)
-                setMaxPage(Number.parseInt(publications[0].maxPage ? publications[0].maxPage : '1'));
+                setMaxPage(publications[0].maxPage ? publications[0].maxPage : '1');
             setIsLoading(false);
         })
-    }, [origin, destination, weight, volume, priceRange, sortBy, page, pageSize, tripOrRequest, dateRange, cargoType])
+
+        if (tripOrRequest === 'TRIP'){
+            router('/trips?origin='+origin+'&destination='+destination+'&weight='+weight+'&volume='+volume+'&type='+type+'&departureDate='+departureDate+'&arrivalDate='+arrivalDate+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&page='+page+'&pageSize='+pageSize+'&maxPage='+maxPage+'&sortBy='+sortBy);
+        }
+        else{
+            router('/cargo?origin='+origin+'&destination='+destination+'&weight='+weight+'&volume='+volume+'&type='+type+'&departureDate='+departureDate+'&arrivalDate='+arrivalDate+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&page='+page+'&pageSize='+pageSize+'&maxPage='+maxPage+'&sortBy='+sortBy);
+        }
+    }, [origin, destination, weight, volume, minPrice, maxPrice, sortBy, page, pageSize, departureDate, arrivalDate, type])
 
 
     return (
@@ -131,7 +180,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>{t('filters.price')}:</Text>
-                    <Slider range min={0} max={1000000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
+                    <Slider range min={0} max={1000000} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
                     <Text>{t('filters.cargoType')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange} allowClear>
@@ -142,8 +191,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <div className="m-10"></div>
                     <Text>{t('filters.dateRange')}</Text>
                     <RangePicker className="w-100"
-                        onChange={(val) => {
-                            setDateRange(val);
+                        onChange={(dates) => {
+                            handleDatesChange(dates);
                         }}    
                         allowClear
                         placeholder={[t('common.from'), t('common.to')]}
@@ -174,10 +223,10 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                         {trips.length === 0 ? null : 
                             <Pagination 
                                 className="text-center mt-2vh" 
-                                defaultCurrent={1} 
-                                total={maxPage*pageSize}
-                                current={page}
-                                pageSize={pageSize}
+                                defaultCurrent={1}
+                                total={Number(page)*Number(pageSize)}
+                                current={Number(page)}
+                                pageSize={Number(pageSize)}
                                 onChange={handlePaginationChange}
                             />
                         }
