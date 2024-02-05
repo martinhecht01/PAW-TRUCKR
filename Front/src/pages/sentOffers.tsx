@@ -15,6 +15,9 @@ const { Title } =Typography;
 const SentOffers: React.FC = () => {
 
     const {t} = useTranslation();
+
+    document.title = t('pageTitles.sentOffers');
+
     const router = useNavigate();
     const [ offers, setOffers] = useState<OfferCardProps[]>([]);
     const [ isLoading, setIsLoading] = useState<boolean>(true);

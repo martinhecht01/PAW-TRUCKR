@@ -74,7 +74,6 @@ public class ReviewControllerApi {
         Trip trip = ts.getTripOrRequestById(form.getTripId()).orElseThrow(TripOrRequestNotFoundException::new);
         Review review;
         try {
-            //TODO: esto es porque capaz no esta completo el viaje, se podra hacer mejor?
             Integer uId = Objects.equals(user.getUserId(), trip.getTrucker().getUserId()) ? trip.getProvider().getUserId() : trip.getTrucker().getUserId();
             review = revs.createReview(form.getTripId(), uId, form.getRating(), form.getReview());
         }catch (Exception e){
@@ -94,7 +93,7 @@ public class ReviewControllerApi {
     {
         User user = us.getUserById(userId).orElseThrow(UserNotFoundException::new);
         List<Review> reviewList = revs.getUserReviews(user.getUserId(), page, pageSize);
-        int maxPages = revs.getUserReviewCount(user.getUserId()) / pageSize + 1;
+        int maxPages = (int) Math.ceil((double)revs.getUserReviewCount(userId) / pageSize);
 
         if(reviewList.isEmpty()){
             return Response.noContent().build();

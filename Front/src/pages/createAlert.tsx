@@ -12,9 +12,12 @@ import dayjs from 'dayjs';
 const { RangePicker } = DatePicker;
 
 const CreateAlertForm = () => {
+
     const { t } = useTranslation();
     const router = useNavigate();
     const [form] = Form.useForm();
+
+    document.title = t('pageTitles.createAlert');
 
     const [cargoOptions, setCargoOptions] = React.useState<{ label: string, value: string }[]>([]);
     const [cityOptions, setCityOptions] = React.useState<{ label: string, value: string }[]>([]);

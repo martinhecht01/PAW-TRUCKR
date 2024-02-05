@@ -15,6 +15,8 @@ const MyPublications: React.FC = () => {
 
     const {t} = useTranslation();
 
+    document.title = t('pageTitles.myPublications');
+
     const navigate = useNavigate();
 
     const [activeTrips, setActiveTrips] = useState(Array<TripCardProps>());

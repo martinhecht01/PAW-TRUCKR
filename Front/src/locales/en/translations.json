@@ -44,7 +44,7 @@
       "myItinerary": "My Itinerary",
       "MyPublications": "My Publications",
       "SentOffers": "Sent Offers",
-      "MyAlerts": "My Alert",
+      "MyAlert": "My Alert",
       "norequestFound": "No cargo found",
       "notripFound": "No trips found"
     }
@@ -341,6 +341,15 @@
     "emailSentMessage": "Email sent! Please check your inbox."
   },
 
+
+  "myItinerary":{
+    "ongoingTrips": "Ongoing trips",
+    "noOngoingTrips": "You don't have any ongoing trips",
+    "futureTrips": "Future trips",
+    "noFutureTrips": "You don't have any future trips",
+    "viewPastTrips": "View past trips"
+  },
+
   "myPublications":{
     "noActivePublications": "You don't have active publications",
     "createPublication": "Create Publication",
@@ -358,6 +367,35 @@
     "sendOffer": "Send Offer",
     "enterDescription": "Enter your description",
     "priceRange": "Offer must be between $1 and $1000000"
+  },
+
+  "pageTitles": {
+    "error404": "Error 404",
+    "error500": "Error 500",
+    "error403": "Error 403",
+    "browseTrips": "Browse Trips",
+    "browseRequests": "Browse Cargo",
+    "createAlert": "Create Alert",
+    "createTrip": "Create Publication",
+    "editProfile": "Edit Profile",
+    "landing": "Home",
+    "login": "Login",
+    "manageTrip": "Manage Trip",
+    "manageRequest": "Manage Cargo",
+    "myAlert": "My Alert",
+    "myItinerary": "My Itinerary",
+    "myPublications": "My Publications",
+    "pastTrips": "Past Trips",
+    "profile": "User Profile",
+    "requestDetails": "Cargo Details",
+    "tripDetails": "Trip Details",
+    "register": "Register",
+    "resetPassword": "Reset Password",
+    "resetPasswordRequest": "Reset Password Request",
+    "searchTrips": "Search Trips",
+    "sendCounterOffer": "Send Counter Offer",
+    "sentOffers": "Sent Offers",
+    "verifyAccount": "Verify Account"
   }
 
 }

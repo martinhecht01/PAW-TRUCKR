@@ -23,6 +23,9 @@ const SendCounterOffer: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const { t } = useTranslation();
+
+    document.title = t('pageTitles.sendCounterOffer');
+
     const router = useNavigate();
 
     useEffect(() => {

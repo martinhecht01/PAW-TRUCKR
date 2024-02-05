@@ -6,6 +6,9 @@ const {Title, Text} = Typography;
 const InternalError500 = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
+
+    document.title = t('pageTitles.error500');
+
     return (
         <Result
         status="500"

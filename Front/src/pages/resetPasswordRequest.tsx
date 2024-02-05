@@ -10,6 +10,8 @@ const ResetPasswordRequest: React.FC = () => {
     const [form] = Form.useForm();
     const { t } = useTranslation(); // Initialize useTranslation hook
 
+    document.title = t('pageTitles.resetPasswordRequest');
+
     async function sendRequest(values: any) {
         const { cuit } = values;
         try {

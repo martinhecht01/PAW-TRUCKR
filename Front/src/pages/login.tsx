@@ -14,6 +14,8 @@ const Login: React.FC = () => {
     const router = useNavigate();
     const { t } = useTranslation();
 
+    document.title = t('pageTitles.login');
+
     async function loginAction(values: any) {
         const { cuit, password } = values;
         loginUser(cuit, password).then((token) => {

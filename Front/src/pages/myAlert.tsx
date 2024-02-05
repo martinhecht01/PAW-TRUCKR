@@ -13,6 +13,9 @@ const { Title } = Typography;
 const myAlert: React.FC = () => {
 
     const {t} = useTranslation();
+
+    document.title = t('pageTitles.myAlert');
+
     const router = useNavigate();
     const popoverContent = (
         <div>

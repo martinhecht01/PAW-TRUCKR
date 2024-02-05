@@ -17,6 +17,8 @@ const SearchTrips: React.FC = () => {
 
     const {t} = useTranslation();
 
+    document.title = t('pageTitles.searchTrips');
+
     type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
     //Ver que onda el tema type

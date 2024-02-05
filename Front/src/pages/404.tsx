@@ -6,6 +6,9 @@ const {Title, Text} = Typography;
 const NotFound404 = () => {
     const navigate = useNavigate();
     const {t} = useTranslation();
+
+    document.title = t('pageTitles.error404');
+
     return (
         <Result
         status="404"
