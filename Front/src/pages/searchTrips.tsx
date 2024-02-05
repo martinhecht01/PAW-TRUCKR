@@ -47,6 +47,8 @@ const SearchTrips: React.FC = () => {
     const [pageSize, setPageSize] = useState<string>(searchParams.get('pageSize') ?? '12');
     const [maxPage, setMaxPage] = useState<string>(searchParams.get('maxPage') ?? '0');
 
+    // const [search, setSearch] = useState<boolean>(!(origin === '' && destination == '' && weight === '1' && volume === '1' && type === '' && departureDate === '' && arrivalDate === '' && minPrice !== '0' && maxPrice === '1000000' && page === '1' && pageSize === '12' && maxPage === '0'));
+
     const handleOriginChange = (value: string) => setOrigin(value);
     const handleDestinationChange = (value: string) => setDestination(value);
     const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(e.target.value);
@@ -135,11 +137,12 @@ const SearchTrips: React.FC = () => {
     }
 
     async function resetSearch(){
-        await resetFilters();
+        resetFilters();
+        router('/searchTrips')
         setSearch(true)
     }
 
-    async function resetFilters(){
+    function resetFilters(){
         setOrigin('');
         setDestination('');
         setWeight('1');
@@ -155,8 +158,8 @@ const SearchTrips: React.FC = () => {
     }
 
     async function viewAll() {
-        await resetFilters()
-        searchAction()
+        resetFilters()
+        await searchAction()
     }
     
     if(search)
@@ -169,7 +172,7 @@ const SearchTrips: React.FC = () => {
                             <Divider></Divider>
                             <Row className='w-100 space-between'>
                                 <Col span={11}>
-                                    <Select placeholder={t('filters.origin')} className='w-100 mb-1vh' onChange={handleOriginChange} allowClear showSearch>
+                                    <Select placeholder={t('filters.origin')} className='w-100 mb-1vh' value={origin} onChange={handleOriginChange} allowClear showSearch>
                                         {cities.map((city, index) => (
                                             <Select.Option key={index} value={city}>{city}</Select.Option>
                                         ))}
@@ -179,7 +182,7 @@ const SearchTrips: React.FC = () => {
                                     <ArrowRightOutlined/>
                                 </Col>
                                 <Col span={11}>
-                                    <Select placeholder={t('filters.destination')} className='w-100 mb-1vh' onChange={handleDestinationChange} allowClear showSearch>
+                                    <Select placeholder={t('filters.destination')} className='w-100 mb-1vh' value={destination} onChange={handleDestinationChange} allowClear showSearch>
                                         {cities.map((city, index) => (
                                             <Select.Option key={index} value={city}>{city}</Select.Option>
                                         ))}
@@ -187,23 +190,23 @@ const SearchTrips: React.FC = () => {
                                 </Col>
                             </Row>
                             <DatePicker.RangePicker className='w-100 mb-1vh' disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} onChange={(dates) => handleDatesChange(dates)} allowClear placeholder={[t('common.from'), t('common.to')]}></DatePicker.RangePicker>
-                            <Select placeholder={t('filters.cargoType')} className='w-100 mb-1vh' onChange={handleCargoTypeChange} allowClear>
+                            <Select placeholder={t('filters.cargoType')} className='w-100 mb-1vh' value={type} onChange={handleCargoTypeChange} allowClear>
                                 {cargoTypes.map((cargoType, index) => (
                                     <Select.Option key={index} value={cargoType}>{t('cargoType.'+cargoType.toLowerCase())}</Select.Option>
                                 ))}
                             </Select>
                             <Row className='w-100 space-between'>
                                 <Col span={11}>
-                                    <Input type='number' placeholder={t('filters.weight')} className='mb-1vh' onChange={handleWeightChange} suffix={'Kg'} allowClear></Input>
+                                    <Input type='number' placeholder={t('filters.weight')} className='mb-1vh' value={weight} onChange={handleWeightChange} suffix={'Kg'} allowClear></Input>
                                 </Col>
                                 <Col span={12}>
-                                    <Input type='number' placeholder={t('filters.volume')} className='mb-1vh' onChange={handleVolumeChange} suffix={'M3'} allowClear></Input>
+                                    <Input type='number' placeholder={t('filters.volume')} className='mb-1vh' value={volume} onChange={handleVolumeChange} suffix={'M3'} allowClear></Input>
                                 </Col>
                             </Row>
                             <Row className='w-100 flex-center'>
                                 <Col span={12}>
                                     <Text>{t('filters.price')}</Text>
-                                    <Slider range min={0} max={1000000} className='mb-1vh' tooltip={{formatter}} onChange={handlePriceRangeChange}></Slider>
+                                    <Slider range min={0} max={1000000} className='mb-1vh' value={[Number(minPrice), Number(maxPrice)]} tooltip={{formatter}} onChange={handlePriceRangeChange}></Slider>
                                 </Col>
                             </Row>
                             <div className='w-100 flex-center pt-5'>
