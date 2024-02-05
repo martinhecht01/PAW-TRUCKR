@@ -73,7 +73,7 @@ const ResetPassword: React.FC = () => {
                             </Form.Item>
                         </Form>
                     ) : (
-                        <Text data-testid='success-resetPassword' className='w-100 text-center'> Password changed successfully! <Link href='/login'>Login back</Link></Text>
+                        <Text data-testid='success-resetPassword' className='w-100 text-center'> Password changed successfully! <Link onClick={()=> router('/login')}>Login back</Link></Text>
                     )}
                 </Card>
             </Col>

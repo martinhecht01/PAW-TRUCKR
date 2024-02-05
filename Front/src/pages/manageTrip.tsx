@@ -3,7 +3,7 @@ import {Card, Col, Image, Row, Typography, Avatar, Skeleton, Badge, message, But
 import '../styles/main.scss';
 import '../styles/profile.scss';
 import ProposalCard, { ProposalProps } from "../Components/proposalCard.tsx";
-import {ArrowRightOutlined, CheckCircleFilled, CheckCircleTwoTone, MinusCircleTwoTone, StarFilled, UserOutlined} from "@ant-design/icons";
+import {ArrowRightOutlined, CheckCircleTwoTone, MinusCircleTwoTone, StarFilled, UserOutlined} from "@ant-design/icons";
 import { Trip } from '../models/Trip.tsx';
 import { User } from '../models/User.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
