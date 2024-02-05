@@ -23,14 +23,14 @@ const myAlert: React.FC = () => {
         </div>
     )
 
-
-
     const [myAlert, setMyAlert] = useState<Alert>();
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         getAlert().then((alert) => {
             setMyAlert(alert);
+            if(alert.id){
+            }
             setLoading(false);
         })
     },[]);
@@ -96,6 +96,27 @@ const myAlert: React.FC = () => {
                 <div className="flex-center">
                     <div className='w-50 space-between mt-5'>
                         <Button danger type="dashed" onClick={() => handleAlertDelete()}>{t('common.delete')}</Button>
+                        {/* Go to /cargo with all the query params */}
+                        <Button type="primary" onClick={() => {
+                          const formatDateString = (dateString: string) => {
+                            if(dateString === '')
+                                return '';
+                            if (!dateString) return '';
+                            const date = new Date(dateString);
+                            return date.toISOString().split('.')[0];
+                          };
+                          
+                          const queryParams = new URLSearchParams({
+                            origin: myAlert.city || '',
+                            weight: myAlert.maxWeight ? myAlert.maxWeight.toString() : '1',
+                            volume: myAlert.maxVolume ? myAlert.maxVolume.toString() : '1',
+                            type: myAlert.cargoType || '',
+                            departureDate: formatDateString(myAlert.fromDate ? myAlert.fromDate.toString() : ''),
+                            arrivalDate: formatDateString(myAlert.toDate ? myAlert.toDate.toString() : '')
+                          }).toString();
+                            const url = `/cargo?${queryParams}`;
+                            router(url);
+                        }}>{t('myAlert.compatibleRequests')}</Button>
                         <Popover content={popoverContent} title={t('myAlert.alertQuestion')}>
                             <Button type="primary">{t('myAlert.help')}</Button>
                         </Popover>

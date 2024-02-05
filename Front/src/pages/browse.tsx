@@ -149,7 +149,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
         else{
             router('/cargo?origin='+origin+'&destination='+destination+'&weight='+weight+'&volume='+volume+'&type='+type+'&departureDate='+departureDate+'&arrivalDate='+arrivalDate+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&page='+page+'&pageSize='+pageSize+'&maxPage='+maxPage+'&sortBy='+sortBy);
         }
-    }, [origin, destination, weight, volume, minPrice, maxPrice, sortBy, page, pageSize, departureDate, arrivalDate, type])
+    }, [origin, destination, weight, volume, minPrice, maxPrice, sortBy, page, pageSize, departureDate, arrivalDate, type, tripOrRequest])
 
     function resetFilters(){
         setOrigin('');
@@ -209,7 +209,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                         onChange={(dates) => {
                             handleDatesChange(dates);
                         }}
-                         value={departureDate != '' && arrivalDate != '' ? [dayjs(departureDate), dayjs(arrivalDate)] : undefined}
+                         value={ [departureDate != '' ? dayjs(departureDate) : null, arrivalDate != '' ? dayjs(arrivalDate) :   null]}
+                         allowEmpty={[false, true]}
                         allowClear
                         placeholder={[t('common.from'), t('common.to')]}
 
@@ -218,7 +219,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Text>{t('filters.sortBy')}:</Text>
                     <Select placeholder="-" className="w-100" value={sortBy != ''? sortBy : undefined} onChange={handleSortByChange}>
                         {sortOptions.map((option, index) => (
-                            <Select.Option key={index} value={option}>{option}</Select.Option>
+                            <Select.Option key={index} value={option}>{t('sort.'+option)}</Select.Option>
                         ))}
                     </Select>                                      
                     <div className="m-10"></div>                    

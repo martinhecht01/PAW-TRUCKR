@@ -33,7 +33,7 @@ const TripCard = (props: TripCardProps) => {
             <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} 
                 cover={
                     <>
-                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>} placement="start" color={getCargoTypeColor(props.cargoType.toLowerCase())} >
+                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{t('cargoType.'+props.cargoType.toLowerCase())}</Title>} placement="start" color={getCargoTypeColor(props.cargoType.toLowerCase())} >
                             {props.notifications ? <Badge size="default" count={props.notifications} > 
                                     <Image
                                         style={{ width: '100%',

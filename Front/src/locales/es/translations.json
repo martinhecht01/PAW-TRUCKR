@@ -44,7 +44,7 @@
     "myItinerary": "Mi Itinerario",
     "MyPublications": "Mis Publicaciones",
     "SentOffers": "Ofertas Enviadas",
-    "MyAlert": "Mi Alerta",
+    "myAlert": "Mi Alerta",
     "noCargoFound": "No se encontraron cargamentos",
     "noTripsFound": "No se encontraron viajes"
   }
@@ -62,7 +62,8 @@
     "alertQuestion": "Que es una alerta?",
     "create": "Crear alerta",
     "myAlert": "Mi alerta",
-    "noAlert": "No tiene una alerta activa"
+    "noAlert": "No tiene una alerta activa",
+    "compatibleRequests": "Cargamentos compatibles"
   },
 
   "cargoType": {
@@ -387,6 +388,15 @@
     "sendCounterOffer": "Enviar Contraoferta",
     "sentOffers": "Ofertas Enviadas",
     "verifyAccount": "Verificar Cuenta"
+  },
+
+  "sort":{
+    "departureDate ASC": "Fecha de Salida Ascendente",
+    "departureDate DESC": "Fecha de Salida Descendente",
+    "arrivalDate ASC": "Fecha de Llegada Ascendente",
+    "arrivalDate DESC": "Fecha de Llegada Descendente",
+    "price ASC": "Precio Ascendente",
+    "price DESC": "Precio Descendente"
   }
 
 }

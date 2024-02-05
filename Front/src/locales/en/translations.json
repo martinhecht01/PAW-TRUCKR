@@ -118,7 +118,8 @@
       "alertQuestion": "What is an alert?",
       "create": "Create Alert",
       "myAlert": "My Alert",
-      "noAlert": "You haven't created an alert yet"
+      "noAlert": "You haven't created an alert yet",
+      "compatibleRequests": "Cargo that matches your criteria"
     },
 
     "profile": {
@@ -397,7 +398,17 @@
     "sendCounterOffer": "Send Counter Offer",
     "sentOffers": "Sent Offers",
     "verifyAccount": "Verify Account"
+  },
+
+  "sort":{
+    "departureDate ASC": "Departure Date Ascending",
+    "departureDate DESC": "Departure Date Descending",
+    "arrivalDate ASC": "Arrival Date Ascending",
+    "arrivalDate DESC": "Arrival Date Descending",
+    "price ASC": "Price Ascending",
+    "price DESC": "Price Descending"
   }
+
 
 }
   

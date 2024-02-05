@@ -165,7 +165,7 @@ const ManageTrip: React.FC = () => {
                 }
                 <Col span={10}>
                     <div>
-                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color={getCargoTypeColor(publication?.type.toLowerCase())}>
+                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{t('cargoType.'+publication?.type)}</Title>}  color={getCargoTypeColor(publication?.type.toLowerCase())}>
                                 <Image
                                     style={{ width: '100%',
                                     height: '450px',
