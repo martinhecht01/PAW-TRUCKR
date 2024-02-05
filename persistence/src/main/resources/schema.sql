@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS trips (
 
 CREATE TABLE IF NOT EXISTS proposals (
         proposal_id SERIAL PRIMARY KEY,
-        trip_id INT NOT NULL REFERENCES trips(trip_id),
+        trip_id INT NOT NULL REFERENCES trips(trip_id) on delete cascade,
         user_id INT NOT NULL REFERENCES users(userid),
         description VARCHAR(300),
         price INT NOT NULL DEFAULT 0
@@ -85,7 +85,9 @@ CREATE TABLE IF NOT EXISTS cargotypes(
 INSERT INTO cargotypes (id,name) VALUES
         (1,'Refrigerated'),
         (2,'Hazardous'),
-        (3,'Normal');
+        (3,'Normal')
+on conflict do nothing;
+
 
 INSERT INTO cities (name) VALUES
     ('Azul'),
@@ -177,5 +179,14 @@ INSERT INTO cities (name) VALUES
     ('Villa Dolores'),
     ('Villa María'),
     ('Villa Mercedes'),
-    ('Zárate');
+    ('Zárate')
+on conflict do nothing;
+
+INSERT INTO images (imageId, image) VALUES (0, pg_read_binary_file('./defaultImages/defaultImage0.png')::bytea) ON CONFLICT DO NOTHING;
+
+
+-- Insert into images(imageId, image) values
+--     (0, pg_escape_bytea('./defaultImages/default0.png'))
+-- on conflict do nothing;
+
 
