@@ -9,6 +9,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { getCargoTypes } from '../api/cargoTypeApi';
 import { useTranslation } from 'react-i18next';
 import {useNavigate, useSearchParams} from "react-router-dom";
+import {Simulate} from "react-dom/test-utils";
+import reset = Simulate.reset;
 
 
 const {Title, Text} = Typography;
@@ -34,30 +36,31 @@ const SearchTrips: React.FC = () => {
 
 
     const [searchParams] = useSearchParams();
-    let origin = searchParams.get('origin')?? '';
-    let destination = searchParams.get('destination') ?? '';
-    let weight = searchParams.get('weight') ?? '1';
-    let volume = searchParams.get('volume') ?? '1';
-    let type = searchParams.get('type') ?? '';
-    let departureDate = searchParams.get('departureDate') ?? '';
-    let arrivalDate = searchParams.get('arrivalDate') ?? '';
-    let minPrice = searchParams.get('minPrice') ?? '0';
-    let maxPrice = searchParams.get('maxPrice') ?? '1000000';
-    let page = searchParams.get('page') ?? '1';
-    let pageSize = searchParams.get('pageSize') ?? '12';
-    let maxPage = searchParams.get('maxPage') ?? '0';
+    const [origin, setOrigin] = useState<string>(searchParams.get('origin')?? '');
+    const [destination, setDestination] = useState<string>(searchParams.get('destination') ?? '');
+    const [weight, setWeight] = useState<string>(searchParams.get('weight') ?? '1');
+    const [volume, setVolume] = useState<string>(searchParams.get('volume') ?? '1');
+    const [type, setType] = useState<string>(searchParams.get('type') ?? '');
+    const [departureDate, setDepartureDate] = useState<string>(searchParams.get('departureDate') ?? '');
+    const [arrivalDate, setArrivalDate] = useState<string>(searchParams.get('arrivalDate') ?? '');
+    const [minPrice, setMinPrice] = useState<string>(searchParams.get('minPrice') ?? '0');
+    const [maxPrice, setMaxPrice] = useState<string>(searchParams.get('maxPrice') ?? '1000000');
+    const [page, setPage] = useState<string>(searchParams.get('page') ?? '1');
+    const [pageSize, setPageSize] = useState<string>(searchParams.get('pageSize') ?? '12');
+    const [maxPage, setMaxPage] = useState<string>(searchParams.get('maxPage') ?? '0');
 
-    const handleOriginChange = (value: string) => origin = value;
-    const handleDestinationChange = (value: string) => destination = value;
-    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => weight = e.target.value;
-    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => volume = e.target.value;
-    const handleCargoTypeChange = (value: string) => type = value;
+    const handleOriginChange = (value: string) => setOrigin(value);
+    const handleDestinationChange = (value: string) => setDestination(value);
+    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(e.target.value);
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => setVolume(e.target.value);
+    const handleCargoTypeChange = (value: string) => setType(value);
+
 
     const handlePriceRangeChange = (value: number | number[]) => {
         if (Array.isArray(value) && value.length === 2) {
             // setPriceRange(value as [number, number]);
-            minPrice = value[0].toString();
-            maxPrice = value[1].toString();
+            setMinPrice(value[0].toString());
+            setMaxPrice(value[1].toString());
         }
     };
 
@@ -66,20 +69,20 @@ const SearchTrips: React.FC = () => {
             return;
         }
         if(dates[0] && dates[1]){
-            departureDate = dates[0].format('YYYY-MM-DDTHH:MM:ss');
-            arrivalDate = dates[1].format('YYYY-MM-DDTHH:MM:ss');
+            setDepartureDate(dates[0].format('YYYY-MM-DDTHH:MM:ss'));
+            setArrivalDate(dates[1].format('YYYY-MM-DDTHH:MM:ss'));
         }
         else if (dates[0]){
-            departureDate = dates[0].format('YYYY-MM-DDTHH:MM:ss');
+            setDepartureDate(dates[0].format('YYYY-MM-DDTHH:MM:ss'));
         }
         else if (dates[1]){
-            arrivalDate = dates[1].format('YYYY-MM-DDTHH:MM:ss');
+            setArrivalDate(dates[1].format('YYYY-MM-DDTHH:MM:ss'));
         }
     }
 
     const handlePaginationChange = (pagex: number, pageSizex?: number) => {
-        page = pagex.toString();
-        if (pageSizex) pageSize = pageSizex.toString();
+        setPage(pagex.toString());
+        if (pageSizex) setPageSize(pageSizex.toString());
     };
 
     
@@ -95,17 +98,17 @@ const SearchTrips: React.FC = () => {
             })
         else
             searchAction()
-    }, [page, pageSize, origin, destination, weight, volume, type, departureDate, arrivalDate, minPrice, maxPrice])
+    }, [page, pageSize])
 
     async function searchAction(){
         setIsLoading(true);
         
         if(weight == null || Number(weight) < 1){
-            weight = '1';
+            setWeight('1');
         }
 
         if(volume == null || Number(volume) < 1){
-            volume = '1';
+            setVolume('1');
         }
 
         getPublications('', 'TRIP', departureDate,arrivalDate, 'ACTIVE', Number(volume), Number(weight), type, origin, destination, Number(minPrice), Number(maxPrice), Number(page), Number(pageSize), 'departureDate ASC').then((trips) => {
@@ -126,34 +129,35 @@ const SearchTrips: React.FC = () => {
                 }
             }))
             if(trips.length > 0)
-                maxPage = trips[0].maxPage ? trips[0].maxPage : '1';
+                setMaxPage(trips[0].maxPage ? trips[0].maxPage : '1');
             setSearch(false)
             setIsLoading(false);
         })
         router('/searchTrips?origin='+origin+'&destination='+destination+'&weight='+weight+'&volume='+volume+'&type='+type+'&departureDate='+departureDate+'&arrivalDate='+arrivalDate+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&page='+page+'&pageSize='+pageSize+'&maxPage='+maxPage)
     }
 
-    function resetSearch(){
+    async function resetSearch(){
+        await resetFilters();
         setSearch(true)
     }
 
-    function resetFilters(){
-        origin = '';
-        destination = '';
-        weight = '1';
-        volume = '1';
-        type = '';
-        departureDate = '';
-        arrivalDate = '';
-        minPrice = '0';
-        maxPrice = '1000000';
-        page = '1';
-        pageSize = '12';
-        maxPage = '0';
+    async function resetFilters(){
+        setOrigin('');
+        setDestination('');
+        setWeight('1');
+        setVolume('1')
+        setType('');
+        setDepartureDate('');
+        setArrivalDate('');
+        setMinPrice('0');
+        setMaxPrice('1000000');
+        setPage('1');
+        setPageSize('12');
+        setMaxPage('0');
     }
 
-    function viewAll() {
-        resetFilters()
+    async function viewAll() {
+        await resetFilters()
         searchAction()
     }
     
