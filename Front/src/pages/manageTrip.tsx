@@ -225,14 +225,22 @@ const ManageTrip: React.FC = () => {
                             {(!publication.providerConfirmation || !publication.truckerConfirmation) ?
                                 claims?.role === 'PROVIDER' ?
                                     <>
-                                        <Text>{publication.providerConfirmation ? t('publication.confirmed') : t('publication.notConfirmed')}</Text>
-                                        <Text>{publication.truckerConfirmation ? t('truckerConfirmation.completed') : t('truckerConfirmation.notCompleted')}</Text>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.providerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.providerConfirmation ? t('publication.confirmed') : t('publication.notConfirmed')}</Text>
+                                    </div>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.truckerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.truckerConfirmation ? t('truckerConfirmation.completed') : t('truckerConfirmation.notCompleted')}</Text>
+                                    </div>
                                         {!publication.providerConfirmation ? <Button type="primary" className="w-100 mt-2vh" onClick={confirmTripAction}>{t('actions.confirmReceived')}</Button> : null}
                                     </>
                                     :
                                     <>
-                                        <Text>{publication.providerConfirmation ? t('providerConfirmation.confirmed') : t('providerConfirmation.notConfirmed')}</Text>
-                                        <Text>{publication.truckerConfirmation ? t('publication.completed') : t('publication.notCompleted')}</Text>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.providerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>}  {publication.providerConfirmation ? t('providerConfirmation.confirmed') : t('providerConfirmation.notConfirmed')}</Text>
+                                    </div>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.truckerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.truckerConfirmation ? t('publication.completed') : t('publication.notCompleted')}</Text>
+                                    </div>
                                         {!publication.truckerConfirmation ? <Button type="primary" className="w-100 mt-2vh" onClick={confirmTripAction}>{t('actions.confirmCompleted')}</Button> : null}
                                     </>
                                 : <Title level={4}><CheckCircleTwoTone twoToneColor='#00ff00'/> {t('actions.completed')}</Title>
