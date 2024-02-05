@@ -330,7 +330,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
           <div style="color: #333333; line-height: 140%; text-align: left; word-wrap: break-word;">
             <p style="font-size: 14px; line-height: 140%;">
               <strong th:text="#{ContactEmail}"></strong>
-              <span th:if="${user.role == 'TRUCKER'}" th:text="${user.email}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>
+              <span th:if="${user.role == 'TRUCKER'}" th:text="${trip.getProvider().getEmail()}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>
               <span th:unless="${user.role == 'TRUCKER'}" th:text="${trip.getTrucker().getEmail()}" style="color: #828080; font-size: 14px; line-height: 19.6px;"></span>
             </p>
           </div>
@@ -395,7 +395,7 @@ table, td { color: #000000; } #u_body a { color: #0000ee; text-decoration: under
 
           <!--[if mso]><style>.v-button {background: transparent !important;}</style><![endif]-->
             <div align="center">
-              <a th:href="@{http://pawserver.it.itba.edu.ar/paw-2023a-08/trips/manage/${trip.tripId}}" target="_blank" class="v-button" style="box-sizing: border-box; display: inline-block; font-family: 'Open Sans', sans-serif; text-decoration: none; -webkit-text-size-adjust: none; text-align: center; color: #FFFFFF; background-color: #142d4c; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; width: auto; max-width: 100%; overflow-wrap: break-word; line-height: 120%; font-size: 14px;">
+              <a th:href="@{'http://pawserver.it.itba.edu.ar/paw-2023a-08/trips/manage/'+${trip.tripId}}" target="_blank" class="v-button" style="box-sizing: border-box; display: inline-block; font-family: 'Open Sans', sans-serif; text-decoration: none; -webkit-text-size-adjust: none; text-align: center; color: #FFFFFF; background-color: #142d4c; border-radius: 2px; -webkit-border-radius: 2px; -moz-border-radius: 2px; width: auto; max-width: 100%; overflow-wrap: break-word; line-height: 120%; font-size: 14px;">
                 <span style="display: block; padding: 12px 35px; line-height: 120%;"><strong><span style="line-height: 16.8px;">View all details &gt;&gt;</span></strong></span>
               </a>
             </div>

@@ -158,8 +158,9 @@ public class TripServiceV2Impl implements TripServiceV2 {
         User trucker = trip.getTrucker();
         User provider = trip.getProvider();
         tripDaoV2.acceptProposal(proposal);
-        ms.sendTripEmail(trucker, provider,trip,locale);
+
         ms.sendTripEmail(provider, trucker,trip, locale);
+        ms.sendTripEmail(trucker, provider,trip,locale);
     }
 
     @Transactional(readOnly = true)
