@@ -12,28 +12,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import ar.edu.itba.paw.interfacesPersistence.SecureTokenDao;
-import ar.edu.itba.paw.interfacesPersistence.UserDao;
 import ar.edu.itba.paw.models.User;
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.time.LocalDateTime;
 import java.util.*;
-
 import static org.mockito.Mockito.*;
-import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Optional;
 
-import org.junit.runner.RunWith;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AlertServiceImplTest {
