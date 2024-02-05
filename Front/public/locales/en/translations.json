@@ -100,7 +100,9 @@
       "viewAllTrips": "View All Trips",
       "searchAgain": "Search Again",
       "noTripsFound": "No trips found",
-      "noCargoFound": "No cargo found"
+      "noCargoFound": "No cargo found",
+      "accountVerified": "Account verified successfully",
+      "invalidLInk": "Invalid link"
       
     },
 
