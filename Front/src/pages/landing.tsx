@@ -13,27 +13,37 @@ const Landing: React.FC = () => {
     const {t} = useTranslation();
     const router = useNavigate();
 
-    const contentForTruckers: () => React.ReactNode = () => {
+    const contentForProviders: () => React.ReactNode = () => {
+        /*
+    "browseTrip": "1. Explorar viajes",
+    "browseTripSubtitle": "Explora viajes disponibles. Filtra de la manera que te sea más conveniente.",
+    "selectTrucker": "2. Selecciona la mejor opción de transportista para ti",
+    "selectTruckerSubtitle": "Selecciona el transportista con el que deseas enviar y haz una oferta.",
+    "oneMoreStep": "3. Un paso más",
+    "oneMoreStepSubtitle": "Espera a que el transportista confirme tu oferta. Siempre puedes modificarla o enviar una contraoferta si lo deseas.",
+    "shipIt": "4. ¡Envíalo!",
+    "shipItSubtitle": "Una vez confirmado el pedido, ponte en contacto con el transportista y envía la carga.",
+        */
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
-            <LandingCard  title='1. Browse Cargo' subtitle='Browse the cargo that is available. Filter however is more convinient for you.'></LandingCard>
-            <LandingCard title='2. Select the best cargo option for you' subtitle='Select the cargo that you want to ship and send an offer.'></LandingCard>
-            <LandingCard title='3. One more step' subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
-            <LandingCard title='4. Ship it!' subtitle='Once the order is confirmed, get in touch with the provider and ship the cargo.'></LandingCard>
+            <LandingCard  title={t('landing.browseTrip')} subtitle={t('landing.browseTripSubtitle')}></LandingCard>
+            <LandingCard title={t('landing.selectTrucker')} subtitle={t('landing.selectTruckerSubtitle')}></LandingCard>
+            <LandingCard title={t('landing.oneMoreStep')} subtitle={t('landing.oneMoreStepSubtitle')}></LandingCard>
+            <LandingCard title={t('landing.shipIt')} subtitle={t('landing.shipItSubtitle')}></LandingCard>
             { !getClaims() ?
-            <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>Browse Cargo</Button>
+            <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"} onClick={() => router('/trips')}>{t('landing.BrowseTrips')}</Button>
                 :null}
             </div>;
     };
 
     //TODO: change the content for providers
-    const contentForProviders: () => React.ReactNode = () => {
+    const contentForTruckers: () => React.ReactNode = () => {
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
             <LandingCard  title={'1. ' + t('landing.BrowseCargo')} subtitle={t('landing.NewLanding1')}></LandingCard>
             <LandingCard title={'2. ' + t('landing.NewLanding2')} subtitle={t('landing.NewLanding3')}></LandingCard>
-            <LandingCard title={'3. ' + t('landing.OneMoreStep')} subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
+            <LandingCard title={'3. ' + t('landing.OneMoreStep')} subtitle={t('landing.OneMoreStepMessage')}></LandingCard>
             <LandingCard title={'4. ' + t('landing.ShipitE')} subtitle={t('landing.NewLanding5')}></LandingCard>
             { !getClaims() ?
-            <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>{t('landing.BrowseCargo')}</Button>
+            <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"} onClick={() => router('/cargo')}>{t('landing.BrowseCargo')}</Button>
             : null}
         </div>;
     };

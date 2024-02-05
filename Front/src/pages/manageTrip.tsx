@@ -270,7 +270,7 @@ const ManageTrip: React.FC = () => {
                             </>
                             :
                             <Card>
-                                <Title level={4}>{t('noOffers')}</Title>
+                                <Title level={4}>{t('manage.noOffers')}</Title>
                             </Card>
                         }
                     </>

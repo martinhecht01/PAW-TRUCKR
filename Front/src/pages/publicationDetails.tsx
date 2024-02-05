@@ -161,6 +161,7 @@ const PublicationDetails: React.FC = () => {
                                             min={1}
                                             max={100000}
                                             tipFormatter={formatter}
+                                            defaultValue={publication?.price}
                                             tooltipVisible
                                             onChange={value => form.setFieldsValue({ inputValue: value })}
                                             className="w-100 mt-10"
