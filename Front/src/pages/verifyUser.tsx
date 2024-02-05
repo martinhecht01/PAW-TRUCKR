@@ -33,7 +33,7 @@ const VerifyAccount: React.FC = () => {
             }else{
                 message.success(t('common.accountVerified'));
                 auth.login(token);
-                router('/login');
+                router('/profile');
             }
             
         }).catch(() => {
