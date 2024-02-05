@@ -8,6 +8,7 @@ import { getPublications } from '../api/tripApi';
 import dayjs, { Dayjs } from 'dayjs';
 import { getCargoTypes } from '../api/cargoTypeApi';
 import { useTranslation } from 'react-i18next';
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 
 const {Title, Text} = Typography;
@@ -21,6 +22,8 @@ const SearchTrips: React.FC = () => {
 
     type RangeValue = [Dayjs | null, Dayjs | null] | null;
 
+    const router = useNavigate();
+
     //Ver que onda el tema type
     
     const [search, setSearch] = useState<boolean>(true);
@@ -29,33 +32,54 @@ const SearchTrips: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [publications, setPublications] = useState<Array<TripCardProps>>([]);
 
-    const [origin, setOrigin] = useState<string>('');
-    const [destination, setDestination] = useState<string>('');
-    const [weight, setWeight] = useState<number>(1);
-    const [volume, setVolume] = useState<number>(1);
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 1000000]);
-    const [type, setCargoType] = useState<string>('');
-    const [dates, setDates] = useState<RangeValue>(null);
 
-    const [page, setPage] = useState<number>(1);
-    const [pageSize, setPageSize] = useState<number>(12);
-    const [maxPage, setMaxPage] = useState<number>(0);
+    const [searchParams] = useSearchParams();
+    let origin = searchParams.get('origin')?? '';
+    let destination = searchParams.get('destination') ?? '';
+    let weight = searchParams.get('weight') ?? '1';
+    let volume = searchParams.get('volume') ?? '1';
+    let type = searchParams.get('type') ?? '';
+    let departureDate = searchParams.get('departureDate') ?? '';
+    let arrivalDate = searchParams.get('arrivalDate') ?? '';
+    let minPrice = searchParams.get('minPrice') ?? '0';
+    let maxPrice = searchParams.get('maxPrice') ?? '1000000';
+    let page = searchParams.get('page') ?? '1';
+    let pageSize = searchParams.get('pageSize') ?? '12';
+    let maxPage = searchParams.get('maxPage') ?? '0';
 
-    const handleOriginChange = (value: string) => setOrigin(value);
-    const handleDestinationChange = (value: string) => setDestination(value);
-    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(+e.target.value);
-    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => setVolume(+e.target.value);
-    const handleCargoTypeChange = (value: string) => setCargoType(value);
+    const handleOriginChange = (value: string) => origin = value;
+    const handleDestinationChange = (value: string) => destination = value;
+    const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => weight = e.target.value;
+    const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => volume = e.target.value;
+    const handleCargoTypeChange = (value: string) => type = value;
 
     const handlePriceRangeChange = (value: number | number[]) => {
         if (Array.isArray(value) && value.length === 2) {
-            setPriceRange(value as [number, number]);
+            // setPriceRange(value as [number, number]);
+            minPrice = value[0].toString();
+            maxPrice = value[1].toString();
         }
     };
 
-    const handlePaginationChange = (page: number, pageSize?: number) => {
-        setPage(page);
-        if (pageSize) setPageSize(pageSize);
+    const handleDatesChange = (dates: RangeValue) => {
+        if (dates == null){
+            return;
+        }
+        if(dates[0] && dates[1]){
+            departureDate = dates[0].format('YYYY-MM-DDTHH:MM:ss');
+            arrivalDate = dates[1].format('YYYY-MM-DDTHH:MM:ss');
+        }
+        else if (dates[0]){
+            departureDate = dates[0].format('YYYY-MM-DDTHH:MM:ss');
+        }
+        else if (dates[1]){
+            arrivalDate = dates[1].format('YYYY-MM-DDTHH:MM:ss');
+        }
+    }
+
+    const handlePaginationChange = (pagex: number, pageSizex?: number) => {
+        page = pagex.toString();
+        if (pageSizex) pageSize = pageSizex.toString();
     };
 
     
@@ -71,20 +95,20 @@ const SearchTrips: React.FC = () => {
             })
         else
             searchAction()
-    }, [page])
+    }, [page, pageSize, origin, destination, weight, volume, type, departureDate, arrivalDate, minPrice, maxPrice])
 
     async function searchAction(){
         setIsLoading(true);
         
-        if(weight < 1){
-            setWeight(1);
+        if(weight == null || Number(weight) < 1){
+            weight = '1';
         }
 
-        if(volume < 1){
-            setVolume(1);
+        if(volume == null || Number(volume) < 1){
+            volume = '1';
         }
 
-        getPublications('', 'TRIP', dates?.[0] ? dates[0].format('YYYY-MM-DDTHH:MM:ss') : '', dates?.[1] ? dates[1].format('YYYY-MM-DDTHH:MM:ss'): '', 'ACTIVE', volume, weight, type, origin, destination, priceRange[0], priceRange[1], page, pageSize, 'departureDate ASC').then((trips) => {
+        getPublications('', 'TRIP', departureDate,arrivalDate, 'ACTIVE', Number(volume), Number(weight), type, origin, destination, Number(minPrice), Number(maxPrice), Number(page), Number(pageSize), 'departureDate ASC').then((trips) => {
             setPublications(trips.map((publication) => {
                 return {
                     type: 'trip',
@@ -102,27 +126,34 @@ const SearchTrips: React.FC = () => {
                 }
             }))
             if(trips.length > 0)
-                setMaxPage(Number.parseInt(trips[0].maxPage ? trips[0].maxPage : '1'));
+                maxPage = trips[0].maxPage ? trips[0].maxPage : '1';
             setSearch(false)
             setIsLoading(false);
         })
+        router('/searchTrips?origin='+origin+'&destination='+destination+'&weight='+weight+'&volume='+volume+'&type='+type+'&departureDate='+departureDate+'&arrivalDate='+arrivalDate+'&minPrice='+minPrice+'&maxPrice='+maxPrice+'&page='+page+'&pageSize='+pageSize+'&maxPage='+maxPage)
     }
 
     function resetSearch(){
         setSearch(true)
-        setCargoType('')
-        setOrigin('')
-        setDestination('')
-        setWeight(1)
-        setVolume(1)
-        setPriceRange([0, 1000000])
-        setPage(1)
-        setPageSize(12)
-        setDates(null)
     }
 
-    function viewAll(){
-        resetSearch()
+    function resetFilters(){
+        origin = '';
+        destination = '';
+        weight = '1';
+        volume = '1';
+        type = '';
+        departureDate = '';
+        arrivalDate = '';
+        minPrice = '0';
+        maxPrice = '1000000';
+        page = '1';
+        pageSize = '12';
+        maxPage = '0';
+    }
+
+    function viewAll() {
+        resetFilters()
         searchAction()
     }
     
@@ -153,7 +184,7 @@ const SearchTrips: React.FC = () => {
                                     </Select>
                                 </Col>
                             </Row>
-                            <DatePicker.RangePicker className='w-100 mb-1vh' disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} onChange={(val) => setDates(val)} allowClear placeholder={[t('common.from'), t('common.to')]}></DatePicker.RangePicker>
+                            <DatePicker.RangePicker className='w-100 mb-1vh' disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} onChange={(dates) => handleDatesChange(dates)} allowClear placeholder={[t('common.from'), t('common.to')]}></DatePicker.RangePicker>
                             <Select placeholder={t('filters.cargoType')} className='w-100 mb-1vh' onChange={handleCargoTypeChange} allowClear>
                                 {cargoTypes.map((cargoType, index) => (
                                     <Select.Option key={index} value={cargoType}>{t('cargoType.'+cargoType.toLowerCase())}</Select.Option>
@@ -206,10 +237,10 @@ const SearchTrips: React.FC = () => {
                     {publications.length === 0 ? null : 
                         <Pagination 
                             className="text-center mt-2vh" 
-                            defaultCurrent={1} 
-                            total={maxPage*pageSize}
-                            current={page}
-                            pageSize={pageSize}
+                            defaultCurrent={1}
+                            total={Number(page)*Number(pageSize)}
+                            current={Number(page)}
+                            pageSize={Number(pageSize)}
                             onChange={handlePaginationChange}
                         />
                     }
