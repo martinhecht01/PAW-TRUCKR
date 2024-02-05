@@ -22,21 +22,20 @@ export const userMock = {
     "self": "http://localhost:8080/api/users/44"
 }
 
-export const tripMock = {
-    "arrivalDate": "2024-03-01T12:00:00-03:00",
-    "cargoType": "Refrigerated",
-    "departureDate": "2024-03-01T12:00:00-03:00",
-    "destination": "Buenos Aires",
-    "id": 7,
-    "maxVolume": 200,
-    "maxWeight": 200,
+export const tripMock =  {
+    "arrivalDate": "2024-03-11T22:47:57-03:00",
+    "creator": "http://pawserver.it.itba.edu.ar/paw-2023a-08/api/users/23",
+    "departureDate": "2024-02-13T22:47:57-03:00",
+    "destination": "Chajari",
+    "image": "http://pawserver.it.itba.edu.ar/paw-2023a-08/api/images/230",
     "origin": "Buenos Aires",
-    "self": "http://localhost:8080/api/trips/7",
-    "status": "COMPLETED",
-    "trucker": "http://localhost:8080/api/users/44"
-
+    "price": 10000,
+    "self": "http://pawserver.it.itba.edu.ar/paw-2023a-08/api/trips/95",
+    "tripId": 95,
+    "type": "Refrigerated",
+    "volume": 50,
+    "weight": 780
 }
-
 
 export const offerMock = {
     "description": "asdfsdaf",
