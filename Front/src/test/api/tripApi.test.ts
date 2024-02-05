@@ -1,78 +1,75 @@
-// import {afterEach, vi} from 'vitest';TODO: no se si esta bien
-// import {createAlert, deleteAlert, getAlert} from "../../api/alertApi.tsx";
-// import {Alert} from "../../models/Alert.tsx";
-// import {alertMock} from '../mocks/models.ts'
-// import {userMock} from '../mocks/models.ts'
-// import {tripMock} from '../mocks/models.ts'
-// import api from '../../api/config.tsx'
-// import {getToken} from "../../api/userApi.tsx";
-// import {getPublicationById, getPublicationByUrl, getPublications} from "../../api/tripApi";
-// import {Publication} from "../../models/Publication";
-//
-//
-// afterEach(() => {
-//     mockedGet.mockClear();
-//     mockedPost.mockClear();
-//     mockedDelete.mockClear();
-//     localStorage.clear();
-// })
-//
-// const mockedGet = vi.spyOn(api,'get');
-// const mockedDelete = vi.spyOn(api,'delete');
-// const mockedPost = vi.spyOn(api,'post');
-// ;
-//
-// describe('Publication API', () => {
-//     test('Get publications', async () => {
-//         // Mock the API response
-//         mockedGet.mockResolvedValue({ data: [{ tripMock }], status: 200, headers: { link: '<https://api.example.com/publications?page=2>; rel="next"' } });
-//
-//         // Call the function
-//         const publications = await getPublications(); // Provide necessary parameters (page and limit
-//
-//         // Assertions
-//         expect(publications).toEqual([Publication.publicationFromJson(tripMock)]);
-//         expect(publications[0].maxPage).toBe('2');
-//         expect(mockedGet).toHaveBeenCalledWith('/trips', {
-//             headers: {
-//                 Accept: 'application/vnd.publicationList.v1+json',
-//             },
-//             params: {/* provide necessary parameters */ },
-//         });
-//     });
-//
-//     test('Get publication by ID', async () => {
-//         // Mock the API response
-//         mockedGet.mockResolvedValue({ data: { tripMock}, status: 200 });
-//
-//         // Call the function
-//         const publication = await getPublicationById('1'); // Provide a valid ID
-//
-//         // Assertions
-//         expect(publication).toEqual(Publication.publicationFromJson(tripMock));
-//         expect(mockedGet).toHaveBeenCalledWith('/trips/1', {
-//             headers: {
-//                 Accept: 'application/vnd.publication.v1+json',
-//             },
-//         });
-//     });
-//
-//     test('Get publication by URL', async () => {
-//         // Mock the API response
-//         mockedGet.mockResolvedValue({ data: {tripMock }, status: 200 });
-//
-//         // Call the function
-//         const trip = await getPublicationByUrl('/trips/1'); // Provide a valid URL
-//
-//         // Assertions
-//         expect(trip).toEqual(Publication.publicationFromJson(tripMock));
-//         expect(mockedGet).toHaveBeenCalledWith('/trips/1', {
-//             headers: {
-//                 Accept: 'application/vnd.publication.v1+json',
-//             },
-//         });
-//     });
-// });
+import {afterEach, vi} from 'vitest';
+import {createAlert, deleteAlert, getAlert} from "../../api/alertApi.tsx";
+import {Alert} from "../../models/Alert.tsx";
+import {alertMock} from '../mocks/models.ts'
+import {userMock} from '../mocks/models.ts'
+import {publicationMock} from '../mocks/models.ts'
+import api from '../../api/config.tsx'
+import {getToken} from "../../api/userApi.tsx";
+import {getPublicationById, getPublicationByUrl, getPublications} from "../../api/tripApi";
+import {Publication} from "../../models/Publication";
+import {Trip} from "../../models/Trip";
+
+
+afterEach(() => {
+    mockedGet.mockClear();
+    mockedPost.mockClear();
+    mockedDelete.mockClear();
+    localStorage.clear();
+})
+
+const mockedGet = vi.spyOn(api,'get');
+const mockedDelete = vi.spyOn(api,'delete');
+const mockedPost = vi.spyOn(api,'post');
+
+
+describe('Trip API', () => {
+    test('Get publications', async () => {
+        // Mock the API response
+        mockedGet.mockResolvedValueOnce({ data: [ publicationMock]});
+
+        // Call the function
+        const publications = await getPublications("23","TRIP","2024-02-13T22:47:57-03:00","2024-03-11T22:47:57-03:00","",50,780,"Refrigerated","Buenos Aires","Chajari",9000,11000,1,12,""); // Provide necessary parameters (page and limit
+
+        // Assertions
+        expect(publications).toEqual([Publication.publicationFromJson(publicationMock)]);
+
+    });
+test('Get publication by ID', async () => {
+    // Mock the API response
+    mockedGet.mockResolvedValue({ data:  publicationMock});
+
+
+    // Call the function
+    const publication = await getPublicationById('95'); // Provide a valid ID
+
+    // Assertions
+    expect(publication).toEqual(Publication.publicationFromJson(publicationMock));
+    // expect(mockedGet).toHaveBeenCalledWith('/trips/1', {
+    //     headers: {
+    //         Accept: 'application/vnd.trip.v1+json',
+    //     },
+    // });
+});
+
+
+
+    test('Get publication by URL', async () => {
+        // Mock the API response
+        mockedGet.mockResolvedValue({ data: publicationMock});
+
+        // Call the function
+        const trip = await getPublicationByUrl('/trips/95'); // Provide a valid URL
+
+        // Assertions
+        expect(trip).toEqual(Publication.publicationFromJson(publicationMock));
+        expect(mockedGet).toHaveBeenCalledWith('/trips/95', {
+            headers: {
+                Accept: 'application/vnd.publication.v1+json',
+            },
+        });
+    });
+});
 
 
 
