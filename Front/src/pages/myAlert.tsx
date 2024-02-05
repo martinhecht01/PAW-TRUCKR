@@ -29,8 +29,6 @@ const myAlert: React.FC = () => {
     useEffect(() => {
         getAlert().then((alert) => {
             setMyAlert(alert);
-            if(alert.id){
-            }
             setLoading(false);
         })
     },[]);
