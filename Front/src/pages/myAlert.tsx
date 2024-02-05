@@ -42,7 +42,7 @@ const myAlert: React.FC = () => {
             setMyAlert(undefined);
         }
         catch (e) {
-            message.error("Unexpected error. Try again.");
+            message.error(t('errorPages.error500Message'));
         }
     }
     

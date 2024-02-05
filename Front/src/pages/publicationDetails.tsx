@@ -10,6 +10,7 @@ import { getClaims, getUserByUrl } from "../api/userApi";
 import { User } from "../models/User";
 import { createOffer } from "../api/offerApi";
 import { useTranslation } from "react-i18next";
+import { getCargoTypeColor } from "../Components/cargoTypeColor";
 
 const {Title, Text} = Typography;
 
@@ -29,22 +30,29 @@ const PublicationDetails: React.FC = () => {
     const {t} = useTranslation();
 
     useEffect(() => {
-        const claims = getClaims();
-        getPublicationById(tripId!).then((publication) => {
-            setPublication(publication);
-            form.setFieldsValue({ inputValue: publication.price });
-            getUserByUrl(publication.creator).then((user) => {
-                if(claims && (user.role === claims.role)){
-                    router('/404')
-                    return;
-                }
-                setUser(user);
+        const fetchPublicationAndUser = async () => {
+            if(!tripId){
+                router('/404');
+                return;
+            }
+            try {
+                const publicationData = await getPublicationById(tripId);
+                setPublication(publicationData);
+                form.setFieldsValue({ inputValue: publicationData.price });
+                const userData = await getUserByUrl(publicationData.creator);
+                setUser(userData);
+            } catch (error) {
+                message.error(t('publicationDetails.fetchError'));
+                router('/404');
+            } finally {
                 setIsLoading(false);
-            })
-        }).catch(() => {
-            router('/404')
-        })
-    }, []);
+            }
+        };
+        fetchPublicationAndUser();
+    }, [tripId, router, form, t]);
+
+
+
 
     const sendOffer = async (values: {
         inputValue: number,
@@ -60,9 +68,11 @@ const PublicationDetails: React.FC = () => {
 
         getUserByUrl(claims!.userURL).then(() => {
             createOffer(Number.parseInt(tripId!), inputValue, description).then(() => {
-                message.success('Offer sent successfully');
+                message.success(t('publicationDetails.offerSuccess'));
                 router('/sentOffers');
-            });
+            }).catch(() => {
+                message.error(t('publicationDetails.offerError'));
+            })
         });
     };
 
@@ -72,7 +82,7 @@ const PublicationDetails: React.FC = () => {
                 <Skeleton loading={isLoading}>
                     <Col span={10}>
                         <div>
-                            <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>} color="blue">
+                            <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>} color={getCargoTypeColor(publication?.type.toLowerCase())}>
                                 <Image
                                     style={{ width: '100%',
                                     height: '450px',
@@ -106,13 +116,13 @@ const PublicationDetails: React.FC = () => {
                             <Col span={11}>
                                 <Card className="w-100 text-center">
                                     <Title level={3}>{publication?.weight} Kg</Title>
-                                    <Text>Weight</Text>
+                                    <Text>{t('publicationDetails.weight')}</Text>
                                 </Card>
                             </Col>
                             <Col span={11}>
                                 <Card className="w-100 text-center">
                                     <Title level={3}>{publication?.volume} M3</Title>
-                                    <Text>Volume</Text>
+                                    <Text>{t('publicationDetails.volume')}</Text>
                                 </Card>
                             </Col>
                         </Row>
@@ -133,17 +143,17 @@ const PublicationDetails: React.FC = () => {
                                 <Form.Item
                                     name="description"
                                     rules={[
-                                        { required: true, message: 'Please input your description!' },
-                                        { min: 1, max: 250, message: 'Description must be between 1 and 250 characters' }
+                                        { required: true, message: t('validation.offerDescriptionRequired') },
+                                        { min: 1, max: 250, message: t('validation.maxDescriptionLength') }
                                     ]}
                                 >
-                                    <TextArea rows={4} className="w-100 mt-5" placeholder="Enter your description"/>
+                                    <TextArea rows={4} className="w-100 mt-5" placeholder={t('publicationDetails.enterDescription')}/>
                                 </Form.Item>
                                 <Form.Item
                                     name="inputValue"
                                     rules={[
-                                        { required: true, message: 'Please input your offer!' },
-                                        { type: 'number', min: 1, max: 1000000, message: 'Offer must be between $1 and $100000' }
+                                        { required: true, message: t('validation.offerPriceRequired')},
+                                        { type: 'number', min: 1, message: t('validation.minPrice') }
                                     ]}
                                 >
                                     <Row>

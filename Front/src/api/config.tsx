@@ -30,13 +30,19 @@ api.interceptors.response.use(
         await refreshToken();
         return api(originalConfig);
       }
-      
+
       if (error.response.status === 500) {
         window.location.href = '/500'
         return;
       }
-    }
 
+      if (error.response.status === 404) {
+        window.location.href = '/404'
+        return;
+      }
+      
+    }
+    
     return Promise.reject(error);
   }
 );

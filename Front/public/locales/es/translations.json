@@ -97,8 +97,11 @@
     "sendOffer": "Enviar oferta",
     "login": "Iniciar sesión",
     "register": "Registrarse",
-    "dateRange": "Rango de fechas"
-
+    "dateRange": "Rango de fechas",
+    "weight": "Peso",
+    "volume": "Volumen",
+    "viewAllTrips": "Ver todos los viajes",
+    "searchAgain": "Buscar de nuevo"
   },
 
   "profile": {
@@ -112,7 +115,8 @@
     "picture": "Foto de perfil",
     "updateSuccess": "Perfil actualizado con éxito",
     "fileUploaded": "Archivo subido con éxito",
-    "fileUploadError": "Error subiendo archivo"
+    "fileUploadError": "Error subiendo archivo",
+    "noReviews": "No hay reseñas aun"
   },
 
   "review": {
@@ -147,7 +151,20 @@
     "counterOffer": "Contraoferta",
     "reject": "Rechazar",
     "cancel": "Cancelar",
-    "offeredPrice": "Precio Ofrecido"  
+    "offeredPrice": "Precio Ofrecido",
+    "publicationDeleted": "Publicación eliminada",
+    "errorDeletingPublication": "Error eliminando publicación",
+    "tripConfirmed": "Viaje confirmado",
+    "errorConfirmingTrip": "Error confirmando viaje",
+    "reviewSubmitted": "Reseña enviada",
+    "errorSubmittingReview": "Error enviando reseña",
+    "deletePublicationPop": {
+      "title": "Eliminar Publicación",
+      "message": "¿Estás seguro que deseas eliminar esta publicación?",
+      "cancel": "Cancelar",
+      "delete": "Eliminar"
+    },
+    "writeReview": "Escribe una reseña..."
   },
 
   "sentOffers": {
@@ -165,7 +182,10 @@
     "errorGettingOffer": "Error obteniendo oferta",
     "errorGettingCounterOffer": "Error obteniendo contraoferta",
     "errorAcceptingOffer": "Error aceptando oferta",
-    "offerAccepted": "Oferta aceptada"
+    "offerAccepted": "Oferta aceptada",
+    "offerRejected": "Oferta rechazada",
+    "offerCanceled": "Oferta cancelada",
+    "errorCancelingOffer": "Error cancelando oferta"
   },
 
   "messages": {
@@ -203,7 +223,9 @@
     "dateRangeRequired": "Fecha de inicial requerida",
     "invalidValueForVolumeWeight": "Valor inválido para volumen/peso",
     "volumeRequired": "Volumen es requerido",
-    "weightRequired": "Peso es requerido"
+    "weightRequired": "Peso es requerido",
+    "ratingRequired": "Por favor, selecciona una calificación.",
+    "reviewRequired": "Por favor, ingresa tu reseña."
   },
   
   "login": {
@@ -246,6 +268,83 @@
     "passwordAtLeastCharacters": "La contraseña debe tener al menos 6 caracteres",
     "pleaseConfirmYourPassword": "Por favor, confirma tu contraseña",
     "passwordsDoNotMatch": "Las contraseñas no coinciden"
+  },
+
+  "actions": {
+    "confirmReceived": "Confirmar Carga Recibida",
+    "confirmCompleted": "Confirmar Viaje Completado",
+    "completed": "Viaje completado.",
+    "submitReview": "Enviar Reseña"
+  },
+  
+  "publication": {
+    "confirmed": "Has confirmado la recepción de la carga.",
+    "notConfirmed": "No has confirmado la recepción de la carga.",
+    "completed": "Viaje completado con éxito.",
+    "notCompleted": "El viaje no se completó."
+  },
+
+  "truckerConfirmation": {
+    "completed": "El camionero completó el viaje.",
+    "notCompleted": "El camionero no completó el viaje."
+  },
+  
+  "providerConfirmation": {
+    "confirmed": "El proveedor recibió la carga.",
+    "notConfirmed": "El proveedor aún no ha recibido la carga."
+  },
+
+  "resetPassword": {
+    "title": "Restablecer contraseña",
+    "invalidLink": "Por favor, solicita un enlace válido para restablecer la contraseña",
+    "linkExpired": "Enlace expirado o ya utilizado. Por favor, solicita uno nuevo",
+    "newPasswordRequired": "¡Por favor, ingresa tu nueva contraseña!",
+    "passwordLength": "¡La contraseña debe tener al menos 6 caracteres!",
+    "confirmPasswordRequired": "¡Por favor, confirma tu nueva contraseña!",
+    "passwordMismatch": "¡Las dos contraseñas que ingresaste no coinciden!",
+    "resetButton": "Restablecer contraseña",
+    "successMessage": "¡Contraseña cambiada exitosamente! ",
+    "loginLink": "Iniciar sesión",
+    "passwordPlaceholder": "Contraseña",
+    "confirmPasswordPlaceholder": "Confirmar Contraseña"
+  },
+
+  "resetPasswordRequest": {
+    "title": "Restablecer contraseña",
+    "cuitRequired": "¡Por favor, introduce tu CUIT!",
+    "invalidCUITFormat": "¡Formato de CUIT inválido!",
+    "cuitPlaceholder": "CUIT 00-00000000-0",
+    "resetPasswordButton": "Restablecer contraseña",
+    "emailSentConfirmation": "Si existe una cuenta con este CUIT, se ha enviado un correo electrónico de restablecimiento.",
+    "invalidCUIT": "CUIT inválido",
+    "emailSentMessage": "¡Correo enviado! Por favor, revisa tu bandeja de entrada."
+  },
+
+  "myItinerary":{
+    "ongoingTrips": "Viajes en curso",
+    "noOngoingTrips": "No tienes viajes en curso",
+    "futureTrips": "Viajes futuros",
+    "noFutureTrips": "No tienes viajes futuros",
+    "viewPastTrips": "Ver viajes pasados"
+  },
+
+  "myPublications":{
+    "noActivePublications": "No tienes publicaciones activas",
+    "createPublication": "Crear Publicación",
+    "activePublications": "Publicaciones activas",
+    "noExpiredPublications": "No tienes publicaciones expiradas",
+    "expiredPublications": "Publicaciones expiradas"
+  },
+
+  "publicationDetails": {
+    "fetchError": "Error al obtener los detalles de la publicación. Inténtalo de nuevo.",
+    "offerSuccess": "Oferta enviada con éxito.",
+    "offerError": "Error al enviar la oferta. Inténtalo de nuevo.",
+    "weight": "Peso",
+    "volume": "Volumen",
+    "sendOffer": "Enviar Oferta",
+    "enterDescription": "Ingresa tu descripción",
+    "priceRange": "La oferta debe estar entre $1 y $1000000"
   }
 }
   

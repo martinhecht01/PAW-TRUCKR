@@ -28,10 +28,10 @@ const Landing: React.FC = () => {
     //TODO: change the content for providers
     const contentForProviders: () => React.ReactNode = () => {
         return <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'center'}}>
-            <LandingCard  title={'1.' + t('landing.BrowseCargo')} subtitle={t('landing.NewLanding1')}></LandingCard>
-            <LandingCard title={'2.' + t('landing.NewLanding2')} subtitle={t('landing.NewLanding3')}></LandingCard>
-            <LandingCard title={'3.' + t('landing.OneMoreStep')} subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
-            <LandingCard title={'4.' + t('landing.ShipitE')} subtitle={t('landing.NewLanding5')}></LandingCard>
+            <LandingCard  title={'1. ' + t('landing.BrowseCargo')} subtitle={t('landing.NewLanding1')}></LandingCard>
+            <LandingCard title={'2. ' + t('landing.NewLanding2')} subtitle={t('landing.NewLanding3')}></LandingCard>
+            <LandingCard title={'3. ' + t('landing.OneMoreStep')} subtitle='Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.'></LandingCard>
+            <LandingCard title={'4. ' + t('landing.ShipitE')} subtitle={t('landing.NewLanding5')}></LandingCard>
             { !getClaims() ?
             <Button style={{width:'50%', marginTop:'2vh'}} type='primary' size={"large"}>{t('landing.BrowseCargo')}</Button>
             : null}

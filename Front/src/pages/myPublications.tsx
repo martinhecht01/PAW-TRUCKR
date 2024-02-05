@@ -6,10 +6,14 @@ import { useEffect, useState } from "react";
 import { getPublications } from "../api/tripApi";
 import { getClaims, getUserByUrl } from "../api/userApi";
 import { getOffersByTrip } from "../api/offerApi";
+import { useTranslation } from "react-i18next";
 
 const {Title} = Typography;
 
 const MyPublications: React.FC = () => {
+
+
+    const {t} = useTranslation();
 
     const navigate = useNavigate();
 
@@ -31,10 +35,8 @@ const MyPublications: React.FC = () => {
 
         getUserByUrl(getClaims()?.userURL || '').then((user) => {
             getPublications(user.id.toString(), 'TRIP', '', '', 'ACTIVE', 1, 1, '', '', '', 0, 0, activePage, 12, 'departureDate ASC').then((trips) => {
-                // Convert each trip to a promise that resolves to the trip details including offers
                 const tripPromises = trips.map((publication) => {
                     return getOffersByTrip(publication.tripId.toString(), '1', '10').then((offers) => {
-                        // Return a new object for each trip with the required properties
                         return {
                             type: 'trip',
                             from: publication.origin,
@@ -53,12 +55,10 @@ const MyPublications: React.FC = () => {
                     });
                 });
             
-                // Wait for all promises to resolve, then set the active trips state with the resolved values
                 Promise.all(tripPromises).then((resolvedTrips) => {
                     setActiveTrips(resolvedTrips as TripCardProps[]);
                 }).catch(error => {
                     console.error("Failed to load trips or offers", error);
-                    // Handle any errors or failed requests here
                 }).finally(() => {
                     setIsLoading(false);
                 })
@@ -95,13 +95,13 @@ const MyPublications: React.FC = () => {
     }, [activePage, expiredPage])
 
     return(
-        <Tabs type="line"  tabBarExtraContent={activeTrips.length > 0 ? {right: <Button type="primary" onClick={() => navigate('/trips/create')}>Create publication</Button>} : null}>
-            <Tabs.TabPane tab="Active Publications" key="1">
+        <Tabs type="line"  tabBarExtraContent={activeTrips.length > 0 ? {right: <Button type="primary" onClick={() => navigate('/trips/create')}>{t('myPublications.createPublication')}</Button>} : null}>
+            <Tabs.TabPane tab={t('myPublications.activePublications')} key="1">
                 <Skeleton loading={isLoading}>
                     {activeTrips.length == 0 ? 
                         <div className="w-100 flex-center flex-column">
-                            <Title level={3}>You have no active publications</Title>
-                            <Button type="primary" onClick={() => navigate('/trips/create')}>Create Publication</Button>
+                            <Title level={3}>{t('myPublications.noActivePublications')}</Title>
+                            <Button type="primary" onClick={() => navigate('/trips/create')}>{t('myPublications.createPublication')}</Button>
                         </div>
                                 
                                 
@@ -128,11 +128,11 @@ const MyPublications: React.FC = () => {
                     }
                 </Skeleton>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Expired Publications" key="2">
+            <Tabs.TabPane tab={t('myPublications.expiredPublications')} key="2">
                 <Skeleton loading={isLoading}>
                     {expiredTrips.length == 0 ? 
                             <div className="w-100 flex-center flex-column">
-                                <Title level={3}>You have no expired publications</Title>
+                                <Title level={3}>{t('myPublications.noExpiredPublications')}</Title>
                             </div>
                                     
                                     

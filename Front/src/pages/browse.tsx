@@ -144,6 +144,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                             setDateRange(val);
                         }}    
                         allowClear
+                        placeholder={[t('common.from'), t('common.to')]}
                     ></RangePicker>
                     <div className="m-10"></div>
                     <Text>{t('filters.sortBy')}:</Text>
