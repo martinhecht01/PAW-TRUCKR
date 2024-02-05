@@ -231,7 +231,8 @@
     "price": "Price",
     "cargoType": "Cargo Type",
     "dateRange": "Date Range",
-    "sortBy": "Sort by"
+    "sortBy": "Sort by",
+    "reset": "Clear filters"
   },
 
   "validation": {
