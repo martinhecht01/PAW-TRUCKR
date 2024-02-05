@@ -84,6 +84,8 @@ const ManageTrip: React.FC = () => {
                 const userData = await getUserByUrl(userUrl);
                 setUser(userData);
 
+                document.title = userData?.role === 'PROVIDER' ? t('pageTitles.manageRequest') : t('pageTitles.manageTrip');
+
                 if (!trip.provider || !trip.trucker) {
                     const offersData = await getOffersByTrip(tripId, offersPage.toString(), '3');
                     const offersPromises = offersData.map(async (offer) => {
