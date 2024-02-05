@@ -137,6 +137,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
     }
 
     @Transactional
+    @Override
     public void actOnOffer(int proposalId, String action, Locale locale) {
         Proposal proposal = tripDaoV2.getProposalById(proposalId).orElseThrow(OfferNotFoundException::new);
 
@@ -356,7 +357,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
 
 //---------  ITINERARY  ---------
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<Trip> getTrips(Integer userId, String status, Integer page, Integer pageSize){
         switch(status){
@@ -371,7 +372,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Integer getTotalPagesTrips(User user, String status){
         switch(status){
@@ -386,7 +387,7 @@ public class TripServiceV2Impl implements TripServiceV2 {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Integer getTotalPagesAllOngoingTrips(Integer userId){
         User user = userDao.getUserById(userId).orElseThrow(NoSuchElementException::new);

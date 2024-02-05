@@ -197,7 +197,7 @@ const CreateTrip: React.FC = () => {
                             name="dateRange"
                             rules={[{ required: true, message: t('common.selectDateRange') }]}
                         >
-                            <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} className='w-100' />
+                            <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} className='w-100' placeholder={[t('common.from'), t('common.to')]} />
                         </Form.Item>
                         <Row gutter={16}>
                             <Col span={8}>

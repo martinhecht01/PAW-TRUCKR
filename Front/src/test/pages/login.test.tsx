@@ -1,7 +1,6 @@
-import {afterAll, afterEach, beforeEach, vi} from 'vitest';
+import {afterAll, afterEach, vi} from 'vitest';
 import { fireEvent, screen, render} from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import '@testing-library/jest-dom'
 import Login from "../../pages/login.tsx";
 import {ConfigProvider} from "antd";
 // import {useTranslation} from "react-i18next";

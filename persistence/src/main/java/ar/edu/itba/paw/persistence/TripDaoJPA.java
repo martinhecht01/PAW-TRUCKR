@@ -665,7 +665,7 @@ public List<Trip> getAllActiveTripsOrRequestAndProposalsCount(Integer userId, In
         acceptProposal(originalProposal);
     }
 
-    //TODO ver si funciona.
+
     @Override
     public void rejectCounterOffer(Proposal counterOffer){
         String jpql = "SELECT p FROM Proposal p WHERE p.counterProposal = :counterProposal";

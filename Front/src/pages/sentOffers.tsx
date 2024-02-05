@@ -26,10 +26,10 @@ const SentOffers: React.FC = () => {
         try{
             deleteOffer(id);
             setOffers(offers.filter((offer) => offer.id !== id));
-            message.success('Offer deleted successfully');
+            message.success(t('offerCard.offerCanceled'));
         }
         catch (e){
-            message.error('Error deleting offer')
+            message.error(t('offerPage.errorCancelingOffer'));
         }
     }
 

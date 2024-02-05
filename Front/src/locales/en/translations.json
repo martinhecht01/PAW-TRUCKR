@@ -17,6 +17,7 @@
       "NewLanding2": "Select the best cargo option for you",
       "NewLanding3": "Select the cargo that you want to ship and send an offer",
       "OneMoreStep": "One more step",
+      "OneMoreStepMessage": "Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want.",
       "NewLanding4": "Wait for the cargo provider to confirm your offer. You can always modify it or send a counteroffer if you want",
       "ShipitE": "Ship it!",
       "NewLanding5": "Once the order is confirmed, get in touch with the provider and ship the cargo",
@@ -29,12 +30,23 @@
       "HowTruckrWorks": "How does Truckr work?",
       "ForTrucker": "For Truckers",
       "ForProvider": "For Providers",
+      "browseTrip": "1. Browse Trip",
+      "browseTripSubtitle": "Browse available trips. Filter however is more convenient for you.",
+      "selectTrucker": "2. Select the best trucker option for you",
+      "selectTruckerSubtitle": "Select the trucker that you want to ship with and send an offer.",
+      "oneMoreStep": "3. One more step",
+      "oneMoreStepSubtitle": "Wait for the trucker to confirm your offer. You can always modify it or send a counteroffer if you want.",
+      "shipIt": "4. Ship it!",
+      "shipItSubtitle": "Once the order is confirmed, get in touch with the trucker and ship the cargo.",
       "BrowseCargo": "Browse Cargo",
+      "BrowseTrips": "Browse Trips",
       "SearchTrips": "Search Trips",
       "myItinerary": "My Itinerary",
       "MyPublications": "My Publications",
       "SentOffers": "Sent Offers",
-      "MyAlerts": "My Alert"
+      "MyAlerts": "My Alert",
+      "norequestFound": "No cargo found",
+      "notripFound": "No trips found"
     }
 ,
     "provider": "Provider" ,
@@ -82,7 +94,16 @@
       "sendOffer": "Send Offer",
       "login": "Login",
       "register": "Register",
-      "dateRange": "Date Range"
+      "dateRange": "Date Range",
+      "weight": "Weight",
+      "volume": "Volume",
+      "viewAllTrips": "View All Trips",
+      "searchAgain": "Search Again",
+      "noTripsFound": "No trips found",
+      "noCargoFound": "No cargo found",
+      "accountVerified": "Account verified successfully",
+      "invalidLInk": "Invalid link"
+      
     },
 
     "cargoType": {
@@ -111,7 +132,8 @@
       "picture": "Profile Picture",
       "updateSuccess": "Profile updated successfully",
       "fileUploaded": "File uploaded successfully",
-      "fileUploadError": "File uploaded failed"
+      "fileUploadError": "File uploaded failed",
+      "noReviews": "No reviews yet"
     },
 
     "review": {
@@ -146,7 +168,20 @@
       "counterOffer": "Counter-Offer",
       "reject": "Reject",
       "cancel": "Cancel",
-      "offeredPrice": "Offered Price"  
+      "offeredPrice": "Offered Price",
+      "publicationDeleted": "Publication deleted successfully",
+      "errorDeletingPublication": "Error deleting publication",
+      "tripConfirmed": "Trip confirmed",
+      "errorConfirmingTrip": "Error confirming trip",
+      "reviewSubmitted": "Review submitted",
+      "errorSubmittingReview": "Error submitting review",
+      "deletePublicationPop": {
+        "title": "Delete Publication",
+        "message": "Are you sure you want to delete this publication?",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "writeReview": "Write a review..."
     },
 
   "sentOffers": {
@@ -164,7 +199,10 @@
     "errorGettingOffer": "Error getting offer",
     "errorGettingCounterOffer": "Error getting counter offer",
     "errorAcceptingOffer": "Error accepting offer",
-    "offerAccepted": "Offer accepted"
+    "offerAccepted": "Offer accepted",
+    "offerRejected": "Offer rejected",
+    "offerCanceled": "Offer canceled",
+    "errorCancelingOffer": "Error canceling offer"
   },
 
   "messages": {
@@ -202,7 +240,13 @@
     "dateRangeRequired": "Date range is required",
     "invalidValueForVolumeWeight": "Invalid value for max volume or max weight",
     "volumeRequired": "Max volume is required",
-    "weightRequired": "Max weight is required"
+    "weightRequired": "Max weight is required",
+    "ratingRequired": "Please select a rating.",
+    "reviewRequired": "Please enter your review.",
+    "offerDescriptionRequired": "Please enter a description for your offer.",
+    "offerPriceRequired": "Please enter a price for your offer.",
+    "minPrice": "Price must be at least 1",
+    "maxDescriptionLength": "Description must be at most 250 characters long"
   },
 
   "login": {
@@ -245,6 +289,75 @@
     "passwordAtLeastCharacters": "Password must be at least 8 characters long!",
     "pleaseConfirmYourPassword": "Please confirm your password!",
     "passwordsDoNotMatch": "Passwords do not match!"
+  },
+
+  "actions": {
+    "confirmReceived": "Confirm Cargo Received",
+    "confirmCompleted": "Confirm Trip Completed",
+    "completed": " Trip completed.",
+    "submitReview": "Submit Review"
+  },
+
+  "publication": {
+    "confirmed": "You have confirmed the cargo receipt.",
+    "notConfirmed": "You have not confirmed the cargo receipt.",
+    "completed": "Trip completed successfully.",
+    "notCompleted": "Trip not completed."
+  },
+
+  "truckerConfirmation": {
+    "completed": "Trucker completed the trip.",
+    "notCompleted": "Trucker didn't complete the trip."
+  },
+
+  "providerConfirmation": {
+    "confirmed": "Provider received the cargo.",
+    "notConfirmed": "Provider didn't receive the cargo yet."
+  },
+
+  "resetPassword": {
+    "title": "Reset Password",
+    "invalidLink": "Please request a valid reset password link",
+    "linkExpired": "Link expired or already used. Please request a new one",
+    "newPasswordRequired": "Please input your new password!",
+    "passwordLength": "Password must be at least 6 characters long!",
+    "confirmPasswordRequired": "Please confirm your new password!",
+    "passwordMismatch": "The two passwords that you entered do not match!",
+    "resetButton": "Reset Password",
+    "successMessage": "Password changed successfully! ",
+    "loginLink": "Login back",
+    "passwordPlaceholder": "Password",
+    "confirmPasswordPlaceholder": "Confirm Password"
+  },
+
+  "resetPasswordRequest": {
+    "title": "Reset Password",
+    "cuitRequired": "Please input your CUIT!",
+    "invalidCUITFormat": "Invalid CUIT format!",
+    "cuitPlaceholder": "CUIT 00-00000000-0",
+    "resetPasswordButton": "Reset Password",
+    "emailSentConfirmation": "If an account with this CUIT exists, a reset email has been sent.",
+    "invalidCUIT": "Invalid CUIT",
+    "emailSentMessage": "Email sent! Please check your inbox."
+  },
+
+  "myPublications":{
+    "noActivePublications": "You don't have active publications",
+    "createPublication": "Create Publication",
+    "activePublications": "Active Publications",
+    "noExpiredPublications": "You don't have expired publications",
+    "expiredPublications": "Expired Publications"
+  },
+
+  "publicationDetails": {
+    "fetchError": "Error fetching publication details. Please try again.",
+    "offerSuccess": "Offer sent successfully.",
+    "offerError": "Failed to send the offer. Please try again.",
+    "weight": "Weight",
+    "volume": "Volume",
+    "sendOffer": "Send Offer",
+    "enterDescription": "Enter your description",
+    "priceRange": "Offer must be between $1 and $1000000"
   }
 
 }

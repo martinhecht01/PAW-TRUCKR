@@ -9,6 +9,7 @@ import { getPublicationById } from "../api/tripApi";
 import { getClaims, getUserByUrl } from "../api/userApi";
 import { createCounterOffer, getOffer } from "../api/offerApi";
 import { ArrowRightOutlined, StarFilled, UserOutlined } from "@ant-design/icons";
+import { getCargoTypeColor } from "../Components/cargoTypeColor";
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -69,7 +70,7 @@ const SendCounterOffer: React.FC = () => {
              <Skeleton loading={isLoading}>
                  <Col span={8}>
                      <div>
-                         <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color="blue">
+                         <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>} color={getCargoTypeColor(publication?.type.toLowerCase())}>
                                 <Image
                                     style={{ width: '100%',
                                     height: '450px',
@@ -99,18 +100,24 @@ const SendCounterOffer: React.FC = () => {
                          </Row>
                      </Card>
                      <Row className="mt-5 space-between">
-                         <Col span={11}>
+                         <Col span={7}>
                              <Card className="w-100 text-center">
                                  <Title level={3}>{publication?.weight} Kg</Title>
-                                 <Text>Weight</Text>
+                                 <Text>{t('filters.weight')}</Text>
                              </Card>
                          </Col>
-                         <Col span={11}>
+                         <Col span={7}>
                              <Card className="w-100 text-center">
                                  <Title level={3}>{publication?.volume} M3</Title>
-                                 <Text>Volume</Text>
+                                 <Text>{t('filters.volume')}</Text>
                              </Card>
                          </Col>
+                         <Col span={7}>
+                            <Card className="w-100 text-center">
+                                <Title level={3}>${publication?.price}</Title>
+                                <Text>{t('filters.price')}</Text>
+                            </Card>
+                        </Col>
                      </Row>
                  </Col>
                  <Col span={8}>
@@ -141,8 +148,8 @@ const SendCounterOffer: React.FC = () => {
                                 <Form.Item
                                     name="description"
                                     rules={[
-                                        { required: true, message: t('validation.NotNull') },
-                                        { min: 1, max: 250, message: t('validation.Description') }
+                                        { required: true, message: t('validation.offerDescriptionRequired') },
+                                        { min: 1, max: 250, message: t('validation.maxDescriptionLength') }
                                     ]}
                                 >
                                     <TextArea rows={4} className="w-100" placeholder={t('manage.description')} />
@@ -150,14 +157,14 @@ const SendCounterOffer: React.FC = () => {
                                 <Form.Item
                                     name="price"
                                     rules={[
-                                        { required: true, message: t('validation.NotNull') },
-                                        { type: 'number', min: 1, message: t('validation.Price.Min') }
+                                        { required: true, message: t('validation.offerPriceRequired') },
+                                        { type: 'number', min: 1, message: t('validation.minPrice') }
                                     ]}
                                 >
                                     <InputNumber
                                         className="w-100"
                                         min={1}
-                                        max={100000}
+                                        max={1000000}
                                         placeholder={t('common.offeredPrice')}
                                         prefix="$"
                                     />

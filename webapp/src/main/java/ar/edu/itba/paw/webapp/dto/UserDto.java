@@ -28,7 +28,7 @@ public class UserDto {
         dto.rating = user.getRating();
         dto.completedTripsCount = user.getCompletedTripsCount();
 
-        //TODO ver si esto es correcto
+
         dto.reviews = uri.getBaseUriBuilder().path("/reviews/").queryParam("userId",user.getUserId().toString()).build();
 
         if(user.getImage() != null){

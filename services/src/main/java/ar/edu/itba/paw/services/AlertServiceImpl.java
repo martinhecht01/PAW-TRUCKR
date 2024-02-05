@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,6 +46,7 @@ public class AlertServiceImpl implements AlertService{
 //        return alertDao.getAlert(user);
 //    }
 
+    @Transactional
     @Override
     public void deleteAlert(Integer alertId) {
         LOGGER.info("Deleting alert {}", alertId);
@@ -52,12 +54,14 @@ public class AlertServiceImpl implements AlertService{
         alertDao.deleteAlert(alert);
     }
 
+    @Transactional
     @Override
     public Optional<Alert> updateAlert(User user, String city, Integer maxWeight, Integer maxVolume, LocalDateTime from, LocalDateTime to) {
         LOGGER.info("Updating alert for user {}", user.getUserId());
         return alertDao.updateAlert(user, city, maxWeight, maxVolume, from, to);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Alert> getAlertsThatMatch(Integer tripId) {
         Optional<Trip> optionalTrip = ts.getTripOrRequestById(tripId);
@@ -68,6 +72,7 @@ public class AlertServiceImpl implements AlertService{
         return alertDao.getAlertsThatMatch(optionalTrip.get());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Alert> getAlertById(Integer alertId) {
         Alert toRet = alertDao.getAlertById(alertId).orElseThrow(AlertNotFoundException::new);

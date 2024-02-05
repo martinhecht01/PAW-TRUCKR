@@ -128,7 +128,7 @@ const Profile: React.FC = () => {
                                                 <StarFilled /> 
                                                 {" "}{new Number(user.rating).toFixed(1)}
                                             </Title>
-                                        : <Title level={3}>No reviews yet</Title>
+                                        : <Title level={3}>{t('profile.noReviews')}</Title>
                                     }
                                     { reviews && reviews.length > 0 ?
                                         <div>

@@ -5,10 +5,13 @@ import ItineraryTripCard, { ItineraryTripCardProps } from "../Components/itinera
 import { useEffect, useState } from "react";
 import { getTrips } from "../api/tripApi";
 import { getClaims, getUserByUrl } from "../api/userApi";
+import { useTranslation } from "react-i18next";
 
 const MyItinerary: React.FC = () => {
 
     const {Title} = Typography;
+
+    const {t} = useTranslation();
 
     const claims = getClaims();
 
@@ -79,9 +82,9 @@ const MyItinerary: React.FC = () => {
     
 
     return(
-        <Tabs type="line" tabBarExtraContent={{right: <Button type="link" onClick={() => navigate('/pastTrips')}>View Past Trips</Button>}}>
+        <Tabs type="line" tabBarExtraContent={{right: <Button type="link" onClick={() => navigate('/pastTrips')}>{t('myItinerary.viewPastTrips')}</Button>}}>
             
-            <Tabs.TabPane tab="Ongoing Trips" key="1">
+            <Tabs.TabPane tab={t('myItinerary.ongoingTrips')} key="1">
                 <Skeleton loading={isLoading}>
                     <Row className="w-100 flex-center">
                         <Col span={15}>
@@ -92,14 +95,14 @@ const MyItinerary: React.FC = () => {
                         </Col>
                     </Row>
                     {ongoingTrips.length === 0 ? <Row className="w-100 flex-center">
-                        <Title level={3}>No Ongoing Trips</Title> </Row>:
+                        <Title level={3}>{t('myItinerary.noOngoingTrips')}</Title> </Row>:
                     <Row className="w-100 flex-center">
                         <Pagination className="text-center mt-2vh" current={ongoingPage} pageSize={12} total={maxOngoingPage*12} onChange={(page) => setOngoingPage(page)}/>
                     </Row>
                     }
                 </Skeleton>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Future Trips" key="2">
+            <Tabs.TabPane tab={t('myItinerary.futureTrips')} key="2">
                 <Skeleton loading={isLoading}>
                     <Row className="w-100 flex-center">
                         <Col span={15}>
@@ -110,7 +113,7 @@ const MyItinerary: React.FC = () => {
                         </Col>
                     </Row>
                     {futureTrips.length === 0 ? <Row className="w-100 flex-center">
-                        <Title level={3}>No Future Trips</Title> </Row>:
+                        <Title level={3}>{t('myItinerary.noFutureTrips')}</Title> </Row>:
                         <Row className="w-100 flex-center">
                             <Pagination className="text-center mt-2vh" defaultCurrent={futurePage} total={maxFuturePage*12} pageSize={12} onChange={(page) => setFuturePage(page)}/>
                         </Row>

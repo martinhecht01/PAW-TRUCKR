@@ -36,7 +36,7 @@ const Login: React.FC = () => {
                         <Form form={form} layout="vertical" onFinish={loginAction}>
                             <div className='w-100 text-center'>
                                 <Title level={2}>{t('login.title')}</Title>
-                                <Text>{t('login.newToTruckr')} <a href='/register'>{t('login.signUpNow')}</a></Text>
+                                <Text>{t('login.newToTruckr')} <a onClick={()=> router('/register')}>{t('login.signUpNow')}</a></Text>
                             </div>
                             
                             <Form.Item name="cuit" className='mt-2vh' rules={[
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
                             </Form.Item>
                             
                             <Form.Item>
-                                <a href='/resetPasswordRequest'>{t('login.forgotPassword')}</a>
+                                <a onClick={()=> router('/resetPasswordRequest')} >{t('login.forgotPassword')}</a>
                             </Form.Item>
                             
                             <Form.Item>

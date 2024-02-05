@@ -13,14 +13,16 @@ import { getClaims, getUserByUrl } from '../api/userApi.tsx';
 import TextArea from 'antd/es/input/TextArea';
 import { createReview } from '../api/reviewApi.tsx';
 import { Review } from '../models/Review.tsx';
+import { useTranslation } from 'react-i18next';
+import { getCargoTypeColor } from '../Components/cargoTypeColor.tsx';
 
 
 const { Title, Text } = Typography;
 
 const ManageTrip: React.FC = () => {
 
-    // const {t} = useTranslation();
     const router = useNavigate();
+    const {t} = useTranslation();
 
     const {tripId} = useParams();
 
@@ -45,24 +47,23 @@ const ManageTrip: React.FC = () => {
     const submitReview = async (values: { review: string; rating: number }) => {
         const { review, rating } = values;
         createReview(new Review(0, tripId!, rating, review, '')).then(() => {
-            message.success('Review submitted');
+            message.success(t('manage.reviewSubmitted'));
             setReviewSubmitted(true);
         }).catch(() => {
-            message.error('Error submitting review');
+            message.error(t('manage.errorSubmittingReview'));
         })
     }
 
     async function confirmTripAction(){
         confirmTrip(tripId!).then(() => {
-            message.success('Trip confirmed');
+            message.success(t('manage.tripConfirmed'));
             setTripConfirmed(true);
         }).catch(() => {
-            message.error('Error confirming trip');
+            message.error(t('manage.errorConfirmingTrip'));
         })
     }
 
     useEffect(() => {
-        // Function to fetch trip details and related data
         setProposalLoading(true);
         const fetchTripDetails = async () => {
             if (!tripId) {
@@ -82,6 +83,8 @@ const ManageTrip: React.FC = () => {
                 const userUrl = claims?.role === 'PROVIDER' ? trip.trucker : trip.provider;
                 const userData = await getUserByUrl(userUrl);
                 setUser(userData);
+
+                document.title = userData?.role === 'PROVIDER' ? t('pageTitles.manageRequest') : t('pageTitles.manageTrip');
 
                 if (!trip.provider || !trip.trucker) {
                     const offersData = await getOffersByTrip(tripId, offersPage.toString(), '3');
@@ -122,10 +125,10 @@ const ManageTrip: React.FC = () => {
     async function acceptOfferAction(id: string, action: 'ACCEPT' | 'REJECT' ){
         setIsLoading(true);
         acceptOffer(id, action).then(() => {
-            message.success('Success');
+            message.success(action == 'ACCEPT' ? t('offerCard.offerAccepted') : t('offerCard.offerRejected'));
             setOfferAccepted(true);
         }).catch(() => {
-            message.error('Error accepting offer');
+            message.error(t('offerCard.errorAcceptingOffer'));
         }).finally (() =>{
             setIsLoading(false);
         })
@@ -133,10 +136,10 @@ const ManageTrip: React.FC = () => {
 
     async function confirmDelete(){
         deletePublication(tripId!).then(() => {
-            message.success('Publication deleted');
+            message.success(t('manage.publicationDeleted'));
             router('/myPublications');
         }).catch(() => {
-            message.error('Error deleting publication');
+            message.error(t('manage.errorDeletingPublication'));
         })
     }
     
@@ -146,15 +149,15 @@ const ManageTrip: React.FC = () => {
         <Row style={{justifyContent: 'space-evenly'}} className="w-80">
             <Skeleton loading={isLoading}>
                 {!publication?.provider || !publication?.trucker  ?
-                    <Col span={2}>
+                    <Col span={4}>
                     <Popconfirm
-                        title="Delete publication"
-                        description="Are you sure to delete this publication?"
+                        title={t('manage.deletePublicationPop.title')}
+                        description={t('manage.deletePublicationPop.message')}
                         onConfirm={confirmDelete}
-                        okText="Yes"
-                        cancelText="No"
+                        okText={t('manage.deletePublicationPop.delete')}
+                        cancelText={t('manage.deletePublicationPop.cancel')}
                     >
-                        <Button danger>Delete</Button>
+                        <Button danger>{t('manage.deletePublicationPop.title')}</Button>
                     </Popconfirm>
                     
                     </Col>
@@ -162,7 +165,7 @@ const ManageTrip: React.FC = () => {
                 }
                 <Col span={10}>
                     <div>
-                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color="blue">
+                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{publication?.type}</Title>}  color={getCargoTypeColor(publication?.type.toLowerCase())}>
                                 <Image
                                     style={{ width: '100%',
                                     height: '450px',
@@ -193,136 +196,101 @@ const ManageTrip: React.FC = () => {
                         </Row>
                     </Card>
                     <Row className="mt-5 space-between">
-                        <Col span={11}>
+                        <Col span={7}>
                             <Card className="w-100 text-center">
                                 <Title level={3}>{publication?.weight} Kg</Title>
-                                <Text>Weight</Text>
+                                <Text>{t('common.weight')}</Text>
                             </Card>
                         </Col>
-                        <Col span={11}>
+                        <Col span={7}>
                             <Card className="w-100 text-center">
                                 <Title level={3}>{publication?.volume} M3</Title>
-                                <Text>Volume</Text>
+                                <Text>{t('common.volume')}</Text>
+                            </Card>
+                        </Col>
+                        <Col span={7}>
+                            <Card className="w-100 text-center">
+                                <Title level={3}>${publication?.price}</Title>
+                                <Text>{t('filters.price')}</Text>
                             </Card>
                         </Col>
                     </Row>
                 </Col>
                 <Col span={8}>
 
-                    {publication?.provider && publication?.trucker ?
-                        <>
-                            <Card onClick={() => router('/profile/' + user?.id)} hoverable>
-                                <div className="w-100 space-between">
-                                    <Avatar size={64} src={user?.imageUrl} icon={<UserOutlined/>}></Avatar>
-                                    <Title level={3}>{user?.name}</Title>
-                                    <div>
-                                        <Title level={4}><StarFilled/>{user?.rating == 0 ? '-' : new Number(user?.rating).toFixed(1)}</Title>
-                                    </div>
+                {publication?.provider && publication?.trucker ?
+                    <>
+                        <Card onClick={() => router('/profile/' + user?.id)} hoverable>
+                            <div className="w-100 space-between">
+                                <Avatar size={64} src={user?.imageUrl} icon={<UserOutlined />}></Avatar>
+                                <Title level={3}>{user?.name}</Title>
+                                <div>
+                                    <Title level={4}><StarFilled />{user?.rating === 0 ? '-' : new Number(user?.rating).toFixed(1)}</Title>
                                 </div>
-                            </Card>
-                            <Card className="mt-5">
-                                { (!publication.providerConfirmation || !publication.truckerConfirmation) ?
-                                    claims?.role === 'PROVIDER' ? 
-
-                                        <>
-                                            <div className='mt-1vh'>
-                                                <Text>{publication.providerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.providerConfirmation ? ' You recieved the cargo' : ` You didn't receive the cargo`}</Text>
-                                            </div>
-                                            <div className='mt-1vh'>
-                                                <Text>{publication.truckerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.truckerConfirmation ? ' Trucker completed trip' : ` Trucker didn't complete the trip`}</Text>
-                                            </div>
-                                            {!publication.providerConfirmation ? <Button type="primary" className="w-100 mt-2vh" onClick={confirmTripAction}>Recieved Cargo</Button> : null}
-
-                                        </> 
-                                        :
-                                        <>
-                                            <div className='mt-1vh'>
-                                                <Text>{publication.providerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.providerConfirmation ? ' Provider recieved the cargo!' : ` Provider didn't recieve the cargo yet`}</Text>
-                                            </div>
-                                            <div className='mt-1vh'>
-                                                <Text>{publication.truckerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.truckerConfirmation ? ' You completed the trip' : ` You didn't complete the trip`}</Text>
-                                            </div>
-                                            {!publication.truckerConfirmation ? <Button type="primary" className="w-100 mt-2vh" onClick={confirmTripAction}>Finished Trip</Button> : null}
-                                            
-                                        </>
-                                    
-
-                                    : 
-                                    
-                                    <div className='w-100'>
-                                        <Title level={4}><CheckCircleTwoTone twoToneColor='#56F000' size={50} className='mr-5'/> Completed trip</Title>
+                            </div>
+                        </Card>
+                        <Card className="mt-5">
+                            {(!publication.providerConfirmation || !publication.truckerConfirmation) ?
+                                claims?.role === 'PROVIDER' ?
+                                    <>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.providerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.providerConfirmation ? t('publication.confirmed') : t('publication.notConfirmed')}</Text>
                                     </div>
-
-                                }
-                                
-                            </Card>
-                            {
-                                ((claims?.role === 'PROVIDER' && !publication.providerSubmittedHisReview ) || (claims?.role === 'TRUCKER' && !publication.truckerSubmittedHisReview)) && publication.providerConfirmation && publication.truckerConfirmation ?
-
-                                <Card className="mt-5">
-                                    <Form form={form} onFinish={submitReview} layout="vertical">
-                                    <Form.Item
-                                        name="rating"
-                                        rules={[
-                                        { required: true, message: "validation.NotNull" },
-                                        { type: 'number', min: 1, message: "validation.Rating.Min" },
-                                        { type: 'number', max: 5, message: "validation.Rating.Max" }
-                                        ]}
-                                    >
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.truckerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.truckerConfirmation ? t('truckerConfirmation.completed') : t('truckerConfirmation.notCompleted')}</Text>
+                                    </div>
+                                        {!publication.providerConfirmation ? <Button type="primary" className="w-100 mt-2vh" onClick={confirmTripAction}>{t('actions.confirmReceived')}</Button> : null}
+                                    </>
+                                    :
+                                    <>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.providerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>}  {publication.providerConfirmation ? t('providerConfirmation.confirmed') : t('providerConfirmation.notConfirmed')}</Text>
+                                    </div>
+                                    <div className='mt-2vh'>
+                                        <Text>{publication.truckerConfirmation ? <CheckCircleTwoTone twoToneColor='#56F000'/> : <MinusCircleTwoTone twoToneColor='#A4ABB6'/>} {publication.truckerConfirmation ? t('publication.completed') : t('publication.notCompleted')}</Text>
+                                    </div>
+                                        {!publication.truckerConfirmation ? <Button type="primary" className="w-100 mt-2vh" onClick={confirmTripAction}>{t('actions.confirmCompleted')}</Button> : null}
+                                    </>
+                                : <Title level={4}><CheckCircleTwoTone twoToneColor='#00ff00'/> {t('actions.completed')}</Title>
+                            }
+                        </Card>
+                        {((claims?.role === 'PROVIDER' && !publication.providerSubmittedHisReview) || (claims?.role === 'TRUCKER' && !publication.truckerSubmittedHisReview)) && publication.providerConfirmation && publication.truckerConfirmation ?
+                            <Card className="mt-5">
+                                <Form form={form} onFinish={submitReview} layout="vertical">
+                                    <Form.Item name="rating" rules={[{ required: true, message: t('validation.ratingRequired') }]} >
                                         <Rate allowHalf />
                                     </Form.Item>
-                                    <Form.Item
-                                        name="review"
-                                        rules={[
-                                        { required: true, message: "validation.NotNull" },
-                                        { min: 1, message: "validation.Review" },
-                                        { max: 250, message: "validation.Review" }
-                                        ]}
-                                    >
-                                        <TextArea rows={4} placeholder="Write a review" />
+                                    <Form.Item name="review" rules={[{ required: true, message: t('validation.reviewRequired') }]} >
+                                        <TextArea rows={4} placeholder={t('manage.writeReview')} />
                                     </Form.Item>
                                     <Form.Item>
-                                        <Button type="primary" htmlType="submit" className="w-100">Submit Review</Button>
+                                        <Button type="primary" htmlType="submit" className="w-100">{t('actions.submitReview')}</Button>
                                     </Form.Item>
-                                    </Form>
-                                </Card>
-
-                                : (claims?.role === 'PROVIDER' && publication.providerSubmittedHisReview) || (claims?.role === 'TRUCKER' && publication.truckerSubmittedHisReview) ?
-
-                                <Card className="mt-5">
-                                    <Title level={4}>You already submitted your review</Title>
-                                </Card> 
-                                
-                                : null
-
-                            }
-                        </>
-                        :
-
-                        <>
-                            {
-                                offers.length != 0 ?
-                                <>
-                                    <Skeleton loading={proposalLoading}>
-                                        {offers.map((offer) => (
-                                            <ProposalCard {...offer}></ProposalCard>
-                                        ))}
-                                    </Skeleton>
-                                    <div className='w-100 mt-2vh flex-center'>
-                                            <Pagination onChange={(page) => setOffersPage(page)} total={offersMaxPage*3} pageSize={3}/>
-                                    </div>
-                                </>
-
-                                :
-                                <Card>
-                                    <Title level={4}>No offers yet</Title>
-                                </Card>
-                            
-                            }
-                        </>
-                        
-                        
-                    }
+                                </Form>
+                            </Card>
+                            : null
+                        }
+                    </>
+                    :
+                    <>
+                        {offers.length !== 0 ?
+                            <>
+                                <Skeleton loading={proposalLoading}>
+                                    {offers.map((offer) => (
+                                        <ProposalCard key={offer.id} {...offer} />
+                                    ))}
+                                </Skeleton>
+                                <div className='w-100 mt-2vh flex-center'>
+                                    <Pagination onChange={(page) => setOffersPage(page)} total={offersMaxPage * 10} pageSize={10} />
+                                </div>
+                            </>
+                            :
+                            <Card>
+                                <Title level={4}>{t('manage.noOffers')}</Title>
+                            </Card>
+                        }
+                    </>
+                }
                 </Col>
             </Skeleton>
         </Row>

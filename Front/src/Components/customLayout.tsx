@@ -13,7 +13,7 @@ const CustomLayout = ({ children }: LayoutProps) => {
           {children}
         </Content>
         <Footer style={{ textAlign: 'left', paddingLeft: '5%', backgroundColor: 'white', height: 'auto' }}>
-          <Image src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png" height={24} style={{paddingRight: 15}}></Image>© 2023 Truckr, Inc
+          <Image src="https://i.ibb.co/JmB4xhT/Truckr-Logo.png"  preview={false} height={24} style={{paddingRight: 15}}></Image>© 2023 Truckr, Inc
         </Footer>
       </Layout>
     </App>

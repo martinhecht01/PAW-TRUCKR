@@ -57,7 +57,7 @@ public class TripDto {
         else dto.confirmationDate = null;
         dto.image = uri.getBaseUriBuilder().path("/images/").path(String.valueOf(trip.getImage().getImageid())).build();
 
-        //TODO revisar
+
 //        dto.proposals = uri.getBaseUriBuilder().path("/offers/").path(String.valueOf(trip.getTripId())).build();
 
         dto.truckerSubmittedHisReview = trip.getTruckerSubmittedHisReview();

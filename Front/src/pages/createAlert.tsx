@@ -81,7 +81,7 @@ const CreateAlertForm = () => {
                         label={t("common.dateRange")}
                         rules={[{ type: 'array', required: true, message: t("validation.dateRangeRequired") }]}
                     >
-                        <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} allowEmpty={[false, true]} className='w-100'/>
+                        <RangePicker disabledDate={current => current && current.isBefore(dayjs().startOf('day'))} allowEmpty={[false, true]} placeholder={[t('common.from'), t('common.to')]} className='w-100'/>
                     </Form.Item>
 
                     <Form.Item

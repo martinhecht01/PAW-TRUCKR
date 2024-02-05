@@ -25,6 +25,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
 
     const {t} = useTranslation();
 
+    document.title = tripOrRequest === 'TRIP' ? t('pageTitles.browseTrips') : t('pageTitles.browseRequests');
+
     const sortOptions = ['departureDate ASC', 'departureDate DESC', 'arrivalDate ASC', 'arrivalDate DESC', 'price ASC', 'price DESC']
 
     const [cities, setCities] = useState<Array<string>>([]);
@@ -129,7 +131,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>{t('filters.price')}:</Text>
-                    <Slider range min={0} max={100000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
+                    <Slider range min={0} max={1000000} value={priceRange} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
                     <Text>{t('filters.cargoType')}:</Text>
                     <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange} allowClear>
@@ -144,6 +146,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                             setDateRange(val);
                         }}    
                         allowClear
+                        placeholder={[t('common.from'), t('common.to')]}
                     ></RangePicker>
                     <div className="m-10"></div>
                     <Text>{t('filters.sortBy')}:</Text>
@@ -160,7 +163,7 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                 <Skeleton loading={isLoading}>
                     <div style={{display: "flex", flexDirection: 'column'}}>
                         <Row gutter={15}>
-                            {trips.length === 0 && <Col span={24} className="text-center"><Title level={3}>No {tripOrRequest.toLocaleLowerCase()} found</Title></Col>}
+                            {trips.length === 0 && <Col span={24} className="text-center"><Title level={3}>{t(`landing.no${tripOrRequest.toLowerCase()}Found`)}</Title></Col>}
                             {trips.map((trip, index) => (
                                 <Col xxl={6} xl={6} lg={8} md={12} sm={22} xs={22} key={index}>
                                     <TripCard {...trip}></TripCard>

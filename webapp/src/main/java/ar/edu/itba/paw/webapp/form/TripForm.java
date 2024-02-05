@@ -7,7 +7,7 @@ import javax.validation.constraints.*;
 @DateValidation(start="departureDate", end="arrivalDate")
 public class TripForm {
 
-    @NotNull(message = "validation.NotNull")
+//    @NotNull(message = "validation.NotNull")
     @Pattern(regexp="^$|^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$", message="validation.LicensePlate")
     @TruckerLicensePlate
     private  String licensePlate;

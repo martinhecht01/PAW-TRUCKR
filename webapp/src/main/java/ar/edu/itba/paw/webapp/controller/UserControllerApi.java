@@ -96,7 +96,6 @@ public class UserControllerApi {
     }
 
 // Verify account
-// TODO: RESEND TOKEN?
 
 //    @POST
 //    @Consumes("application/vnd.verifyaccount.v1+json")

@@ -3,6 +3,7 @@ import { Badge, Card, Divider, Image, Typography } from "antd";
 import Meta from "antd/es/card/Meta";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
+import { getCargoTypeColor } from "./cargoTypeColor";
 
 const {Title, Text} = Typography;
 
@@ -32,7 +33,7 @@ const TripCard = (props: TripCardProps) => {
             <Card style={{width: 'auto', background: 'white', marginTop: '2vh'}} 
                 cover={
                     <>
-                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>} placement="start" color="blue" >
+                        <Badge.Ribbon text={<Title level={5} style={{color: 'white', margin: 3}}>{props.cargoType}</Title>} placement="start" color={getCargoTypeColor(props.cargoType.toLowerCase())} >
                             {props.notifications ? <Badge size="default" count={props.notifications} > 
                                     <Image
                                         style={{ width: '100%',

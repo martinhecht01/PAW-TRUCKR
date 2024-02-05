@@ -183,7 +183,7 @@ public class UserServiceImpl implements UserService {
             updateProfileName(userId, name);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public byte[] getProfilePicture(Integer userId) {
         User user = userDao.getUserById(userId).orElseThrow(UserNotFoundException::new);
@@ -203,7 +203,7 @@ public class UserServiceImpl implements UserService {
     	userDao.setLocale(userId, locale);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Optional<User> getCurrentUser(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
