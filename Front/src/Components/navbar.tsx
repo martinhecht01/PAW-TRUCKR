@@ -93,7 +93,7 @@ return (
         role === 'TRUCKER' ? 
         <>
           {trucker.map((item) => (
-              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{t("landing." + item.label)}</Menu.Item>
+              item == null ? null : <Menu.Item key={item.key} data-testid='trucker-navBar' onClick={() => navigate(`/${item.key}`)}>{t("landing." + item.label)}</Menu.Item>
           ))}
           <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>{getClaims()?.cuit}</Menu.Item>
           <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
@@ -102,7 +102,7 @@ return (
         role === 'PROVIDER' ? 
         <>
             {provider.map((item) => (
-              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{t("landing."+item.label)}</Menu.Item>
+              item == null ? null : <Menu.Item key={item.key} data-testid='provider-navBar' onClick={() => navigate(`/${item.key}`)}>{t("landing."+item.label)}</Menu.Item>
             ))}
             <Menu.Item key="profile" style={{marginLeft: 'auto'}} onClick={() => navigate('/profile')}>{getClaims()?.cuit}</Menu.Item>
             <Menu.Item key="logout" style={{fontWeight: 'normal'}} onClick={logout}><LogoutOutlined/></Menu.Item>
@@ -110,7 +110,7 @@ return (
         : 
           <>
             {noAuth.map((item) => (
-              item == null ? null : <Menu.Item key={item.key} onClick={() => navigate(`/${item.key}`)}>{t('landing.' + item.label)}</Menu.Item>
+              item == null ? null : <Menu.Item data-testid='noAuth-navBar' key={item.key} onClick={() => navigate(`/${item.key}`)}>{t('landing.' + item.label)}</Menu.Item>
             ))}
             <Menu.Item key="login" style={{marginLeft: 'auto'}} onClick={() => navigate('/login')}>{t('common.login')}</Menu.Item>
             <Menu.Item key="register" style={{fontWeight: 'normal'}} onClick={() => navigate('/register')}>{t('common.register')}</Menu.Item>
