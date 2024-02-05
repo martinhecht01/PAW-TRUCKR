@@ -1,9 +1,22 @@
-import { Card, Col, DatePicker, Divider, Input, Pagination, Row, Select, Skeleton, Slider, Typography } from "antd"
+import {
+    Button,
+    Card,
+    Col,
+    DatePicker,
+    Divider,
+    Input,
+    Pagination,
+    Row,
+    Select,
+    Skeleton,
+    Slider,
+    Typography
+} from "antd"
 import { useEffect, useState } from "react";
 import TripCard, { TripCardProps } from "../Components/tripCard";
 import '../styles/main.scss';
 import { getPublications } from "../api/tripApi";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { getCities } from "../api/citiesApi";
 import { getCargoTypes } from "../api/cargoTypeApi";
 import { useTranslation } from "react-i18next";
@@ -54,32 +67,16 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
     const [maxPage, setMaxPage] = useState<string>(searchParams.get('maxPage') ?? '0');
     const [sortBy, setSortBy] = useState<string>(searchParams.get('sortBy') ?? sortOptions[0]);
 
-
-    // let origin = searchParams.get('origin')?? '';
-    // let destination = searchParams.get('destination') ?? '';
-    // let weight = searchParams.get('weight') ?? '1';
-    // let volume = searchParams.get('volume') ?? '1';
-    // let type = searchParams.get('type') ?? '';
-    // let departureDate = searchParams.get('departureDate') ?? '';
-    // let arrivalDate = searchParams.get('arrivalDate') ?? '';
-    // let minPrice = searchParams.get('minPrice') ?? '0';
-    // let maxPrice = searchParams.get('maxPrice') ?? '1000000';
-    // let page = searchParams.get('page') ?? '1';
-    // let pageSize = searchParams.get('pageSize') ?? '12';
-    // let maxPage = searchParams.get('maxPage') ?? '0';
-    // let sortBy = searchParams.get('sortBy') ?? sortOptions[0];
-
-    const handleOriginChange = (value: string) => setOrigin(value);
-    const handleDestinationChange = (value: string) => setDestination(value);
+    const handleOriginChange = (value: string) => {if (value == undefined){setOrigin(''); return;}setOrigin(value)};
+    const handleDestinationChange = (value: string) => {if (value == undefined){setDestination(''); return;}setDestination(value)};
     const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => setWeight(e.target.value);
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => setVolume(e.target.value);
-    const handleCargoTypeChange = (value: string) => setType(value);
+    const handleCargoTypeChange = (value: string) => {if (value == undefined){setType(''); return;}setType(value)};
 
-    const handleSortByChange = (value: string) => setSortBy(value);
+    const handleSortByChange = (value: string) => {if (value == undefined){setSortBy(sortOptions[0]); return;}setSortBy(value)};
 
     const handlePriceRangeChange = (value: number | number[]) => {
         if (Array.isArray(value) && value.length === 2) {
-            // setPriceRange(value as [number, number]);
             setMinPrice(value[0].toString());
             setMaxPrice(value[1].toString());
         }
@@ -87,6 +84,8 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
 
     const handleDatesChange = (dates: RangeValue) => {
         if (dates == null){
+            setDepartureDate('');
+            setArrivalDate('');
             return;
         }
         if(dates[0] && dates[1]){
@@ -152,38 +151,54 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
         }
     }, [origin, destination, weight, volume, minPrice, maxPrice, sortBy, page, pageSize, departureDate, arrivalDate, type])
 
+    function resetFilters(){
+        setOrigin('');
+        setDestination('');
+        setWeight('1');
+        setVolume('1');
+        setType('');
+        setDepartureDate('');
+        setArrivalDate('');
+        setMinPrice('0');
+        setMaxPrice('1000000');
+        setPage('1');
+        setPageSize('12');
+        setMaxPage('0');
+        setSortBy(sortOptions[0]);
+    }
+
 
     return (
         <Row>
             <Col xxl={4} xl={4} lg={8} md={24} sm={24} xs={24}>
-                <Card style={{margin: 25}}>
+                <Card style={{margin: 25, marginBottom:10}}>
                     <Title level={3} style={{marginTop: 0}}>{t('filters.title')}</Title>
                     <Divider></Divider>
                     <Text>{t('filters.origin')}:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleOriginChange} showSearch allowClear>
+                    <Select placeholder="-" className="w-100" onChange={handleOriginChange} value={origin} showSearch allowClear>
                         {cities.map((city, index) => (
                             <Select.Option key={index} value={city}>{city}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
                     <Text>{t('filters.destination')}:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleDestinationChange} showSearch allowClear> 
+                    <Select placeholder="-" className="w-100" value={destination} onChange={handleDestinationChange} showSearch allowClear>
                         {cities.map((city, index) => (
                             <Select.Option key={index} value={city}>{city}</Select.Option>
                         ))}
                     </Select>
                     <div className="m-10"></div>
                     <Text>{t('filters.weight')}:</Text>
-                    <Input type="number" placeholder="-" min={0} onChange={handleWeightChange} suffix='Kg' allowClear></Input>
+                    <Input type="number" placeholder="-" min={0} value={weight != '1' ? weight:undefined} onChange={handleWeightChange} suffix='Kg' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>{t('filters.volume')}:</Text>
-                    <Input type="number" placeholder="-" min={0} onChange={handleVolumeChange} suffix='M3' allowClear></Input>
+                    <Input type="number" placeholder="-" min={0}  onChange={handleVolumeChange} value={volume != '1' ? volume : undefined} suffix='M3' allowClear></Input>
                     <div className="m-10"></div>
                     <Text>{t('filters.price')}:</Text>
-                    <Slider range min={0} max={1000000} onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
+                    <Slider range min={0} max={1000000} value={[Number(minPrice), Number(maxPrice)]}  onChange={handlePriceRangeChange} tooltip={{formatter}}></Slider>
                     <div className="m-10"></div>
                     <Text>{t('filters.cargoType')}:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleCargoTypeChange} allowClear>
+                    <Select placeholder="-" className="w-100" value={type} onChange={handleCargoTypeChange} allowClear>
                         {cargoTypes.map((cargoType, index) => (
                             <Select.Option key={index} value={cargoType}>{t('cargoType.'+cargoType.toLocaleLowerCase())}</Select.Option>
                         ))}
@@ -193,19 +208,22 @@ const BrowseTrips: React.FC<BrowseTripsProps> = ({tripOrRequest}) => {
                     <RangePicker className="w-100"
                         onChange={(dates) => {
                             handleDatesChange(dates);
-                        }}    
+                        }}
+                         value={departureDate != '' && arrivalDate != '' ? [dayjs(departureDate), dayjs(arrivalDate)] : undefined}
                         allowClear
                         placeholder={[t('common.from'), t('common.to')]}
+
                     ></RangePicker>
                     <div className="m-10"></div>
                     <Text>{t('filters.sortBy')}:</Text>
-                    <Select placeholder="-" className="w-100" onChange={handleSortByChange} allowClear>
+                    <Select placeholder="-" className="w-100" value={sortBy != ''? sortBy : undefined} onChange={handleSortByChange}>
                         {sortOptions.map((option, index) => (
                             <Select.Option key={index} value={option}>{option}</Select.Option>
                         ))}
                     </Select>                                      
                     <div className="m-10"></div>                    
                 </Card>
+                <Button style={{margin: 25}} className='m-0' type={"primary"} onClick={resetFilters}>{t('filters.reset')}</Button>
             </Col>
 
             <Col xxl={20} xl={20} lg={16} md={24} sm={24} xs={24}>
