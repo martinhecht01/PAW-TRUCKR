@@ -6,6 +6,4 @@ Clone the repo and execute it by simply running
 
 ```bash
 maven package
-
-
-
+```
