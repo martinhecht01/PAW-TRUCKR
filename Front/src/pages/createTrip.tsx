@@ -135,7 +135,10 @@ const CreateTrip: React.FC = () => {
                                     name="licensePlate"
                                     rules={[
                                         { required: true, message: t('common.licensePlate') },
-                                        { pattern: /^([A-Za-z]{3}\\d{3})|([A-Za-z]{2}\\d{3}[A-Za-z]{2})$/, message: t('common.invalidLicensePlate') }
+                                        {
+                                            pattern: /(^[A-Za-z]{2}\d{3}[A-Za-z]{2}$)|(^[A-Za-z]{3}\d{3}$)/,
+                                            message: t('common.invalidLicensePlate')
+                                        }
                                     ]}
                                 >
                                     <Input placeholder={t("common.licensePlate")} />
